@@ -13,8 +13,7 @@ public class CLIENT_MAIN
 	public static void main(String[] args) 
 	{
 		System.out.println("Hello World~!");
-		System.out.println("박효신");
-		//세이호오
+		System.out.println("what happen?");
 	}
 
 }
