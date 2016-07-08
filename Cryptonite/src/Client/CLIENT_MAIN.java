@@ -10,7 +10,6 @@ public class CLIENT_MAIN
 	{
 		System.out.println("Hello World~!");
 		System.out.println("new add");
-		System.out.println("what");
-		System.out.println("test");
+		System.out.println("dev branch commit test");
 	}
 }
