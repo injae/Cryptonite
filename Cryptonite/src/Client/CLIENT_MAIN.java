@@ -14,6 +14,7 @@ public class CLIENT_MAIN
 	{
 		System.out.println("Hello World~!");
 		System.out.println("what happen?");
+		System.out.println("test");
 	}
 
 }
