@@ -1,5 +1,6 @@
 package Server;
 
-public class Server_SignUp {
+public class Server_SignUp 
+{
 
 }

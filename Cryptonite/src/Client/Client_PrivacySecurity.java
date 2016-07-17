@@ -1,5 +1,6 @@
 package Client;
 
-public class Client_PrivacySecurity {
+public class Client_PrivacySecurity 
+{
 
 }

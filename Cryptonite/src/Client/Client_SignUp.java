@@ -1,5 +1,6 @@
 package Client;
 
-public class Client_SignUp {
+public class Client_SignUp 
+{
 
 }
