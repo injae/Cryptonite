@@ -1,5 +1,6 @@
 package Server;
 
-public class Server_PrivacySecurity {
+public class Server_PrivacySecurity 
+{
 
 }

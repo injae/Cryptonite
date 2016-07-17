@@ -1,5 +1,6 @@
 package Client;
 
-public class Client_Encryption {
+public class Client_Encryption 
+{
 
 }
