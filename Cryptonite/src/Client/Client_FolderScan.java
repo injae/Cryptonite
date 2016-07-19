@@ -22,6 +22,7 @@ public class Client_FolderScan extends Thread
 	// StopFlag
 	private boolean _stopFlag = false;
 	
+	// Methods
 	public void stopThread()
 	{
 		try 
@@ -54,7 +55,7 @@ public class Client_FolderScan extends Thread
 	        		Kind _kind = _watchEvent.kind();
 	        		Path _path = (Path)_watchEvent.context();
               
-	        		if(_kind == StandardWatchEventKinds.ENTRY_CREATE) 
+	        		if(_kind == StandardWatchEventKinds.ENTRY_CREATE)	// New File(Directory) was created.
 	        		{
 	        			_isDirectory = new File(_address + "\\" + _path.getFileName().toString());
 	        			if(_isDirectory.isDirectory() == true) 
@@ -70,7 +71,7 @@ public class Client_FolderScan extends Thread
 	        				//CEM = new Client_EncryptManagement(realAddress, AES_Key);
 	        			}
 	        		}
-	        		else if(_kind == StandardWatchEventKinds.ENTRY_DELETE) 
+	        		else if(_kind == StandardWatchEventKinds.ENTRY_DELETE)	// // New File(Directory) was deleted.
 	        		{
 	        			for(int i = 0; i < _stringVector.size(); i++) 
 	        			{
@@ -88,10 +89,10 @@ public class Client_FolderScan extends Thread
 	        		}
 	        	}
            
-	        	boolean valid = _watchKey.reset();   // watchKey를 한번썼으니깐 리셋을 해줘야합니다.
-                                   // reset()성공시 valid에 true를 리턴합니다.
+	        	boolean valid = _watchKey.reset();   // watchKey reset
+                                   					 // If reset is success, then return true
 	        	if(!valid)
-	        		break;                     // 실패시 false를 리턴받아 폴더스캔이 중지됩니다.
+	        		break;                     // If reset is fail, then return false and folderscan will be down.
 	        }
 		} 
 		catch (IOException e) 
