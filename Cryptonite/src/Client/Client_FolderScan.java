@@ -89,9 +89,9 @@ public class Client_FolderScan extends Thread
 	        		}
 	        	}
            
-	        	boolean valid = _watchKey.reset();   // watchKey reset
+	        	boolean _valid = _watchKey.reset();   // watchKey reset
                                    					 // If reset is success, then return true
-	        	if(!valid)
+	        	if(!_valid)
 	        		break;                     // If reset is fail, then return false and folderscan will be down.
 	        }
 		} 

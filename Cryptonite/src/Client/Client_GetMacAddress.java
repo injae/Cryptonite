@@ -10,11 +10,11 @@ public class Client_GetMacAddress
 	private String _macAddress = "";
 	
 	// Methods
-	public Client_GetMacAddress(InetAddress _localIP)
+	public Client_GetMacAddress(InetAddress localIP)
 	{
 		try 
 		{
-			_ni = NetworkInterface.getByInetAddress(_localIP);
+			_ni = NetworkInterface.getByInetAddress(localIP);
 			_mac = _ni.getHardwareAddress();
 			for(int i  = 0; i < _mac.length; i++) 
 			{
