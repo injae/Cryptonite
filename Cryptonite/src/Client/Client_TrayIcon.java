@@ -17,6 +17,15 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
+/*
+ * Developer : Youn Hee Seung
+ * Date : 2016 - 07 - 22
+ * 
+ * Name : Trayicon
+ * Description : It show trayicon on your bottom
+ * 
+ * */
+
 public class Client_TrayIcon implements ActionListener
 {
 	private SystemTray systemTray;
