@@ -11,9 +11,9 @@ public class Client_Main
 {
 	public static void main(String[] args)
 	{
-			Client_Server_Connecter  ccs;
+			Client_Server_Connector  ccs;
 			try {
-				ccs = new Client_Server_Connecter (4444);
+				ccs = new Client_Server_Connector (4444);
 				 ccs.SendByte(null, 0);
 			} catch (InterruptedException e) {
 				// TODO 자동 생성된 catch 블록
