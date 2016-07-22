@@ -10,106 +10,58 @@ import java.util.*;
 
 public class Server_Client_Accepter extends Thread
 {
-	private String clientChannel = "clientChannel";
-	private String serverChannel = "serverChannel";
-	private String channelType = "channelType";
+	private Selector selector;
+	private SelectionKey socketServerSelectionKey;
 	
-	private ServerSocketChannel _serverChannel = null;
-	private InetSocketAddress _address = null;
-	private ArrayList<SocketChannel> _socketList;
-	private Selector _selector = null;	
-	private SelectionKey _socketServerSelectionKey;
-	
-	private Set<SelectionKey> _selectedKeys;
-	
-	public Server_Client_Accepter(int port)
+	public Server_Client_Accepter(String hostname ,int port)
 	{
-		try 
-		{
-			_serverChannel = ServerSocketChannel.open();
-			_address = new InetSocketAddress(port);
-			_serverChannel.socket().bind(_address);
-			_serverChannel.configureBlocking(false);
-			
-			_selector = Selector.open();
-			_socketServerSelectionKey = _serverChannel.register(_selector, SelectionKey.OP_ACCEPT);
-			
-			Map<String, String> properties = new HashMap<String, String>();
-			properties.put(channelType, serverChannel);
-			_socketServerSelectionKey.attach(properties);
-		}
-		catch (IOException e) 
-		{
+		 try 
+		 {
+			ServerSocketChannel channel = ServerSocketChannel.open();
+			channel.bind(new InetSocketAddress(hostname, port)); 
+	        channel.configureBlocking(false);
+	 
+	        selector = Selector.open();
+	        socketServerSelectionKey = channel.register(selector, SelectionKey.OP_ACCEPT);	       
+		 }
+		 catch (IOException e)
+		 {
 			e.printStackTrace();
-		}
+		 }
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void run()
 	{
-		while(true)
+		while(!Thread.interrupted())
 		{
-			try 
-			{
-				if(_selector.select() == 0) { continue; }
-				_selectedKeys = _selector.selectedKeys();
-				Iterator<SelectionKey> iterator = _selectedKeys.iterator();
-				
-				while(iterator.hasNext())
-				{
-					SelectionKey key = iterator.next();
-					
-					if(((Map<String,String>)key.attachment()).get(channelType).equals(serverChannel));
-					{
-						ServerSocketChannel serverSocketChannel = (ServerSocketChannel)key.channel();
-						SocketChannel clientSocketChannel = serverSocketChannel.accept();
-						
-						if(clientSocketChannel != null)
-						{
-							clientSocketChannel.configureBlocking(false);
-							SelectionKey clientKey = clientSocketChannel.register(
-													_selector, SelectionKey.OP_READ, SelectionKey.OP_WRITE );
-							Map<String,String> clientproperties = new HashMap<String, String>();
-							clientproperties.put(channelType, clientChannel);
-							clientKey.attach(clientproperties);
-							
-							CharBuffer buffer = CharBuffer.wrap("Hello Client");
-							while(buffer.hasRemaining())
-							{
-								clientSocketChannel.write(Charset.defaultCharset().encode(buffer));
-							}
-							buffer.clear();
-						}
-						else
-						{
-							ByteBuffer buffer = ByteBuffer.allocateDirect(20);
-							SocketChannel clientChannel =(SocketChannel)key.channel();
-							int bytesRead = 0;
-							if(key.isReadable())
-							{
-								if((bytesRead = clientChannel.read(buffer)) > 0)
-								{
-									buffer.flip();
-									System.out.println(Charset.defaultCharset().decode(buffer));
-									buffer.clear();
-								}
-								if(bytesRead < 0)
-								{
-									clientChannel.close();
-								}
-							}
-						}
-					}
-					
-				}
-				iterator.remove();
-				
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		    Iterator<SelectionKey> keys = selector.selectedKeys().iterator();	
+		   
+		    while (keys.hasNext()) 
+		    {
+		        SelectionKey key = keys.next();
+		       
+		        if(key.isAcceptable())
+		        {
+		        	System.out.println("Á¢¼Ó");
+		        	new Server_Client_Activity().NewClient(selector, key);
+		        	
+		        }
+		        else if(key.isReadable())
+		        {
+		        	System.out.println("ÀÐÀ½");
+		        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
+		        }
+		        else if(key.isWritable())
+		        {
+		        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
+		        	System.out.println("¾¸");
+		        }        
+		        else if(key.isValid())
+		        {
+		        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
+		        }
+		    } 
+            //keys.remove();
+        }             
 	}
-	
 }
