@@ -32,7 +32,7 @@ public class Client_FolderScan extends Thread
 		    directory.register(_watchService, StandardWatchEventKinds.ENTRY_CREATE,
 		                                  StandardWatchEventKinds.ENTRY_DELETE);
 		    
-		    while(_stopFlag == false) 
+		    while(_stopFlag == false)
 		    {
 	        	_watchKey = _watchService.take();
 	        	List<WatchEvent<?>> _list = _watchKey.pollEvents();
