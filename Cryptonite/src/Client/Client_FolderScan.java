@@ -6,6 +6,16 @@ import java.lang.*;
 import java.nio.file.*;
 import java.nio.file.WatchEvent.Kind;
 
+/*
+ * Developer : Youn Hee Seung
+ * Date : 2016 - 07 - 22
+ * 
+ * Name : Folder Auto Scan
+ * Description : When you select SecureFolder, then it can perceive file event(CREATE, DELETE, MODIFICATION)
+ * 
+ * */
+
+
 public class Client_FolderScan extends Thread
 {
 	// WatchService Instance
@@ -23,7 +33,6 @@ public class Client_FolderScan extends Thread
 	private boolean _stopFlag = false;
 	
 	// Methods
-	
 	public synchronized void run()
 	{
 		try {
@@ -42,14 +51,14 @@ public class Client_FolderScan extends Thread
 	        		Kind _kind = _watchEvent.kind();
 	        		Path _path = (Path)_watchEvent.context();
               
-	        		if(_kind == StandardWatchEventKinds.ENTRY_CREATE)	// New File(Directory) was created.
+	        		if(_kind == StandardWatchEventKinds.ENTRY_CREATE)
 	        		{
 	        			_isDirectory = new File(_address + "\\" + _path.getFileName().toString());
 	        			if(_isDirectory.isDirectory() == true) 
 	        			{
 	        				// This is folder, write new work.
 	        			}
-	        			else // This is file
+	        			else
 	        			{
 	        				_fileName = _path.getFileName().toString();
 	        				System.out.println("New File is Created >> " + _fileName);
@@ -57,7 +66,7 @@ public class Client_FolderScan extends Thread
 	        				_directoryVector.add(_absoluteDirectory);
 	        			}
 	        		}
-	        		else if(_kind == StandardWatchEventKinds.ENTRY_DELETE)	// // New File(Directory) was deleted.
+	        		else if(_kind == StandardWatchEventKinds.ENTRY_DELETE)
 	        		{
 	        			for(int i = 0; i < _directoryVector.size(); i++) 
 	        			{
@@ -76,10 +85,10 @@ public class Client_FolderScan extends Thread
 	        		}
 	        	}
            
-	        	boolean _valid = _watchKey.reset();   // watchKey reset
-                                   					 // If reset is success, then return true
+	        	boolean _valid = _watchKey.reset();
+	        	
 	        	if(!_valid)
-	        		break;                     // If reset is fail, then return false and folderscan will be down.
+	        		break;
 	        }
 		} 
 		catch (IOException e) 

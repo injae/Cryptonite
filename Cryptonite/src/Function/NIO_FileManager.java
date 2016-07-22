@@ -8,6 +8,12 @@ import java.util.*;
 import java.net.*;
 
 /*
+ * Developer : Youn Hee Seung
+ * Date : 2016 - 07 - 22
+ * 
+ * Name : NIO - File Manager
+ * Description : It will make easy to use nio file I/O
+ * 
  * FileManager mode list
  * 
  * 1. READ = StandardOpenOption.READ
