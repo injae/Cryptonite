@@ -11,7 +11,7 @@ public class Client_FolderScan extends Thread
 	// WatchService Instance
 	private WatchService _watchService = null;
 	private WatchKey _watchKey = null;
-	private Vector<String> _stringVector = null;
+	private Vector<String> _directoryVector = null;
 	
 	// Filenames, to make absolute directory, check directory
 	private String _fileName = null;
@@ -23,19 +23,6 @@ public class Client_FolderScan extends Thread
 	private boolean _stopFlag = false;
 	
 	// Methods
-	public void stopThread()
-	{
-		try 
-		{
-			_watchService.close();
-			this._stopFlag = true;
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		
-	}
 	
 	public synchronized void run()
 	{
@@ -65,19 +52,19 @@ public class Client_FolderScan extends Thread
 	        			else // This is file
 	        			{
 	        				_fileName = _path.getFileName().toString();
-	        				System.out.println("New File Created >> " + _fileName);
+	        				System.out.println("New File is Created >> " + _fileName);
 	        				_absoluteDirectory = _isDirectory.getPath();
-	        				_stringVector.add(_absoluteDirectory);
-	        				//CEM = new Client_EncryptManagement(realAddress, AES_Key);
+	        				_directoryVector.add(_absoluteDirectory);
 	        			}
 	        		}
 	        		else if(_kind == StandardWatchEventKinds.ENTRY_DELETE)	// // New File(Directory) was deleted.
 	        		{
-	        			for(int i = 0; i < _stringVector.size(); i++) 
+	        			for(int i = 0; i < _directoryVector.size(); i++) 
 	        			{
-	        				if(_path.getFileName().toString().equals(_stringVector.get(i)))
+	        				if(_path.getFileName().toString().equals(_directoryVector.get(i)))
 	        				{
-	        					_stringVector.remove(i);
+	        					System.out.println("File is Deleted >> " + _directoryVector.get(i));
+	        					_directoryVector.remove(i);
 	        					break;
 	        				}
 	        			}
@@ -107,6 +94,19 @@ public class Client_FolderScan extends Thread
 		{
 			System.out.println("WatchService Thread was closed successfully.");
 			this.interrupt();
+		}
+	}
+	
+	public void stopThread()
+	{
+		try 
+		{
+			_watchService.close();
+			this._stopFlag = true;
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
 		}
 	}
 }
