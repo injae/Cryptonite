@@ -87,16 +87,26 @@ public class NIO_FileManager
 	
 	private void fileRead()
 	{
-		int _byteCount;
-		_fileQueue = new Vector<ByteBuffer>();
-		
-		try {
-			_buffer.clear();
-			while((_byteCount = _fileChannel_address.read(_buffer)) != -1)
+		try 
+		{
+			long _totalSize = _fileChannel_address.size();
+			_fileQueue = new Vector<ByteBuffer>();
+			
+			while(_totalSize > 0)
 			{
+				if(_totalSize < 1024)
+				{
+					_buffer = ByteBuffer.allocateDirect((int)_totalSize);
+				}
+				else
+				{
+					_buffer = ByteBuffer.allocateDirect(1024);
+				}
+				_totalSize -= 1024;
+				_fileChannel_address.read(_buffer);
 				_buffer.flip();
-				_fileQueue.add(_buffer);
 				_buffer.clear();
+				_fileQueue.add(_buffer);
 			}
 		} 
 		catch (IOException e) 
