@@ -2,6 +2,15 @@ package Client;
 
 import java.net.*;
 
+/*
+ * Developer : Youn Hee Seung
+ * Date : 2016 - 07 - 22
+ * 
+ * Name : Get Mac-Address
+ * Description : if you know InetAddress, then you can find your device address.
+ * 
+ * */
+
 public class Client_GetMacAddress 
 {
 	// MacAddress Instance
