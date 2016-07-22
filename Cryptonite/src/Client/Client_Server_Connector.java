@@ -17,6 +17,7 @@ public class Client_Server_Connector
 	private ByteBuffer _buffer = null;
 	private HashMap<String,Queue<ByteBuffer>> _packetList = null;
 	private Vector<String> _packetNameList = null;
+	//
 	
 	public Client_Server_Connector(int port) throws InterruptedException
 	{
