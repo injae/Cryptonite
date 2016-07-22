@@ -7,11 +7,11 @@ import java.nio.CharBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
-public class Client_Server_Connecter 
+public class Client_Server_Connector 
 {
 	private SocketChannel _channel;
 	
-	public Client_Server_Connecter(int port) throws InterruptedException
+	public Client_Server_Connector(int port) throws InterruptedException
 	{
         try 
         {
