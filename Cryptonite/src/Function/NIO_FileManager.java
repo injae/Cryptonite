@@ -13,15 +13,17 @@ import java.net.*;
  * 1. READ = StandardOpenOption.READ
  * 2. WRITE = StandardOpenOption.WRITE
  * 3. CREATE = StandardOpenOption.CREATE
- * 4. CREATE_NEW = StandardOpenOption.CREATE_NEW
+ * 
+ * How to use??
+ * 
+ * NIO_FileManager test = new NIO_FileManager();
+ * test.fileManage("c:\\test\\hello.txt", "READ");
+ * test.fileManage("c:\\test\\hello2.txt", "WRITE");
  * 
  * */
 
 public class NIO_FileManager 
 {
-	// Path
-	private Path _path = null;
-	
 	// ByteBuffer
 	private ByteBuffer _buffer = null;
 	
@@ -31,21 +33,20 @@ public class NIO_FileManager
 	// FileQueue
 	private Vector<ByteBuffer> _fileQueue = null;
 	
-	// Constructors
-	public NIO_FileManager(Path address, String mode)
+	// Constructor
+	public NIO_FileManager()
 	{
 		_buffer = ByteBuffer.allocateDirect(1024);
-		_path = address;
 	}
 	
 	// Methods
-	public void fileManage(String mode)
+	public void fileManage(Path path , String mode)
 	{
 		if(mode.equals("READ"))
 		{
 			try 
 			{
-				_fileChannel_address = FileChannel.open(_path, StandardOpenOption.READ);
+				_fileChannel_address = FileChannel.open(path, StandardOpenOption.READ);
 				fileRead();
 			} 
 		catch (IOException e) 
@@ -57,7 +58,7 @@ public class NIO_FileManager
 		{
 			try 
 			{
-				_fileChannel_address = FileChannel.open(_path, StandardOpenOption.WRITE);
+				_fileChannel_address = FileChannel.open(path, StandardOpenOption.WRITE);
 				fileWrite();
 			} 
 		catch (IOException e) 
@@ -69,7 +70,7 @@ public class NIO_FileManager
 		{
 			try 
 			{
-				_fileChannel_address = FileChannel.open(_path, StandardOpenOption.CREATE);
+				_fileChannel_address = FileChannel.open(path, StandardOpenOption.CREATE);
 			} 
 		catch (IOException e) 
 			{
@@ -112,10 +113,5 @@ public class NIO_FileManager
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public Vector<ByteBuffer> getFileQueue()
-	{
-		return _fileQueue;
 	}
 }
