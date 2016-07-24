@@ -126,4 +126,16 @@ public class Client_AutoBackup extends Thread
 			e.printStackTrace();
 		}
 	}
+	
+	public void stopThread()
+	{
+		try 
+		{
+			_socketChannel.close();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 }
