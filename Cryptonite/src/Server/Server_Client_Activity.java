@@ -31,6 +31,8 @@ public class Server_Client_Activity
             
             _receiveQueue = new LinkedList<byte[]>();
             _sendQueue = new LinkedList<byte []>();
+            
+            System.out.println(_channel.toString() + "connect");
 		} 
 		catch (IOException e) 
 		{
@@ -38,27 +40,34 @@ public class Server_Client_Activity
 		}
 	}
 	
-	public void Send(byte[] packet) 
+	public void Send(byte packet) 
 	{
 		 
 	}
 	
-	public void Receiver() 
+	public void Receiver() throws IOException 
 	{	
-		try
-		{
-			ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
-			byte[] test = new byte[buffer.capacity()];
-			buffer.get(test);
-			_channel.read(buffer);			
-			//_receiveQueue.add(buffer.array());
-			_receiveQueue.add(test);
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
 		
+
+		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
+		int count = _channel.read(buffer);			
+		buffer.flip();
+		
+		byte[] array = new byte[buffer.remaining()];	
+		buffer.get(array);
+		
+		_receiveQueue.add(array);	
+		System.out.println(_channel.toString() + "read :" + count);	
 	}
 	
+	public void close() 
+	{
+		System.out.println(_channel.toString() + "Stop Connect");
+		try {
+			_channel.close();
+		} catch (IOException e) {
+			// TODO 자동 생성된 catch 블록
+			e.printStackTrace();
+		}
+	}
 }
