@@ -53,25 +53,25 @@ public class Client_Server_Connector
 		return _singleton;
 	}
 	
-	public void getPacket(String packetName)
+	public void getPacket(String packetName, int bufferSize)
 	{	
 		try 
 		{
 			_packetList.put(packetName, new LinkedList<ByteBuffer>());
 			_packetNameList.add(packetName);
-			_buffer = ByteBuffer.allocateDirect(1024);
+			_buffer = ByteBuffer.allocateDirect(bufferSize);
 			int byteCount;
 			
 			_buffer.clear();
 			while((byteCount = _channel.read(_buffer)) != -1)
 			{
-				if(byteCount < 1024)
+				if(byteCount < bufferSize)
 				{
 					_buffer = ByteBuffer.allocateDirect(byteCount);
 				}
 				else
 				{
-					_buffer = ByteBuffer.allocateDirect(1024);
+					_buffer = ByteBuffer.allocateDirect(bufferSize);
 				}
 				_buffer.flip();
 				_packetList.get(packetName).offer(_buffer);
@@ -116,6 +116,7 @@ public class Client_Server_Connector
 				e.printStackTrace();
 			}
 		}
+		_packetList.remove(packetName);
 	}
 	
 	public void sendAll()
