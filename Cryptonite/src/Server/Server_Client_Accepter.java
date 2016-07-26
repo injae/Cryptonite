@@ -38,13 +38,13 @@ public class Server_Client_Accepter extends Thread
 			{							
 				if(selector.select() == 0) continue;
 				
-				Set<SelectionKey> selectedKeys = selector.selectedKeys();
-			    Iterator<SelectionKey> keys = selectedKeys.iterator();	
+			    Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
 			   
 			    while (keys.hasNext()) 
 			    {
 			        SelectionKey key = keys.next();
-
+			        keys.remove();
+			        
 			        if(key.isAcceptable())
 			        {
 			        	System.out.println("접속");
@@ -54,6 +54,7 @@ public class Server_Client_Accepter extends Thread
 			        {
 			        	System.out.println("읽음");
 			        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
+			        	activity.Receiver();
 			        }
 			        else if(key.isWritable())
 			        {
@@ -62,10 +63,13 @@ public class Server_Client_Accepter extends Thread
 			        }        
 			        else if(key.isValid())
 			        {
+			        	System.out.println("이즈베리드");
 			        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
 			        }
+			        
 			    } 
-	            keys.remove();
+			    //System.out.println("빠져나왔다!");
+	            
 	        }        
 		} catch (IOException e) {
 			// TODO 자동 생성된 catch 블록

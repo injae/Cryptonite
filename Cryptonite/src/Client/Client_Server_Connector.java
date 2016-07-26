@@ -86,8 +86,12 @@ public class Client_Server_Connector
 	
 	public void setPacket(String packetName, ByteBuffer buffer)
 	{
-		_packetList.put(packetName, new LinkedList<ByteBuffer>());
 		_packetList.get(packetName).offer(buffer);
+	}
+	
+	public void configurePacket(String packetName)
+	{
+		_packetList.put(packetName, new LinkedList<ByteBuffer>());
 	}
 	
 	public Queue<ByteBuffer> receive(String packetName)
@@ -120,6 +124,32 @@ public class Client_Server_Connector
 		{
 			send(_packetNameList.get(0));
 			_packetNameList.remove(0);
+		}
+	}
+	
+	public void stopConnection()
+	{
+		try 
+		{
+			_channel.close();
+		} 
+		catch (IOException e)
+		{
+			System.out.println("Ä¿³Ø¼Ç ¿À¹ö");
+		}
+	}
+	
+	public void justSend()
+	{
+		try 
+		{
+			_buffer = ByteBuffer.allocateDirect(100);
+			_buffer.put((byte) 1);
+			_channel.write(_buffer);
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
 		}
 	}
 }

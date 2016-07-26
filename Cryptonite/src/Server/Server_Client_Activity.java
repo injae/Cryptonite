@@ -48,8 +48,11 @@ public class Server_Client_Activity
 		try
 		{
 			ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
-			_channel.read(buffer);						
-			_receiveQueue.add(buffer.array());
+			byte[] test = new byte[buffer.capacity()];
+			buffer.get(test);
+			_channel.read(buffer);			
+			//_receiveQueue.add(buffer.array());
+			_receiveQueue.add(test);
 		}
 		catch (IOException e) 
 		{
