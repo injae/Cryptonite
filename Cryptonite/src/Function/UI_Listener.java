@@ -18,7 +18,6 @@ public class UI_Listener
 		{
 			Listener = new UI_Listener();	
 		}
-		
 		return Listener;
 	}
 	
