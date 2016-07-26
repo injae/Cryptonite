@@ -39,12 +39,6 @@ public class Server_Client_Accepter extends Thread
 			{	
 				try 
 				{
-					if(count < 20)//////////////////////////
-					{
-						count++;
-						System.out.print(".");
-					}///////////////////////////////////////
-					
 					if(selector.selectNow() == 0) continue;
 				    Iterator<SelectionKey> keys = selector.selectedKeys().iterator();	
 				    
@@ -61,17 +55,13 @@ public class Server_Client_Accepter extends Thread
 				        {			        	
 				        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
 				        	activity.Receiver();
-				        	
-				        	count = 0;
 				        }
 				        else if(key.isValid() && key.isWritable())
 				        {
 				        	System.out.println("¾²±â");
 				        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
 				        }      
-				    } 
-				    
-				    
+				    }     
 				} catch (IOException e) {
 					Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
 					activity.close();

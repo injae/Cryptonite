@@ -47,14 +47,17 @@ public class Server_Client_Activity
 	
 	public void Receiver() throws IOException 
 	{	
-		
-
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
 		int count = _channel.read(buffer);			
 		buffer.flip();
 		
 		byte[] array = new byte[buffer.remaining()];	
 		buffer.get(array);
+		for(int i = 0 ; i < array.length; i++)
+		{
+			System.out.println(array[i]);
+		}
+		
 		
 		_receiveQueue.add(array);	
 		System.out.println(_channel.toString() + "read :" + count);	
