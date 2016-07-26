@@ -14,7 +14,7 @@ public class Client_Main
 			Client_Server_Connector  ccs;
 			try 
 			{ 
-				ccs.getInstance(4444);
+				ccs = Client_Server_Connector.getInstance(4444);
 			}
 			catch (InterruptedException e)
 			{

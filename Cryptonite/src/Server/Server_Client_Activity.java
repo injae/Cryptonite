@@ -38,7 +38,7 @@ public class Server_Client_Activity
 		}
 	}
 	
-	public void Send(byte) 
+	public void Send(byte[] packet) 
 	{
 		 
 	}
