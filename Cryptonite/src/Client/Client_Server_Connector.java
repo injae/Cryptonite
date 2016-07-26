@@ -13,12 +13,14 @@ import java.util.Vector;
 
 public class Client_Server_Connector 
 {
+	private static Client_Server_Connector _singleton = null;
+	
 	private SocketChannel _channel;
 	private ByteBuffer _buffer = null;
 	private HashMap<String,Queue<ByteBuffer>> _packetList = null;
 	private Vector<String> _packetNameList = null;
 	
-	public Client_Server_Connector(int port) throws InterruptedException
+	private Client_Server_Connector(int port) throws InterruptedException
 	{
         try 
         {
@@ -39,6 +41,16 @@ public class Client_Server_Connector
         {
 			e.printStackTrace();
 		}
+	}
+	
+	public Client_Server_Connector getInstance(int port) throws InterruptedException
+	{
+		if(_singleton == null)
+		{
+			_singleton = new Client_Server_Connector(port);
+		}
+		
+		return _singleton;
 	}
 	
 	public void getPacket(String packetName)
