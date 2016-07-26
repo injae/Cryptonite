@@ -14,11 +14,10 @@ public class Client_Main
 			Client_Server_Connector  ccs;
 			try 
 			{ 
-				ccs = new Client_Server_Connector (4444);
-			} catch (InterruptedException e) {
-				// TODO 자동 생성된 catch 블록
-				e.printStackTrace();
-			} catch (IOException e) {
+				ccs.getInstance(4444);
+			}
+			catch (InterruptedException e)
+			{
 				// TODO 자동 생성된 catch 블록
 				e.printStackTrace();
 			}

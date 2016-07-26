@@ -14,7 +14,8 @@ import java.util.Queue;
 public class Server_Client_Activity 
 {
 	private SocketChannel _channel;
-	private Queue<byte[]> _packetQueue; 
+	private Queue<byte[]> _receiveQueue; 
+	private Queue<byte[]> _sendQueue;
 	
 	public Server_Client_Activity(Selector selector, SelectionKey key)
 	{
@@ -28,7 +29,8 @@ public class Server_Client_Activity
             									SelectionKey.OP_READ,SelectionKey.OP_WRITE);
             clientKey.attach(this);
             
-            _packetQueue = new LinkedList<byte[]>();
+            _receiveQueue = new LinkedList<byte[]>();
+            _sendQueue = new LinkedList<byte []>();
 		} 
 		catch (IOException e) 
 		{
@@ -36,13 +38,23 @@ public class Server_Client_Activity
 		}
 	}
 	
-	public void Send() 
+	public void Send(byte) 
 	{
 		 
 	}
 	
 	public void Receiver() 
-	{
+	{	
+		try
+		{
+			ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
+			_channel.read(buffer);						
+			_receiveQueue.add(buffer.array());
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 		
 	}
 	
