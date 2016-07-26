@@ -17,7 +17,6 @@ public class Client_Server_Connector
 	private ByteBuffer _buffer = null;
 	private HashMap<String,Queue<ByteBuffer>> _packetList = null;
 	private Vector<String> _packetNameList = null;
-	//
 	
 	public Client_Server_Connector(int port) throws InterruptedException
 	{
@@ -40,30 +39,6 @@ public class Client_Server_Connector
         {
 			e.printStackTrace();
 		}
-	}
-	
-	public void SendByte(byte[] sendbyte, int size) throws IOException
-	{
-		 ByteBuffer bufferA = ByteBuffer.allocate(20);
-         int count = 0;
-         String message = "";
-         while ((count = _channel.read(bufferA)) > 0) {
-             // flip the buffer to start reading
-             bufferA.flip();
-             message += Charset.defaultCharset().decode(bufferA);
-
-         }
-     	System.out.println("보낸다");
-         if (message.length() > 0) {
-             System.out.println(message);
-             // write some data into the channel
-             CharBuffer buffer = CharBuffer.wrap("Hello Server");
-             while (buffer.hasRemaining()) {
-                 _channel.write(Charset.defaultCharset().encode(buffer));
-             }
-             message = "";
-         }
-     	System.out.println("받았다");
 	}
 	
 	public void getPacket(String packetName)
