@@ -141,8 +141,8 @@ public class Client_Server_Connector
 	
 	public void justSend() throws IOException
 	{
-			_buffer = ByteBuffer.allocateDirect(1025);
-			byte[] buf = new byte[1024];
+			_buffer = ByteBuffer.allocateDirect(100);
+			byte[] buf = new byte[100];
 			
 			for(int i =0; i < 20; i++)
 			{
