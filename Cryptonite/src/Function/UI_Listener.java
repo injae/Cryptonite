@@ -12,7 +12,7 @@ public class UI_Listener
 		UI_List = new HashMap<String,Object>();
 	}
 	
-	public UI_Listener getInstance()
+	public static UI_Listener  getInstance()
 	{
 		if(Listener == null)
 		{

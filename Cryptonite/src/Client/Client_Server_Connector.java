@@ -43,7 +43,7 @@ public class Client_Server_Connector
 		}
 	}
 	
-	public Client_Server_Connector getInstance(int port) throws InterruptedException
+	public static Client_Server_Connector getInstance(int port) throws InterruptedException
 	{
 		if(_singleton == null)
 		{
