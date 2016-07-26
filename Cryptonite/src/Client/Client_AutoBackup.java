@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.io.*;
 import java.util.*;
 import Function.NIO_FileManager;
+import Function.PacketRule;
 
 /*
  * Developer : Youn Hee Seung
@@ -18,7 +19,7 @@ import Function.NIO_FileManager;
  * 
  * */
 
-public class Client_AutoBackup extends Thread
+public class Client_AutoBackup extends Thread implements PacketRule
 {
 	// SocketChannel
 	private SocketChannel _socketChannel = null;
@@ -29,25 +30,26 @@ public class Client_AutoBackup extends Thread
 	
 	// File or Directory
 	private File _checkProperty = null;
-	private FileChannel _fileChannel = null;
 	private String _fileName = null;
-	private long _totalSize;
+	private long _fileSize = 0;
+	
+	// stopFlag
+	private boolean _stopFlag = false;
 	
 	// temporary encryptedVector
 	private Vector<String> _encryptedVector = null;
 	
+	// Sending Module
+	private Client_Server_Connector _csc = null;
+	
 	// Constructors
-	public Client_AutoBackup()
+	public Client_AutoBackup() 
 	{
 		try 
 		{
-			_socketChannel = SocketChannel.open();
-			_socketChannel.configureBlocking(true);
-			System.out.println("[ Connecting requesting ]");
-			_socketChannel.connect(new InetSocketAddress("localhost", _port));
-			System.out.println("[ Connecting Success ]");
+			_csc = Client_Server_Connector.getInstance(4444);
 		} 
-		catch (IOException e) 
+		catch (InterruptedException e) 
 		{
 			e.printStackTrace();
 		}
@@ -56,86 +58,51 @@ public class Client_AutoBackup extends Thread
 	// Methods
 	public synchronized void run()
 	{
-		try 
-		{	
-			while(!_socketChannel.finishConnect())
+		while(!_stopFlag)
+		{
+			try 
 			{
 				sleep(1);
-				if(!_encryptedVector.isEmpty())
-				{
-					_checkProperty = new File(_encryptedVector.get(0));
-					_fileName = _checkProperty.getName();
-					
-					Charset charSet = Charset.forName("UTF-8");
-					if(_checkProperty.isDirectory())
-					{
-						_buffer = charSet.encode("Directory");
-						_socketChannel.write(_buffer);
-					}
-					else if(_checkProperty.isFile())
-					{
-						_totalSize = _checkProperty.length();
-						Path _path = Paths.get(_encryptedVector.get(0));
-						_fileChannel = FileChannel.open(_path, StandardOpenOption.READ);
-						
-						_buffer = charSet.encode("File");
-						_socketChannel.write(_buffer);
-						_buffer.clear();
-						
-						_buffer = charSet.encode(_fileName);
-						_socketChannel.write(_buffer);
-						_buffer.clear();
-						System.out.println("fileName Sending Complete !!");
-						
-						_buffer = charSet.encode(String.valueOf(_totalSize));
-						_socketChannel.write(_buffer);
-						_buffer.clear();
-						System.out.println("fileSize Sending Complete !!");
-						
-						System.out.println("Now File [ " + _fileName + " ] Sending ......");
-						while(_totalSize > 0)
-						{
-							if(_totalSize < 1024)
-							{
-								_buffer = ByteBuffer.allocateDirect((int)_totalSize);
-							}
-							else
-							{
-								_buffer = ByteBuffer.allocateDirect(1024);
-							}
-							_totalSize -= 1024;
-							_fileChannel.read(_buffer);
-							_buffer.flip();
-							_socketChannel.write(_buffer);
-							_buffer.clear();
-						}
-						System.out.println("[ " + _fileName + " ] Sending Complete !!");
-					}
-					
-					_encryptedVector.remove(0);
-				}
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
 			}
-			
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
+			if(!_encryptedVector.isEmpty())
+			{
+				_checkProperty = new File(_encryptedVector.get(0));
+				_fileName = _checkProperty.getName();
+				_fileSize = _checkProperty.length();
+				
+				Charset charSet = Charset.forName("UTF-8");
+				_csc.configurePacket("AUTOBACKUP");
+				if(_checkProperty.isDirectory())
+				{
+					// 오토백업이다, 난 디렉토리다, 디렉토리명
+					// 
+					_buffer = ByteBuffer.allocateDirect(100);
+					_buffer.clear();
+					
+					byte[] event = new byte[100];
+					event[0] = AUTOBACKUP;
+					_csc.setPacket("AUTOBACKUP", _buffer);
+					_buffer.clear();
+					
+					
+				}
+				else if(_checkProperty.isFile())
+				{
+					// 오토백업이다, 난 파일이다, 파일이름, 파일사이즈, 파일
+				}
+				
+				
+				_encryptedVector.remove(0);
+			}
 		}
 	}
 	
 	public void stopThread()
 	{
-		try 
-		{
-			_socketChannel.close();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
+		_stopFlag = true;
 	}
 }
