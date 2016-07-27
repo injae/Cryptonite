@@ -15,14 +15,14 @@ public class Client_Main
 		{ 
 			Client_Server_Connector ccs = Client_Server_Connector.getInstance(4444);
 					
-			ccs.justSend();	
+			Client_SignUp cs=new Client_SignUp();
 		/*	while(true)
 			{
 				Thread.sleep(1);
 				ccs.justSend();	
 			}*/
 		}
-		catch (InterruptedException | IOException e)
+		catch (InterruptedException e)
 		{
 			// TODO 자동 생성된 catch 블록
 			e.printStackTrace();
