@@ -149,9 +149,11 @@ public class Client_Server_Connector extends Thread
 
 	public void justSend() throws IOException
 	{
-		_buffer = ByteBuffer.allocateDirect(1024);
-		byte[] buf = new byte[1024];
-
+		_buffer = ByteBuffer.allocateDirect(100);
+		byte[] buf = new byte[100];
+		buf[0] = 5;
+		buf[1] = 8;
+		
 		_buffer.put(buf);
 		_buffer.flip();
 		_channel.write(_buffer);   
