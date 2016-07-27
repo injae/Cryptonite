@@ -345,7 +345,7 @@ import javax.swing.JPasswordField;
 			public void actionPerformed(ActionEvent _arg0)
 			{
 				if(_name.equals("name") == false && _id.equals("id") == false && _password.equals("password") == false &&
-						_passwordCorrect.equals("passwordCorrect") == false && _email.equals("email") == false && _goSignUP == true)
+						_passwordCorrect.equals("passwordCorrect") == false && _email.equals("email") == false/* && _goSignUP == true*/)
 				{
 					if(_checkPassword == true)
 					{
