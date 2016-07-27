@@ -5,8 +5,8 @@ import java.net.InetSocketAddress;
 import java.nio.channels.*;
 import java.util.*;
 
-/*
- * 
+/* Class: Server_Client_Accepter
+ * This class is 
  * 
  * 
  * 
@@ -29,6 +29,7 @@ public class Server_Client_Accepter extends Thread
 	        channel.register(_selector, SelectionKey.OP_ACCEPT);
 	        
 	        _manager = Server_Client_Manager.getInstance();
+	        _manager.start();
 		 }
 		 catch (IOException e)
 		 {
@@ -40,6 +41,7 @@ public class Server_Client_Accepter extends Thread
 	{
 		SelectionKey key = null;
 		int count = 0;
+	
 		while(!Thread.interrupted())
 		{	
 			try 
@@ -71,9 +73,8 @@ public class Server_Client_Accepter extends Thread
 				        }
 			        }
 			        count++;
-			    }
-			    _manager.managing();
-			    System.err.println(" " + count); count = 0;
+			    }			   
+			    System.err.println("ÀÛµ¿È½¼ö : " + count); count = 0;
 			}
 			catch (IOException e) 
 			{

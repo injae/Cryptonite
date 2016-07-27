@@ -16,11 +16,11 @@ public class Client_Main
 			Client_Server_Connector ccs = Client_Server_Connector.getInstance(4444);
 					
 			ccs.justSend();	
-		/*	while(true)
+			while(true)
 			{
 				Thread.sleep(1);
 				ccs.justSend();	
-			}*/
+			}
 		}
 		catch (InterruptedException | IOException e)
 		{

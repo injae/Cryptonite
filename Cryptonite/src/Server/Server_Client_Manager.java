@@ -1,24 +1,25 @@
 package Server;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import Function.PacketRule;
 
-public class Server_Client_Manager implements PacketRule
+public class Server_Client_Manager extends Thread implements PacketRule
 {	
 	private static Server_Client_Manager _server_client_manager;
 	
 	private HashMap<Integer ,Server_Client_Activity> _clientList;	
-	private Queue<Integer> _usableClientCode;
+	private LinkedBlockingQueue<Integer> _usableClientCode;
 	private int _lastClientCode;
-	
+	private boolean _runflag = false;
 	private Queue<Integer> _runningQueue;
 	
 	private Server_Client_Manager() 
 	{
 		_clientList = new HashMap<Integer, Server_Client_Activity>();
 		_runningQueue = new LinkedList<Integer>();
-		_usableClientCode = new LinkedList<Integer>();
+		_usableClientCode = new LinkedBlockingQueue<Integer>();
 	}
 	
 	public static Server_Client_Manager getInstance()
@@ -45,7 +46,7 @@ public class Server_Client_Manager implements PacketRule
 	
 	public void requestManage(int clientCode)
 	{
-		_runningQueue.add(clientCode);		
+		_runningQueue.offer(clientCode);		
 	}
 	
 	public void packetChecker(Server_Client_Activity activity)
@@ -73,12 +74,15 @@ public class Server_Client_Manager implements PacketRule
 		_clientList.remove(clientCode);
 	}
 	
-	public void managing()
-	{
-		while(_runningQueue.isEmpty())
+	public void run()
+	{	
+		while(true)
 		{
-			Server_Client_Activity activity = _clientList.get(_runningQueue.remove());
-			activity._funtionList.get(activity._runningFuntion).running(activity);
+			if(!_runningQueue.isEmpty())
+			{
+				Server_Client_Activity activity = _clientList.get(_runningQueue.remove());
+				activity._funtionList.get(activity._runningFuntion).running(activity);
+			}
 		}
 	}
 }

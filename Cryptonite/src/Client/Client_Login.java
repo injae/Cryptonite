@@ -1,5 +1,10 @@
 package Client;
 
+<<<<<<< HEAD
+public class Client_Login 
+{
+	
+=======
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -229,6 +234,7 @@ public class Client_Login extends JFrame
          setVisible(true);
           	
     }    
+>>>>>>> refs/remotes/origin/LeeDEV
 }
     
 
