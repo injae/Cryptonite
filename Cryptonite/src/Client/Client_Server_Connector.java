@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
 
-public class Client_Server_Connector 
+public class Client_Server_Connector extends Thread
 {
 	private static Client_Server_Connector _singleton = null;
 	
@@ -19,13 +19,14 @@ public class Client_Server_Connector
 	private ByteBuffer _buffer = null;
 	private HashMap<String,Queue<ByteBuffer>> _packetList = null;
 	private Vector<String> _packetNameList = null;
+	private boolean stopFlag = false;
 	
 	private Client_Server_Connector(int port) throws InterruptedException
 	{
         try 
         {
 			_channel = SocketChannel.open();
-			_channel.configureBlocking(false);
+			_channel.configureBlocking(true);
 			_channel.connect(new InetSocketAddress("localhost", port));
 			
 			while (!_channel.finishConnect()) 
@@ -36,10 +37,20 @@ public class Client_Server_Connector
 			
 			_packetList = new HashMap<String,Queue<ByteBuffer>>();
 			_packetNameList = new Vector<String>();
+			_packetNameList.add("receive");
+			_packetList.put("receive", new LinkedList<ByteBuffer>());
         } 
         catch (IOException e)
         {
 			e.printStackTrace();
+		}
+	}
+	
+	public void run()
+	{
+		while(!stopFlag)
+		{
+			_packetList.get("receive").offer(_buffer);
 		}
 	}
 	
@@ -94,11 +105,9 @@ public class Client_Server_Connector
 		_packetList.put(packetName, new LinkedList<ByteBuffer>());
 	}
 	
-	public Queue<ByteBuffer> receive(String packetName)
+	public ByteBuffer receive()
 	{
-		Queue<ByteBuffer> temp = _packetList.get(packetName);
-		_packetList.remove(packetName);
-		return temp;
+		return _packetList.get("receive").remove();
 	}
 	
 	public void send(String packetName)
@@ -148,6 +157,11 @@ public class Client_Server_Connector
 			_buffer.put(buf);
 			_buffer.flip();
 			_channel.write(_buffer);			
+	}
+	
+	public void stopThread()
+	{
+		stopFlag = true;
 	}
 
 }
