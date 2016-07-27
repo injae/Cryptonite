@@ -108,7 +108,7 @@ import javax.swing.JPasswordField;
 
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
-			setBackground(Color.WHITE);
+			setBackground(Color.BLACK);
 
 			try
 			{
@@ -129,7 +129,7 @@ import javax.swing.JPasswordField;
 			_nameField = new JTextField();
 			_nameField.setBounds(193,290, 130, 20);//input value
 			_nameField.setBorder(BorderFactory.createEmptyBorder());
-			_nameField.setForeground(Color.WHITE);
+			_nameField.setForeground(Color.BLACK);
 
 			_nameField.addKeyListener(new KeyListener()
 			{
@@ -153,7 +153,7 @@ import javax.swing.JPasswordField;
 			_idField = new JTextField();
 			_idField.setBounds(193, 326, 130, 20);//input value
 
-			_idField.setForeground(Color.WHITE);
+			_idField.setForeground(Color.BLACK);
 			_idField.setBorder(BorderFactory.createEmptyBorder());
 			//_idField.setOpaque(false);
 
@@ -178,7 +178,7 @@ import javax.swing.JPasswordField;
 
 			_passwdField.setEchoChar('¡Ü');
 			_passwdField.setBorder(BorderFactory.createEmptyBorder());
-			_passwdField.setForeground(Color.WHITE);
+			_passwdField.setForeground(Color.BLACK);
 			//_passwdField.setOpaque(false);
 			_passwdField.addKeyListener(new KeyListener()
 		{
@@ -200,7 +200,7 @@ import javax.swing.JPasswordField;
 			_passwdCorrectField.setBounds(194, 408, 130, 20);//input value
 			_passwdCorrectField.setEchoChar('¡Ü');
 			_passwdCorrectField.setBorder(BorderFactory.createEmptyBorder());
-			_passwdCorrectField.setForeground(Color.WHITE);
+			_passwdCorrectField.setForeground(Color.BLACK);
 			//_passwdCorrectField.setOpaque(false);
 			_passwdCorrectField.addKeyListener(new KeyListener()
 		{
@@ -232,7 +232,7 @@ import javax.swing.JPasswordField;
 		_emailField = new JTextField();
 		_emailField.setBounds(193, 455, 160, 20);//input value
 		_emailField.setBorder(BorderFactory.createEmptyBorder());
-		_emailField.setForeground(Color.WHITE);
+		_emailField.setForeground(Color.BLACK);
 		//_emailField.setOpaque(false);
 		_emailField.addKeyListener(new KeyListener()
 		{
