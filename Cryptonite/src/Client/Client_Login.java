@@ -1,10 +1,5 @@
 package Client;
 
-<<<<<<< HEAD
-public class Client_Login 
-{
-	
-=======
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -63,26 +58,26 @@ public class Client_Login extends JFrame
     
     /*//private Client_FolderChooser_UI fc = null;
     
-    // ·Î±×ÀÎ Ä«¿îÅÍ ÀĞ¾îÁÖ±â À§ÇÑ°Í
+    // ë¡œê·¸ì¸ ì¹´ìš´í„° ì½ì–´ì£¼ê¸° ìœ„í•œê²ƒ
     private FileReader fr = null;
     private String loginCount = null;
     private StringTokenizer st = null;
     
-    // ·Î±×ÀÎ È½¼ö°¡ 2¹øÀÌ»óÀÏ °æ¿ì ¿©±â¼­ ½º·¹µå ½ÇÇà
+    // ë¡œê·¸ì¸ íšŸìˆ˜ê°€ 2ë²ˆì´ìƒì¼ ê²½ìš° ì—¬ê¸°ì„œ ìŠ¤ë ˆë“œ ì‹¤í–‰
     private Client_FolderScan cfs = null;
     private Client_SendFiles csf = null;
     private Client_checkEncryptionAnime cea = null;
     private Client_FileShare_Send cfss = null;
     
-    // ¸ŞÀÎÇÁ·¹ÀÓ UI
+    // ë©”ì¸í”„ë ˆì„ UI
     private boolean mainFrameFlag = false;
     private Client_MainFrame_UI cmfu = null;
     
-    // AES_Key ÃßÃâ°ü·Ã
+    // AES_Key ì¶”ì¶œê´€ë ¨
     private User loginedUser = null;
     private byte[] AES_Key = null;
     */
-    // ¸Æ ¾îµå·¹½º ÃßÃâ
+    // ë§¥ ì–´ë“œë ˆìŠ¤ ì¶”ì¶œ
     
     Font _font1 = new Font("SansSerif", Font.BOLD, 25);
     Font _fontjoin = new Font("SansSerif", Font.BOLD,13);
@@ -100,14 +95,14 @@ public class Client_Login extends JFrame
         setBounds(710,200,470,645);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
  
-        // ·¹ÀÌ¾Æ¿ô ¼³Á¤
+        // ë ˆì´ì•„ì›ƒ ì„¤ì •
         getContentPane().setLayout(null);
         JLayeredPane _layeredPane = new JLayeredPane();
         _layeredPane.setBounds(0, 0, 470, 645);
         _layeredPane.setLayout(null);
 
-        // ÆĞ³Î1
-        // ÀÌ¹ÌÁö ¹Ş¾Æ¿À±â
+        // íŒ¨ë„1
+        // ì´ë¯¸ì§€ ë°›ì•„ì˜¤ê¸°
         try {
             _img = ImageIO.read(new File("D:\\crypto\\login.png"));//input image
         } catch (IOException e) {
@@ -121,10 +116,10 @@ public class Client_Login extends JFrame
         _buttonGroup.add(_individual);
         _buttonGroup.add(_group);
         
-        _individual.setBounds(180, 300, 20, 20);//¼³Á¤ÇÏ±â
+        _individual.setBounds(180, 300, 20, 20);//ì„¤ì •í•˜ê¸°
         _individual.setBorder(BorderFactory.createEmptyBorder());
         _individual.setOpaque(false);
-        _group.setBounds(300, 300, 20, 20);//¼³Á¤ÇÏ±â
+        _group.setBounds(300, 300, 20, 20);//ì„¤ì •í•˜ê¸°
         _group.setBorder(BorderFactory.createEmptyBorder());
         _group.setOpaque(false);
         
@@ -139,7 +134,7 @@ public class Client_Login extends JFrame
         _loginField.setForeground(Color.blue);
         _loginField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         _loginField.setHorizontalAlignment(JTextField.CENTER);
-        _loginField.setText("ID¸¦ ÀÔ·ÂÇÏ½Ã¿À.");
+        _loginField.setText("IDë¥¼ ì…ë ¥í•˜ì‹œì˜¤.");
         _loginField.addKeyListener(new KeyListener(){
      		@Override
      		public void keyPressed(KeyEvent e) {}
@@ -169,11 +164,11 @@ public class Client_Login extends JFrame
          _passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
          _passwordField.setHorizontalAlignment(JTextField.CENTER);
          _passwordField.setEchoChar((char)0);
-         _passwordField.setText("PASSWORD¸¦ ÀÔ·ÂÇÏ½Ã¿À.");
+         _passwordField.setText("PASSWORDë¥¼ ì…ë ¥í•˜ì‹œì˜¤.");
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
         		 _passwordField.setText("");
-        		 _passwordField.setEchoChar('¡Ü');
+        		 _passwordField.setEchoChar('â—');
         	 }
          });
          _passwordField.addKeyListener(new KeyListener(){
@@ -191,7 +186,7 @@ public class Client_Login extends JFrame
          _passwordField.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
          		_passwordField.setText("");
-         		_passwordField.setEchoChar('¡Ü');
+         		_passwordField.setEchoChar('â—');
          	}
          });
          
@@ -204,10 +199,10 @@ public class Client_Login extends JFrame
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
           		if(_individual.isSelected()){
-          			//°³ÀÎ
+          			//ê°œì¸
           		}
           		if(_group.isSelected()){
-          			//±×·ì
+          			//ê·¸ë£¹
           		}
           	}
          });
@@ -227,7 +222,7 @@ public class Client_Login extends JFrame
         
          _layeredPane.add(_Login);
          _layeredPane.add(_Resistor);
-         // ¸¶Áö¸· Ãß°¡µé
+         // ë§ˆì§€ë§‰ ì¶”ê°€ë“¤
          _layeredPane.add(_panel);
               
          getContentPane().add(_layeredPane);          
