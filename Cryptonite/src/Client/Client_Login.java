@@ -166,7 +166,7 @@ public class Client_Login extends JFrame
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
         		 _passwordField.setText("");
-        		 _passwordField.setEchoChar('?óè');
+        		 _passwordField.setEchoChar('°‹');
         	 }
          });
          _passwordField.addKeyListener(new KeyListener(){
@@ -184,7 +184,7 @@ public class Client_Login extends JFrame
          _passwordField.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
          		_passwordField.setText("");
-         		_passwordField.setEchoChar('?óè');
+         		_passwordField.setEchoChar('°‹');
          	}
          });
          
