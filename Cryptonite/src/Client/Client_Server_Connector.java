@@ -149,5 +149,4 @@ public class Client_Server_Connector
 			_buffer.flip();
 			_channel.write(_buffer);			
 	}
-
 }

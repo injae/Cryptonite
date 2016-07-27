@@ -88,7 +88,7 @@ public class Server_Client_Activity implements PacketRule
 		{
 			if(_funtionList.get(_runningFuntion)._packetMaxCount == _packetCount)
 			{
-				Server_Client_Manager.getInstance().requestManage(_funtionList.get(_runningFuntion));
+				Server_Client_Manager.getInstance().requestManage(_clientCode);
 				
 				_runningFuntion = 0;
 				_packetCount = 0;
