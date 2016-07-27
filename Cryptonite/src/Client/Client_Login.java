@@ -129,7 +129,7 @@ public class Client_Login extends JFrame
         _loginField.setBounds(134, 327, 200, 30);
         _layeredPane.add(_loginField);
         _loginField.setOpaque(false);
-        _loginField.setForeground(Color.blue);
+        _loginField.setForeground(Color.WHITE);
         _loginField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         _loginField.setHorizontalAlignment(JTextField.CENTER);
         _loginField.setText("ID");
