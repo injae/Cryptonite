@@ -111,14 +111,15 @@ public class Client_Server_Connector extends Thread
 	public void send(String packetName)
 	{
 		Queue<ByteBuffer> output = _packetList.get(packetName);
-
+		
 		while(!output.isEmpty())
 		{
 			try 
 			{
-				_channel.write(output.poll());
+				Thread.sleep(10);
+				_channel.write(output.remove());
 			}
-			catch (IOException e) 
+			catch (IOException | InterruptedException e) 
 			{
 				e.printStackTrace();
 			}
