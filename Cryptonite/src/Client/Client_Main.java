@@ -14,15 +14,12 @@ public class Client_Main
 		try 
 		{ 
 			Client_Server_Connector ccs = Client_Server_Connector.getInstance(4444);
-			
-			for(int i =0; i < 3; i++)
-			{
-				ccs.justSend();						
-			}			
-
+					
+			ccs.justSend();	
 		/*	while(true)
 			{
 				Thread.sleep(1);
+				ccs.justSend();	
 			}*/
 		}
 		catch (InterruptedException | IOException e)
