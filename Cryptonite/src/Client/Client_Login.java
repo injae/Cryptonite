@@ -30,10 +30,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 
-
-
-
-
 public class Client_Login extends JFrame
 {
 	public static void main(String[] args){
@@ -58,26 +54,26 @@ public class Client_Login extends JFrame
     
     /*//private Client_FolderChooser_UI fc = null;
     
-    // ë¡œê·¸ì¸ ì¹´ìš´í„° ì½ì–´ì£¼ê¸° ìœ„í•œê²ƒ
+    // ·Î±×ÀÎ Ä«¿îÅÍ ÀÐ¾îÁÖ±â À§ÇÑ°Í
     private FileReader fr = null;
     private String loginCount = null;
     private StringTokenizer st = null;
     
-    // ë¡œê·¸ì¸ íšŸìˆ˜ê°€ 2ë²ˆì´ìƒì¼ ê²½ìš° ì—¬ê¸°ì„œ ìŠ¤ë ˆë“œ ì‹¤í–‰
+    // ·Î±×ÀÎ È½¼ö°¡ 2¹øÀÌ»óÀÏ °æ¿ì ¿©±â¼­ ½º·¹µå ½ÇÇà
     private Client_FolderScan cfs = null;
     private Client_SendFiles csf = null;
     private Client_checkEncryptionAnime cea = null;
     private Client_FileShare_Send cfss = null;
     
-    // ë©”ì¸í”„ë ˆìž„ UI
+    // ¸ÞÀÎÇÁ·¹ÀÓ UI
     private boolean mainFrameFlag = false;
     private Client_MainFrame_UI cmfu = null;
     
-    // AES_Key ì¶”ì¶œê´€ë ¨
+    // AES_Key ÃßÃâ°ü·Ã
     private User loginedUser = null;
     private byte[] AES_Key = null;
     */
-    // ë§¥ ì–´ë“œë ˆìŠ¤ ì¶”ì¶œ
+    // ¸Æ ¾îµå·¹½º ÃßÃâ
     
     Font _font1 = new Font("SansSerif", Font.BOLD, 25);
     Font _fontjoin = new Font("SansSerif", Font.BOLD,13);
@@ -95,14 +91,13 @@ public class Client_Login extends JFrame
         setBounds(710,200,470,645);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
  
-        // ë ˆì´ì•„ì›ƒ ì„¤ì •
+        
         getContentPane().setLayout(null);
         JLayeredPane _layeredPane = new JLayeredPane();
         _layeredPane.setBounds(0, 0, 470, 645);
         _layeredPane.setLayout(null);
 
-        // íŒ¨ë„1
-        // ì´ë¯¸ì§€ ë°›ì•„ì˜¤ê¸°
+      
         try {
             _img = ImageIO.read(new File("D:\\crypto\\login.png"));//input image
         } catch (IOException e) {
@@ -116,10 +111,10 @@ public class Client_Login extends JFrame
         _buttonGroup.add(_individual);
         _buttonGroup.add(_group);
         
-        _individual.setBounds(180, 300, 20, 20);//ì„¤ì •í•˜ê¸°
+        _individual.setBounds(180, 300, 20, 20);
         _individual.setBorder(BorderFactory.createEmptyBorder());
         _individual.setOpaque(false);
-        _group.setBounds(300, 300, 20, 20);//ì„¤ì •í•˜ê¸°
+        _group.setBounds(300, 300, 20, 20);
         _group.setBorder(BorderFactory.createEmptyBorder());
         _group.setOpaque(false);
         
@@ -134,7 +129,7 @@ public class Client_Login extends JFrame
         _loginField.setForeground(Color.blue);
         _loginField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         _loginField.setHorizontalAlignment(JTextField.CENTER);
-        _loginField.setText("IDë¥¼ ìž…ë ¥í•˜ì‹œì˜¤.");
+        _loginField.setText("ID");
         _loginField.addKeyListener(new KeyListener(){
      		@Override
      		public void keyPressed(KeyEvent e) {}
@@ -164,11 +159,11 @@ public class Client_Login extends JFrame
          _passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
          _passwordField.setHorizontalAlignment(JTextField.CENTER);
          _passwordField.setEchoChar((char)0);
-         _passwordField.setText("PASSWORDë¥¼ ìž…ë ¥í•˜ì‹œì˜¤.");
+         _passwordField.setText("PASSWORD");
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
         		 _passwordField.setText("");
-        		 _passwordField.setEchoChar('â—');
+        		 _passwordField.setEchoChar('¡Ü');
         	 }
          });
          _passwordField.addKeyListener(new KeyListener(){
@@ -186,7 +181,7 @@ public class Client_Login extends JFrame
          _passwordField.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
          		_passwordField.setText("");
-         		_passwordField.setEchoChar('â—');
+         		_passwordField.setEchoChar('¡Ü');
          	}
          });
          
@@ -199,21 +194,21 @@ public class Client_Login extends JFrame
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
           		if(_individual.isSelected()){
-          			//ê°œì¸
+          			
           		}
           		if(_group.isSelected()){
-          			//ê·¸ë£¹
+          			
           		}
           	}
          });
-         _Resistor = new JButton(new ImageIcon("C:\\cryptonite\\img\\SignUp1.png"));
+         _Resistor = new JButton(new ImageIcon(""));
          _Resistor.setFont(_fontjoin);
          _Resistor.setForeground(Color.white);
          _Resistor.setBounds(153,516,155,49);
          _Resistor.setBorderPainted(false);
          _Resistor.setFocusPainted(false);
          _Resistor.setContentAreaFilled(false);
-         _Resistor.setRolloverIcon(new ImageIcon("C:\\cryptonite\\img\\SignUp2.png"));
+         _Resistor.setRolloverIcon(new ImageIcon(""));
          _Resistor.addActionListener(new ActionListener() {
          	public void actionPerformed(ActionEvent arg0) {
          		new Client_SignUp();
@@ -222,14 +217,12 @@ public class Client_Login extends JFrame
         
          _layeredPane.add(_Login);
          _layeredPane.add(_Resistor);
-         // ë§ˆì§€ë§‰ ì¶”ê°€ë“¤
          _layeredPane.add(_panel);
               
          getContentPane().add(_layeredPane);          
          setVisible(true);
           	
     }    
->>>>>>> refs/remotes/origin/LeeDEV
 }
     
 
