@@ -1,3 +1,4 @@
+
 package Client;
 
 import java.awt.Color;
@@ -60,7 +61,7 @@ public class Client_Login extends JFrame
     private String loginCount = null;
     private StringTokenizer st = null;
     
-    // ï¿½Î±ï¿½ï¿½ï¿½ È½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ï¿½Ì»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // ï¿½Î±ï¿½ï¿½ï¿½ È½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ï¿½Ì»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿? ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private Client_FolderScan cfs = null;
     private Client_SendFiles csf = null;
     private Client_checkEncryptionAnime cea = null;
@@ -70,11 +71,11 @@ public class Client_Login extends JFrame
     private boolean mainFrameFlag = false;
     private Client_MainFrame_UI cmfu = null;
     
-    // AES_Key ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // AES_Key ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?
     private User loginedUser = null;
     private byte[] AES_Key = null;
     */
-    // ï¿½ï¿½ ï¿½ï¿½å·¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ ï¿½ï¿½å·¹ï¿½ï¿? ï¿½ï¿½ï¿½ï¿½
     
     Font _font1 = new Font("SansSerif", Font.BOLD, 25);
     Font _fontjoin = new Font("SansSerif", Font.BOLD,13);
@@ -165,7 +166,7 @@ public class Client_Login extends JFrame
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
         		 _passwordField.setText("");
-        		 _passwordField.setEchoChar('â—');
+        		 _passwordField.setEchoChar('¡Ü');
         	 }
          });
          _passwordField.addKeyListener(new KeyListener(){
@@ -183,7 +184,7 @@ public class Client_Login extends JFrame
          _passwordField.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
          		_passwordField.setText("");
-         		_passwordField.setEchoChar('â—');
+         		_passwordField.setEchoChar('¡Ü');
          	}
          });
          
