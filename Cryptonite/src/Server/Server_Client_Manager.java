@@ -78,7 +78,7 @@ public class Server_Client_Manager implements PacketRule
 		while(_runningQueue.isEmpty())
 		{
 			Server_Client_Activity activity = _clientList.get(_runningQueue.remove());
-			activity._funtionList.get(activity._runningFuntion).running();
+			activity._funtionList.get(activity._runningFuntion).running(activity);
 		}
 	}
 }
