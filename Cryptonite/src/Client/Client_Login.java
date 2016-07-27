@@ -29,11 +29,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-
-
-
-
-
 public class Client_Login extends JFrame
 {
 	public static void main(String[] args){
@@ -55,30 +50,7 @@ public class Client_Login extends JFrame
     private String _id = "id";
     private String _password = "password";
     private String _tempPassword = "init";
-    
-    /*//private Client_FolderChooser_UI fc = null;
-    
-    // 로그인 카운터 읽어주기 위한것
-    private FileReader fr = null;
-    private String loginCount = null;
-    private StringTokenizer st = null;
-    
-    // 로그인 횟수가 2번이상일 경우 여기서 스레드 실행
-    private Client_FolderScan cfs = null;
-    private Client_SendFiles csf = null;
-    private Client_checkEncryptionAnime cea = null;
-    private Client_FileShare_Send cfss = null;
-    
-    // 메인프레임 UI
-    private boolean mainFrameFlag = false;
-    private Client_MainFrame_UI cmfu = null;
-    
-    // AES_Key 추출관련
-    private User loginedUser = null;
-    private byte[] AES_Key = null;
-    */
-    // 맥 어드레스 추출
-    
+
     Font _font1 = new Font("SansSerif", Font.BOLD, 25);
     Font _fontjoin = new Font("SansSerif", Font.BOLD,13);
     Font _fontid = new Font ("SansSerif", Font.BOLD,15);
@@ -95,14 +67,11 @@ public class Client_Login extends JFrame
         setBounds(710,200,470,645);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
  
-        // 레이아웃 설정
         getContentPane().setLayout(null);
         JLayeredPane _layeredPane = new JLayeredPane();
         _layeredPane.setBounds(0, 0, 470, 645);
         _layeredPane.setLayout(null);
 
-        // 패널1
-        // 이미지 받아오기
         try {
             _img = ImageIO.read(new File("D:\\crypto\\login.png"));//input image
         } catch (IOException e) {
@@ -116,10 +85,10 @@ public class Client_Login extends JFrame
         _buttonGroup.add(_individual);
         _buttonGroup.add(_group);
         
-        _individual.setBounds(180, 300, 20, 20);//설정하기
+        _individual.setBounds(180, 300, 20, 20);
         _individual.setBorder(BorderFactory.createEmptyBorder());
         _individual.setOpaque(false);
-        _group.setBounds(300, 300, 20, 20);//설정하기
+        _group.setBounds(300, 300, 20, 20);
         _group.setBorder(BorderFactory.createEmptyBorder());
         _group.setOpaque(false);
         
@@ -134,7 +103,7 @@ public class Client_Login extends JFrame
         _loginField.setForeground(Color.blue);
         _loginField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         _loginField.setHorizontalAlignment(JTextField.CENTER);
-        _loginField.setText("ID를 입력하시오.");
+        _loginField.setText("ID瑜� �엯�젰�븯�떆�삤.");
         _loginField.addKeyListener(new KeyListener(){
      		@Override
      		public void keyPressed(KeyEvent e) {}
@@ -164,7 +133,7 @@ public class Client_Login extends JFrame
          _passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
          _passwordField.setHorizontalAlignment(JTextField.CENTER);
          _passwordField.setEchoChar((char)0);
-         _passwordField.setText("PASSWORD를 입력하시오.");
+         _passwordField.setText("PASSWORD瑜� �엯�젰�븯�떆�삤.");
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
         		 _passwordField.setText("");
@@ -199,10 +168,10 @@ public class Client_Login extends JFrame
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
           		if(_individual.isSelected()){
-          			//개인
+          			//媛쒖씤
           		}
           		if(_group.isSelected()){
-          			//그룹
+          			//洹몃９
           		}
           	}
          });
@@ -222,14 +191,12 @@ public class Client_Login extends JFrame
         
          _layeredPane.add(_Login);
          _layeredPane.add(_Resistor);
-         // 마지막 추가들
+         // 留덉�留� 異붽��뱾
          _layeredPane.add(_panel);
               
          getContentPane().add(_layeredPane);          
          setVisible(true);
           	
-    }    
->>>>>>> refs/remotes/origin/LeeDEV
-}
-    
+    }	    
 
+}

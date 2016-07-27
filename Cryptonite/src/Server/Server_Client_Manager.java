@@ -12,13 +12,12 @@ public class Server_Client_Manager extends Thread implements PacketRule
 	private HashMap<Integer ,Server_Client_Activity> _clientList;	
 	private LinkedBlockingQueue<Integer> _usableClientCode;
 	private int _lastClientCode;
-	private boolean _runflag = false;
-	private Queue<Integer> _runningQueue;
+	private LinkedBlockingQueue<Integer> _runningQueue;
 	
 	private Server_Client_Manager() 
 	{
 		_clientList = new HashMap<Integer, Server_Client_Activity>();
-		_runningQueue = new LinkedList<Integer>();
+		_runningQueue = new LinkedBlockingQueue<Integer>();
 		_usableClientCode = new LinkedBlockingQueue<Integer>();
 	}
 	
@@ -41,7 +40,7 @@ public class Server_Client_Manager extends Thread implements PacketRule
 	public void register(int key, Server_Client_Activity server_client_activity)
 	{
 		_clientList.put(key, server_client_activity);
-		System.out.println(_clientList.size());
+		System.out.println("How many Client " + _clientList.size());
 	}
 	
 	public void requestManage(int clientCode)
@@ -72,6 +71,7 @@ public class Server_Client_Manager extends Thread implements PacketRule
 	public void stopManaging(int clientCode)
 	{
 		_clientList.remove(clientCode);
+		_usableClientCode.offer(clientCode);
 	}
 	
 	public void run()
@@ -81,7 +81,10 @@ public class Server_Client_Manager extends Thread implements PacketRule
 			if(!_runningQueue.isEmpty())
 			{
 				Server_Client_Activity activity = _clientList.get(_runningQueue.remove());
+				
 				activity._funtionList.get(activity._runningFuntion).running(activity);
+				activity._runningFuntion = 0;
+				activity._packetCount = 0;
 			}
 		}
 	}
