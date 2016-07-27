@@ -101,7 +101,7 @@ public class Client_Login extends JFrame
 
       
         try {
-            _img = ImageIO.read(new File("D:\\crypto\\login.png"));//input image
+            _img = ImageIO.read(new File("D:\\crypto\\_login.png"));//input image
         } catch (IOException e) {
             System.out.println("No Image");
             System.exit(0);
@@ -165,7 +165,7 @@ public class Client_Login extends JFrame
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
         		 _passwordField.setText("");
-        		 _passwordField.setEchoChar('��');
+        		 _passwordField.setEchoChar('●');
         	 }
          });
          _passwordField.addKeyListener(new KeyListener(){
@@ -183,7 +183,7 @@ public class Client_Login extends JFrame
          _passwordField.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
          		_passwordField.setText("");
-         		_passwordField.setEchoChar('��');
+         		_passwordField.setEchoChar('●');
          	}
          });
          
