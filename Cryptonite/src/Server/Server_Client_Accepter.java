@@ -2,16 +2,20 @@ package Server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.channels.*;
-import java.nio.charset.Charset;
 import java.util.*;
+
+/*
+ * 
+ * 
+ * 
+ * 
+ * */
 
 public class Server_Client_Accepter extends Thread
 {
-	private Selector selector;
-	private SelectionKey socketServerSelectionKey;
+	private Selector _selector;
+	private Server_Client_Manager _manager;
 	
 	public Server_Client_Accepter(String hostname ,int port)
 	{
@@ -21,8 +25,10 @@ public class Server_Client_Accepter extends Thread
 			channel.bind(new InetSocketAddress(hostname, port)); 
 	        channel.configureBlocking(false);
 	        
-	        selector = Selector.open();	        
-	        socketServerSelectionKey = channel.register(selector, SelectionKey.OP_ACCEPT);	       
+	        _selector = Selector.open();	        
+	        channel.register(_selector, SelectionKey.OP_ACCEPT);
+	        
+	        _manager = Server_Client_Manager.getInstance();
 		 }
 		 catch (IOException e)
 		 {
@@ -32,42 +38,51 @@ public class Server_Client_Accepter extends Thread
 	
 	public void run()
 	{
-		int count = 0;
 		SelectionKey key = null;
-		
-			while(!Thread.interrupted())
-			{	
-				try 
-				{
-					if(selector.selectNow() == 0) continue;
-				    Iterator<SelectionKey> keys = selector.selectedKeys().iterator();	
-				    
-				    while (keys.hasNext()) 
-				    {
-				        key = keys.next();
-				        keys.remove(); 
-				        
-				        if(key.isValid() && key.isAcceptable())
-				        {;
-				        	new Server_Client_Activity(selector, key); 	
+		int count = 0;
+		while(!Thread.interrupted())
+		{	
+			try 
+			{
+				if(_selector.selectNow() == 0) continue;
+			    Iterator<SelectionKey> keys = _selector.selectedKeys().iterator();	
+			    
+			    while (keys.hasNext()) 
+			    {
+			        key = keys.next();
+			        keys.remove(); 
+			        
+			        if(key.isValid())
+			        {
+				        if(key.isAcceptable())
+				        {	
+				        	int clientCode = _manager.getClientCode();
+				        	_manager.register(clientCode, new Server_Client_Activity(_selector, key, clientCode)); 	
 				        }
-				        else if(key.isValid() && key.isReadable())
+				        else if(key.isReadable())
 				        {			        	
 				        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
-				        	activity.Receiver();
-				        }
-				        else if(key.isValid() && key.isWritable())
-				        {
-				        	System.out.println("¾²±â");
+				        	activity.Receiver();				        	
+			        }
+				        else if(key.isWritable())
+				        { 
+				        	System.out.println("¾¸!!!!!!!!!!!!!!!!!");
 				        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
-				        }      
-				    }     
-				} catch (IOException e) {
-					Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
-					activity.close();
-					key.cancel();
-				}
-	        }        
-	
+				        }
+			        }
+			        count++;
+			    }
+			    _manager.managing();
+			    System.err.println(" " + count); count = 0;
+			}
+			catch (IOException e) 
+			{
+				Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
+				_manager.stopManaging(activity.getClientCode());
+				activity.close();
+				key.cancel();
+			}
+        }        
+
 	}
 }

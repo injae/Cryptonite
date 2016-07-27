@@ -1,13 +1,15 @@
 package Function;
 
-import java.nio.ByteBuffer;
-
 public interface PacketRule 
 {
 	int FILE_BUFFER_SIZE = 1024;
-	
+	int EVENT_LEN = 5;
 	// Event Code
 	byte AUTOBACKUP = 1;
+	byte LOGIN = 2;
+	byte FILE_SHARE_RECIEVE =3;
+	byte FILE_SHARE_SEND = 4;
+	byte SIGN_UP = 5;
 	//---------------------------------------
 	
 	// AUTOBACKUP(1) AUTOBACKUP EVENT

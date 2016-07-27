@@ -142,20 +142,12 @@ public class Client_Server_Connector
 	
 	public void justSend() throws IOException
 	{
-			_buffer = ByteBuffer.allocateDirect(100);
-			byte[] buf = new byte[100];
-			
-			for(int i =0; i < 20; i++)
-			{
-				buf[i] = (byte)i;
-				System.out.println("byte[" + i + "]" + buf[i]);
-			}
-			
-			
+			_buffer = ByteBuffer.allocateDirect(1024);
+			byte[] buf = new byte[1024];
+
 			_buffer.put(buf);
 			_buffer.flip();
-			_channel.write(_buffer);
-			System.out.println("º¸³¿");
+			_channel.write(_buffer);			
 	}
 
 }
