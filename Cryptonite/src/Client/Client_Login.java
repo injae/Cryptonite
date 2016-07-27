@@ -30,10 +30,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 
-
-
-
-
 public class Client_Login extends JFrame
 {
 	public static void main(String[] args){
@@ -95,14 +91,13 @@ public class Client_Login extends JFrame
         setBounds(710,200,470,645);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
  
-        // 레이아웃 설정
+        
         getContentPane().setLayout(null);
         JLayeredPane _layeredPane = new JLayeredPane();
         _layeredPane.setBounds(0, 0, 470, 645);
         _layeredPane.setLayout(null);
 
-        // 패널1
-        // 이미지 받아오기
+      
         try {
             _img = ImageIO.read(new File("D:\\crypto\\login.png"));//input image
         } catch (IOException e) {
@@ -116,10 +111,10 @@ public class Client_Login extends JFrame
         _buttonGroup.add(_individual);
         _buttonGroup.add(_group);
         
-        _individual.setBounds(180, 300, 20, 20);//설정하기
+        _individual.setBounds(180, 300, 20, 20);
         _individual.setBorder(BorderFactory.createEmptyBorder());
         _individual.setOpaque(false);
-        _group.setBounds(300, 300, 20, 20);//설정하기
+        _group.setBounds(300, 300, 20, 20);
         _group.setBorder(BorderFactory.createEmptyBorder());
         _group.setOpaque(false);
         
@@ -134,7 +129,7 @@ public class Client_Login extends JFrame
         _loginField.setForeground(Color.blue);
         _loginField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         _loginField.setHorizontalAlignment(JTextField.CENTER);
-        _loginField.setText("ID를 입력하시오.");
+        _loginField.setText("ID");
         _loginField.addKeyListener(new KeyListener(){
      		@Override
      		public void keyPressed(KeyEvent e) {}
@@ -164,7 +159,7 @@ public class Client_Login extends JFrame
          _passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
          _passwordField.setHorizontalAlignment(JTextField.CENTER);
          _passwordField.setEchoChar((char)0);
-         _passwordField.setText("PASSWORD를 입력하시오.");
+         _passwordField.setText("PASSWORD");
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
         		 _passwordField.setText("");
@@ -199,21 +194,21 @@ public class Client_Login extends JFrame
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
           		if(_individual.isSelected()){
-          			//개인
+          			
           		}
           		if(_group.isSelected()){
-          			//그룹
+          			
           		}
           	}
          });
-         _Resistor = new JButton(new ImageIcon("C:\\cryptonite\\img\\SignUp1.png"));
+         _Resistor = new JButton(new ImageIcon(""));
          _Resistor.setFont(_fontjoin);
          _Resistor.setForeground(Color.white);
          _Resistor.setBounds(153,516,155,49);
          _Resistor.setBorderPainted(false);
          _Resistor.setFocusPainted(false);
          _Resistor.setContentAreaFilled(false);
-         _Resistor.setRolloverIcon(new ImageIcon("C:\\cryptonite\\img\\SignUp2.png"));
+         _Resistor.setRolloverIcon(new ImageIcon(""));
          _Resistor.addActionListener(new ActionListener() {
          	public void actionPerformed(ActionEvent arg0) {
          		new Client_SignUp();
@@ -222,7 +217,6 @@ public class Client_Login extends JFrame
         
          _layeredPane.add(_Login);
          _layeredPane.add(_Resistor);
-         // 마지막 추가들
          _layeredPane.add(_panel);
               
          getContentPane().add(_layeredPane);          
