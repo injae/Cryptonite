@@ -50,7 +50,7 @@ public class Server_Client_Manager extends Thread implements PacketRule
 	
 	public void packetChecker(Server_Client_Activity activity)
 	{
-		byte[] packet = activity._receiveQueue.element();
+		byte[] packet = activity._receiveQueue.remove();
 		
 		switch(packet[0])
 		{

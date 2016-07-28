@@ -153,7 +153,7 @@ public class Client_Server_Connector extends Thread
 		_buffer = ByteBuffer.allocateDirect(1024);
 		byte[] buf = new byte[1024];
 		buf[0] = 5;
-		buf[1] = 100;
+		buf[1] = 10;
 		
 		_buffer.put(buf);
 		_buffer.flip();
