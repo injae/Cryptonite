@@ -1,24 +1,24 @@
 package Server;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import Function.PacketRule;
 
-public class Server_Client_Manager implements PacketRule
+public class Server_Client_Manager extends Thread implements PacketRule
 {	
 	private static Server_Client_Manager _server_client_manager;
 	
 	private HashMap<Integer ,Server_Client_Activity> _clientList;	
-	private Queue<Integer> _usableClientCode;
+	private LinkedBlockingQueue<Integer> _usableClientCode;
 	private int _lastClientCode;
-	
-	private Queue<Integer> _runningQueue;
+	private LinkedBlockingQueue<Integer> _runningQueue;
 	
 	private Server_Client_Manager() 
 	{
 		_clientList = new HashMap<Integer, Server_Client_Activity>();
-		_runningQueue = new LinkedList<Integer>();
-		_usableClientCode = new LinkedList<Integer>();
+		_runningQueue = new LinkedBlockingQueue<Integer>();
+		_usableClientCode = new LinkedBlockingQueue<Integer>();
 	}
 	
 	public static Server_Client_Manager getInstance()
@@ -40,12 +40,12 @@ public class Server_Client_Manager implements PacketRule
 	public void register(int key, Server_Client_Activity server_client_activity)
 	{
 		_clientList.put(key, server_client_activity);
-		System.out.println(_clientList.size());
+		System.out.println("How many Client " + _clientList.size());
 	}
 	
 	public void requestManage(int clientCode)
 	{
-		_runningQueue.add(clientCode);		
+		_runningQueue.offer(clientCode);		
 	}
 	
 	public void packetChecker(Server_Client_Activity activity)
@@ -71,14 +71,21 @@ public class Server_Client_Manager implements PacketRule
 	public void stopManaging(int clientCode)
 	{
 		_clientList.remove(clientCode);
+		_usableClientCode.offer(clientCode);
 	}
 	
-	public void managing()
-	{
-		while(_runningQueue.isEmpty())
+	public void run()
+	{	
+		while(true)
 		{
-			Server_Client_Activity activity = _clientList.get(_runningQueue.remove());
-			activity._funtionList.get(activity._runningFuntion).running();
+			if(!_runningQueue.isEmpty())
+			{
+				Server_Client_Activity activity = _clientList.get(_runningQueue.remove());
+				
+				activity._funtionList.get(activity._runningFuntion).running(activity);
+				activity._runningFuntion = 0;
+				activity._packetCount = 0;
+			}
 		}
 	}
 }

@@ -20,7 +20,7 @@ public class Server_Client_Activity implements PacketRule
 	public Queue<byte[]> _sendQueue;
 	
 	public byte _runningFuntion = 0;
-	private int _packetCount = 0;
+	public int _packetCount = 0;
 	private int _clientCode = 0;
 	
 	public HashMap<Byte, Server_Funtion> _funtionList;
@@ -88,14 +88,11 @@ public class Server_Client_Activity implements PacketRule
 		{
 			if(_funtionList.get(_runningFuntion)._packetMaxCount == _packetCount)
 			{
-				Server_Client_Manager.getInstance().requestManage(_funtionList.get(_runningFuntion));
-				
-				_runningFuntion = 0;
-				_packetCount = 0;
+				Server_Client_Manager.getInstance().requestManage(_clientCode);
 			}
 		}
+		
 		System.out.println(_channel.toString() + "read :" + count);	
-
 	}
 	
 	public void close() 
