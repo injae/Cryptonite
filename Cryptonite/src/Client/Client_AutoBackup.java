@@ -7,8 +7,7 @@ import java.nio.channels.*;
 import java.nio.charset.Charset;
 import java.io.*;
 import java.util.*;
-import Function.NIO_FileManager;
-import Function.PacketRule;
+import Function.*;
 
 /*
  * Developer : Youn Hee Seung
@@ -22,11 +21,7 @@ import Function.PacketRule;
 public class Client_AutoBackup extends Thread implements PacketRule
 {
 	// SocketChannel
-	private SocketChannel _socketChannel = null;
 	private int _port = 4444;
-	
-	// Buffer
-	private ByteBuffer _buffer = null;
 	
 	// File or Directory
 	private File _checkProperty = null;
@@ -60,6 +55,8 @@ public class Client_AutoBackup extends Thread implements PacketRule
 	// Methods
 	public synchronized void run()
 	{
+		_encryptedVector = new Vector<String>();
+		_encryptedVector.add("C:\\Users\\Youn\\Desktop\\이폴더가 생겨야돼");
 		while(!_stopFlag)
 		{
 			try 
@@ -76,68 +73,54 @@ public class Client_AutoBackup extends Thread implements PacketRule
 				_fileName = _checkProperty.getName();
 				_fileSize = _checkProperty.length();
 				
-				Charset charSet = Charset.forName("UTF-8");
 				_csc.configurePacket("AUTOBACKUP");
-				
-				_buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-				_buffer.clear();
 				
 				if(_checkProperty.isDirectory())
 				{
 					// 난 디렉토리다, 디렉토리명
-					byte[] temp1 = "AUTOBACKUP\n".getBytes();
-					byte[] temp2 = "DIRECTORY\n".getBytes();
-					byte[] temp3 = _fileName.getBytes();
+					byte[] temp = new byte[2];
+					temp[0] = AUTOBACKUP;
+					temp[1] = DIRECTORY;
 					
-					_buffer.put(temp1);
-					_buffer.put(temp2);
-					_buffer.put(temp3);
-
-					_buffer.flip();
-					_csc.setPacket("AUTOBACKUP", _buffer);
+					_csc.setPacket("AUTOBACKUP", temp);
+					_csc.setPacket("AUTOBACKUP", _fileName.getBytes());
+					
 					_csc.send("AUTOBACKUP");
 				}
 				else if(_checkProperty.isFile())
 				{
 					try 
 					{
-						ByteBuffer buf = ByteBuffer.allocate(Long.BYTES);
-						buf.putLong(_fileSize);
-						
 						_raf = new RandomAccessFile(_encryptedVector.get(0),"rw");
 						_fileChannel = _raf.getChannel();
 						
-						byte[] temp1 = "AUTOBACKUP\n".getBytes();
-						byte[] temp2 = "FILE\n".getBytes();
-						byte[] temp3 = (_fileName + "\n").getBytes();
-						byte[] temp4 = buf.array();
+						byte[] temp = new byte[1024];
+						temp[0] = AUTOBACKUP;
+						temp[1] = FILE;
+						Function.frontInsertByte(2, String.valueOf(_fileSize).getBytes(), temp);
+						Function.frontInsertByte(10, _fileName.getBytes(), temp);
+						_csc.setPacket("AUTOBACKUP", temp);
 						
-						_buffer.put(temp1);
-						_buffer.put(temp2);
-						_buffer.put(temp3);
-						_buffer.put(temp4);
-						
-						_buffer.flip();
-						_csc.setPacket("AUTOBACKUP", _buffer);
-						_csc.send("AUTOBACKUP");
-						
+						ByteBuffer buffer = null;
+						buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 						while(_fileSize > 0)
 						{
 							if(_fileSize < FILE_BUFFER_SIZE)
 							{
-								_buffer = ByteBuffer.allocateDirect((int)_fileSize);
+								buffer = ByteBuffer.allocateDirect((int)_fileSize);
 							}
-							else
+							/*else
 							{
-								_buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-							}
-							_buffer.clear();
+								buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
+							}*/
+							buffer.clear();
 							_fileSize -= 1024;
-							_fileChannel.read(_buffer);
-							_csc.setPacket("AUTOBACKUP", _buffer);
-							_buffer.flip();
-							_csc.send("AUTOBACKUP");
+							_fileChannel.read(buffer);
+							buffer.flip();
+							_csc.setPacket("AUTOBACKUP", buffer);
 						}
+						
+						_csc.send("AUTOBACKUP");
 						_fileChannel.close();
 					} 
 					catch (FileNotFoundException e) 
