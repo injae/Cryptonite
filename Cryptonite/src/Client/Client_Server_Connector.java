@@ -1,8 +1,14 @@
 package Client;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,6 +24,8 @@ public class Client_Server_Connector extends Thread
 	private HashMap<String,Queue<ByteBuffer>> _packetList = null;
 	private Vector<String> _packetNameList = null;
 	private boolean stopFlag = false;
+	
+	private int count = 0;
 
 	private Client_Server_Connector(int port) throws InterruptedException
 	{
@@ -82,7 +90,6 @@ public class Client_Server_Connector extends Thread
 	
 	public void setPacket(String packetName, ByteBuffer buffer)
 	{
-		buffer.flip();
 		_packetList.get(packetName).offer(buffer);
 	}
 
@@ -105,6 +112,7 @@ public class Client_Server_Connector extends Thread
 			try 
 			{
 				Thread.sleep(10);
+				output.element().flip();
 				_channel.write(output.remove());
 			}
 			catch (IOException | InterruptedException e) 

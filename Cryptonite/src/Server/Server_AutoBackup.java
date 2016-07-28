@@ -34,8 +34,8 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	// Methods
 	private int sendPacketSize(long fileSize)
 	{
-		int remainder = (int)(fileSize / 1024);
-		if((fileSize % 1024) > 0)
+		int remainder = (int)(fileSize / FILE_BUFFER_SIZE);
+		if((fileSize % FILE_BUFFER_SIZE) > 0)
 		{
 			remainder++;
 		}
@@ -79,6 +79,8 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		else if(packet[1] == FILE)
 		{
 			setFileInformation(packet);
+			System.out.println(_fileName);
+			System.out.println(_fileSize);
 			_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		}
 	}
@@ -95,7 +97,32 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		}
 		else if(_checkProperty.equals("FILE"))
 		{
-			
+			try 
+			{
+				RandomAccessFile raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
+				FileChannel fileChannel = raf.getChannel();
+				
+				ByteBuffer buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
+				while(_fileSize > 0)
+				{
+					if(_fileSize < FILE_BUFFER_SIZE)
+					{
+						buffer = ByteBuffer.allocateDirect((int)_fileSize);
+					}
+					buffer.put(activity._receiveQueue.remove());
+					_fileSize -= FILE_BUFFER_SIZE;
+					buffer.flip();
+					fileChannel.write(buffer);
+				}
+			} 
+			catch (FileNotFoundException e) 
+			{
+				e.printStackTrace();
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 }
