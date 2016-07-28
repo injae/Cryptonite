@@ -82,7 +82,7 @@ public class Server_Client_Activity implements PacketRule
 		_receiveQueue.add(array);	
 		_packetCount++;
 		
-		System.out.println(_channel.toString() + "read :" + count);	
+		//System.out.println(_channel.toString() + "read :" + count);	
 		
 		if(_packetCount == 1)
 		{
