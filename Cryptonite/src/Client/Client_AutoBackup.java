@@ -56,7 +56,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 	public synchronized void run()
 	{
 		_encryptedVector = new Vector<String>();
-		_encryptedVector.add("C:\\Users\\Youn\\Desktop\\이폴더가 생겨야돼");
+		_encryptedVector.add("C:\\Users\\Youn\\Pictures\\바탕화면.jpg");
 		while(!_stopFlag)
 		{
 			try 
@@ -101,18 +101,13 @@ public class Client_AutoBackup extends Thread implements PacketRule
 						Function.frontInsertByte(10, _fileName.getBytes(), temp);
 						_csc.setPacket("AUTOBACKUP", temp);
 						
-						ByteBuffer buffer = null;
-						buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
+						ByteBuffer buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 						while(_fileSize > 0)
 						{
 							if(_fileSize < FILE_BUFFER_SIZE)
 							{
 								buffer = ByteBuffer.allocateDirect((int)_fileSize);
 							}
-							/*else
-							{
-								buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-							}*/
 							buffer.clear();
 							_fileSize -= 1024;
 							_fileChannel.read(buffer);
