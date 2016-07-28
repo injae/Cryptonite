@@ -11,7 +11,7 @@ import Function.*;
 public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
 	// protectedFolder
-	private String _address = "C:\\Users\\Youn\\Desktop\\테스트";
+	private String _address = "C:\\Users\\user\\Desktop\\테스트";
 	private File _protectedFolder = new File(_address);
 	
 	// Instance
@@ -102,12 +102,16 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 				RandomAccessFile raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
 				FileChannel fileChannel = raf.getChannel();
 				
-				ByteBuffer buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
+				ByteBuffer buffer;
 				while(_fileSize > 0)
 				{
 					if(_fileSize < FILE_BUFFER_SIZE)
 					{
 						buffer = ByteBuffer.allocateDirect((int)_fileSize);
+					}
+					else
+					{
+						buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 					}
 					buffer.put(activity._receiveQueue.remove());
 					_fileSize -= FILE_BUFFER_SIZE;
