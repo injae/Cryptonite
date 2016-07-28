@@ -65,7 +65,7 @@ public class Server_Client_Manager extends Thread implements PacketRule
 		case SIGN_UP:
 			activity._funtionList.get(SIGN_UP).Checker(packet); break;		
 		}
-		activity._runningFuntion = packet[0];
+		activity._runningFuntion.offer(packet[0]);
 	}
 	
 	public void stopManaging(int clientCode)
@@ -82,9 +82,7 @@ public class Server_Client_Manager extends Thread implements PacketRule
 			{
 				Server_Client_Activity activity = _clientList.get(_runningQueue.remove());
 				
-				activity._funtionList.get(activity._runningFuntion).running(activity);
-				activity._runningFuntion = 0;
-				activity._packetCount = 0;
+				activity._funtionList.get(activity._runningFuntion.remove()).running(activity);
 			}
 		}
 	}
