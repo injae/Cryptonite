@@ -13,6 +13,7 @@ public class Client_Main
 		Client_Server_Connector ccs = Client_Server_Connector.getInstance(4444);
 				
 		Client_SignUp csu = new Client_SignUp();
+		Client_SignUp csd = new Client_SignUp();
 		
 		/*for(int i = 0 ; i< 8; i++)
 		{

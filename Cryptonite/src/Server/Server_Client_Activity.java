@@ -9,6 +9,7 @@ import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import Function.PacketRule;
 
@@ -19,7 +20,8 @@ public class Server_Client_Activity implements PacketRule
 	public Queue<byte[]> _receiveQueue; 
 	public Queue<byte[]> _sendQueue;
 	
-	public byte _runningFuntion = 0;
+	public LinkedBlockingQueue<Byte> _runningFuntion;
+	
 	public int _packetCount = 0;
 	private int _clientCode = 0;
 	
@@ -39,9 +41,10 @@ public class Server_Client_Activity implements PacketRule
             
             _clientCode = clientCode;
             
-            _receiveQueue = new LinkedList<byte[]>();
-            
+            _receiveQueue = new LinkedList<byte[]>();            
             _sendQueue = new LinkedList<byte[]>();
+            _runningFuntion = new LinkedBlockingQueue<Byte>();
+            
             _funtionList = new HashMap<Byte, Server_Funtion>();
             _funtionList.put(AUTOBACKUP, new Server_AutoBackup());
             _funtionList.put(LOGIN, new Server_Login());
@@ -69,8 +72,6 @@ public class Server_Client_Activity implements PacketRule
 	
 	public void Receiver() throws IOException 
 	{	
-		_packetCount++;
-		
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
 		int count = _channel.read(buffer);			
 		buffer.flip();
@@ -79,20 +80,23 @@ public class Server_Client_Activity implements PacketRule
 		buffer.get(array);
 
 		_receiveQueue.add(array);	
+		_packetCount++;
 		
-		if(_runningFuntion == 0)
+		System.out.println(_channel.toString() + "read :" + count);	
+		
+		if(_packetCount == 1)
 		{
 			Server_Client_Manager.getInstance().packetChecker(this);
 		}
-		else
+		
+		if(!_runningFuntion.isEmpty())
 		{
-			if(_funtionList.get(_runningFuntion)._packetMaxCount == _packetCount)
+			if(_funtionList.get(_runningFuntion.element())._packetMaxCount == _packetCount)
 			{
 				Server_Client_Manager.getInstance().requestManage(_clientCode);
+				_packetCount = 0;
 			}
 		}
-		
-		System.out.println(_channel.toString() + "read :" + count);	
 	}
 	
 	public void close() 
@@ -101,7 +105,6 @@ public class Server_Client_Activity implements PacketRule
 		try {
 			_channel.close();
 		} catch (IOException e) {
-			// TODO 자동 생성된 catch 블록
 			e.printStackTrace();
 		}
 	}

@@ -427,7 +427,7 @@ class SHA_256 implements PacketRule
 		}
 		public void sendPrivacy(){
 			_css.configurePacket("resistor");
-			_size=8;
+			_size=5;
 					
 			byte[] buf = new byte[2];
 			buf[0] = SIGN_UP;
