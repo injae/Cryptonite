@@ -6,14 +6,16 @@ import java.nio.*;
 import java.nio.channels.*;
 import java.nio.file.*;
 import java.util.*;
+import Function.*;
 
-import Function.EventTokenizer;
-
-public class Server_AutoBackup extends Server_Funtion
+public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
+	// protectedFolder
+	private String _address = "C:\\Users\\Youn\\Desktop\\Å×½ºÆ®";
+	private File _protectedFolder = new File(_address);
+	
 	// Instance
 	private String[] _token = null;
-	private int _sendPacketSize = 0;
 	
 	// About File
 	private String _checkProperty = null;
@@ -26,7 +28,7 @@ public class Server_AutoBackup extends Server_Funtion
 	// Constructors
 	public Server_AutoBackup() 
 	{
-		_et = new EventTokenizer();
+		
 	}
 	
 	// Methods
@@ -41,28 +43,42 @@ public class Server_AutoBackup extends Server_Funtion
 		return remainder;
 	}
 	
-	private void setFileInformation()
+	private void setFileInformation(byte[] packet)
 	{
-		_checkProperty = _token[1];
-		_fileName = _token[2];
-		if(_checkProperty.equals("FILE"))
+		_checkProperty = "FILE";
+		
+		byte[] sizeTemp = new byte[8];
+		for(int i = 0 ; i < sizeTemp.length; i++)
 		{
-			_fileSize = Long.parseLong(_token[3]);
+			sizeTemp[i] = packet[i + 2];
 		}
+		_fileSize = Long.parseLong(new String(sizeTemp).trim());
+		
+		int max = 10;
+		while(packet[max] != 0)
+		{
+			max++;
+		}
+		
+		byte[] nameTemp = new byte[max - 10];
+		for(int i = 0; i < nameTemp.length; i++)
+		{
+			nameTemp[i] = packet[i + 10];
+		}
+		_fileName = new String(nameTemp).trim();
 	}
 	
 	@Override
 	public void Checker(byte[] packet) 
 	{
-		_token = _et.getToken(packet);
-		setFileInformation();
-		
-		if(_checkProperty.equals("DIRECTORY"))
+		if(packet[1] == DIRECTORY)
 		{
-			_packetMaxCount = 1;
+			_checkProperty = "DIRECTORY";
+			_packetMaxCount = 2;
 		}
-		else if(_checkProperty.equals("FILE"))
+		else if(packet[1] == FILE)
 		{
+			setFileInformation(packet);
 			_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		}
 	}
@@ -70,7 +86,16 @@ public class Server_AutoBackup extends Server_Funtion
 	@Override
 	public void running(Server_Client_Activity activity) 
 	{
-		
+		System.out.println("NOW AUTOBACKUP RUNNING");
+		if(_checkProperty.equals("DIRECTORY"))
+		{
+			_fileName = new String(activity._receiveQueue.remove()).trim();
+			File newFolder = new File(_address + "\\" + _fileName);
+			newFolder.mkdir();
+		}
+		else if(_checkProperty.equals("FILE"))
+		{
+			
+		}
 	}
-	
 }

@@ -48,7 +48,17 @@ public class Client_Server_Connector extends Thread
 	{
 		while(!stopFlag)
 		{
-			_packetList.get("receive").offer(_buffer);
+			try 
+			{
+				_buffer = ByteBuffer.allocateDirect(1024);
+				_channel.read(_buffer);
+				_buffer.flip();
+				_packetList.get("receive").offer(_buffer);
+			}
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -62,39 +72,17 @@ public class Client_Server_Connector extends Thread
 		return _singleton;
 	}
 
-	public void getPacket(String packetName, int bufferSize)
-	{ 
-		try 
-		{
-			_packetList.put(packetName, new LinkedList<ByteBuffer>());
-			_packetNameList.add(packetName);
-			_buffer = ByteBuffer.allocateDirect(bufferSize);
-			int byteCount;
-
-			_buffer.clear();
-			while((byteCount = _channel.read(_buffer)) != -1)
-			{
-				if(byteCount < bufferSize)
-				{
-					_buffer = ByteBuffer.allocateDirect(byteCount);
-				}
-				else
-				{
-					_buffer = ByteBuffer.allocateDirect(bufferSize);
-				}
-				_buffer.flip();
-				_packetList.get(packetName).offer(_buffer);
-				_buffer.clear();
-			}
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
+	public void setPacket(String packetName, byte[] array)
+	{
+		ByteBuffer buffer = ByteBuffer.allocateDirect(array.length + 1);
+		buffer.put(array);
+		buffer.flip();
+		_packetList.get(packetName).offer(buffer);
 	}
-
+	
 	public void setPacket(String packetName, ByteBuffer buffer)
 	{
+		buffer.flip();
 		_packetList.get(packetName).offer(buffer);
 	}
 
@@ -152,7 +140,7 @@ public class Client_Server_Connector extends Thread
 	{
 		_buffer = ByteBuffer.allocateDirect(1024);
 		byte[] buf = new byte[1024];
-		buf[0] = 5;
+		buf[0] = 1;
 		buf[1] = 10;
 		
 		_buffer.put(buf);
