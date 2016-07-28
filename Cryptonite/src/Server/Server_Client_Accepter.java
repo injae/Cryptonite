@@ -74,7 +74,7 @@ public class Server_Client_Accepter extends Thread
 			        }
 			        count++;
 			    }			   
-			    System.err.println("ÀÛµ¿È½¼ö : " + count); count = 0;
+			   // System.err.println("ÀÛµ¿È½¼ö : " + count); count = 0;
 			}
 			catch (IOException e) 
 			{

@@ -6,7 +6,7 @@ public class Server_SignUp extends Server_Funtion
 	public void Checker(byte[] packet) 
 	{
 		_packetMaxCount = packet[1];
-
+		System.out.println(_packetMaxCount);
 	}
 
 	@Override
@@ -17,7 +17,8 @@ public class Server_SignUp extends Server_Funtion
 		for(int i =0; i < _packetMaxCount; i++)
 		{
 			byte[] buf = activity._receiveQueue.remove();
-			System.out.println("get: " +buf.length);
+			//System.out.println("get: " +buf.length);
 		}
+		System.out.println(_packetMaxCount);
 	}
 }
