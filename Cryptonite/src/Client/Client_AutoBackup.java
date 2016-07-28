@@ -56,81 +56,84 @@ public class Client_AutoBackup extends Thread implements PacketRule
 	public synchronized void run()
 	{
 		_encryptedVector = new Vector<String>();
-		_encryptedVector.add("C:\\Users\\Youn\\Pictures\\바탕화면.jpg");
-		while(!_stopFlag)
+		_encryptedVector.add("C:\\Users\\user\\Desktop\\mud.jpg");
+
+		try 
 		{
-			try 
+			sleep(1);
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
+		if(!_encryptedVector.isEmpty())
+		{
+			_checkProperty = new File(_encryptedVector.get(0));
+			_fileName = _checkProperty.getName();
+			_fileSize = _checkProperty.length();
+			
+			_csc.configurePacket("AUTOBACKUP");
+			
+			if(_checkProperty.isDirectory())
 			{
-				sleep(1);
-			} 
-			catch (InterruptedException e) 
-			{
-				e.printStackTrace();
+				// 난 디렉토리다, 디렉토리명
+				byte[] temp = new byte[2];
+				temp[0] = AUTOBACKUP;
+				temp[1] = DIRECTORY;
+				
+				_csc.setPacket("AUTOBACKUP", temp);
+				_csc.setPacket("AUTOBACKUP", _fileName.getBytes());
+				
+				_csc.send("AUTOBACKUP");
 			}
-			if(!_encryptedVector.isEmpty())
+			else if(_checkProperty.isFile())
 			{
-				_checkProperty = new File(_encryptedVector.get(0));
-				_fileName = _checkProperty.getName();
-				_fileSize = _checkProperty.length();
-				
-				_csc.configurePacket("AUTOBACKUP");
-				
-				if(_checkProperty.isDirectory())
+				try 
 				{
-					// 난 디렉토리다, 디렉토리명
-					byte[] temp = new byte[2];
-					temp[0] = AUTOBACKUP;
-					temp[1] = DIRECTORY;
+					_raf = new RandomAccessFile(_encryptedVector.get(0),"rw");
+					_fileChannel = _raf.getChannel();
 					
+					byte[] temp = new byte[1024];
+					temp[0] = AUTOBACKUP;
+					temp[1] = FILE;
+					Function.frontInsertByte(2, String.valueOf(_fileSize).getBytes(), temp);
+					Function.frontInsertByte(10, _fileName.getBytes(), temp);
 					_csc.setPacket("AUTOBACKUP", temp);
-					_csc.setPacket("AUTOBACKUP", _fileName.getBytes());
+					
+					ByteBuffer buffer;
+					while(_fileSize > 0)
+					{
+						if(_fileSize < FILE_BUFFER_SIZE)
+						{
+							buffer = ByteBuffer.allocateDirect((int)_fileSize);
+						}
+						else
+						{
+							buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
+						}
+						buffer.clear();
+						_fileSize -= 1024;
+						_fileChannel.read(buffer);
+						buffer.flip();
+						_csc.setPacket("AUTOBACKUP", buffer);
+					}
 					
 					_csc.send("AUTOBACKUP");
-				}
-				else if(_checkProperty.isFile())
+					_fileChannel.close();
+				} 
+				catch (FileNotFoundException e) 
 				{
-					try 
-					{
-						_raf = new RandomAccessFile(_encryptedVector.get(0),"rw");
-						_fileChannel = _raf.getChannel();
-						
-						byte[] temp = new byte[1024];
-						temp[0] = AUTOBACKUP;
-						temp[1] = FILE;
-						Function.frontInsertByte(2, String.valueOf(_fileSize).getBytes(), temp);
-						Function.frontInsertByte(10, _fileName.getBytes(), temp);
-						_csc.setPacket("AUTOBACKUP", temp);
-						
-						ByteBuffer buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-						while(_fileSize > 0)
-						{
-							if(_fileSize < FILE_BUFFER_SIZE)
-							{
-								buffer = ByteBuffer.allocateDirect((int)_fileSize);
-							}
-							buffer.clear();
-							_fileSize -= 1024;
-							_fileChannel.read(buffer);
-							buffer.flip();
-							_csc.setPacket("AUTOBACKUP", buffer);
-						}
-						
-						_csc.send("AUTOBACKUP");
-						_fileChannel.close();
-					} 
-					catch (FileNotFoundException e) 
-					{
-						e.printStackTrace();
-					} 
-					catch (IOException e) 
-					{
-						e.printStackTrace();
-					}
+					e.printStackTrace();
+				} 
+				catch (IOException e) 
+				{
+					e.printStackTrace();
 				}
-				
-				_encryptedVector.remove(0);
 			}
+			
+			_encryptedVector.remove(0);
 		}
+	
 	}
 	
 	public void stopThread()

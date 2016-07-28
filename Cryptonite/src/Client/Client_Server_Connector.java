@@ -112,7 +112,6 @@ public class Client_Server_Connector extends Thread
 			try 
 			{
 				Thread.sleep(10);
-				output.element().flip();
 				_channel.write(output.remove());
 			}
 			catch (IOException | InterruptedException e) 
