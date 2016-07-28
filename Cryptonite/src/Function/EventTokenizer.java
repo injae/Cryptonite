@@ -18,10 +18,9 @@ public class EventTokenizer
 	public EventTokenizer() { }
 	
 	// Methods
-	public String[] getToken(ByteBuffer byteBuffer)
+	public String[] getToken(byte[] buffer)
 	{
-		byte[] buf = byteBuffer.array();
-		temp = new String(buf).trim();
+		temp = new String(buffer).trim();
 		
 		st = new StringTokenizer(temp,"\n");
 		token = new String[st.countTokens()];
