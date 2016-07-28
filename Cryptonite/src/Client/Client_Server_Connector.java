@@ -111,10 +111,10 @@ public class Client_Server_Connector extends Thread
 		{
 			try 
 			{
-				Thread.sleep(10);
+				//Thread.sleep(1);
 				_channel.write(output.remove());
 			}
-			catch (IOException | InterruptedException e) 
+			catch (IOException e) 
 			{
 				e.printStackTrace();
 			}
