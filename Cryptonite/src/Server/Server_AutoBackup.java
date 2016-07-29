@@ -133,7 +133,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 					buffer.flip();
 					_fileChannel.write(buffer);
 				}
-				System.out.println("count : " + _count);
+				
 				if(_count == _packetMaxCount)
 				{
 					System.out.println("³¡");

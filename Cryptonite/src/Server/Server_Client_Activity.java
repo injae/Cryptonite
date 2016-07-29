@@ -136,7 +136,6 @@ public class Server_Client_Activity implements PacketRule
 		{
 			if(_funtionList.get(_runningFuntion.element())._packetMaxCount == _packetCount)
 			{
-				System.out.println(_readableCount);
 				_readableQueue.offer(_readableCount);
 				Server_Client_Manager.getInstance().requestManage(_clientCode);
 				_packetCount = 0;

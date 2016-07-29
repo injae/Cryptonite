@@ -23,6 +23,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	private String _address = "C:\\Server\\Backup";
 	
 	// Instance
+	private int _count = 1;
 	private int _fileCount = 0;
 	private String _fileName = null;
 	private long _fileSize = 0;
@@ -92,6 +93,41 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	@Override
 	public void running(Server_Client_Activity activity)
 	{
+		System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
+		try
+		{
+			ByteBuffer buffer;
+			while(activity.IsReadable())
+			{
+				_count++;
+				if(_fileSize < FILE_BUFFER_SIZE)
+				{
+					buffer = ByteBuffer.allocateDirect((int)_fileSize);
+				}
+				else
+				{
+					buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
+				}
+				buffer.put(activity._receiveQueue.remove());
+				_fileSize -= FILE_BUFFER_SIZE;
+				buffer.flip();
+				_fileChannel.write(buffer);
+			}
+			
+			if(_count == _packetMaxCount)
+			{
+				_fileChannel.close();
+				_count = 1;
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
 	}
 }
