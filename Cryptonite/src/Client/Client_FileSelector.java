@@ -6,6 +6,15 @@ import java.awt.Frame;
 import java.io.File;
 import javax.swing.JOptionPane;
 
+/*
+ * Developer : Youn Hee Seung
+ * Date : 2016 - 07 - 29
+ * 
+ * Name : FileSelector system
+ * Description : It can select files
+ * 
+ * */
+
 public class Client_FileSelector extends Frame
 {
 	// Instance

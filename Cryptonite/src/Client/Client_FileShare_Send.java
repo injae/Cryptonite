@@ -8,6 +8,15 @@ import java.nio.*;
 import java.util.*;
 import java.io.*;
 
+/*
+ * Developer : Youn Hee Seung
+ * Date : 2016 - 07 - 29
+ * 
+ * Name : FileShare
+ * Description : It can share file
+ * 
+ * */
+
 public class Client_FileShare_Send implements PacketRule
 {
 	// Instance
