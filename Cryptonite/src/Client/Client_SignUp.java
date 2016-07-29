@@ -429,20 +429,20 @@ class SHA_256 implements PacketRule
 			_css.configurePacket("resistor");
 			_size=5;
 					
-			byte[] buf = new byte[2];
-			buf[0] = SIGN_UP;
-			buf[1] = _size;
+			byte[] _buf = new byte[2];
+			_buf[0] = SIGN_UP;
+			_buf[1] = _size;
 			
-			ByteBuffer _message = ByteBuffer.allocateDirect(2);
+		/*	ByteBuffer _message = ByteBuffer.allocateDirect(2);
 			ByteBuffer _name_byte = ByteBuffer.allocateDirect(100);
-			ByteBuffer _id_byte = ByteBuffer.allocateDirect(_id.length());//id 수만큼
+			ByteBuffer _id_byte = ByteBuffer.allocateDirect(_id.length());
 			ByteBuffer _password_byte = ByteBuffer.allocateDirect(50);
 			ByteBuffer _email_byte = ByteBuffer.allocateDirect(100);
 
 			Charset _charset = Charset.forName("UTF-8");
 			
-			_message.put(buf);
-			_name_byte.put( _name.getBytes());//바이트로 바꾸기.
+			_message.put(_buf);
+			_name_byte.put( _name.getBytes());
 			_id_byte.put(_id.getBytes());
 			_password_byte.put(_password.getBytes());
 			_email_byte.put(_email.getBytes());
@@ -457,7 +457,13 @@ class SHA_256 implements PacketRule
 			_css.setPacket("resistor",_name_byte);
 			_css.setPacket("resistor",_id_byte);
 			_css.setPacket("resistor",_password_byte);
-			_css.setPacket("resistor",_email_byte);
+			_css.setPacket("resistor",_email_byte);*/
+			
+			_css.setPacket("resistor", _buf);
+			_css.setPacket("resistor",_name.getBytes());
+			_css.setPacket("resistor",_id.getBytes());
+			_css.setPacket("resistor",_password.getBytes());
+			_css.setPacket("resistor",_email.getBytes());
 			
 			_css.send("resistor");
 		}
