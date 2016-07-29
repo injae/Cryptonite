@@ -32,8 +32,8 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	private String _fileName = null;
 	private long _fileSize = 0;
 	
-	private RandomAccessFile raf;
-	private FileChannel fileChannel;
+	private RandomAccessFile _raf;
+	private FileChannel _fileChannel;
 	
 	// Another Class
 	private EventTokenizer _et = null;
@@ -91,10 +91,9 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			setFileInformation(packet);
 			_packetMaxCount = 1 + sendPacketSize(_fileSize);
 			
-			
 			try {
-				raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
-				fileChannel = raf.getChannel();
+				_raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
+				_fileChannel = _raf.getChannel();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -132,13 +131,13 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 					buffer.put(activity._receiveQueue.remove());
 					_fileSize -= FILE_BUFFER_SIZE;
 					buffer.flip();
-					fileChannel.write(buffer);
+					_fileChannel.write(buffer);
 				}
 				System.out.println("count : " + _count);
 				if(_count == _packetMaxCount)
 				{
 					System.out.println("³¡");
-					fileChannel.close();
+					_fileChannel.close();
 					_count = 1;
 				}
 			} 
