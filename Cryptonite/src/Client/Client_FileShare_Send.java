@@ -1,6 +1,6 @@
 package Client;
 
-import Function.PacketRule;
+import Function.*;
 import java.net.*;
 import java.nio.channels.*;
 import java.nio.file.*;
@@ -100,13 +100,13 @@ public class Client_FileShare_Send implements PacketRule
 	
 	public void sendFile()	// when you click send button
 	{
-		_csc.configurePacket("FILE_SHARE_SEND");
+		/*_csc.configurePacket("FILE_SHARE_SEND");
 		byte[] packet = new byte[100];
 		packet[0] = FILE_SHARE_SEND;
 		packet[1] = (byte)_fileNameArray.length;
-		_csc.setPacket("FILE_SHARE_SEND", packet);
+		_csc.setPacket("FILE_SHARE_SEND", packet);*/
 		
-		for(int i = 0 ; i < _fileNameArray.length; i++)
+		/*for(int i = 0 ; i < _fileNameArray.length; i++)
 		{
 			_csc.setPacket("FILE_SHARE_SEND", _fileNameArray[i].getBytes());
 		}
@@ -116,14 +116,23 @@ public class Client_FileShare_Send implements PacketRule
 		{
 			_csc.setPacket("FILE_SHARE_SEND", String.valueOf(_fileSizeArray[i]).getBytes());
 		}
-		_csc.setPacket("FILE_SHARE_SEND", "END_OF_THE_SIZE".getBytes());
+		_csc.setPacket("FILE_SHARE_SEND", "END_OF_THE_SIZE".getBytes());*/
 		
 		for(int i = 0; i < _fileNameArray.length; i++)
 		{
 			try 
 			{
+				_csc.configurePacket("FILE_SHARE_SEND");
+				byte[] packet = new byte[100];
+				packet[0] = FILE_SHARE_SEND;
+				packet[1] = (byte)_fileNameArray.length;
+				Function.frontInsertByte(2, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
+				Function.frontInsertByte(10, _fileNameArray[i].getBytes(), packet);
+				_csc.setPacket("FILE_SHARE_SEND", packet);	// 1
+				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
 				_fileChannel = _raf.getChannel();
+				
 				ByteBuffer buffer;
 				while(_fileSizeArray[i] > 0)
 				{
@@ -141,6 +150,7 @@ public class Client_FileShare_Send implements PacketRule
 					buffer.flip();
 					_csc.setPacket("FILE_SHARE_SEND", buffer);
 				}
+				_csc.send("FILE_SHARE_SEND");
 				_fileChannel.close();
 			} 
 			catch (FileNotFoundException e) 
@@ -152,8 +162,6 @@ public class Client_FileShare_Send implements PacketRule
 				e.printStackTrace();
 			}
 		}
-		
-		_csc.send("FILE_SHARE_SEND");
 	}
 	
 	private void receiveOTP()
