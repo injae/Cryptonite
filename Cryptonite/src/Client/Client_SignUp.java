@@ -34,6 +34,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Function.PacketRule;
+import Server.Server_DataBase;
 
 import javax.swing.JPasswordField;
 
@@ -260,49 +261,61 @@ import javax.swing.JPasswordField;
 			public void actionPerformed(ActionEvent arg0)
 			{
 				/*try 
-      		{
-      			if(id.equals("init") == false)
-      			{
-					socket = new Socket(serverIP, serverPort);
+      			{	
+      				if(id.equals("init") == false)
+      				{
+						socket = new Socket(serverIP, serverPort);
 
-					java.io.OutputStream out = socket.getOutputStream();
-					DataOutputStream dos = new DataOutputStream(out);
+						java.io.OutputStream out = socket.getOutputStream();
+						DataOutputStream dos = new DataOutputStream(out);
 
-					dos.writeInt(2);	// 중복확인 플래그 전달
-					dos.flush();
-					System.out.println("중복확인 플래그 2 전달");
+						dos.writeInt(2);	// 중복확인 플래그 전달
+						dos.flush();
+						System.out.println("중복확인 플래그 2 전달");
 
-					dos.writeUTF(id);	// 1번째
-					dos.flush();
+						dos.writeUTF(id);	// 1번째
+						dos.flush();
 
-					InputStream in = socket.getInputStream();
-					DataInputStream dis = new DataInputStream(in);
+						InputStream in = socket.getInputStream();
+						DataInputStream dis = new DataInputStream(in);
 
-					checkID = dis.readBoolean();	// 2번째
-					if(checkID == true)
-					{
-						showMessage("아이디 중복 없음", "중복되지 않는 아이디입니다.");
-						goSignUP = true;
-					}
-					else if(checkID == false)
-					{
-						showMessage("아이디 중복", "이미 존재하는 아이디 입니다.");
-					}
+						checkID = dis.readBoolean();	// 2번째
+						if(checkID == true)
+						{
+							showMessage("아이디 중복 없음", "중복되지 않는 아이디입니다.");
+							goSignUP = true;
+						}
+						else if(checkID == false)
+						{
+							showMessage("아이디 중복", "이미 존재하는 아이디 입니다.");
+						}
 
-					dos.close();
-					out.close();
+						dos.close();
+						out.close();
 
-					dis.close();
-					in.close();
-      			}
-      			else
-      			{
-      				showMessage("입력 오류", "아이디를 입력해주세요.");
-      			}
+						dis.close();
+						in.close();
+      				}
+      				else
+      				{
+      					showMessage("입력 오류", "아이디를 입력해주세요.");
+      				}
 
 			} catch (UnknownHostException e) { e.printStackTrace();
 			} catch (IOException e) { e.printStackTrace();
 			}*/
+				
+				/*
+				1.데이터 베이스에서 스트링으로 받아오기
+				2.비교하기
+				3.조건에 따라 넘기기
+				*/
+				Server_DataBase db;
+				db=Server_DataBase.getInstance();
+				db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
+				db.connect();
+				
+				
 			}
 			//compare id
 		});
@@ -416,13 +429,14 @@ class SHA_256 implements PacketRule
 			this._id = _id;
 			this._password = _password;
 			this._email = _email;
-		/*this._AES_Key = _AES_Key;
-		 this._salt = _salt;
-		 this._iteration = _iteration;*/
+			/*this._AES_Key = _AES_Key;
+		 	this._salt = _salt;
+		 	this._iteration = _iteration;*/
 
 			SHA_Encryption();
 			sendPrivacy();
 		}
+		
 		public void sendPrivacy(){
 			_css.configurePacket("resistor");
 			_size=5;
@@ -430,17 +444,17 @@ class SHA_256 implements PacketRule
 			byte[] _buf = new byte[2];
 			_buf[0] = SIGN_UP;
 			_buf[1] = _size;
-			
-			/*ByteBuffer _message = ByteBuffer.allocateDirect(2);
-			ByteBuffer _name_byte = ByteBuffer.allocateDirect(100);
-			ByteBuffer _id_byte = ByteBuffer.allocateDirect(_id.length());
-			ByteBuffer _password_byte = ByteBuffer.allocateDirect(50);
-			ByteBuffer _email_byte = ByteBuffer.allocateDirect(100);
+		 	/*ByteBuffer _message = ByteBuffer.allocateDirect(1024);
+			ByteBuffer _name_byte = ByteBuffer.allocateDirect(1024);
+			ByteBuffer _id_byte = ByteBuffer.allocateDirect(1024);
+			ByteBuffer _password_byte = ByteBuffer.allocateDirect(1024);
+			ByteBuffer _email_byte = ByteBuffer.allocateDirect(1024);
 
 			Charset _charset = Charset.forName("UTF-8");
 			
 			_message.put(_buf);
 			_name_byte.put( _name.getBytes());
+			_name_byte=_charset.encode(_name).array();
 			_id_byte.put(_id.getBytes());
 			_password_byte.put(_password.getBytes());
 			_email_byte.put(_email.getBytes());
@@ -455,10 +469,12 @@ class SHA_256 implements PacketRule
 			_css.setPacket("resistor",_name_byte);
 			_css.setPacket("resistor",_id_byte);
 			_css.setPacket("resistor",_password_byte);
-			_css.setPacket("resistor",_email_byte);*/
+			_css.setPacket("resistor",_email_byte);
+			*/
+			Charset _charset = Charset.forName("UTF-8");
 			
 			_css.setPacket("resistor", _buf);
-			_css.setPacket("resistor",_name.getBytes());
+			_css.setPacket("resistor",_charset.encode(_name).array());
 			_css.setPacket("resistor",_id.getBytes());
 			_css.setPacket("resistor",_password.getBytes());
 			_css.setPacket("resistor",_email.getBytes());
