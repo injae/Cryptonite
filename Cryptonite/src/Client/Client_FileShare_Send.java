@@ -96,6 +96,8 @@ public class Client_FileShare_Send implements PacketRule
 			_fileSizeArray[i] = _tempFile.length();
 			//_fileSizeByte[i] = String.valueOf(_tempFile.length()).getBytes();
 		}
+		
+		sendFile();
 	}
 	
 	public void sendFile()	// when you click send button
@@ -124,7 +126,7 @@ public class Client_FileShare_Send implements PacketRule
 			{
 				_csc.configurePacket("FILE_SHARE_SEND");
 				byte[] packet = new byte[100];
-				packet[0] = FILE_SHARE_SEND;
+				packet[0] = FILE_SHARE_RECEIVE;
 				packet[1] = (byte)_fileNameArray.length;
 				Function.frontInsertByte(2, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
 				Function.frontInsertByte(10, _fileNameArray[i].getBytes(), packet);
