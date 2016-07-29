@@ -46,6 +46,22 @@ public class Server_DataBase
 	
 	private Server_DataBase()
 	{
+		
+	}
+	
+	public void Init_DB(String jdbc_driver_name, String url, String id, String password)
+	{
+		_jdbc_driver_name = jdbc_driver_name;
+		_url = url;
+		_id = id;
+		_passowrd = password;
+
+		if(DB != null) { Exit_DB(); }
+		DB = new Server_DataBase();
+	}
+	
+	public void connect()
+	{
 		try 
 		{
 			Class.forName(_jdbc_driver_name);
@@ -62,24 +78,12 @@ public class Server_DataBase
 		}
 	}
 	
-	public void Init_DB(String jdbc_driver_name, String url, String id, String password)
-	{
-		_jdbc_driver_name = jdbc_driver_name;
-		_url = url;
-		_id = id;
-		_passowrd = password;
-		
-		if(DB != null) { Exit_DB(); }
-		DB = new Server_DataBase();
-	}
-	
 	public static Server_DataBase getInstance()
 	{
 		if(DB == null) { DB = new Server_DataBase(); }
-		
 		return DB;
 	}
-	
+
 	public void Update(String sql)
 	{
 		try 
