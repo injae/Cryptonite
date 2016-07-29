@@ -79,8 +79,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		else if(packet[1] == FILE)
 		{
 			setFileInformation(packet);
-			System.out.println(_fileName);
-			System.out.println(_fileSize);
 			_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		}
 	}
