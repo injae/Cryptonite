@@ -27,7 +27,7 @@ import java.sql.Statement;
  * Example <MYSQL>
  * 
  * Server_DataBase DB;
- * DB.Setting_DB("com.mysql.jdbc.Driver", "jdbc.mysql://127.0.0.1:3306/"+DataBase_Name, "root", "0000");
+ * DB.Init_DB("com.mysql.jdbc.Driver", "jdbc.mysql://127.0.0.1:3306/"+DataBase_Name, "root", "0000");
  * DB = DB.getInstance();
  * ======================================================================================================
  */
@@ -56,8 +56,6 @@ public class Server_DataBase
 		_id = id;
 		_passowrd = password;
 
-		if(DB != null) { Exit_DB(); }
-		DB = new Server_DataBase();
 	}
 	
 	public void connect()
