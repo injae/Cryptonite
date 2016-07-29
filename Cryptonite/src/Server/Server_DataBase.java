@@ -27,7 +27,7 @@ import java.sql.Statement;
  * Example <MYSQL>
  * 
  * Server_DataBase DB;
- * DB.Init_DB("com.mysql.jdbc.Driver", "jdbc.mysql://127.0.0.1:3306/"+DataBase_Name, "root", "0000");
+ * DB.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+DataBase_Name, "root", "0000");
  * DB = DB.getInstance();
  * ======================================================================================================
  */
