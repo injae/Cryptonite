@@ -77,6 +77,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	{
 		setFileInformation(packet);
 		_packetMaxCount = 1 + sendPacketSize(_fileSize);
+		System.out.println("_packetMaxCount : " + _packetMaxCount);
 		
 		try 
 		{
@@ -97,6 +98,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		try
 		{
 			ByteBuffer buffer;
+			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 			while(activity.IsReadable())
 			{
 				_count++;
@@ -104,18 +106,18 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 				{
 					buffer = ByteBuffer.allocateDirect((int)_fileSize);
 				}
-				else
-				{
-					buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-				}
 				buffer.put(activity._receiveQueue.remove());
+				
 				_fileSize -= FILE_BUFFER_SIZE;
 				buffer.flip();
 				_fileChannel.write(buffer);
+				buffer.clear();
 			}
 			
 			if(_count == _packetMaxCount)
 			{
+				System.out.println("§");
+				System.out.println(_count);
 				_fileChannel.close();
 				_count = 1;
 			}

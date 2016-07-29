@@ -126,7 +126,7 @@ public class Server_Client_Activity implements PacketRule
 		_packetCount++;
 		_readableCount++;
 		
-		System.out.println(_channel.toString() + "read :" + count);	
+		//System.out.println(_channel.toString() + "read :" + count);	
 		if(_packetCount == 1)
 		{
 			Server_Client_Manager.getInstance().packetChecker(this);

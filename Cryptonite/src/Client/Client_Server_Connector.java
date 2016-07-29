@@ -19,7 +19,7 @@ public class Client_Server_Connector extends Thread
 	private Vector<String> _packetNameList = null;
 	private boolean stopFlag = false;
 	
-	private int _limit_size = 10240;
+	private int _limit_size = 5;
 
 	private Client_Server_Connector(int port) throws InterruptedException
 	{
