@@ -2,6 +2,8 @@ package Client;
 
 import java.io.IOException;
 
+import Server.Server_DataBase;
+
 /**
  * @author user
  *
@@ -10,9 +12,14 @@ public class Client_Main
 {
 	public static void main(String[] args) throws InterruptedException, IOException
 	{		
-		Client_Server_Connector ccs = Client_Server_Connector.getInstance(4444);
+		
+		Server_DataBase DB;
+		
+		/*Client_Server_Connector ccs = Client_Server_Connector.getInstance(4444);
 		Client_AutoBackup cab = new Client_AutoBackup();
 		cab.start();
+		
+		Client_SignUp cs=new Client_SignUp();*/
 				
 		//Client_SignUp csu = new Client_SignUp();
 		

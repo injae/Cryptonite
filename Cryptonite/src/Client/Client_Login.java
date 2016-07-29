@@ -56,27 +56,22 @@ public class Client_Login extends JFrame
     
     /*//private Client_FolderChooser_UI fc = null;
     
-    // �α��� ī���� �о��ֱ� ���Ѱ�
     private FileReader fr = null;
     private String loginCount = null;
     private StringTokenizer st = null;
     
-    // �α��� Ƚ���� 2���̻��� ���? ���⼭ ������ ����
     private Client_FolderScan cfs = null;
     private Client_SendFiles csf = null;
     private Client_checkEncryptionAnime cea = null;
     private Client_FileShare_Send cfss = null;
-    
-    // ���������� UI
+
     private boolean mainFrameFlag = false;
     private Client_MainFrame_UI cmfu = null;
-    
-    // AES_Key �������?
+
     private User loginedUser = null;
     private byte[] AES_Key = null;
     */
-    // �� ��巹��? ����
-    
+
     Font _font1 = new Font("SansSerif", Font.BOLD, 25);
     Font _fontjoin = new Font("SansSerif", Font.BOLD,13);
     Font _fontid = new Font ("SansSerif", Font.BOLD,15);
