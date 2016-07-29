@@ -22,6 +22,7 @@ public class Client_FileShare_Send implements PacketRule
 	
 	private File _tempFile = null;
 	private long[] _fileSizeArray = null;
+	private byte[][] _fileSizeByte = null;
 	
 	// Another Class Instance
 	private Client_Server_Connector _csc = null;
@@ -72,10 +73,17 @@ public class Client_FileShare_Send implements PacketRule
 		}
 		
 		_fileSizeArray = new long[_filePathArray.length];
+		_fileSizeByte = new byte[_fileSizeArray.length][];
+		for(int i = 0; i < _fileSizeArray.length; i++)
+		{
+			_fileSizeByte[i] = new byte[8];
+		}
+		
 		for(int i = 0; i < _filePathArray.length; i++)
 		{
 			_tempFile = new File(_filePathArray[i]);
 			_fileSizeArray[i] = _tempFile.length();
+			_fileSizeByte[i] = String.valueOf(_tempFile.length()).getBytes();
 		}
 	}
 	
@@ -93,6 +101,21 @@ public class Client_FileShare_Send implements PacketRule
 		{
 			packet[i + 2 + _filePathArray.length] = (byte)_filePathSize[i];
 		}
+		_csc.setPacket("FILE_SHARE_SEND", packet);
+		
+		byte[] packet2 = new byte[8 * _fileSizeByte.length];
+		for(int i = 0; i < _fileSizeByte.length; i++)
+		{
+			for(int j = i * 8; j < 8 * (i + 1); j++)
+			{
+				int k = 0;
+				packet2[j] = _fileSizeByte[i][k];
+				k++;
+			}
+		}
+		_csc.setPacket("FILE_SHARE_SEND", packet2);
+		
+		// write file sending code
 	}
 	
 	private void receiveOTP()
