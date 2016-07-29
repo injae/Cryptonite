@@ -73,7 +73,7 @@ public class Server_DataBase
 		DB = new Server_DataBase();
 	}
 	
-	public Server_DataBase getInstance()
+	public static Server_DataBase getInstance()
 	{
 		if(DB == null) { DB = new Server_DataBase(); }
 		
