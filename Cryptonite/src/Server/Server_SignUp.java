@@ -12,11 +12,14 @@ public class Server_SignUp extends Server_Funtion
 	public void running(Server_Client_Activity activity) 
 	{
 		System.out.println("SignUp running");
-		
-		for(int i =0; i < _packetMaxCount-1; i++)
+		int count = 0;
+		while(activity.IsReadable())
 		{
-			byte[] buf = activity._receiveQueue.remove();
-			System.out.println("get: " +buf.length);
+			count++;
+			System.out.println(count + " read");
+			activity._receiveQueue.remove();
 		}
+		System.out.println(activity._receiveQueue.isEmpty());
+		
 	}
 }

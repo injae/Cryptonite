@@ -11,6 +11,7 @@ public class Server_Client_Manager extends Thread implements PacketRule
 	
 	private HashMap<Integer ,Server_Client_Activity> _clientList;	
 	private LinkedBlockingQueue<Integer> _usableClientCode;
+	
 	private int _lastClientCode;
 	private LinkedBlockingQueue<Integer> _runningQueue;
 	
@@ -27,7 +28,6 @@ public class Server_Client_Manager extends Thread implements PacketRule
 		{
 			_server_client_manager = new Server_Client_Manager();
 		}
-		
 		return _server_client_manager;		
 	}
 	
@@ -80,8 +80,8 @@ public class Server_Client_Manager extends Thread implements PacketRule
 		{
 			if(!_runningQueue.isEmpty())
 			{
-				Server_Client_Activity activity = _clientList.get(_runningQueue.remove());
-				
+				Server_Client_Activity activity = _clientList.get(_runningQueue.remove());	
+				activity.readableUpdate();
 				activity._funtionList.get(activity._runningFuntion.remove()).running(activity);
 			}
 		}

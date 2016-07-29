@@ -21,9 +21,14 @@ public class Server_Client_Activity implements PacketRule
 	public Queue<byte[]> _sendQueue;
 	
 	public LinkedBlockingQueue<Byte> _runningFuntion;
+	private LinkedBlockingQueue<Integer> _readableQueue;
 	
-	public int _packetCount = 0;
+	private int _packetCount = 0;
+	public Integer _readableCount = 0;
+	public int _readingCount = 0;
+	
 	private int _clientCode = 0;
+	private int LIMIT_PACKET = 10;
 	
 	public HashMap<Byte, Server_Funtion> _funtionList;
 	
@@ -44,6 +49,7 @@ public class Server_Client_Activity implements PacketRule
             _receiveQueue = new LinkedList<byte[]>();            
             _sendQueue = new LinkedList<byte[]>();
             _runningFuntion = new LinkedBlockingQueue<Byte>();
+            _readableQueue = new LinkedBlockingQueue<Integer>();
             
             _funtionList = new HashMap<Byte, Server_Funtion>();
             _funtionList.put(AUTOBACKUP, new Server_AutoBackup());
@@ -81,21 +87,49 @@ public class Server_Client_Activity implements PacketRule
 
 		_receiveQueue.add(array);	
 		_packetCount++;
+		_readableCount++;
 		
-		//System.out.println(_channel.toString() + "read :" + count);	
-		
+		System.out.println(_channel.toString() + "read :" + count);	
 		if(_packetCount == 1)
 		{
 			Server_Client_Manager.getInstance().packetChecker(this);
+			_readableCount--;
 		}
 		
 		if(!_runningFuntion.isEmpty())
 		{
+
 			if(_funtionList.get(_runningFuntion.element())._packetMaxCount == _packetCount)
 			{
 				Server_Client_Manager.getInstance().requestManage(_clientCode);
+				_readableQueue.offer(_readableCount);
 				_packetCount = 0;
+				_readableCount = 0;
 			}
+			else if(_readableCount >= LIMIT_PACKET)
+			{
+				_readableQueue.offer(_readableCount);
+				_runningFuntion.offer(_runningFuntion.element());
+				Server_Client_Manager.getInstance().requestManage(_clientCode);
+				_readableCount = 0;
+			}
+		}
+	}
+	public void readableUpdate()
+	{
+		_readingCount = _readableQueue.remove();
+	}
+	
+	public boolean IsReadable()
+	{
+		if(_readingCount > 0)
+		{
+			_readingCount--;
+			return true;
+		}
+		else
+		{
+			return false;	
 		}
 	}
 	
