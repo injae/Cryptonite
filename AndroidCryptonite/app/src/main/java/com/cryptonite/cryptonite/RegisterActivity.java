@@ -15,6 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
+
+import Function.Client_Server_Connector;
+
 /**
  * Created by olleh on 2016-07-22.
  */
@@ -205,13 +211,30 @@ public class RegisterActivity extends AppCompatActivity {
             // TODO: attempt authentication against a network service.
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
+                Client_Server_Connector css = Client_Server_Connector.getInstance(4444);
+
+                byte[] temp = new byte[2];
+                temp[0] = 5;
+                temp[1] = 5;
+
+                Charset cs = Charset.forName("UTF-8");
+
+                ByteBuffer bb = cs.encode(mname);
+                bb.flip();
+
+
+                css.configurePacket("register");
+                css.setPacket("register",temp);
+                css.setPacket("register",bb.array());
+                css.setPacket("register",mid.getBytes());
+                css.setPacket("register",mPassword.getBytes());
+                css.setPacket("register",memail.getBytes());
+
+                css.send("register");
+
             } catch (InterruptedException e) {
                 return false;
             }
-
-
             return true;
         }
 
