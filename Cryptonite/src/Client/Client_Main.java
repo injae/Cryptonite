@@ -24,12 +24,12 @@ public class Client_Main
 		{
 			Thread.sleep(10);
 			ccs.justSend();	
-		}
+		}*/
 		
 		while(true)
 		{
 			Thread.sleep(10);
-		}*/
+		}
 		
 	}
 }
