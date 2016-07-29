@@ -459,12 +459,12 @@ class SHA_256 implements PacketRule
 			_css.setPacket("resistor",_password_byte);
 			_css.setPacket("resistor",_email_byte);*/
 			
-			/*_css.setPacket("resistor", _buf);
+			_css.setPacket("resistor", _buf);
 			_css.setPacket("resistor",_name.getBytes());
 			_css.setPacket("resistor",_id.getBytes());
 			_css.setPacket("resistor",_password.getBytes());
 			_css.setPacket("resistor",_email.getBytes());
-			*/
+			
 			_css.send("resistor");
 		}
 		public void SHA_Encryption(){
