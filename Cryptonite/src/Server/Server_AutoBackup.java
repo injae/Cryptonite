@@ -39,10 +39,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	private EventTokenizer _et = null;
 	
 	// Constructors
-	public Server_AutoBackup() 
-	{
-		
-	}
+	public Server_AutoBackup() { }
 	
 	// Methods
 	private int sendPacketSize(long fileSize)
