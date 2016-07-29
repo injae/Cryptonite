@@ -11,11 +11,12 @@ import Function.*;
 public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
 	// protectedFolder
-	private String _address = "C:\\Users\\user\\Desktop\\테스트";
+	private String _address = "C:\\테스트";
 	private File _protectedFolder = new File(_address);
 	
 	// Instance
 	private String[] _token = null;
+	private int _count = 0;
 	
 	// About File
 	private String _checkProperty = null;
@@ -81,6 +82,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			setFileInformation(packet);
 			_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		}
+		System.out.println("packetMaxCount : " + _packetMaxCount);
 	}
 
 	@Override
@@ -101,8 +103,9 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 				FileChannel fileChannel = raf.getChannel();
 				
 				ByteBuffer buffer;
-				while(_fileSize > 0)
+				while(activity.IsReadable())
 				{
+					_count++;
 					if(_fileSize < FILE_BUFFER_SIZE)
 					{
 						buffer = ByteBuffer.allocateDirect((int)_fileSize);
@@ -115,6 +118,11 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 					_fileSize -= FILE_BUFFER_SIZE;
 					buffer.flip();
 					fileChannel.write(buffer);
+				}
+				System.out.println("count : " + _count);
+				if(_count == _packetMaxCount)
+				{
+					fileChannel.close();
 				}
 			} 
 			catch (FileNotFoundException e) 
