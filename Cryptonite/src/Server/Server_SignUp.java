@@ -44,10 +44,10 @@ public class Server_SignUp extends Server_Funtion
 
 		System.out.println(activity._receiveQueue.isEmpty());
 		
-		
 		Server_DataBase db;
 		db=Server_DataBase.getInstance();
 		db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
-		db.connect();	
+		db.connect();
+		db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"');");
 	}
 }
