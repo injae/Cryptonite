@@ -76,12 +76,18 @@ public class Client_Server_Connector extends Thread
 
 	public void setPacket(String packetName, byte[] array)
 	{
+		byte[] buf = new byte[1024];
+		for(int i =0; i < array.length; i++)
+		{
+			buf[i] = array[i];
+		}
+
 		if(_packetList.get(packetName).size() >= _limit_size)
 		{
 			sendNotRemove(packetName);
 		}		
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
-		buffer.put(array);
+		buffer.put(buf);
 		buffer.flip();
 		_packetList.get(packetName).offer(buffer);
 	}
