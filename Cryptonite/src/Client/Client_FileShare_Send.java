@@ -125,6 +125,7 @@ public class Client_FileShare_Send implements PacketRule
 		_csc.setPacket("FILE_SHARE_SEND", packet2);
 		
 		// write file sending code
+		_csc.send("FILE_SHARE_SEND");
 	}
 	
 	private void receiveOTP()

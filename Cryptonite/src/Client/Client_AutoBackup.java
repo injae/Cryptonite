@@ -7,6 +7,9 @@ import java.nio.channels.*;
 import java.nio.charset.Charset;
 import java.io.*;
 import java.util.*;
+
+import org.omg.Messaging.SyncScopeHelper;
+
 import Function.*;
 
 /*
@@ -56,7 +59,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 	public synchronized void run()
 	{
 		_encryptedVector = new Vector<String>();
-		_encryptedVector.add("C:\\Users\\noname\\Desktop\\test.mp3");
+		_encryptedVector.add("C:\\Users\\Youn\\Pictures\\바탕화면.jpg");
 
 		try 
 		{
@@ -96,6 +99,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 					byte[] temp = new byte[1024];
 					temp[0] = AUTOBACKUP;
 					temp[1] = FILE;
+					System.out.println("사이즈 : " + String.valueOf(_fileSize).getBytes().length);
 					Function.frontInsertByte(2, String.valueOf(_fileSize).getBytes(), temp);
 					Function.frontInsertByte(10, _fileName.getBytes(), temp);
 					_csc.setPacket("AUTOBACKUP", temp);
