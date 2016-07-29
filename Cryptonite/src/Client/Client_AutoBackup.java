@@ -56,7 +56,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 	public synchronized void run()
 	{
 		_encryptedVector = new Vector<String>();
-		_encryptedVector.add("C:\\Users\\user\\Desktop\\test.mkv");
+		_encryptedVector.add("C:\\Users\\Youn\\Desktop\\¸ðµç°Í\\Piano Original Sound tracks\\Steins;Gate OST\\Stein's;Gate - OST.mp3");
 
 		try 
 		{

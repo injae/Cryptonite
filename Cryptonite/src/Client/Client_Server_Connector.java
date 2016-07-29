@@ -80,7 +80,7 @@ public class Client_Server_Connector extends Thread
 		{
 			sendNotRemove(packetName);
 		}		
-		ByteBuffer buffer = ByteBuffer.allocateDirect(array.length + 1);
+		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 		buffer.put(array);
 		buffer.flip();
 		_packetList.get(packetName).offer(buffer);
