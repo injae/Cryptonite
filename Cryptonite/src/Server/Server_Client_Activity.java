@@ -18,7 +18,7 @@ public class Server_Client_Activity implements PacketRule
 	private SocketChannel _channel;
 	
 	public Queue<byte[]> _receiveQueue; 
-	public Queue<byte[]> _sendQueue;
+	public Queue<ByteBuffer> _sendQueue;
 	
 	public LinkedBlockingQueue<Byte> _runningFuntion;
 	private LinkedBlockingQueue<Integer> _readableQueue;
@@ -47,7 +47,7 @@ public class Server_Client_Activity implements PacketRule
             _clientCode = clientCode;
             
             _receiveQueue = new LinkedList<byte[]>();            
-            _sendQueue = new LinkedList<byte[]>();
+            _sendQueue = new LinkedList<ByteBuffer>();
             _runningFuntion = new LinkedBlockingQueue<Byte>();
             _readableQueue = new LinkedBlockingQueue<Integer>();
             
@@ -73,9 +73,46 @@ public class Server_Client_Activity implements PacketRule
 	
 	public void Sender(byte[] packet) 
 	{
-		
+		if(_sendQueue.size() >= LIMIT_PACKET)
+		{
+			sendNotRemove();
+		}		
+		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+		buffer.put(packet);
+		buffer.flip();
+		_sendQueue.offer(buffer);
 	}
 	
+	private void sendNotRemove() 
+	{
+		for(int i = 0; i < LIMIT_PACKET; i++)
+		{
+			try 
+			{
+				_channel.write(_sendQueue.remove());
+			}
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void send(String packetName)
+	{	
+		while(!_sendQueue.isEmpty())
+		{
+			try 
+			{
+				_channel.write(_sendQueue.remove());
+			}
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}		
+	}
+
 	public void Receiver() throws IOException 
 	{	
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
@@ -95,14 +132,13 @@ public class Server_Client_Activity implements PacketRule
 			Server_Client_Manager.getInstance().packetChecker(this);
 			_readableCount--;
 		}
-		
 		if(!_runningFuntion.isEmpty())
 		{
-
 			if(_funtionList.get(_runningFuntion.element())._packetMaxCount == _packetCount)
 			{
-				Server_Client_Manager.getInstance().requestManage(_clientCode);
+				System.out.println(_readableCount);
 				_readableQueue.offer(_readableCount);
+				Server_Client_Manager.getInstance().requestManage(_clientCode);
 				_packetCount = 0;
 				_readableCount = 0;
 			}
