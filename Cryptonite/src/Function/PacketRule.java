@@ -7,7 +7,7 @@ public interface PacketRule
 	// Event Code
 	byte AUTOBACKUP = 1;
 	byte LOGIN = 2;
-	byte FILE_SHARE_RECIEVE =3;
+	byte FILE_SHARE_RECEIVE =3;
 	byte FILE_SHARE_SEND = 4;
 	byte SIGN_UP = 5;
 	//---------------------------------------

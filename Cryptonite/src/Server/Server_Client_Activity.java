@@ -54,7 +54,7 @@ public class Server_Client_Activity implements PacketRule
             _funtionList = new HashMap<Byte, Server_Funtion>();
             _funtionList.put(AUTOBACKUP, new Server_AutoBackup());
             _funtionList.put(LOGIN, new Server_Login());
-            _funtionList.put(FILE_SHARE_RECIEVE, new Server_FileShare_Receive());
+            _funtionList.put(FILE_SHARE_RECEIVE, new Server_FileShare_Receive());
             _funtionList.put(FILE_SHARE_SEND, new Server_FileShare_Send());
             _funtionList.put(SIGN_UP,new Server_SignUp());
             

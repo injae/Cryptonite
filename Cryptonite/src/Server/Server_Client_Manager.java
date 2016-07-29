@@ -58,8 +58,8 @@ public class Server_Client_Manager extends Thread implements PacketRule
 			activity._funtionList.get(AUTOBACKUP).Checker(packet); break;
 		case LOGIN:
 			activity._funtionList.get(LOGIN).Checker(packet); break;
-		case FILE_SHARE_RECIEVE:
-			activity._funtionList.get(FILE_SHARE_RECIEVE).Checker(packet); break;
+		case FILE_SHARE_RECEIVE:
+			activity._funtionList.get(FILE_SHARE_RECEIVE).Checker(packet); break;
 		case FILE_SHARE_SEND:
 			activity._funtionList.get(FILE_SHARE_SEND).Checker(packet); break;
 		case SIGN_UP:
