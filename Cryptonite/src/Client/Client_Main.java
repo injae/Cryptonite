@@ -16,17 +16,16 @@ public class Client_Main
 				
 		//Client_SignUp csu = new Client_SignUp();
 		
-	
 		/*for(int i = 0 ; i< 15; i++)
 		{
 			Thread.sleep(10);
 			ccs.justSend();	
 		}*/
 		
-	/*	while(true)
+		while(true)
 		{
 			Thread.sleep(10);
-		}*/
+		}
 		
 	}
 }
