@@ -8,6 +8,15 @@ import java.nio.file.*;
 import java.util.*;
 import Function.*;
 
+/*
+ * Developer : Youn Hee Seung
+ * Date : 2016 - 07 - 29
+ * 
+ * Name : AutoBackup System
+ * Description : It can backup encrypted files
+ * 
+ * */
+
 public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
 	// protectedFolder
