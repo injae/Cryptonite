@@ -48,12 +48,10 @@ import javax.swing.JPasswordField;
 			new Client_SignUp();
 		}
 		
-
 		private boolean _checkID = false;
 		private boolean _checkPassword=false;
 		public static boolean _goSignUP = false;
 		public static boolean _goFolderScan = false;
-		
 		
 		public static boolean getGoSignUP()
 		{		   
