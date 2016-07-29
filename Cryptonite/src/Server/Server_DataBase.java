@@ -56,8 +56,6 @@ public class Server_DataBase
 		_id = id;
 		_passowrd = password;
 
-		if(DB != null) { Exit_DB(); }
-		DB = new Server_DataBase();
 	}
 	
 	public void connect()
@@ -67,6 +65,7 @@ public class Server_DataBase
 			Class.forName(_jdbc_driver_name);
 			_con = DriverManager.getConnection(_url, _id, _passowrd);
 			_stmt = _con.createStatement();
+			System.out.println("connect");
 		} 
 		catch (ClassNotFoundException e) 
 		{ 
@@ -74,7 +73,7 @@ public class Server_DataBase
 		} 
 		catch (SQLException e)
 		{
-			System.out.println("ERROR: can't connect database"); // e.printStackTrace();
+			System.out.println("ERROR: can't connect database");  e.printStackTrace();
 		}
 	}
 	
