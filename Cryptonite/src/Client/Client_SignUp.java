@@ -110,7 +110,7 @@ import javax.swing.JPasswordField;
 
 			try
 			{
-				_img = ImageIO.read(new File("C:\\Users\\noname\\Desktop\\crypto\\resistor.png"));//Input MainImage
+				_img = ImageIO.read(new File("D:\\crypto\\resistor.png"));//Input MainImage
 				
 			}catch(IOException e){
 				System.out.println("No Image.");
@@ -431,7 +431,7 @@ class SHA_256 implements PacketRule
 			_buf[0] = SIGN_UP;
 			_buf[1] = _size;
 			
-		/*	ByteBuffer _message = ByteBuffer.allocateDirect(2);
+			/*ByteBuffer _message = ByteBuffer.allocateDirect(2);
 			ByteBuffer _name_byte = ByteBuffer.allocateDirect(100);
 			ByteBuffer _id_byte = ByteBuffer.allocateDirect(_id.length());
 			ByteBuffer _password_byte = ByteBuffer.allocateDirect(50);
@@ -457,12 +457,12 @@ class SHA_256 implements PacketRule
 			_css.setPacket("resistor",_password_byte);
 			_css.setPacket("resistor",_email_byte);*/
 			
-			_css.setPacket("resistor", _buf);
+			/*_css.setPacket("resistor", _buf);
 			_css.setPacket("resistor",_name.getBytes());
 			_css.setPacket("resistor",_id.getBytes());
 			_css.setPacket("resistor",_password.getBytes());
 			_css.setPacket("resistor",_email.getBytes());
-			
+			*/
 			_css.send("resistor");
 		}
 		public void SHA_Encryption(){
