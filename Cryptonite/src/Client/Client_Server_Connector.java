@@ -1,14 +1,8 @@
 package Client;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -25,7 +19,7 @@ public class Client_Server_Connector extends Thread
 	private Vector<String> _packetNameList = null;
 	private boolean stopFlag = false;
 	
-	private int count = 0;
+	private int _limit_size = 10240;
 
 	private Client_Server_Connector(int port) throws InterruptedException
 	{
@@ -82,6 +76,10 @@ public class Client_Server_Connector extends Thread
 
 	public void setPacket(String packetName, byte[] array)
 	{
+		if(_packetList.get(packetName).size() >= _limit_size)
+		{
+			sendNotRemove(packetName);
+		}		
 		ByteBuffer buffer = ByteBuffer.allocateDirect(array.length + 1);
 		buffer.put(array);
 		buffer.flip();
@@ -90,6 +88,10 @@ public class Client_Server_Connector extends Thread
 	
 	public void setPacket(String packetName, ByteBuffer buffer)
 	{
+		if(_packetList.get(packetName).size() >= _limit_size)
+		{
+			sendNotRemove(packetName);
+		}		
 		_packetList.get(packetName).offer(buffer);
 	}
 
@@ -103,6 +105,23 @@ public class Client_Server_Connector extends Thread
 		return _packetList.get("receive").remove();
 	}
 
+	private void sendNotRemove(String packetName)
+	{
+		Queue<ByteBuffer> output = _packetList.get(packetName);
+		
+		for(int i = 0; i < _limit_size; i++)
+		{
+			try 
+			{
+				_channel.write(output.remove());
+			}
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void send(String packetName)
 	{
 		Queue<ByteBuffer> output = _packetList.get(packetName);
@@ -111,7 +130,6 @@ public class Client_Server_Connector extends Thread
 		{
 			try 
 			{
-				//Thread.sleep(1);
 				_channel.write(output.remove());
 			}
 			catch (IOException e) 
@@ -147,8 +165,8 @@ public class Client_Server_Connector extends Thread
 	{
 		_buffer = ByteBuffer.allocateDirect(1024);
 		byte[] buf = new byte[1024];
-		buf[0] = 1;
-		buf[1] = 10;
+		buf[0] = 5;
+		buf[1] = 15;
 		
 		_buffer.put(buf);
 		_buffer.flip();

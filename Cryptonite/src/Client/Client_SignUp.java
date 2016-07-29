@@ -112,7 +112,7 @@ import javax.swing.JPasswordField;
 
 			try
 			{
-				_img = ImageIO.read(new File("D:\\crypto\\resistor.png"));//Input MainImage
+				_img = ImageIO.read(new File("C:\\Users\\noname\\Desktop\\crypto\\resistor.png"));//Input MainImage
 				
 			}catch(IOException e){
 				System.out.println("No Image.");
