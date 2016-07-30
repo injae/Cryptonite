@@ -106,15 +106,15 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 			while(activity.IsReadable())
 			{
 				_count++;
-				/*if(_fileSize < FILE_BUFFER_SIZE)
-				{
-					buffer = ByteBuffer.allocateDirect((int)_fileSize);
-				}*/
 				buffer.clear();
 				buffer.put(activity._receiveQueue.remove());
 				
 				_fileSize -= FILE_BUFFER_SIZE;
 				buffer.flip();
+				while(!_fileChannel.isOpen())
+				{
+					Thread.sleep(1);
+				}
 				_fileChannel.write(buffer);
 				
 				if(_fileSize <= 0)
@@ -126,7 +126,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 			if(_count == _packetMaxCount)
 			{
 				System.out.println(_fileName + " 파일이 전송이 완료되었습니다.");
-				//_fileChannel.close();
+				_fileChannel.close();
 				_count = 1;
 			}
 		}
@@ -137,7 +137,9 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		catch (IOException e)
 		{
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
 	}
 }
