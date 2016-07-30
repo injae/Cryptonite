@@ -122,21 +122,25 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			try 
 			{
 				ByteBuffer buffer;
+				buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 				while(activity.IsReadable())
 				{
 					_count++;
-					if(_fileSize < FILE_BUFFER_SIZE)
-					{
-						buffer = ByteBuffer.allocateDirect((int)_fileSize);
-					}
-					else
-					{
-						buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-					}
+					buffer.clear();
 					buffer.put(activity._receiveQueue.remove());
+					
 					_fileSize -= FILE_BUFFER_SIZE;
 					buffer.flip();
+					while(!_fileChannel.isOpen())
+					{
+						Thread.sleep(1);
+					}
 					_fileChannel.write(buffer);
+					
+					if(_fileSize <= 0)
+					{
+						break;
+					}
 				}
 				
 				if(_count == _packetMaxCount)
@@ -151,6 +155,10 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 				e.printStackTrace();
 			} 
 			catch (IOException e) 
+			{
+				e.printStackTrace();
+			} 
+			catch (InterruptedException e) 
 			{
 				e.printStackTrace();
 			}

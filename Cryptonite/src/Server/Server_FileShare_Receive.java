@@ -102,7 +102,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		try
 		{
 			ByteBuffer buffer;
-			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE+1);
+			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 			while(activity.IsReadable())
 			{
 				_count++;

@@ -108,14 +108,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 					ByteBuffer buffer;
 					while(_fileSize > 0)
 					{
-						if(_fileSize < FILE_BUFFER_SIZE)
-						{
-							buffer = ByteBuffer.allocateDirect((int)_fileSize);
-						}
-						else
-						{
-							buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-						}
+						buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 						buffer.clear();
 						_fileSize -= 1024;
 						_fileChannel.read(buffer);
