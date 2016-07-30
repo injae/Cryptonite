@@ -50,26 +50,31 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	private void setFileInformation(byte[] packet)
 	{
 		_fileCount = packet[1];
+		int end = 0;
 		
-		byte[] sizeTemp = new byte[8];
+		byte[] sizeTemp = new byte[packet[2]];
 		for(int i = 0; i < sizeTemp.length; i++)
 		{
-			sizeTemp[i] = packet[i + 2];
+			sizeTemp[i] = packet[i + 4];
+			end = i+4;
 		}
+		System.out.println(new String(sizeTemp).trim());
 		_fileSize = Long.parseLong(new String(sizeTemp).trim());
 		
-		int max = 10;
+		int max = end;
 		while(packet[max] != 0)
 		{
 			max++;
 		}
 		
-		byte[] nameTemp = new byte[max - 10];
+		byte[] nameTemp = new byte[packet[3]];
 		for(int i = 0; i < nameTemp.length; i++)
 		{
-			nameTemp[i] = packet[i + 10];
+			nameTemp[i] = packet[i + end + 1];
 		}
 		_fileName = new String(nameTemp).trim();
+		System.out.println("파일 이름 : " + _fileName);
+		System.out.println("파일 용량 : " + _fileSize + " (Byte)");
 	}
 	
 	@Override
@@ -77,7 +82,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	{
 		setFileInformation(packet);
 		_packetMaxCount = 1 + sendPacketSize(_fileSize);
-		System.out.println("_packetMaxCount : " + _packetMaxCount);
+		//System.out.println("_packetMaxCount : " + _packetMaxCount);
 		
 		try 
 		{
@@ -88,13 +93,12 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		{
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
 	public void running(Server_Client_Activity activity)
 	{
-		System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
+		//System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
 		try
 		{
 			ByteBuffer buffer;
@@ -112,12 +116,16 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 				buffer.flip();
 				_fileChannel.write(buffer);
 				buffer.clear();
+				if(_fileSize <= 0)
+				{
+					System.out.println("들어오나연?");
+					break;
+				}
 			}
 			
 			if(_count == _packetMaxCount)
 			{
 				System.out.println("짠");
-				System.out.println(_count);
 				_fileChannel.close();
 				_count = 1;
 			}
