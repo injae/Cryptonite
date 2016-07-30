@@ -10,7 +10,8 @@ public class Client_Main
 {
 	public static void main(String[] args) throws InterruptedException, IOException
 	{		
-		Client_Server_Connector ccs = Client_Server_Connector.getInstance(4444);
+		Client_Server_Connector csc = Client_Server_Connector.getInstance(4444);
+		csc.start();
 		/*Client_AutoBackup cab = new Client_AutoBackup();
 		cab.start();*/
 		Client_FileShare_Send cfs = new Client_FileShare_Send();

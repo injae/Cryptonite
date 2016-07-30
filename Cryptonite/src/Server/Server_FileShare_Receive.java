@@ -24,6 +24,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	private int _fileCount = 0;
 	private String _fileName = null;
 	private long _fileSize = 0;
+	private int _runningCounter = 0;
 	
 	// FileChannel and RandomAccessFile
 	private RandomAccessFile _raf = null;
@@ -98,6 +99,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		//System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
 		try
 		{
+			_runningCounter++;
 			ByteBuffer buffer;
 			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 			while(activity.IsReadable())

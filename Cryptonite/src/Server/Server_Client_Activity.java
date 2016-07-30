@@ -98,7 +98,7 @@ public class Server_Client_Activity implements PacketRule
 		}
 	}
 	
-	public void send(String packetName)
+	public void send()
 	{	
 		while(!_sendQueue.isEmpty())
 		{
