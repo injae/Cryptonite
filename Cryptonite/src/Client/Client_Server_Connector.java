@@ -103,6 +103,12 @@ public class Client_Server_Connector extends Thread
 
 	public void configurePacket(String packetName)
 	{
+		try {
+			Thread.sleep(300);
+		} catch (InterruptedException e1) {
+			// TODO 자동 생성된 catch 블록
+			e1.printStackTrace();
+		}
 		_packetList.put(packetName, new LinkedList<ByteBuffer>());
 	}
 
