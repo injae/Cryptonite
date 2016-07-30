@@ -2,8 +2,6 @@ package Client;
 
 import java.io.IOException;
 
-import Server.Server_DataBase;
-
 public class Client_SignUp_Main {
 	public static void main(String[ ] args)throws InterruptedException, IOException{
 		/*TEST

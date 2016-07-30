@@ -1,7 +1,6 @@
 package Server;
 
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import Function.PacketRule;
 
@@ -10,16 +9,16 @@ public class Server_Client_Manager implements PacketRule
 	private static Server_Client_Manager _server_client_manager;
 	
 	private HashMap<Integer ,Server_Client_Activity> _clientList;	
-	private LinkedBlockingQueue<Integer> _usableClientCode;
+	private Queue<Integer> _usableClientCode;
 	
 	private int _lastClientCode;
-	private LinkedBlockingQueue<Integer> _runningQueue;
+	private Queue<Integer> _runningQueue;
 	
 	private Server_Client_Manager() 
 	{
 		_clientList = new HashMap<Integer, Server_Client_Activity>();
-		_runningQueue = new LinkedBlockingQueue<Integer>();
-		_usableClientCode = new LinkedBlockingQueue<Integer>();
+		_runningQueue = new LinkedList<Integer>();
+		_usableClientCode = new LinkedList<Integer>();
 	}
 	
 	public static Server_Client_Manager getInstance()

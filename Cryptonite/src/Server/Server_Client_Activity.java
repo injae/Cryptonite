@@ -17,11 +17,11 @@ public class Server_Client_Activity implements PacketRule
 {
 	private SocketChannel _channel;
 	
-	public LinkedBlockingQueue<byte[]> _receiveQueue; 
+	public Queue<byte[]> _receiveQueue; 
 	public Queue<ByteBuffer> _sendQueue;
 	
-	public LinkedBlockingQueue<Byte> _runningFuntion;
-	private LinkedBlockingQueue<Integer> _readableQueue;
+	public Queue<Byte> _runningFuntion;
+	private Queue<Integer> _readableQueue;
 	
 	private int _packetCount = 0;
 	public Integer _readableCount = 0;
@@ -46,10 +46,10 @@ public class Server_Client_Activity implements PacketRule
             
             _clientCode = clientCode;
             
-            _receiveQueue = new LinkedBlockingQueue<byte[]>();            
+            _receiveQueue = new LinkedList<byte[]>();            
             _sendQueue = new LinkedList<ByteBuffer>();
-            _runningFuntion = new LinkedBlockingQueue<Byte>();
-            _readableQueue = new LinkedBlockingQueue<Integer>();
+            _runningFuntion = new LinkedList<Byte>();
+            _readableQueue = new LinkedList<Integer>();
             
             _funtionList = new HashMap<Byte, Server_Funtion>();
             _funtionList.put(AUTOBACKUP, new Server_AutoBackup());
