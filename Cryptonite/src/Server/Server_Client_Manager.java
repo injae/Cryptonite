@@ -5,7 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import Function.PacketRule;
 
-public class Server_Client_Manager extends Thread implements PacketRule
+public class Server_Client_Manager implements PacketRule
 {	
 	private static Server_Client_Manager _server_client_manager;
 	
@@ -76,20 +76,12 @@ public class Server_Client_Manager extends Thread implements PacketRule
 	
 	public void run()
 	{	
-		while(true)
+
+		while(!_runningQueue.isEmpty())
 		{
-			/*try {
-				sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-			if(!_runningQueue.isEmpty())
-			{
-				Server_Client_Activity activity = _clientList.get(_runningQueue.remove());	
-				activity.readableUpdate();
-				activity._funtionList.get(activity._runningFuntion.remove()).running(activity);
-			}
+			Server_Client_Activity activity = _clientList.get(_runningQueue.remove());	
+			activity.readableUpdate();
+			activity._funtionList.get(activity._runningFuntion.remove()).running(activity);
 		}
 	}
 }

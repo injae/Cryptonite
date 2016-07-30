@@ -17,7 +17,7 @@ public class Server_Client_Activity implements PacketRule
 {
 	private SocketChannel _channel;
 	
-	public Queue<byte[]> _receiveQueue; 
+	public LinkedBlockingQueue<byte[]> _receiveQueue; 
 	public Queue<ByteBuffer> _sendQueue;
 	
 	public LinkedBlockingQueue<Byte> _runningFuntion;
@@ -46,7 +46,7 @@ public class Server_Client_Activity implements PacketRule
             
             _clientCode = clientCode;
             
-            _receiveQueue = new LinkedList<byte[]>();            
+            _receiveQueue = new LinkedBlockingQueue<byte[]>();            
             _sendQueue = new LinkedList<ByteBuffer>();
             _runningFuntion = new LinkedBlockingQueue<Byte>();
             _readableQueue = new LinkedBlockingQueue<Integer>();
@@ -129,24 +129,24 @@ public class Server_Client_Activity implements PacketRule
 		//System.out.println(_channel.toString() + "read :" + count);	
 		if(_packetCount == 1)
 		{
-			Server_Client_Manager.getInstance().packetChecker(this);
 			_readableCount--;
+			Server_Client_Manager.getInstance().packetChecker(this);
 		}
 		if(!_runningFuntion.isEmpty())
 		{
 			if(_funtionList.get(_runningFuntion.element())._packetMaxCount == _packetCount)
 			{
 				_readableQueue.offer(_readableCount);
-				Server_Client_Manager.getInstance().requestManage(_clientCode);
 				_packetCount = 0;
 				_readableCount = 0;
+				Server_Client_Manager.getInstance().requestManage(_clientCode);
 			}
 			else if(_readableCount >= LIMIT_PACKET)
 			{			
 				_readableQueue.offer(_readableCount);
 				_runningFuntion.offer(_runningFuntion.element());
-				Server_Client_Manager.getInstance().requestManage(_clientCode);
 				_readableCount = 0;
+				Server_Client_Manager.getInstance().requestManage(_clientCode);
 			}
 		}
 	}

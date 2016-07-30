@@ -29,7 +29,7 @@ public class Server_Client_Accepter extends Thread
 	        channel.register(_selector, SelectionKey.OP_ACCEPT);
 	        
 	        _manager = Server_Client_Manager.getInstance();
-	        _manager.start();
+	       
 		 }
 		 catch (IOException e)
 		 {
@@ -73,7 +73,8 @@ public class Server_Client_Accepter extends Thread
 				        }
 			        }
 			        count++;
-			    }			   
+			    }	
+			    _manager.run();
 			    //System.err.println("ÀÛµ¿È½¼ö : " + count); count = 0;
 			}
 			catch (IOException e) 
