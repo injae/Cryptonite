@@ -1,6 +1,5 @@
 package Client;
 
-import java.awt.Button;
 import java.awt.FileDialog;
 import java.awt.Frame;
 import java.io.File;

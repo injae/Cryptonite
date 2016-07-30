@@ -2,8 +2,6 @@ package Client;
 
 import java.io.IOException;
 
-import Server.Server_DataBase;
-
 /**
  * @author user
  *

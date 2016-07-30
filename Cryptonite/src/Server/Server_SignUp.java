@@ -3,8 +3,6 @@ package Server;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
-import Client.Client_SignUp;
-
 public class Server_SignUp extends Server_Funtion 
 {
 	@Override
@@ -17,13 +15,6 @@ public class Server_SignUp extends Server_Funtion
 	public void running(Server_Client_Activity activity) 
 	{	
 		System.out.println("SignUp running");
-		int count = 0;
-		/*while(activity.IsReadable())
-		{
-			count++;
-			System.out.println(count + " read");
-			activity._receiveQueue.remove();
-		}*/
 		
 		Charset cs =Charset.forName("UTF-8");
 		ByteBuffer bb=ByteBuffer.allocateDirect(1024);

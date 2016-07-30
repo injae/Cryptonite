@@ -1,11 +1,8 @@
 package Server;
 
-import java.net.*;
 import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
-import java.nio.file.*;
-import java.util.*;
 import Function.*;
 
 /*
@@ -24,7 +21,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	private File _protectedFolder = new File(_address);
 	
 	// Instance
-	private String[] _token = null;
 	private int _count = 1;
 	
 	// About File
@@ -34,9 +30,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	
 	private RandomAccessFile _raf;
 	private FileChannel _fileChannel;
-	
-	// Another Class
-	private EventTokenizer _et = null;
 	
 	// Constructors
 	public Server_AutoBackup() { }
