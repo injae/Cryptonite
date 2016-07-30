@@ -140,14 +140,6 @@ public class Client_FileShare_Send implements PacketRule
 				ByteBuffer buffer;
 				while(_fileSizeArray[i] > 0)
 				{
-					/*if(_fileSizeArray[i] < FILE_BUFFER_SIZE)
-					{
-						buffer = ByteBuffer.allocateDirect((int)_fileSizeArray[i]);
-					}
-					else
-					{
-						buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-					}*/
 					buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 					buffer.clear();
 					_fileSizeArray[i] -= 1024;
