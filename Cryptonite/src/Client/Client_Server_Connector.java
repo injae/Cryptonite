@@ -39,6 +39,7 @@ public class Client_Server_Connector extends Thread
 			_packetNameList = new Vector<String>();
 			_packetNameList.add("receive");
 			_packetList.put("receive", new LinkedList<ByteBuffer>());
+			configurePacket("receive");
 		} 
 		catch (IOException e)
 		{
@@ -112,9 +113,14 @@ public class Client_Server_Connector extends Thread
 		_packetList.put(packetName, new LinkedList<ByteBuffer>());
 	}
 
-	public ByteBuffer receive()
+	public ByteBuffer receiveByteBuffer()
 	{
 		return _packetList.get("receive").remove();
+	}
+	
+	public byte[] receiveByteArray()
+	{
+		return _packetList.get("receive").remove().array();
 	}
 
 	private void sendNotRemove(String packetName)
