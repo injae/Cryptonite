@@ -57,25 +57,30 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	{
 		_checkProperty = "FILE";
 		
-		byte[] sizeTemp = new byte[8];
-		for(int i = 0 ; i < sizeTemp.length; i++)
+		int end = 0;
+		
+		byte[] sizeTemp = new byte[packet[2]];
+		for(int i = 0; i < sizeTemp.length; i++)
 		{
-			sizeTemp[i] = packet[i + 2];
+			sizeTemp[i] = packet[i + 4];
+			end = i+4;
 		}
 		_fileSize = Long.parseLong(new String(sizeTemp).trim());
 		
-		int max = 10;
+		int max = end;
 		while(packet[max] != 0)
 		{
 			max++;
 		}
 		
-		byte[] nameTemp = new byte[max - 10];
+		byte[] nameTemp = new byte[packet[3]];
 		for(int i = 0; i < nameTemp.length; i++)
 		{
-			nameTemp[i] = packet[i + 10];
+			nameTemp[i] = packet[i + end + 1];
 		}
 		_fileName = new String(nameTemp).trim();
+		System.out.println("파일 이름 : " + _fileName);
+		System.out.println("파일 용량 : " + _fileSize + " (Byte)");
 	}
 	
 	@Override

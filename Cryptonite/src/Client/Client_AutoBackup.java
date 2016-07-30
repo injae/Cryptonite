@@ -96,12 +96,13 @@ public class Client_AutoBackup extends Thread implements PacketRule
 					_raf = new RandomAccessFile(_encryptedVector.get(0),"rw");
 					_fileChannel = _raf.getChannel();
 					
-					byte[] temp = new byte[1024];
+					byte[] temp = new byte[200];
 					temp[0] = AUTOBACKUP;
 					temp[1] = FILE;
-					System.out.println("ªÁ¿Ã¡Ó : " + String.valueOf(_fileSize).getBytes().length);
-					Function.frontInsertByte(2, String.valueOf(_fileSize).getBytes(), temp);
-					Function.frontInsertByte(10, _fileName.getBytes(), temp);
+					temp[2] = (byte)String.valueOf(_fileSize).getBytes().length;
+					temp[3] = (byte)_fileName.getBytes().length;
+					Function.frontInsertByte(4, String.valueOf(_fileSize).getBytes(), temp);
+					Function.frontInsertByte(4 + String.valueOf(_fileSize).getBytes().length, _fileName.getBytes(), temp);
 					_csc.setPacket("AUTOBACKUP", temp);
 					
 					ByteBuffer buffer;
