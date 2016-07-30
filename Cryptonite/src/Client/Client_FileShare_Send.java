@@ -128,8 +128,10 @@ public class Client_FileShare_Send implements PacketRule
 				byte[] packet = new byte[100];
 				packet[0] = FILE_SHARE_RECEIVE;
 				packet[1] = (byte)_fileNameArray.length;
-				Function.frontInsertByte(2, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
-				Function.frontInsertByte(10, _fileNameArray[i].getBytes(), packet);
+				packet[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
+				packet[3] = (byte)_fileNameArray[i].getBytes().length;
+				Function.frontInsertByte(4, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
+				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, _fileNameArray[i].getBytes(), packet);
 				_csc.setPacket("FILE_SHARE_SEND", packet);	// 1
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
@@ -152,6 +154,7 @@ public class Client_FileShare_Send implements PacketRule
 					buffer.flip();
 					_csc.setPacket("FILE_SHARE_SEND", buffer);
 				}
+				System.out.println(_fileNameArray[i] + " 전송 완료");
 				_csc.send("FILE_SHARE_SEND");
 				_fileChannel.close();
 			} 
