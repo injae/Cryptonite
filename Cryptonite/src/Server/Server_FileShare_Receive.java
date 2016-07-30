@@ -102,7 +102,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		try
 		{
 			ByteBuffer buffer;
-			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
+			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE+1);
 			while(activity.IsReadable())
 			{
 				_count++;
@@ -110,12 +110,13 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 				{
 					buffer = ByteBuffer.allocateDirect((int)_fileSize);
 				}
+				buffer.clear();
 				buffer.put(activity._receiveQueue.remove());
 				
 				_fileSize -= FILE_BUFFER_SIZE;
 				buffer.flip();
 				_fileChannel.write(buffer);
-				buffer.clear();
+				
 				if(_fileSize <= 0)
 				{
 					System.out.println("들어오나연?");
