@@ -78,6 +78,12 @@ public class Server_Client_Manager extends Thread implements PacketRule
 	{	
 		while(true)
 		{
+			/*try {
+				sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
 			if(!_runningQueue.isEmpty())
 			{
 				Server_Client_Activity activity = _clientList.get(_runningQueue.remove());	
