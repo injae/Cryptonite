@@ -77,24 +77,12 @@ public class Client_FileShare_Send implements PacketRule
 		}
 		
 		_filePathArray = _cfs.getFilePaths();
-		/*_filePathSize = new int[_filePathArray.length];
-		for(int i = 0; i < _filePathSize.length; i++)
-		{
-			_filePathSize[i] = _filePathArray[i].length();
-		}*/
 		
 		_fileSizeArray = new long[_filePathArray.length];
-		/*_fileSizeByte = new byte[_fileSizeArray.length][];
-		for(int i = 0; i < _fileSizeArray.length; i++)
-		{
-			_fileSizeByte[i] = new byte[8];
-		}*/
-		
 		for(int i = 0; i < _filePathArray.length; i++)
 		{
 			_tempFile = new File(_filePathArray[i]);
 			_fileSizeArray[i] = _tempFile.length();
-			//_fileSizeByte[i] = String.valueOf(_tempFile.length()).getBytes();
 		}
 		
 		sendFile();
@@ -102,24 +90,6 @@ public class Client_FileShare_Send implements PacketRule
 	
 	public void sendFile()	// when you click send button
 	{
-		/*_csc.configurePacket("FILE_SHARE_SEND");
-		byte[] packet = new byte[100];
-		packet[0] = FILE_SHARE_SEND;
-		packet[1] = (byte)_fileNameArray.length;
-		_csc.setPacket("FILE_SHARE_SEND", packet);*/
-		
-		/*for(int i = 0 ; i < _fileNameArray.length; i++)
-		{
-			_csc.setPacket("FILE_SHARE_SEND", _fileNameArray[i].getBytes());
-		}
-		_csc.setPacket("FILE_SHARE_SEND", "END_OF_THE_NAME".getBytes());
-		
-		for(int i = 0; i < _fileSizeArray.length; i++)
-		{
-			_csc.setPacket("FILE_SHARE_SEND", String.valueOf(_fileSizeArray[i]).getBytes());
-		}
-		_csc.setPacket("FILE_SHARE_SEND", "END_OF_THE_SIZE".getBytes());*/
-		
 		for(int i = 0; i < _fileNameArray.length; i++)
 		{
 			try 
@@ -147,7 +117,7 @@ public class Client_FileShare_Send implements PacketRule
 					buffer.flip();
 					_csc.setPacket("FILE_SHARE_SEND", buffer);
 				}
-				System.out.println(_fileNameArray[i] + " 전송 완료");
+				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
 				_csc.send("FILE_SHARE_SEND");
 				_fileChannel.close();
 			} 

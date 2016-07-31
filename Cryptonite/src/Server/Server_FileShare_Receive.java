@@ -59,7 +59,6 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 			sizeTemp[i] = packet[i + 4];
 			end = i+4;
 		}
-		System.out.println(new String(sizeTemp).trim());
 		_fileSize = Long.parseLong(new String(sizeTemp).trim());
 		
 		int max = end;
@@ -83,7 +82,6 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	{
 		setFileInformation(packet);
 		_packetMaxCount = 1 + sendPacketSize(_fileSize);
-		//System.out.println("_packetMaxCount : " + _packetMaxCount);
 		
 		try 
 		{
@@ -127,7 +125,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 			
 			if(_count == _packetMaxCount)
 			{
-				System.out.println(_fileName + " 파일이 전송이 완료되었습니다.");
+				System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
 				_fileChannel.close();
 				_count = 1;
 			}
