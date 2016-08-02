@@ -14,6 +14,7 @@ public class Server_SignUp extends Server_Funtion
 	@Override
 	public void running(Server_Client_Activity activity) 
 	{	
+		int count=1;
 		System.out.println("SignUp running");
 		
 		Charset cs =Charset.forName("UTF-8");
@@ -39,6 +40,6 @@ public class Server_SignUp extends Server_Funtion
 		db=Server_DataBase.getInstance();
 		db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
 		db.connect();
-		db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"');");
+		db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"','"+count+"');");
 	}
 }

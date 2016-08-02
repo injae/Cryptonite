@@ -14,6 +14,9 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -25,6 +28,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 
 import Function.PacketRule;
 import Server.Server_DataBase;
@@ -39,14 +45,20 @@ import Server.Server_DataBase;
 			new Client_SignUp();
 		}
 		
-		private boolean _checkID = false;
+		private boolean _checkID = true;
 		private boolean _checkPassword=false;
+		public static boolean _checkSame=false;
 		public static boolean _goSignUP = false;
 		public static boolean _goFolderScan = false;
 		
 		public static boolean getGoSignUP()
 		{		   
 			return _goSignUP;
+
+		}
+		public static boolean getCheckSame()
+		{		   
+			return _checkSame;
 
 		}
 
@@ -155,6 +167,7 @@ import Server.Server_DataBase;
 				public void keyReleased(KeyEvent _e) 
 				{
 					_id = _idField.getText();
+					_checkSame=false;
 				}
 
 				@Override
@@ -250,64 +263,54 @@ import Server.Server_DataBase;
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				/*try 
-      			{	
-      				if(id.equals("init") == false)
-      				{
-						socket = new Socket(serverIP, serverPort);
-
-						java.io.OutputStream out = socket.getOutputStream();
-						DataOutputStream dos = new DataOutputStream(out);
-
-						dos.writeInt(2);	// 중복확인 플래그 전달
-						dos.flush();
-						System.out.println("중복확인 플래그 2 전달");
-
-						dos.writeUTF(id);	// 1번째
-						dos.flush();
-
-						InputStream in = socket.getInputStream();
-						DataInputStream dis = new DataInputStream(in);
-
-						checkID = dis.readBoolean();	// 2번째
-						if(checkID == true)
-						{
-							showMessage("아이디 중복 없음", "중복되지 않는 아이디입니다.");
-							goSignUP = true;
+				_checkSame=true;
+				/*Connection con=null;
+				con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cryptonite", "root", "yangmalalice3349!");*/
+				Server_DataBase _db;
+				_db=Server_DataBase.getInstance();
+				_db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
+				_db.connect();
+				
+				Connection _con=(Connection) _db.Getcon();
+				PreparedStatement _ps = null;// 동적 쿼리를 이용해 보기
+				ResultSet _rs = null;        // 데이터 주소값 이용하기 위함
+				String _sql = "select * from test";
+				
+				
+				try{
+					_ps = (PreparedStatement)_con.prepareStatement(_sql);
+					_rs = _ps.executeQuery(); // 쿼리문이 select 로 시작되면 무조건
+					System.out.println("id");
+					while(_rs.next()){
+						String _get_id = _rs.getString(2); // 두번째 필드의 데이터
+						System.out.println(_get_id);
+						if(_get_id.equals(_id)){
+							_checkID=false;
 						}
-						else if(checkID == false)
-						{
-							showMessage("아이디 중복", "이미 존재하는 아이디 입니다.");
-						}
-
-						dos.close();
-						out.close();
-
-						dis.close();
-						in.close();
-      				}
-      				else
-      				{
-      					showMessage("입력 오류", "아이디를 입력해주세요.");
-      				}
-
-			} catch (UnknownHostException e) { e.printStackTrace();
-			} catch (IOException e) { e.printStackTrace();
-			}*/
+					}
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+				if (_id.equals("id")==false)
+				{
+					if(_checkID==false){
+						showMessage("CHECK ID", "Username already taken. Please try another one.");
+						_checkID=true;
+					}
+					else if(_checkID==true){
+						showMessage("CHECK ID", "ID that you can use");
+						_goSignUP = true;
+						
+					}
+				}
 				
-				/*
-				1.데이터 베이스에서 스트링으로 받아오기
-				2.비교하기
-				3.조건에 따라 넘기기
-				*/
-				Server_DataBase db;
-				db=Server_DataBase.getInstance();
-				db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
-				db.connect();
-				
-				
+				else
+				{
+					showMessage("ERROR", "Please input id.");
+				}
 			}
-			//compare id
+			
+			
 		});
 		_layeredpane.add(_same);
 
@@ -346,7 +349,7 @@ import Server.Server_DataBase;
 			public void actionPerformed(ActionEvent _arg0)
 			{
 				if(_name.equals("name") == false && _id.equals("id") == false && _password.equals("password") == false &&
-						_passwordCorrect.equals("passwordCorrect") == false && _email.equals("email") == false/* && _goSignUP == true*/)
+						_passwordCorrect.equals("passwordCorrect") == false && _email.equals("email") == false && _goSignUP == true&&_checkSame==true)
 				{
 					if(_checkPassword == true)
 					{
@@ -365,7 +368,13 @@ import Server.Server_DataBase;
 				}
 				else
 				{
-					showMessage("가입 오류", "모든 항목을 다 입력하지않았거나, 아이디 중복입니다.");
+					if(_checkSame==false){
+						showMessage("가입 오류", "아이디 중복을 확인해 주세요.");
+					}
+					else if(_goSignUP==false&&_checkSame==true)
+					{
+						showMessage("가입 오류", "모든 항목을 다 입력하지않았거나, 아이디 중복입니다.");
+					}
 				}
 			}
 		});

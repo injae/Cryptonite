@@ -49,6 +49,7 @@ public class Server_DataBase
 		
 	}
 	
+	
 	public void Init_DB(String jdbc_driver_name, String url, String id, String password)
 	{
 		_jdbc_driver_name = jdbc_driver_name;
@@ -120,6 +121,11 @@ public class Server_DataBase
 		{
 			System.out.println("can't exit db");				//	e.printStackTrace();
 		}
+	}
+
+	public com.mysql.jdbc.Connection Getcon() {
+		// TODO 자동 생성된 메소드 스텁
+		return (com.mysql.jdbc.Connection) _con;
 	}
 	
 }
