@@ -16,6 +16,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
@@ -25,10 +30,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+
+import Function.Base64Coder;
+import Server.Server_DataBase;
+
 
 
 public class Client_Login extends JFrame
@@ -44,7 +57,8 @@ public class Client_Login extends JFrame
         }
     }
     
-    boolean _firstTime = true;
+	private boolean _checkLogin =false;
+    private boolean _firstTime = true;
     
     JTextField _loginField;
     JPasswordField _passwordField;
@@ -87,6 +101,10 @@ public class Client_Login extends JFrame
     JRadioButton _individual = new JRadioButton();
     JRadioButton _group = new JRadioButton();
     public ButtonGroup _buttonGroup = new ButtonGroup();
+    
+    private void showMessage(String title, String message) {
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+	}
     
     public Client_Login(){
     	setTitle("Cryptonite");
@@ -196,6 +214,104 @@ public class Client_Login extends JFrame
          _Login.setRolloverIcon(new ImageIcon(""));//input buttonimage
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
+          		
+          		Server_DataBase _db;
+				_db=Server_DataBase.getInstance();
+				_db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
+				_db.connect();
+				
+
+				Connection _con=(Connection) _db.Getcon();
+				PreparedStatement _ps = null;
+				ResultSet _rs = null;        
+				String _sql = "select * from test";
+				
+				try{
+					_ps = (PreparedStatement)_con.prepareStatement(_sql);
+					_rs = _ps.executeQuery(); // 쿼리문이 select 로 시작되면 무조건
+					System.out.println("id\tpassword\tenc_password");
+					
+					while(_rs.next()){
+						String _get_id = _rs.getString(2);
+						String _get_pwd = _rs.getString(3);// 두번째 필드의 데이터
+						String _enc_pwd=Encode_password(_password);
+						System.out.println(_get_id+"\t"+_get_pwd+"\t"+_enc_pwd);
+						
+						if(_get_id.equals(_id)&&_enc_pwd.equals(_get_pwd))
+						{
+							_checkLogin=true;
+						}
+					}
+				}catch(SQLException e1){
+					e1.printStackTrace();
+				}
+				if(_checkLogin==true){
+					showMessage("LOGIN", "Welcome,\t"+_id);
+				}
+          		/*if(id.equals("init") == false && password.equals("init") == false){
+         			try 
+         			{
+         				tempPassword = password;		// 임시
+						MessageDigest md = MessageDigest.getInstance("SHA-256");
+						byte[] temp = password.getBytes();
+						md.update(temp);
+						password = new String(Base64Coder.encode(md.digest()));
+						System.out.println("password : " + password);
+						sl = new SendLogin(id,password);
+					} 
+         			catch (NoSuchAlgorithmException e2) 
+         			{
+						e2.printStackTrace();
+					}
+         			
+             		if(sl.getNextLogin() == true){
+             			notifyLogin nl = new notifyLogin();
+             			showMessage("로그인 완료", "로그인이 완료되었습니다.");
+             			nl.login();
+             			cmfu = new Client_MainFrame_UI(getLoginFrame(), id);
+             			
+             			if(sl.getLoginCount() == 1){
+             				showMessage("최초 로그인", "최초로그인 이므로 보호폴더 지정을 하셔야 합니다.");
+             				fc = new Client_FolderChooser_UI(tempPassword,nl,cmfu);
+             				cmfu.mainFrameUI_ON();
+                 			cmfu.setEnabled(false);
+             			}
+             			
+             			if(sl.getLoginCount() >= 2){
+             				cfs = new Client_FolderScan();
+             				loginedUser = nl.getUserObejct();
+             				AES_Key = loginedUser.getAesKey();
+             				PBE pbe = new PBE(loginedUser.getSalt(), 1000);
+             				try 
+             				{
+								cfs.setAES_Key(pbe.decrypt(tempPassword, AES_Key));
+							} 
+             				catch (GeneralSecurityException e1) 
+             				{
+								e1.printStackTrace();
+							}
+             				
+             				cmfu.mainFrameUI_ON();
+                 			cmfu.setEnabled(true);
+             				
+             				csf = new Client_SendFiles();
+             				cea = new Client_checkEncryptionAnime();
+             				
+             				cfs.start();
+             				csf.start();
+             				cea.start();		// 로그인 횟수가 2회 이상일경우 여기서 스레드 시작
+             			}
+             			dispose();
+             			mainFrameFlag = true;
+             		}
+             		else{
+             			if(sl.getPathMac() != 0)	// 수정
+             				showMessage("로그인 실패", "존재하지 않는 아이디거나, 비밀번호가 틀렸습니다.");
+             		}
+         		}
+         		else{
+         			showMessage("로그인 오류", "모든 항목을 입력해주세요.");
+         		}*/
           		if(_individual.isSelected()){
           			
           		}
@@ -226,4 +342,18 @@ public class Client_Login extends JFrame
          setVisible(true);
           	
     }	    
+    
+    public String Encode_password(String _password){
+    	MessageDigest _md = null;
+		try {
+			_md = MessageDigest.getInstance("SHA-256");
+			byte[] temp = _password.getBytes();
+			_md.update(temp);
+			_password = new String(Base64Coder.encode(_md.digest()));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+    	return _password;
+    }
 }
