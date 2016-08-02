@@ -14,7 +14,9 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -28,9 +30,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
 
 import Function.PacketRule;
 import Server.Server_DataBase;
@@ -271,14 +270,14 @@ import Server.Server_DataBase;
 				_db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
 				_db.connect();
 				
-				Connection _con=(Connection) _db.Getcon();
+				Connection _con= _db.Getcon();
 				PreparedStatement _ps = null;
 				ResultSet _rs = null;        
 				String _sql = "select * from test";
 				
 				
 				try{
-					_ps = (PreparedStatement)_con.prepareStatement(_sql);
+					_ps = _con.prepareStatement(_sql);
 					_rs = _ps.executeQuery(); 
 					System.out.println("id");
 					while(_rs.next()){
