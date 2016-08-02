@@ -41,6 +41,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import Function.Base64Coder;
 import Server.Server_DataBase;
+import Server.Server_Login;
 
 
 
@@ -56,17 +57,26 @@ public class Client_Login extends JFrame
             g.drawImage(_img, 0, 0, null);
         }
     }
-    
-	private boolean _checkLogin =false;
+
+	private static boolean _checkLogin =false;
     private boolean _firstTime = true;
     
     JTextField _loginField;
     JPasswordField _passwordField;
     
-    private String _id = "id";
-    private String _password = "password";
+    private static String _id = "id";
+    private static String _password = "password";
     private String _tempPassword = "init";
 
+    public static String getPassword(){
+    	return _password;
+	}
+    public static String getID(){
+    	return _id;
+    }
+    public static boolean getCheckLogin_client(){
+    	return _checkLogin;
+    }
     
     /*//private Client_FolderChooser_UI fc = null;
     
@@ -215,7 +225,7 @@ public class Client_Login extends JFrame
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
           		
-          		Server_DataBase _db;
+          	/*	Server_DataBase _db;
 				_db=Server_DataBase.getInstance();
 				_db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
 				_db.connect();
@@ -238,80 +248,18 @@ public class Client_Login extends JFrame
 						System.out.println(_get_id+"\t"+_get_pwd+"\t"+_enc_pwd);
 						
 						if(_get_id.equals(_id)&&_enc_pwd.equals(_get_pwd))
-						{
+						{g
 							_checkLogin=true;
 						}
 					}
 				}catch(SQLException e1){
 					e1.printStackTrace();
-				}
-				if(_checkLogin==true){
+				}*/
+				if(Server_Login.getCheckLogin_server()==true){
 					showMessage("LOGIN", "Welcome,\t"+_id);
 				}
-          		/*if(id.equals("init") == false && password.equals("init") == false){
-         			try 
-         			{
-         				tempPassword = password;		// 임시
-						MessageDigest md = MessageDigest.getInstance("SHA-256");
-						byte[] temp = password.getBytes();
-						md.update(temp);
-						password = new String(Base64Coder.encode(md.digest()));
-						System.out.println("password : " + password);
-						sl = new SendLogin(id,password);
-					} 
-         			catch (NoSuchAlgorithmException e2) 
-         			{
-						e2.printStackTrace();
-					}
-         			
-             		if(sl.getNextLogin() == true){
-             			notifyLogin nl = new notifyLogin();
-             			showMessage("로그인 완료", "로그인이 완료되었습니다.");
-             			nl.login();
-             			cmfu = new Client_MainFrame_UI(getLoginFrame(), id);
-             			
-             			if(sl.getLoginCount() == 1){
-             				showMessage("최초 로그인", "최초로그인 이므로 보호폴더 지정을 하셔야 합니다.");
-             				fc = new Client_FolderChooser_UI(tempPassword,nl,cmfu);
-             				cmfu.mainFrameUI_ON();
-                 			cmfu.setEnabled(false);
-             			}
-             			
-             			if(sl.getLoginCount() >= 2){
-             				cfs = new Client_FolderScan();
-             				loginedUser = nl.getUserObejct();
-             				AES_Key = loginedUser.getAesKey();
-             				PBE pbe = new PBE(loginedUser.getSalt(), 1000);
-             				try 
-             				{
-								cfs.setAES_Key(pbe.decrypt(tempPassword, AES_Key));
-							} 
-             				catch (GeneralSecurityException e1) 
-             				{
-								e1.printStackTrace();
-							}
-             				
-             				cmfu.mainFrameUI_ON();
-                 			cmfu.setEnabled(true);
-             				
-             				csf = new Client_SendFiles();
-             				cea = new Client_checkEncryptionAnime();
-             				
-             				cfs.start();
-             				csf.start();
-             				cea.start();		// 로그인 횟수가 2회 이상일경우 여기서 스레드 시작
-             			}
-             			dispose();
-             			mainFrameFlag = true;
-             		}
-             		else{
-             			if(sl.getPathMac() != 0)	// 수정
-             				showMessage("로그인 실패", "존재하지 않는 아이디거나, 비밀번호가 틀렸습니다.");
-             		}
-         		}
-         		else{
-         			showMessage("로그인 오류", "모든 항목을 입력해주세요.");
-         		}*/
+				
+				
           		if(_individual.isSelected()){
           			
           		}
@@ -343,7 +291,7 @@ public class Client_Login extends JFrame
           	
     }	    
     
-    public String Encode_password(String _password){
+    public static String Encode_password(String _password){
     	MessageDigest _md = null;
 		try {
 			_md = MessageDigest.getInstance("SHA-256");
@@ -356,4 +304,5 @@ public class Client_Login extends JFrame
 		
     	return _password;
     }
+   
 }
