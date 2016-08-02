@@ -272,17 +272,17 @@ import Server.Server_DataBase;
 				_db.connect();
 				
 				Connection _con=(Connection) _db.Getcon();
-				PreparedStatement _ps = null;// 동적 쿼리를 이용해 보기
-				ResultSet _rs = null;        // 데이터 주소값 이용하기 위함
+				PreparedStatement _ps = null;
+				ResultSet _rs = null;        
 				String _sql = "select * from test";
 				
 				
 				try{
 					_ps = (PreparedStatement)_con.prepareStatement(_sql);
-					_rs = _ps.executeQuery(); // 쿼리문이 select 로 시작되면 무조건
+					_rs = _ps.executeQuery(); 
 					System.out.println("id");
 					while(_rs.next()){
-						String _get_id = _rs.getString(2); // 두번째 필드의 데이터
+						String _get_id = _rs.getString(2);
 						System.out.println(_get_id);
 						if(_get_id.equals(_id)){
 							_checkID=false;
@@ -353,7 +353,7 @@ import Server.Server_DataBase;
 				{
 					if(_checkPassword == true)
 					{
-						showMessage("가입 완료", "회원가입이 완료되었습니다. 로그인해주세요.");
+						showMessage("WELCOME!", "WELCOME TO CRYPTONITE!.");
 
 						//userKeyGenerator _ukg = new userKeyGenerator();
 						_sha = new SHA_256(_name,_id,_password,_email/*,_ukg.genEncAesKey(_password), _ukg.getSalt(), _ukg.getIterationCount()*/);
@@ -362,25 +362,25 @@ import Server.Server_DataBase;
 					}
 					else if(_checkPassword == false)
 					{
-						showMessage("비밀번호 오류", "비밀번호가 일치하지 않습니다.");
+						showMessage("ERROR", "Passcodes did not match.");
 					}
 
 				}
 				else
 				{
 					if(_checkSame==false){
-						showMessage("가입 오류", "아이디 중복을 확인해 주세요.");
+						showMessage("ERROR", "Check whether the duplicates ID");
 					}
 					else if(_goSignUP==false&&_checkSame==true)
 					{
-						showMessage("가입 오류", "모든 항목을 다 입력하지않았거나, 아이디 중복입니다.");
+						showMessage("ERROR", "Did not enter the all items. Or ID are duplicated.");
 					}
 				}
 			}
 		});
 
 		_layeredpane.add(_ok);
-		_layeredpane.add(_panel);//패널1을 레이아웃에 넣기
+		_layeredpane.add(_panel);
 		getContentPane().add(_layeredpane);
 
 
@@ -421,7 +421,7 @@ class SHA_256 implements PacketRule
 			try {
 				_css=Client_Server_Connector.getInstance(4444);
 			} catch (InterruptedException e) {
-				// TODO 자동 생성된 catch 블록
+				
 				e.printStackTrace();
 			}
 			this._name=_name;
