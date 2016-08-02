@@ -56,26 +56,26 @@ public class Client_Login extends JFrame
     
     /*//private Client_FolderChooser_UI fc = null;
     
-    // ï¿½Î±ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½Ñ°ï¿½
+    // ·Î±×ÀÎ Ä«¿îÅÍ ÀÐ¾îÁÖ±â À§ÇÑ °Í
     private FileReader fr = null;
     private String loginCount = null;
     private StringTokenizer st = null;
     
-    // ï¿½Î±ï¿½ï¿½ï¿½ È½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ï¿½Ì»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿? ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // ·Î±×ÀÎ È½¼ö°¡ 2¹øÀÌ»óÀÏ °æ¿ì ¿©±â¼­ ½º·¹µå ½ÇÇà
     private Client_FolderScan cfs = null;
     private Client_SendFiles csf = null;
     private Client_checkEncryptionAnime cea = null;
     private Client_FileShare_Send cfss = null;
     
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ UI
+    // ¸ÞÀÎ ÇÁ·¹ÀÓ UI
     private boolean mainFrameFlag = false;
     private Client_MainFrame_UI cmfu = null;
     
-    // AES_Key ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?
+    // AES_Key ÃßÃâ °ü·Ã
     private User loginedUser = null;
     private byte[] AES_Key = null;
     */
-    // ï¿½ï¿½ ï¿½ï¿½å·¹ï¿½ï¿? ï¿½ï¿½ï¿½ï¿½
+    // ¸Æ ¾îµå·¹½º ÃßÃâ
     
     Font _font1 = new Font("SansSerif", Font.BOLD, 25);
     Font _fontjoin = new Font("SansSerif", Font.BOLD,13);
