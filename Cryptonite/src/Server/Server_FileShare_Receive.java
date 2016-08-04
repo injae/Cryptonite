@@ -94,8 +94,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	@Override
 	public void running(Server_Client_Activity activity)
 	{
-		System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
-		
+		System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");		
 		try
 		{
 			ByteBuffer buffer;
@@ -134,8 +133,9 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		catch (IOException e)
 		{
 			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (InterruptedException e) 
+		{
 			e.printStackTrace();
 		}
 	}
