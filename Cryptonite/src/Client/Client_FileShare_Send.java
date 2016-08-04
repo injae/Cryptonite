@@ -127,6 +127,7 @@ public class Client_FileShare_Send implements PacketRule
 			} 
 			catch (IOException e) 
 			{
+				System.exit(1);
 				e.printStackTrace();
 			}
 		}

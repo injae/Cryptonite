@@ -24,7 +24,6 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	private int _fileCount = 0;
 	private String _fileName = null;
 	private long _fileSize = 0;
-	private int _runningCounter = 0;
 	
 	// FileChannel and RandomAccessFile
 	private RandomAccessFile _raf = null;
@@ -84,6 +83,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		{
 			_raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
 			_fileChannel = _raf.getChannel();
+			_packetCutSize = 1;
 		} 
 		catch (FileNotFoundException e)
 		{
@@ -94,10 +94,10 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	@Override
 	public void running(Server_Client_Activity activity)
 	{
-		//System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
+		System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
+		
 		try
 		{
-			_runningCounter++;
 			ByteBuffer buffer;
 			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 			while(activity.IsReadable())

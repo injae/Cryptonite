@@ -36,12 +36,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
-
 import Function.Base64Coder;
 import Server.Server_DataBase;
-import Server.Server_Login;
 
 
 
@@ -57,26 +53,17 @@ public class Client_Login extends JFrame
             g.drawImage(_img, 0, 0, null);
         }
     }
-
-	private static boolean _checkLogin =false;
+    
+	private boolean _checkLogin =false;
     private boolean _firstTime = true;
     
     JTextField _loginField;
     JPasswordField _passwordField;
     
-    private static String _id = "id";
-    private static String _password = "password";
+    private String _id = "id";
+    private String _password = "password";
     private String _tempPassword = "init";
 
-    public static String getPassword(){
-    	return _password;
-	}
-    public static String getID(){
-    	return _id;
-    }
-    public static boolean getCheckLogin_client(){
-    	return _checkLogin;
-    }
     
     /*//private Client_FolderChooser_UI fc = null;
     
@@ -101,7 +88,7 @@ public class Client_Login extends JFrame
     */
     // 맥 어드레스 추출
     
-    Font _font = new Font("SansSerif", Font.BOLD, 17);
+    Font _font1 = new Font("SansSerif", Font.BOLD, 25);
     Font _fontjoin = new Font("SansSerif", Font.BOLD,13);
     Font _fontid = new Font ("SansSerif", Font.BOLD,15);
     
@@ -130,7 +117,7 @@ public class Client_Login extends JFrame
 
       
         try {
-            _img = ImageIO.read(new File("img/_login.png"));//input image
+            _img = ImageIO.read(new File("D:\\crypto\\_login.png"));//input image
         } catch (IOException e) {
             System.out.println("No Image");
             System.exit(0);
@@ -142,10 +129,10 @@ public class Client_Login extends JFrame
         _buttonGroup.add(_individual);
         _buttonGroup.add(_group);
         
-        _individual.setBounds(180, 200, 20, 20);
+        _individual.setBounds(180, 300, 20, 20);
         _individual.setBorder(BorderFactory.createEmptyBorder());
         _individual.setOpaque(false);
-        _group.setBounds(300, 200, 20, 20);
+        _group.setBounds(300, 300, 20, 20);
         _group.setBorder(BorderFactory.createEmptyBorder());
         _group.setOpaque(false);
         
@@ -154,14 +141,13 @@ public class Client_Login extends JFrame
   
         
         _loginField = new JTextField(15);
-        _loginField.setBounds(162, 264, 180, 20);
+        _loginField.setBounds(134, 327, 200, 30);
         _layeredPane.add(_loginField);
         _loginField.setOpaque(false);
-        _loginField.setForeground(Color.BLACK);
-        _loginField.setFont(_font);
+        _loginField.setForeground(Color.WHITE);
         _loginField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         _loginField.setHorizontalAlignment(JTextField.CENTER);
-        /*_loginField.setText("ID");*/
+        _loginField.setText("ID");
         _loginField.addKeyListener(new KeyListener(){
      		@Override
      		public void keyPressed(KeyEvent e) {}
@@ -184,14 +170,14 @@ public class Client_Login extends JFrame
          });
         
          _passwordField = new JPasswordField(15);
-         _passwordField.setBounds(162, 350, 200, 20);
+         _passwordField.setBounds(136, 395, 200, 30);
          _passwordField.setOpaque(false);
          _passwordField.setForeground(Color.white);
          _passwordField.setFont(_fontid);
          _passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
          _passwordField.setHorizontalAlignment(JTextField.CENTER);
          _passwordField.setEchoChar((char)0);
-         /*_passwordField.setText("PASSWORD");*/
+         _passwordField.setText("PASSWORD");
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
         		 _passwordField.setText("");
@@ -217,51 +203,107 @@ public class Client_Login extends JFrame
          	}
          });
          
-         _Login = new JButton(new ImageIcon("img/_loginbt.png"));//input buttonimage
+         _Login = new JButton(new ImageIcon(""));//input buttonimage
          _Login.setBounds(193, 449, 80, 37);
          _Login.setBorderPainted(false);
          _Login.setFocusPainted(false);
          _Login.setContentAreaFilled(false);
-         _Login.setRolloverIcon(new ImageIcon("img/_loginbtover.png"));
-         _Login.setPressedIcon(new ImageIcon("img/_loginbtpr.png"));//input buttonimage
+         _Login.setRolloverIcon(new ImageIcon(""));//input buttonimage
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
-          		
-          	/*	Server_DataBase _db;
-				_db=Server_DataBase.getInstance();
-				_db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
-				_db.connect();
-				
 
-				Connection _con=(Connection) _db.Getcon();
-				PreparedStatement _ps = null;
-				ResultSet _rs = null;        
-				String _sql = "select * from test";
+      		Server_DataBase _db;
+			_db=Server_DataBase.getInstance();
+			_db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
+			_db.connect();
+
+			try
+			{
+				ResultSet _rs  = _db.Query("select * from test where id like '"+ _id +"';");
+				System.out.println("id\tpassword\tenc_password");
 				
-				try{
-					_ps = (PreparedStatement)_con.prepareStatement(_sql);
-					_rs = _ps.executeQuery(); // 쿼리문이 select 로 시작되면 무조건
-					System.out.println("id\tpassword\tenc_password");
-					
-					while(_rs.next()){
-						String _get_id = _rs.getString(2);
-						String _get_pwd = _rs.getString(3);// 두번째 필드의 데이터
-						String _enc_pwd=Encode_password(_password);
-						System.out.println(_get_id+"\t"+_get_pwd+"\t"+_enc_pwd);
-						
-						if(_get_id.equals(_id)&&_enc_pwd.equals(_get_pwd))
-						{g
-							_checkLogin=true;
-						}
-					}
-				}catch(SQLException e1){
-					e1.printStackTrace();
-				}*/
-				if(Server_Login.getCheckLogin_server()==true){
-					showMessage("LOGIN", "Welcome,\t"+_id);
+				if(!_rs.next()) { System.out.println("없는 아이디 입니다."); }
+				 
+				String _get_id = _rs.getString(2);
+				String _get_pwd = _rs.getString(3);// 두번째 필드의 데이터
+				String _enc_pwd = Encode_password(_password);
+				System.out.println(_get_id+"\t"+_get_pwd+"\t"+_enc_pwd);
+				
+				if(_enc_pwd.equals(_get_pwd))
+				{
+					_checkLogin = true;
+					showMessage("LOGIN", "Welcome,\t"+_id); 
 				}
-				
-				
+			}
+			catch(SQLException e1)
+			{
+				e1.printStackTrace();
+			}				
+
+          		/*if(id.equals("init") == false && password.equals("init") == false){
+         			try 
+         			{
+         				tempPassword = password;		// 임시
+						MessageDigest md = MessageDigest.getInstance("SHA-256");
+						byte[] temp = password.getBytes();
+						md.update(temp);
+						password = new String(Base64Coder.encode(md.digest()));
+						System.out.println("password : " + password);
+						sl = new SendLogin(id,password);
+					} 
+         			catch (NoSuchAlgorithmException e2) 
+         			{
+						e2.printStackTrace();
+					}
+         			
+             		if(sl.getNextLogin() == true){
+             			notifyLogin nl = new notifyLogin();
+             			showMessage("로그인 완료", "로그인이 완료되었습니다.");
+             			nl.login();
+             			cmfu = new Client_MainFrame_UI(getLoginFrame(), id);
+             			
+             			if(sl.getLoginCount() == 1){
+             				showMessage("최초 로그인", "최초로그인 이므로 보호폴더 지정을 하셔야 합니다.");
+             				fc = new Client_FolderChooser_UI(tempPassword,nl,cmfu);
+             				cmfu.mainFrameUI_ON();
+                 			cmfu.setEnabled(false);
+             			}
+             			
+             			if(sl.getLoginCount() >= 2){
+             				cfs = new Client_FolderScan();
+             				loginedUser = nl.getUserObejct();
+             				AES_Key = loginedUser.getAesKey();
+             				PBE pbe = new PBE(loginedUser.getSalt(), 1000);
+             				try 
+             				{
+								cfs.setAES_Key(pbe.decrypt(tempPassword, AES_Key));
+							} 
+             				catch (GeneralSecurityException e1) 
+             				{
+								e1.printStackTrace();
+							}
+             				
+             				cmfu.mainFrameUI_ON();
+                 			cmfu.setEnabled(true);
+             				
+             				csf = new Client_SendFiles();
+             				cea = new Client_checkEncryptionAnime();
+             				
+             				cfs.start();
+             				csf.start();
+             				cea.start();		// 로그인 횟수가 2회 이상일경우 여기서 스레드 시작
+             			}
+             			dispose();
+             			mainFrameFlag = true;
+             		}
+             		else{
+             			if(sl.getPathMac() != 0)	// 수정
+             				showMessage("로그인 실패", "존재하지 않는 아이디거나, 비밀번호가 틀렸습니다.");
+             		}
+         		}
+         		else{
+         			showMessage("로그인 오류", "모든 항목을 입력해주세요.");
+         		}*/
           		if(_individual.isSelected()){
           			
           		}
@@ -270,15 +312,14 @@ public class Client_Login extends JFrame
           		}
           	}
          });
-         _Resistor = new JButton(new ImageIcon("img/_joinbt.png"));
+         _Resistor = new JButton(new ImageIcon(""));
          _Resistor.setFont(_fontjoin);
          _Resistor.setForeground(Color.white);
          _Resistor.setBounds(153,516,155,49);
          _Resistor.setBorderPainted(false);
          _Resistor.setFocusPainted(false);
          _Resistor.setContentAreaFilled(false);
-         _Resistor.setRolloverIcon(new ImageIcon("img/_joinbtover.png"));
-         _Resistor.setPressedIcon(new ImageIcon("img/_joinbtpr.png"));
+         _Resistor.setRolloverIcon(new ImageIcon(""));
          _Resistor.addActionListener(new ActionListener() {
          	public void actionPerformed(ActionEvent arg0) {
          		new Client_SignUp();
@@ -294,7 +335,7 @@ public class Client_Login extends JFrame
           	
     }	    
     
-    public static String Encode_password(String _password){
+    public String Encode_password(String _password){
     	MessageDigest _md = null;
 		try {
 			_md = MessageDigest.getInstance("SHA-256");
@@ -307,5 +348,4 @@ public class Client_Login extends JFrame
 		
     	return _password;
     }
-   
 }
