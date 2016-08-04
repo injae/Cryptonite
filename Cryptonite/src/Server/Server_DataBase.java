@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
 /* ===================================< DataBase Connector >=============================================
  *
  *  Maker   : IN JAE LEE
@@ -123,9 +124,9 @@ public class Server_DataBase
 		}
 	}
 
-	public com.mysql.jdbc.Connection Getcon() {
+	public Connection Getcon() {
 		// TODO 자동 생성된 메소드 스텁
-		return (com.mysql.jdbc.Connection) _con;
+		return _con;
 	}
 	
 }
