@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 /* ===================================< DataBase Connector >=============================================
  *
  *  Maker   : IN JAE LEE
@@ -123,10 +122,4 @@ public class Server_DataBase
 			System.out.println("can't exit db");				//	e.printStackTrace();
 		}
 	}
-
-	public Connection Getcon() {
-		// TODO 자동 생성된 메소드 스텁
-		return _con;
-	}
-	
 }
