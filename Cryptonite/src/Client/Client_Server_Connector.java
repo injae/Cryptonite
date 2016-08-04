@@ -46,7 +46,7 @@ public class Client_Server_Connector extends Thread
 			e.printStackTrace();
 		}
 	}
-
+	
 	public void run()
 	{
 		while(!stopFlag)
@@ -88,6 +88,7 @@ public class Client_Server_Connector extends Thread
 		{
 			sendNotRemove(packetName);
 		}		
+		
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 		buffer.put(buf);
 		buffer.flip();

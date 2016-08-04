@@ -58,7 +58,6 @@ public class Server_Client_Activity implements PacketRule
             _manager = Server_Client_Manager.getInstance();
             _funtionList = new LinkedList<Server_Funtion>();
 
-            
             System.out.println(_channel.toString() + "connect");
 		} 
 		catch (IOException e) 

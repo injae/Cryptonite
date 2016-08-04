@@ -265,7 +265,7 @@ import Server.Server_DataBase;
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-		
+				//--------------------------------------------
 			}
 		});
 		_layeredpane.add(_same);
@@ -320,7 +320,6 @@ import Server.Server_DataBase;
 					{
 						showMessage("ERROR", "Passcodes did not match.");
 					}
-
 				}
 				else
 				{
