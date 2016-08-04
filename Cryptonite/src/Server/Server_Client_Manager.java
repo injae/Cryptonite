@@ -6,7 +6,7 @@ import Function.PacketRule;
 
 public class Server_Client_Manager implements PacketRule
 {	
-	private static Server_Client_Manager _server_client_manager;
+	private static Server_Client_Manager _client_manager;
 	
 	private HashMap<Integer ,Server_Client_Activity> _clientList;	
 	private Queue<Integer> _usableClientCode;
@@ -23,11 +23,11 @@ public class Server_Client_Manager implements PacketRule
 	
 	public static Server_Client_Manager getInstance()
 	{
-		if(_server_client_manager == null)
+		if(_client_manager == null)
 		{
-			_server_client_manager = new Server_Client_Manager();
+			_client_manager = new Server_Client_Manager();
 		}
-		return _server_client_manager;		
+		return _client_manager;		
 	}
 	
 	public int getClientCode()
@@ -48,23 +48,27 @@ public class Server_Client_Manager implements PacketRule
 	}
 	
 	public void packetChecker(Server_Client_Activity activity)
-	{
-		byte[] packet = activity._receiveQueue.remove();
-		
+	{		
+		byte[] packet = activity._receiveQueue.removeLast();
+		System.out.println("packetChecker :"+ packet[0]);
 		switch(packet[0])
 		{
 		case AUTOBACKUP:
-			activity._funtionList.get(AUTOBACKUP).Checker(packet); break;
+			activity._funtionList.add(new Server_AutoBackup());
+			activity._funtionList.getLast().Checker(packet); break;
 		case LOGIN:
-			activity._funtionList.get(LOGIN).Checker(packet); break;
+			activity._funtionList.add(new Server_Login());
+			activity._funtionList.getLast().Checker(packet); break;
 		case FILE_SHARE_RECEIVE:
-			activity._funtionList.get(FILE_SHARE_RECEIVE).Checker(packet); break;
+			activity._funtionList.add(new Server_FileShare_Receive());
+			activity._funtionList.getLast().Checker(packet); break;
 		case FILE_SHARE_SEND:
-			activity._funtionList.get(FILE_SHARE_SEND).Checker(packet); break;
+			activity._funtionList.add(new Server_FileShare_Send());
+			activity._funtionList.getLast().Checker(packet); break;
 		case SIGN_UP:
-			activity._funtionList.get(SIGN_UP).Checker(packet); break;		
+			activity._funtionList.add(new Server_SignUp());
+			activity._funtionList.getLast().Checker(packet); break;
 		}
-		activity._runningFuntion.offer(packet[0]);
 	}
 	
 	public void stopManaging(int clientCode)
@@ -74,13 +78,13 @@ public class Server_Client_Manager implements PacketRule
 	}
 	
 	public void run()
-	{	
-
+	{			
 		while(!_runningQueue.isEmpty())
 		{
 			Server_Client_Activity activity = _clientList.get(_runningQueue.remove());	
 			activity.readableUpdate();
-			activity._funtionList.get(activity._runningFuntion.remove()).running(activity);
+			activity._funtionList.getFirst().running(activity);
+			activity.finishCheck();
 		}
 	}
 }

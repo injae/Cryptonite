@@ -265,54 +265,8 @@ import Server.Server_DataBase;
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				_checkSame=true;
-				/*Connection con=null;
-				con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cryptonite", "root", "yangmalalice3349!");*/
-				Server_DataBase _db;
-				_db=Server_DataBase.getInstance();
-				_db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
-				_db.connect();
-				
-				Connection _con= _db.Getcon();
-				PreparedStatement _ps = null;
-				ResultSet _rs = null;        
-				String _sql = "select * from test";
-				
-				
-				try{
-					_ps = _con.prepareStatement(_sql);
-					_rs = _ps.executeQuery(); 
-					System.out.println("id");
-					while(_rs.next()){
-						String _get_id = _rs.getString(2);
-						System.out.println(_get_id);
-						if(_get_id.equals(_id)){
-							_checkID=false;
-						}
-					}
-				}catch(SQLException e){
-					e.printStackTrace();
-				}
-				if (_id.equals("id")==false)
-				{
-					if(_checkID==false){
-						showMessage("CHECK ID", "Username already taken. Please try another one.");
-						_checkID=true;
-					}
-					else if(_checkID==true){
-						showMessage("CHECK ID", "ID that you can use");
-						_goSignUP = true;
-						
-					}
-				}
-				
-				else
-				{
-					showMessage("ERROR", "Please input id.");
-				}
+				//--------------------------------------------
 			}
-			
-			
 		});
 		_layeredpane.add(_same);
 
@@ -366,7 +320,6 @@ import Server.Server_DataBase;
 					{
 						showMessage("ERROR", "Passcodes did not match.");
 					}
-
 				}
 				else
 				{

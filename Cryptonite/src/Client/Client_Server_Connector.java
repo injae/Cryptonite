@@ -46,7 +46,7 @@ public class Client_Server_Connector extends Thread
 			e.printStackTrace();
 		}
 	}
-
+	
 	public void run()
 	{
 		while(!stopFlag)
@@ -60,6 +60,7 @@ public class Client_Server_Connector extends Thread
 			}
 			catch (IOException e) 
 			{
+				System.exit(1);
 				e.printStackTrace();
 			}
 		}
@@ -87,6 +88,7 @@ public class Client_Server_Connector extends Thread
 		{
 			sendNotRemove(packetName);
 		}		
+		
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 		buffer.put(buf);
 		buffer.flip();
@@ -105,7 +107,7 @@ public class Client_Server_Connector extends Thread
 	public void configurePacket(String packetName)
 	{
 		try {
-			Thread.sleep(300);
+			Thread.sleep(100);
 		} catch (InterruptedException e1) {
 			// TODO 자동 생성된 catch 블록
 			e1.printStackTrace();
@@ -135,6 +137,7 @@ public class Client_Server_Connector extends Thread
 			}
 			catch (IOException e) 
 			{
+				System.exit(1);
 				e.printStackTrace();
 			}
 		}

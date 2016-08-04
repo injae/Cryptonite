@@ -6,6 +6,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -17,20 +18,23 @@ public class Server_Client_Activity implements PacketRule
 {
 	private SocketChannel _channel;
 	
-	public Queue<byte[]> _receiveQueue; 
+	public Deque<byte[]> _receiveQueue; 
 	public Queue<ByteBuffer> _sendQueue;
 	
-	public Queue<Byte> _runningFuntion;
 	private Queue<Integer> _readableQueue;
 	
 	private int _packetCount = 0;
 	public Integer _readableCount = 0;
 	public int _readingCount = 0;
+	private int _usedCount = 1;
 	
 	private int _clientCode = 0;
 	private int LIMIT_PACKET = 10;
 	
-	public HashMap<Byte, Server_Funtion> _funtionList;
+	public Server_User_Info _loginInfo;	
+	public LinkedList<Server_Funtion> _funtionList;
+	
+	public Server_Client_Manager _manager;
 	
 	public Server_Client_Activity(Selector selector, SelectionKey key, int clientCode)
 	{
@@ -48,16 +52,12 @@ public class Server_Client_Activity implements PacketRule
             
             _receiveQueue = new LinkedList<byte[]>();            
             _sendQueue = new LinkedList<ByteBuffer>();
-            _runningFuntion = new LinkedList<Byte>();
             _readableQueue = new LinkedList<Integer>();
             
-            _funtionList = new HashMap<Byte, Server_Funtion>();
-            _funtionList.put(AUTOBACKUP, new Server_AutoBackup());
-            _funtionList.put(LOGIN, new Server_Login());
-            _funtionList.put(FILE_SHARE_RECEIVE, new Server_FileShare_Receive());
-            _funtionList.put(FILE_SHARE_SEND, new Server_FileShare_Send());
-            _funtionList.put(SIGN_UP,new Server_SignUp());
-            
+            _loginInfo = new Server_User_Info();
+            _manager = Server_Client_Manager.getInstance();
+            _funtionList = new LinkedList<Server_Funtion>();
+
             System.out.println(_channel.toString() + "connect");
 		} 
 		catch (IOException e) 
@@ -116,12 +116,12 @@ public class Server_Client_Activity implements PacketRule
 	public void Receiver() throws IOException 
 	{	
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
-		int count = _channel.read(buffer);			
-		buffer.flip();
+		int count = _channel.read(buffer);		
 		
+		buffer.flip();
 		byte[] array = new byte[buffer.remaining()];	
 		buffer.get(array);
-
+		
 		_receiveQueue.add(array);	
 		_packetCount++;
 		_readableCount++;
@@ -130,29 +130,39 @@ public class Server_Client_Activity implements PacketRule
 		if(_packetCount == 1)
 		{
 			_readableCount--;
-			Server_Client_Manager.getInstance().packetChecker(this);
+			_manager.packetChecker(this);
 		}
-		if(!_runningFuntion.isEmpty())
+		else
 		{
-			if(_funtionList.get(_runningFuntion.element())._packetMaxCount == _packetCount)
+			if(_funtionList.getLast()._packetMaxCount == _packetCount)
 			{
 				_readableQueue.offer(_readableCount);
 				_packetCount = 0;
 				_readableCount = 0;
-				Server_Client_Manager.getInstance().requestManage(_clientCode);
+				_manager.requestManage(_clientCode);
 			}
-			else if(_readableCount >= LIMIT_PACKET)
+			else if(_readableCount >= _funtionList.getLast().getLimitSize())
 			{			
 				_readableQueue.offer(_readableCount);
-				_runningFuntion.offer(_runningFuntion.element());
 				_readableCount = 0;
-				Server_Client_Manager.getInstance().requestManage(_clientCode);
+				_manager.requestManage(_clientCode);
 			}
 		}
 	}
 	public void readableUpdate()
 	{
 		_readingCount = _readableQueue.remove();
+		_usedCount +=  _readingCount;
+	}
+	
+	public void finishCheck()
+	{
+		if(_usedCount == _funtionList.getFirst()._packetMaxCount)
+		{
+			_funtionList.removeFirst();
+			_usedCount = 1;
+			System.out.println("finish");
+		}
 	}
 	
 	public boolean IsReadable()
