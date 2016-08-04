@@ -92,7 +92,7 @@ import Server.Server_DataBase;
 		JButton _ok;
 		JButton _cancel;
 
-		Font fontblank = new Font ("SansSerif", Font.BOLD,13);
+		 Font _font = new Font ("SansSerif", Font.BOLD,17);
 	
 		Client_Server_Connector _css;
 
@@ -104,15 +104,14 @@ import Server.Server_DataBase;
 				e1.printStackTrace();
 			}
 			setTitle("CRYPTONITE");
-			setBounds(710,200,508, 660);//Input value
-
+			setBounds(710,200,508,730);//Input value
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			setBackground(Color.BLACK);
-
+			setLocationRelativeTo(null);
 			try
 			{
-				_img = ImageIO.read(new File("D:\\crypto\\resistor.png"));//Input MainImage
+				_img = ImageIO.read(new File("img/_resistor.png"));//Input MainImage
 				
 			}catch(IOException e){
 				System.out.println("No Image.");
@@ -120,16 +119,18 @@ import Server.Server_DataBase;
 			}
 
 			JLayeredPane _layeredpane =new JLayeredPane();
-			_layeredpane.setBounds(0, 0, 490, 655);//input value
+			_layeredpane.setBounds(0, 0, 510, 660);//input value
 			_layeredpane.setLayout(null);
 
 			Mypanel _panel = new Mypanel();
 			_panel.setBounds(0,0,490,655);//input value  
 
 			_nameField = new JTextField();
-			_nameField.setBounds(193,290, 130, 20);//input value
+			_nameField.setBounds(186, 272, 160, 20);//input value
+			_nameField.setFont(_font);
 			_nameField.setBorder(BorderFactory.createEmptyBorder());
 			_nameField.setForeground(Color.BLACK);
+			_nameField.setOpaque(false); 
 
 			_nameField.addKeyListener(new KeyListener()
 			{
@@ -151,11 +152,11 @@ import Server.Server_DataBase;
 			_layeredpane.add(_nameField);
 
 			_idField = new JTextField();
-			_idField.setBounds(193, 326, 130, 20);//input value
-
+			_idField.setBounds(186, 326, 160, 20);//input value
+			_idField.setFont(_font);
 			_idField.setForeground(Color.BLACK);
 			_idField.setBorder(BorderFactory.createEmptyBorder());
-			//_idField.setOpaque(false);
+			_idField.setOpaque(false);
 
 			_idField.addKeyListener(new KeyListener()
 			{
@@ -175,11 +176,12 @@ import Server.Server_DataBase;
 			_layeredpane.add(_idField);
 
 			_passwdField = new JPasswordField();
-			_passwdField.setBounds(194, 365, 130, 20);//input value
-
+			_passwdField.setBounds(186, 380, 130, 20);//input value
+			_passwdField.setFont(_font);
 			_passwdField.setEchoChar('¡Ü');
 			_passwdField.setBorder(BorderFactory.createEmptyBorder());
 			_passwdField.setForeground(Color.BLACK);
+			/*_passwdField.setText("input condition");*/
 			//_passwdField.setOpaque(false);
 			_passwdField.addKeyListener(new KeyListener()
 		{
@@ -197,12 +199,13 @@ import Server.Server_DataBase;
 		});
 			_layeredpane.add(_passwdField);
 
-			_passwdCorrectField = new JPasswordField();
-			_passwdCorrectField.setBounds(194, 408, 130, 20);//input value
+			_passwdCorrectField = new JPasswordField(15);
+			_passwdCorrectField.setBounds(186, 435, 130, 20);//input value
+			_passwdCorrectField.setFont(_font);
 			_passwdCorrectField.setEchoChar('¡Ü');
 			_passwdCorrectField.setBorder(BorderFactory.createEmptyBorder());
 			_passwdCorrectField.setForeground(Color.BLACK);
-			//_passwdCorrectField.setOpaque(false);
+			_passwdCorrectField.setOpaque(false);
 			_passwdCorrectField.addKeyListener(new KeyListener()
 		{
 				@Override
@@ -231,10 +234,10 @@ import Server.Server_DataBase;
 		_layeredpane.add( _passwdCorrectField);
 
 		_emailField = new JTextField();
-		_emailField.setBounds(193, 455, 160, 20);//input value
+		_emailField.setBounds(186, 490, 140, 20);//input value
 		_emailField.setBorder(BorderFactory.createEmptyBorder());
 		_emailField.setForeground(Color.BLACK);
-		//_emailField.setOpaque(false);
+		_emailField.setOpaque(false);
 		_emailField.addKeyListener(new KeyListener()
 		{
 			@Override
@@ -252,8 +255,8 @@ import Server.Server_DataBase;
 		});
 		_layeredpane.add(_emailField);
 
-		_same = new JButton(new ImageIcon(""));//Input IconImage
-		_same.setRolloverIcon(new ImageIcon(""));
+		_same = new JButton(new ImageIcon("img/_check.png"));//Input IconImage
+		_same.setPressedIcon(new ImageIcon("img/_checkpr.png"));
 		_same.setBounds(356, 312, 80, 38);//input value
 		_same.setBorderPainted(false);
 		_same.setFocusPainted(false);
@@ -313,9 +316,9 @@ import Server.Server_DataBase;
 		});
 		_layeredpane.add(_same);
 
-		_cancel = new JButton(new ImageIcon(""));//Input IconImage
-		_cancel.setRolloverIcon(new ImageIcon(""));
-		_cancel.setPressedIcon(new ImageIcon(""));
+		_cancel = new JButton(new ImageIcon("img/_cancel.png"));//Input IconImage
+/*		_cancel.setRolloverIcon(new ImageIcon(""));*/
+		_cancel.setPressedIcon(new ImageIcon("img/_cancelpr.png"));
 
 		_cancel.setBounds(260, 544, 82, 38);//input value
 		_cancel.setBorder(BorderFactory.createEmptyBorder());
@@ -334,9 +337,9 @@ import Server.Server_DataBase;
 		});
 		_layeredpane.add(_cancel);
 
-		_ok = new JButton(new ImageIcon(""));//Input IconImage
-		_ok.setRolloverIcon(new ImageIcon(""));
-		_ok.setPressedIcon(new ImageIcon(""));
+		_ok = new JButton(new ImageIcon("img/_resistor'sjoin.png"));//Input IconImage
+		/*_ok.setRolloverIcon(new ImageIcon(""));*/
+		_ok.setPressedIcon(new ImageIcon("img/_resistor'sjoinpr.png"));
 
 		_ok.setBounds(156, 544, 82, 38);//input value
 		_ok.setBorderPainted(false);
@@ -372,7 +375,7 @@ import Server.Server_DataBase;
 					}
 					else if(_goSignUP==false&&_checkSame==true)
 					{
-						showMessage("ERROR", "Did not enter the all items. Or ID are duplicated.");
+						showMessage("ERROR", "Did not enter the all items. Or ID are duplicated. Or Passcodes did not match.");
 					}
 				}
 			}

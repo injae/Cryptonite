@@ -101,7 +101,7 @@ public class Client_Login extends JFrame
     */
     // 맥 어드레스 추출
     
-    Font _font1 = new Font("SansSerif", Font.BOLD, 25);
+    Font _font = new Font("SansSerif", Font.BOLD, 17);
     Font _fontjoin = new Font("SansSerif", Font.BOLD,13);
     Font _fontid = new Font ("SansSerif", Font.BOLD,15);
     
@@ -130,7 +130,7 @@ public class Client_Login extends JFrame
 
       
         try {
-            _img = ImageIO.read(new File("D:\\crypto\\_login.png"));//input image
+            _img = ImageIO.read(new File("img/_login.png"));//input image
         } catch (IOException e) {
             System.out.println("No Image");
             System.exit(0);
@@ -142,10 +142,10 @@ public class Client_Login extends JFrame
         _buttonGroup.add(_individual);
         _buttonGroup.add(_group);
         
-        _individual.setBounds(180, 300, 20, 20);
+        _individual.setBounds(180, 200, 20, 20);
         _individual.setBorder(BorderFactory.createEmptyBorder());
         _individual.setOpaque(false);
-        _group.setBounds(300, 300, 20, 20);
+        _group.setBounds(300, 200, 20, 20);
         _group.setBorder(BorderFactory.createEmptyBorder());
         _group.setOpaque(false);
         
@@ -154,13 +154,14 @@ public class Client_Login extends JFrame
   
         
         _loginField = new JTextField(15);
-        _loginField.setBounds(134, 327, 200, 30);
+        _loginField.setBounds(162, 264, 180, 20);
         _layeredPane.add(_loginField);
         _loginField.setOpaque(false);
-        _loginField.setForeground(Color.WHITE);
+        _loginField.setForeground(Color.BLACK);
+        _loginField.setFont(_font);
         _loginField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         _loginField.setHorizontalAlignment(JTextField.CENTER);
-        _loginField.setText("ID");
+        /*_loginField.setText("ID");*/
         _loginField.addKeyListener(new KeyListener(){
      		@Override
      		public void keyPressed(KeyEvent e) {}
@@ -183,14 +184,14 @@ public class Client_Login extends JFrame
          });
         
          _passwordField = new JPasswordField(15);
-         _passwordField.setBounds(136, 395, 200, 30);
+         _passwordField.setBounds(162, 350, 200, 20);
          _passwordField.setOpaque(false);
          _passwordField.setForeground(Color.white);
          _passwordField.setFont(_fontid);
          _passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
          _passwordField.setHorizontalAlignment(JTextField.CENTER);
          _passwordField.setEchoChar((char)0);
-         _passwordField.setText("PASSWORD");
+         /*_passwordField.setText("PASSWORD");*/
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
         		 _passwordField.setText("");
@@ -216,12 +217,13 @@ public class Client_Login extends JFrame
          	}
          });
          
-         _Login = new JButton(new ImageIcon(""));//input buttonimage
+         _Login = new JButton(new ImageIcon("img/_loginbt.png"));//input buttonimage
          _Login.setBounds(193, 449, 80, 37);
          _Login.setBorderPainted(false);
          _Login.setFocusPainted(false);
          _Login.setContentAreaFilled(false);
-         _Login.setRolloverIcon(new ImageIcon(""));//input buttonimage
+         _Login.setRolloverIcon(new ImageIcon("img/_loginbtover.png"));
+         _Login.setPressedIcon(new ImageIcon("img/_loginbtpr.png"));//input buttonimage
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
           		
@@ -268,14 +270,15 @@ public class Client_Login extends JFrame
           		}
           	}
          });
-         _Resistor = new JButton(new ImageIcon(""));
+         _Resistor = new JButton(new ImageIcon("img/_joinbt.png"));
          _Resistor.setFont(_fontjoin);
          _Resistor.setForeground(Color.white);
          _Resistor.setBounds(153,516,155,49);
          _Resistor.setBorderPainted(false);
          _Resistor.setFocusPainted(false);
          _Resistor.setContentAreaFilled(false);
-         _Resistor.setRolloverIcon(new ImageIcon(""));
+         _Resistor.setRolloverIcon(new ImageIcon("img/_joinbtover.png"));
+         _Resistor.setPressedIcon(new ImageIcon("img/_joinbtpr.png"));
          _Resistor.addActionListener(new ActionListener() {
          	public void actionPerformed(ActionEvent arg0) {
          		new Client_SignUp();
