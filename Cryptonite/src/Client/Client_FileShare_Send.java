@@ -45,7 +45,7 @@ public class Client_FileShare_Send implements PacketRule
 		{
 			_csc = Client_Server_Connector.getInstance(4444);
 			_cfs = new Client_FileSelector();
-		} 
+		}
 		catch (InterruptedException e) 
 		{
 			e.printStackTrace();
