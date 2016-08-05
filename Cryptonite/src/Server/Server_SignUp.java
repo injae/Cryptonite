@@ -11,8 +11,8 @@ public class Server_SignUp extends Server_Funtion
 	@Override
 	public void Checker(byte[] packet) 
 	{
-		_packetMaxCount = packet[0];
 		_mode=packet[1];
+		_packetMaxCount = packet[2];	
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class Server_SignUp extends Server_Funtion
 		if(_mode==1)
 		{
 			
-			String client_id = new String( activity._receiveQueue.remove());
+			String client_id = new String( activity._receiveQueue.remove()).trim();
 		    
 			byte[] _checkid=new byte[2];
 			try

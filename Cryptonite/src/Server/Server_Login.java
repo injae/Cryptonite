@@ -17,7 +17,7 @@ public class Server_Login extends Server_Funtion
 	public void Checker(byte[] packet) 
 	{
 		// TODO 자동 생성된 메소드 스텁
-		_packetMaxCount=packet[0];
+		_packetMaxCount=packet[1];
 		
 	}
 
@@ -25,21 +25,22 @@ public class Server_Login extends Server_Funtion
 	public void running(Server_Client_Activity activity) {
 		// TODO 자동 생성된 메소드 스텁
 		
-	String id = new String( activity._receiveQueue.remove());
-	String password= new String( activity._receiveQueue.remove());
+	String id = new String( activity._receiveQueue.remove()).trim();
+	String password= new String( activity._receiveQueue.remove()).trim();
     
-	byte[] _checkLogin=new byte[2];
+	System.out.println(id);
+	
+	byte[] _checkLogin=new byte[1024];
 	try
     {
        ResultSet _rs  = _db.Query("select * from test where id like '"+ id +"';");
-       System.out.println("id\tpassword\tenc_password");
        
        if(!_rs.next()) 
-       {
+       {	
     	   _checkLogin[0]=1; 
        }
        else
-       { 
+       { 	
 	       String _get_pwd = _rs.getString(3);// 두번째 필드의 데이터
 	       
 	       if(_get_pwd.equals(password)){
@@ -49,8 +50,10 @@ public class Server_Login extends Server_Funtion
 	    	   _checkLogin[0]=3;
 	       }   
        }
+       System.out.println(_checkLogin[0]);
        activity.Sender(_checkLogin);
        activity.send();
+       System.out.println("보냄");
     }
     catch(SQLException e1)
     {

@@ -41,19 +41,14 @@ import Server.Server_DataBase;
 		}
 		
 		private boolean _checkID = true;
+		private boolean _checkSame=false;
 		private boolean _checkPassword=false;
-		public static boolean _checkSame=false;
 		public static boolean _goSignUP = false;
 		public static boolean _goFolderScan = false;
 		
 		public static boolean getGoSignUP()
 		{		   
 			return _goSignUP;
-
-		}
-		public static boolean getCheckSame()
-		{		   
-			return _checkSame;
 
 		}
 
@@ -97,6 +92,7 @@ import Server.Server_DataBase;
 		public Client_SignUp(){
 			try {
 				_csc=Client_Server_Connector.getInstance(4444);
+				_csc.start();
 			} catch (InterruptedException e) {
 				// TODO 자동 생성된 catch 블록
 				e.printStackTrace();
