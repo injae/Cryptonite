@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mRegisterButton = (Button) findViewById(R.id.register_button);
+        ImageButton mRegisterButton = (ImageButton) findViewById(R.id.register_button);
         mRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button midSignInButton = (Button) findViewById(R.id.sign_in_button);
+        ImageButton midSignInButton = (ImageButton) findViewById(R.id.sign_in_button);
         midSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

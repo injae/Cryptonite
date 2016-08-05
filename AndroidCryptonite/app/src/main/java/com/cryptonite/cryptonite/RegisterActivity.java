@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.nio.ByteBuffer;
@@ -32,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     private View mRegisterFormView;
     private View mProgressView;
     private EditText mname,mid,mpassword,mpassword_re,memail;
-    private Button mRegisterButton;
+    private ImageButton mRegisterButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
         mpassword_re = (EditText) findViewById(R.id.register_password_retype);
         memail = (EditText) findViewById(R.id.register_email);
 
-        mRegisterButton = (Button) findViewById(R.id.register_attempt_button);
+        mRegisterButton = (ImageButton) findViewById(R.id.register_attempt_button);
 
         // OnClick Register Button
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
