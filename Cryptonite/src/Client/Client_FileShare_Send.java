@@ -33,7 +33,6 @@ public class Client_FileShare_Send implements PacketRule
 	
 	private File _tempFile = null;
 	private long[] _fileSizeArray = null;
-	//private byte[][] _fileSizeByte = null;
 	
 	// Another Class Instance
 	private Client_Server_Connector _csc = null;
@@ -110,7 +109,8 @@ public class Client_FileShare_Send implements PacketRule
 				
 				byte[] test = new byte[1024];
 				test = _csc.receiveByteArray();
-				System.out.println(new String(test).trim()); //
+				_OTP = new String(test).trim();
+				System.out.println("OTP : " + _OTP);
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
 				_fileChannel = _raf.getChannel();
