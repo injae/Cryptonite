@@ -34,8 +34,9 @@ import javax.swing.JTextField;
 import Function.PacketRule;
 import Server.Server_DataBase;
 
-	public class Client_SignUp extends JFrame //Create new account
+	public class Client_SignUp extends JFrame implements PacketRule //Create new account
 	//Create new page
+	
 	{											
 		BufferedImage _img=null;
 		SHA_256 _sha = null;
@@ -87,6 +88,8 @@ import Server.Server_DataBase;
 		private String _email="email";
 		private String _password="password";
 		private String _passwordCorrect="passwordCorrect";
+		
+		Client_Server_Connector _csc;
 
 		JButton _same;
 		JButton _ok;
@@ -98,10 +101,10 @@ import Server.Server_DataBase;
 
 		public Client_SignUp(){
 			try {
-				_css=Client_Server_Connector.getInstance(4444);
-			} catch (InterruptedException e1) {
+				_csc=Client_Server_Connector.getInstance(4444);
+			} catch (InterruptedException e) {
 				// TODO 자동 생성된 catch 블록
-				e1.printStackTrace();
+				e.printStackTrace();
 			}
 			setTitle("CRYPTONITE");
 			setBounds(710,200,508,730);//Input value
@@ -265,7 +268,26 @@ import Server.Server_DataBase;
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				//--------------------------------------------
+				byte size=2;
+				_csc.configurePacket("id");
+				
+				byte[] event=new byte[3];
+				event[0] =SIGN_UP;
+				event[1]=1;
+				event[2]=size;
+			
+				_csc.setPacket("id", _id.getBytes());
+				
+				_csc.send("id");
+				
+				byte[] _Checkid=_csc.receiveByteArray();
+				
+				switch(_Checkid[0]){
+				case 1 :
+					_checkSame=true;
+				case 2 :
+					_checkSame=false;
+				}
 			}
 		});
 		_layeredpane.add(_same);
@@ -304,29 +326,34 @@ import Server.Server_DataBase;
 		{
 			public void actionPerformed(ActionEvent _arg0)
 			{
-				if(_name.equals("name") == false && _id.equals("id") == false && _password.equals("password") == false &&
-						_passwordCorrect.equals("passwordCorrect") == false && _email.equals("email") == false && _goSignUP == true&&_checkSame==true)
+				if(!_name.equals("name") && !_id.equals("id")&& !_password.equals("password") &&!_passwordCorrect.equals("passwordCorrect") 
+						&& !_email.equals("email") &&_checkSame)
 				{
-					if(_checkPassword == true)
+					if(_checkPassword)
 					{
-						showMessage("WELCOME!", "WELCOME TO CRYPTONITE!.");
-
-						//userKeyGenerator _ukg = new userKeyGenerator();
-						_sha = new SHA_256(_name,_id,_password,_email/*,_ukg.genEncAesKey(_password), _ukg.getSalt(), _ukg.getIterationCount()*/);
-
-						dispose();
+						 _goSignUP=true;
+						
 					}
-					else if(_checkPassword == false)
+					else if(!_checkPassword)
 					{
 						showMessage("ERROR", "Passcodes did not match.");
 					}
 				}
-				else
-				{
-					if(_checkSame==false){
+				
+				if(_goSignUP){
+					
+					showMessage("WELCOME!", "WELCOME TO CRYPTONITE!.");
+
+					//userKeyGenerator _ukg = new userKeyGenerator();
+					_sha = new SHA_256(_name,_id,_password,_email/*,_ukg.genEncAesKey(_password), _ukg.getSalt(), _ukg.getIterationCount()*/);
+
+					dispose();
+				}
+				else{
+					if(!_checkSame){
 						showMessage("ERROR", "Check whether the duplicates ID");
 					}
-					else if(_goSignUP==false&&_checkSame==true)
+					else if(_goSignUP==false&&_checkSame)
 					{
 						showMessage("ERROR", "Did not enter the all items. Or ID are duplicated. Or Passcodes did not match.");
 					}
@@ -395,9 +422,10 @@ class SHA_256 implements PacketRule
 			_css.configurePacket("resistor");
 			_size=5;
 					
-			byte[] _buf = new byte[2];
+			byte[] _buf = new byte[3];
 			_buf[0] = SIGN_UP;
-			_buf[1] = _size;
+			_buf[1]=2;
+			_buf[2] = _size;
 		 	/*ByteBuffer _message = ByteBuffer.allocateDirect(1024);
 			ByteBuffer _name_byte = ByteBuffer.allocateDirect(1024);
 			ByteBuffer _id_byte = ByteBuffer.allocateDirect(1024);

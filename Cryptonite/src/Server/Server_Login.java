@@ -12,10 +12,12 @@ import Client.Client_Login;
 
 public class Server_Login extends Server_Funtion
 {
+	Server_DataBase _db = Server_DataBase.getInstance();
 	@Override
 	public void Checker(byte[] packet) 
 	{
 		// TODO 자동 생성된 메소드 스텁
+		_packetMaxCount=packet[0];
 		
 	}
 
@@ -23,33 +25,37 @@ public class Server_Login extends Server_Funtion
 	public void running(Server_Client_Activity activity) {
 		// TODO 자동 생성된 메소드 스텁
 		
-   /*     Server_DataBase _db;
-    _db=Server_DataBase.getInstance();
-    _db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "yangmalalice3349!");
-    _db.connect();
-
-    try
+	String id = new String( activity._receiveQueue.remove());
+	String password= new String( activity._receiveQueue.remove());
+    
+	byte[] _checkLogin=new byte[2];
+	try
     {
-       ResultSet _rs  = _db.Query("select * from test where id like '"+ _id +"';");
+       ResultSet _rs  = _db.Query("select * from test where id like '"+ id +"';");
        System.out.println("id\tpassword\tenc_password");
        
-       if(!_rs.next()) { System.out.println("없는 아이디 입니다."); }
-        
-       String _get_id = _rs.getString(2);
-       String _get_pwd = _rs.getString(3);// 두번째 필드의 데이터
-       String _enc_pwd = Encode_password(_password);
-       System.out.println(_get_id+"\t"+_get_pwd+"\t"+_enc_pwd);
-       
-       if(_enc_pwd.equals(_get_pwd))
+       if(!_rs.next()) 
        {
-          _checkLogin = true;
-          showMessage("LOGIN", "Welcome,\t"+_id); 
+    	   _checkLogin[0]=1; 
        }
+       else
+       { 
+	       String _get_pwd = _rs.getString(3);// 두번째 필드의 데이터
+	       
+	       if(_get_pwd.equals(password)){
+	    	   _checkLogin[0]=2;
+	       }
+	       else{
+	    	   _checkLogin[0]=3;
+	       }   
+       }
+       activity.Sender(_checkLogin);
+       activity.send();
     }
     catch(SQLException e1)
     {
        e1.printStackTrace();
     }         
-*/
+
 	}
 }
