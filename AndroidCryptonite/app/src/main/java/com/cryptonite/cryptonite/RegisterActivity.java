@@ -213,19 +213,19 @@ public class RegisterActivity extends AppCompatActivity {
             try {
                 Client_Server_Connector css = Client_Server_Connector.getInstance(4444);
 
-                byte[] temp = new byte[2];
-                temp[0] = 5;
-                temp[1] = 5;
+                byte[] op = new byte[2];
+                op[0] = 5;
+                op[1] = 5;
 
                 Charset cs = Charset.forName("UTF-8");
 
-                ByteBuffer bb = cs.encode(mname);
-                bb.flip();
+                ByteBuffer name = cs.encode(mname);
+                name.flip();
 
 
                 css.configurePacket("register");
-                css.setPacket("register",temp);
-                css.setPacket("register",bb.array());
+                css.setPacket("register",op);
+                css.setPacket("register",name.array());
                 css.setPacket("register",mid.getBytes());
                 css.setPacket("register",mPassword.getBytes());
                 css.setPacket("register",memail.getBytes());
