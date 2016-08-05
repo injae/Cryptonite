@@ -77,7 +77,8 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	public void Checker(byte[] packet) 
 	{
 		setFileInformation(packet);
-		_packetMaxCount = 1 + sendPacketSize(_fileSize);
+		_packetMaxCount = 1 + 1 + sendPacketSize(_fileSize);
+		System.out.println("packetMaxCount : " + _packetMaxCount);
 		
 		try 
 		{
@@ -95,48 +96,62 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	public void running(Server_Client_Activity activity)
 	{
 		System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");		
-		try
+		if(_count == 1)
 		{
-			ByteBuffer buffer;
-			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-			while(activity.IsReadable())
-			{
-				_count++;
-				buffer.clear();
-				buffer.put(activity._receiveQueue.remove());
-				
-				_fileSize -= FILE_BUFFER_SIZE;
-				buffer.flip();
-				while(!_fileChannel.isOpen())
-				{
-					Thread.sleep(1);
-				}
-				_fileChannel.write(buffer);
-				
-				if(_fileSize <= 0)
-				{
-					break;
-				}
-			}
+			activity._receiveQueue.remove();
 			
-			if(_count == _packetMaxCount)
+			byte[] test = new byte[1024];
+			test = "HELLO CLIENT".getBytes();
+			activity.Sender(test);
+			activity.send();
+			_count++;
+		}
+		else
+		{
+			try
 			{
-				System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
-				_fileChannel.close();
-				_count = 1;
+				ByteBuffer buffer;
+				buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
+				while(activity.IsReadable())
+				{
+					_count++;
+					buffer.clear();
+					buffer.put(activity._receiveQueue.remove());
+					
+					_fileSize -= FILE_BUFFER_SIZE;
+					buffer.flip();
+					while(!_fileChannel.isOpen())
+					{
+						Thread.sleep(1);
+					}
+					_fileChannel.write(buffer);
+					
+					if(_fileSize <= 0)
+					{
+						break;
+					}
+				}
+				System.out.println("Count : " + _count);
+				
+				if(_count == _packetMaxCount)
+				{
+					System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
+					_fileChannel.close();
+					_count = 1;
+				}
 			}
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
+			catch (FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 }

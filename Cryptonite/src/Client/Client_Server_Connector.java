@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
 
+import org.omg.Messaging.SyncScopeHelper;
+
 public class Client_Server_Connector extends Thread
 {
 	private static Client_Server_Connector _singleton = null;
@@ -117,15 +119,43 @@ public class Client_Server_Connector extends Thread
 
 	public ByteBuffer receiveByteBuffer()
 	{
+		while(!_packetList.isEmpty())
+		{
+			try 
+			{
+				Thread.sleep(1);
+			} 
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
 		return _packetList.get("receive").remove();
 	}
 	
-	public byte[] receiveByteArray()
+	public byte[] receiveByteArray() throws IOException
 	{
-		return _packetList.get("receive").remove().array();
+		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+		
+		while(_packetList.get("receive").isEmpty())
+		{
+			try 
+			{
+				Thread.sleep(1);
+			} 
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		buffer = _packetList.get("receive").remove();
+		byte[] temp = new byte[buffer.remaining()];
+		buffer.get(temp, 0, temp.length);
+		
+		return temp;
 	}
 
-	private void sendNotRemove(String packetName)
+	public void sendNotRemove(String packetName)
 	{
 		Queue<ByteBuffer> output = _packetList.get(packetName);
 		
@@ -167,6 +197,24 @@ public class Client_Server_Connector extends Thread
 		{
 			send(_packetNameList.get(0));
 			_packetNameList.remove(0);
+		}
+	}
+	
+	public void sendAllNotRemove(String packetName)
+	{
+		Queue<ByteBuffer> output = _packetList.get(packetName);
+		
+		while(!output.isEmpty())
+		{
+			try 
+			{
+				_channel.write(output.remove());
+			}
+			catch (IOException e) 
+			{
+				System.exit(1);
+				e.printStackTrace();
+			}
 		}
 	}
 
