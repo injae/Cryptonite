@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:android.support.design="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -30,9 +31,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/_logo"
+                android:layout_marginBottom="10dp" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme">
 
                 <AutoCompleteTextView
                     android:id="@+id/id"
@@ -63,22 +73,37 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/sign_in_button"
-                style="?android:textAppearanceSmall"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
-                android:textStyle="bold" />
+                android:weightSum="1">
 
-            <Button
-                android:id="@+id/register_button"
-                android:layout_width="match_parent"
-                style="?android:textAppearanceSmall"
-                android:layout_height="wrap_content"
-                android:text="@string/action_register"
-                android:textStyle="bold" />
+                <ImageButton
+                    android:id="@+id/register_button"
+                    android:layout_width="80dp"
+                    style="?android:textAppearanceSmall"
+                    android:layout_height="40dp"
+                    android:src="@drawable/joinbt_selector"
+                    android:background="#00000000" />
+
+                <Space
+                    android:layout_width="20px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.91" />
+
+                <ImageButton
+                    android:id="@+id/sign_in_button"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/loginbt_selector"
+                    android:background="#00000000"
+                    />
+
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>

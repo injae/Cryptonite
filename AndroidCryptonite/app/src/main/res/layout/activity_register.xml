@@ -4,6 +4,14 @@
     android:layout_height="match_parent">
 
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/_logo"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
@@ -23,7 +31,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    <android.support.design.widget.TextInputLayout
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/_welcome"
+                android:layout_marginBottom="10dp" />
+
+            <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -98,14 +114,15 @@
 
     </android.support.design.widget.TextInputLayout>
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/action_register"
                 android:id="@+id/register_attempt_button"
                 style="?android:textAppearanceSmall"
                 android:layout_marginTop="16dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:src="@drawable/joinbt_selector"
+                android:background="#00000000"/>
 
         </LinearLayout>
     </ScrollView>
