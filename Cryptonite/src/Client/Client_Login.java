@@ -226,25 +226,33 @@ public class Client_Login extends JFrame
           		csc.setPacket("login", _id.getBytes());
           		csc.setPacket("login", _password.getBytes());
           		csc.send("login");
+          		try 
+          		{
+	          		byte[] checkLogin;
+					
+						checkLogin = csc.receiveByteArray();
+				
+	          		switch(checkLogin[0]){
+	          		case 1 :
+	          			showMessage("Error", "No id");
+	          			break;
+	          		case 2 : 
+	          			showMessage("LOGIN", "Welcome,\t"+_id); 
+	          			break;
+	          		case 3 : 
+	          			showMessage("Error", "Wrong password"); 
+	          		}
+	          		if(_individual.isSelected()){
+	          			
+	          		}
+	          		if(_group.isSelected()){
+	          			
+	          		}
+				} catch (IOException e1) {
+					// TODO 자동 생성된 catch 블록
+					e1.printStackTrace();
+				}
           		
-          		byte[] checkLogin=csc.receiveByteArray();
-          		
-          		switch(checkLogin[0]){
-          		case 1 :
-          			showMessage("Error", "No id");
-          			break;
-          		case 2 : 
-          			showMessage("LOGIN", "Welcome,\t"+_id); 
-          			break;
-          		case 3 : 
-          			showMessage("Error", "Wrong password"); 
-          		}
-          		if(_individual.isSelected()){
-          			
-          		}
-          		if(_group.isSelected()){
-          			
-          		}
           	}
          });
          _Resistor = new JButton(new ImageIcon("img/_joinbt.png"));
