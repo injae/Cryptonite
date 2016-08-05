@@ -29,7 +29,7 @@ public class Server_SignUp extends Server_Funtion
 		    {
 		       ResultSet _rs  = db.Query("select * from test where id like '"+ client_id +"';");
 		
-		       if(_rs.next()) 
+		       if(!_rs.next()) 
 		       {
 		    	   _checkid[0]=1; 
 		       }
@@ -37,6 +37,7 @@ public class Server_SignUp extends Server_Funtion
 		       { 
 			      _checkid[0]=2;
 		       }
+		       System.out.println(_checkid[0]);
 		       activity.Sender(_checkid);
 		       activity.send();
 		    }

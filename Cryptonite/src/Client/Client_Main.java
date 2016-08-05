@@ -14,10 +14,12 @@ public class Client_Main
 		csc.start();
 		/*Client_AutoBackup cab = new Client_AutoBackup();
 		cab.start();*/
-		Client_FileShare_Send cfs = new Client_FileShare_Send();
-		cfs.start();
 		
-		//Client_SignUp csu = new Client_SignUp();
+		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
+		cfs.start();*/
+		
+		Client_Login cl = new Client_Login();
+//		Client_SignUp csu = new Client_SignUp();
 		
 		/*for(int i = 0 ; i< 15; i++)
 		{
