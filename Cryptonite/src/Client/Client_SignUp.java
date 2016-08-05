@@ -14,11 +14,6 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -279,14 +274,21 @@ import Server.Server_DataBase;
 				_csc.setPacket("id", _id.getBytes());
 				
 				_csc.send("id");
-				
-				byte[] _Checkid=_csc.receiveByteArray();
-				
-				switch(_Checkid[0]){
-				case 1 :
-					_checkSame=true;
-				case 2 :
-					_checkSame=false;
+				try 
+				{
+					byte[] _Checkid;
+					
+						_Checkid = _csc.receiveByteArray();
+					
+					switch(_Checkid[0]){
+					case 1 :
+						_checkSame=true;
+					case 2 :
+						_checkSame=false;
+					}
+				} catch (IOException e) {
+					// TODO 자동 생성된 catch 블록
+					e.printStackTrace();
 				}
 			}
 		});

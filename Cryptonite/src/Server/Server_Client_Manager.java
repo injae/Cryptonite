@@ -49,8 +49,8 @@ public class Server_Client_Manager implements PacketRule
 	
 	public void packetChecker(Server_Client_Activity activity)
 	{		
-		byte[] packet = activity._receiveQueue.removeLast();
-		System.out.println("packetChecker :"+ packet[0]);
+		byte[] packet = activity._receiveQueue.removeLast();		
+			
 		switch(packet[0])
 		{
 		case AUTOBACKUP:
@@ -73,12 +73,13 @@ public class Server_Client_Manager implements PacketRule
 	
 	public void stopManaging(int clientCode)
 	{
+		if(_clientList.get(clientCode)._receiveQueue.isEmpty()) 
 		_clientList.remove(clientCode);
 		_usableClientCode.offer(clientCode);
 	}
 	
 	public void run()
-	{			
+	{	
 		while(!_runningQueue.isEmpty())
 		{
 			Server_Client_Activity activity = _clientList.get(_runningQueue.remove());	
