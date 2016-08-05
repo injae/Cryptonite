@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
 
-import org.omg.Messaging.SyncScopeHelper;
 
 public class Client_Server_Connector extends Thread
 {

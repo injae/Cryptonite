@@ -92,7 +92,6 @@ import Server.Server_DataBase;
 		public Client_SignUp(){
 			try {
 				_csc=Client_Server_Connector.getInstance(4444);
-				_csc.start();
 			} catch (InterruptedException e) {
 				// TODO 자동 생성된 catch 블록
 				e.printStackTrace();
@@ -267,6 +266,7 @@ import Server.Server_DataBase;
 				event[1]=1;
 				event[2]=size;
 			
+				_csc.setPacket("id", event);
 				_csc.setPacket("id", _id.getBytes());
 				
 				_csc.send("id");
@@ -275,13 +275,18 @@ import Server.Server_DataBase;
 					byte[] _Checkid;
 					
 						_Checkid = _csc.receiveByteArray();
-					
-					switch(_Checkid[0]){
-					case 1 :
+					System.out.println(_Checkid[0]);
+					switch(_Checkid[0])
+					{
+					case 1:
 						_checkSame=true;
-					case 2 :
+						break;
+					case 2:
 						_checkSame=false;
+						break;
 					}
+					
+					System.out.println(_checkSame);
 				} catch (IOException e) {
 					// TODO 자동 생성된 catch 블록
 					e.printStackTrace();

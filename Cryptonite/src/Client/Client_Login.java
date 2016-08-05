@@ -108,7 +108,6 @@ public class Client_Login extends JFrame implements PacketRule
     public Client_Login(){
     	try {
 			csc=Client_Server_Connector.getInstance(4444);
-			csc.start();
 		} catch (InterruptedException e1) {
 			// TODO 자동 생성된 catch 블록
 			e1.printStackTrace();
