@@ -89,6 +89,8 @@ public class Client_FileShare_Send implements PacketRule
 	
 	public void sendFile()	// when you click send button
 	{
+		// Here OTP
+		
 		for(int i = 0; i < _fileNameArray.length; i++)
 		{
 			try 
