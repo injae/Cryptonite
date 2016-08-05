@@ -22,6 +22,7 @@ public class Client_FolderScan extends Thread
 	private WatchService _watchService = null;
 	private WatchKey _watchKey = null;
 	private Vector<String> _directoryVector = null;
+	private Queue<String> _directoryQueue = null;
 	
 	// Filenames, to make absolute directory, check directory
 	private String _fileName = null;
@@ -31,6 +32,8 @@ public class Client_FolderScan extends Thread
 	
 	// StopFlag
 	private boolean _stopFlag = false;
+	
+	// Constructors
 	
 	// Methods
 	public synchronized void run()

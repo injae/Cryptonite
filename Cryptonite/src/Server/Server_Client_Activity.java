@@ -119,10 +119,10 @@ public class Server_Client_Activity implements PacketRule
 		int count = _channel.read(buffer);		
 		
 		buffer.flip();
-		byte[] array = new byte[buffer.remaining()];	
+		byte[] array = new byte[buffer.remaining()];
 		buffer.get(array);
 		
-		_receiveQueue.add(array);	
+		_receiveQueue.add(array);
 		_packetCount++;
 		_readableCount++;
 		

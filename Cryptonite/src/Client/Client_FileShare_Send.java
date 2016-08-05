@@ -104,6 +104,14 @@ public class Client_FileShare_Send implements PacketRule
 				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, _fileNameArray[i].getBytes(), packet);
 				_csc.setPacket("FILE_SHARE_SEND", packet);	// 1
 				
+				byte[] garbage = new byte[1024];
+				_csc.setPacket("FILE_SHARE_SEND", garbage);
+				_csc.sendAllNotRemove("FILE_SHARE_SEND");
+				
+				byte[] test = new byte[1024];
+				test = _csc.receiveByteArray();
+				System.out.println(new String(test).trim()); //
+				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
 				_fileChannel = _raf.getChannel();
 				
@@ -118,6 +126,7 @@ public class Client_FileShare_Send implements PacketRule
 					_csc.setPacket("FILE_SHARE_SEND", buffer);
 				}
 				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
+				
 				_csc.send("FILE_SHARE_SEND");
 				_fileChannel.close();
 			} 
