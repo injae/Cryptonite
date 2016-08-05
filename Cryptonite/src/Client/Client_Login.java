@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
+import javax.lang.model.element.PackageElement;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -37,11 +38,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import Function.Base64Coder;
+import Function.PacketRule;
 import Server.Server_DataBase;
 
 
 
-public class Client_Login extends JFrame
+public class Client_Login extends JFrame implements PacketRule
 {
 	public static void main(String[] args){
 		new Client_Login();
@@ -106,6 +108,7 @@ public class Client_Login extends JFrame
     public Client_Login(){
     	try {
 			csc=Client_Server_Connector.getInstance(4444);
+			csc.start();
 		} catch (InterruptedException e1) {
 			// TODO 자동 생성된 catch 블록
 			e1.printStackTrace();
@@ -218,19 +221,22 @@ public class Client_Login extends JFrame
          _Login.setPressedIcon(new ImageIcon("img/_loginbtpr.png"));
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
-
+          		byte size=3;
+          		System.out.println("눌렸습니다.");
           		csc.configurePacket("login");
           		byte[] event =new byte[2];
-          		event[0]=3;
+          		event[0]=LOGIN;
+          		event[1]=size;
           		csc.setPacket("login", event);
           		csc.setPacket("login", _id.getBytes());
           		csc.setPacket("login", _password.getBytes());
+          		System.out.println(_id+"\t"+_password);
           		csc.send("login");
           		try 
           		{
-	          		byte[] checkLogin;
+	          		byte[] checkLogin = new byte[1024];
 					
-						checkLogin = csc.receiveByteArray();
+					checkLogin = csc.receiveByteArray();
 				
 	          		switch(checkLogin[0]){
 	          		case 1 :
