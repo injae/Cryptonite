@@ -84,12 +84,32 @@ public class Client_FileShare_Send implements PacketRule
 			_fileSizeArray[i] = _tempFile.length();
 		}
 		
-		sendFile();
+		sendFile();	// Temporary
 	}
 	
 	public void sendFile()	// when you click send button
 	{
-		// Here OTP
+		byte[] garbage = new byte[1024];
+
+		try 
+		{
+			_csc.configurePacket("FILE_SHARE_SEND");
+			byte[] OTP_Packet = new byte[100];
+			OTP_Packet[0] = MAKE_OTP;
+			_csc.setPacket("FILE_SHARE_SEND", OTP_Packet);
+			_csc.setPacket("FILE_SHARE_SEND", garbage);
+			_csc.sendAllNotRemove("FILE_SHARE_SEND");
+			
+			byte[] OTP_Byte = new byte[1024];
+			OTP_Byte = _csc.receiveByteArray();
+			_OTP = new String(OTP_Byte).trim();
+		}
+		catch (IOException e1) 
+		{
+			e1.printStackTrace();
+		}
+		changeFilesName();
+		
 		
 		for(int i = 0; i < _fileNameArray.length; i++)
 		{
@@ -104,15 +124,6 @@ public class Client_FileShare_Send implements PacketRule
 				Function.frontInsertByte(4, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
 				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, _fileNameArray[i].getBytes(), packet);
 				_csc.setPacket("FILE_SHARE_SEND", packet);	// 1
-				
-				byte[] garbage = new byte[1024];
-				_csc.setPacket("FILE_SHARE_SEND", garbage);
-				_csc.sendAllNotRemove("FILE_SHARE_SEND");
-				
-				byte[] test = new byte[1024];
-				test = _csc.receiveByteArray();
-				_OTP = new String(test).trim();
-				System.out.println("OTP : " + _OTP);
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
 				_fileChannel = _raf.getChannel();
@@ -144,8 +155,13 @@ public class Client_FileShare_Send implements PacketRule
 		}
 	}
 	
-	private void receiveOTP()
+	private void changeFilesName()
 	{
-		
+		String temp = "";
+		for(int i = 0; i < _fileNameArray.length; i++)
+		{
+			temp = _fileNameArray[i];
+			_fileNameArray[i] = _OTP + "¡Ú" + temp;
+		}
 	}
 }

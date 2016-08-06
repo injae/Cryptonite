@@ -10,18 +10,13 @@ public class Server_MakeOTP extends Server_Funtion
 	private boolean _checkOTP = false;
 	private Vector<String> _OTP_List = null;
 	
-	private FileInputStream _fis = null;
-	private ObjectInputStream _ois = null;
-	
 	private FileOutputStream _fos = null;
 	private ObjectOutputStream _oos = null;
 	
+	private int _oneTime = 1;
+	
 	// Constructors
-	public Server_MakeOTP()
-	{
-		_OTP_List = new Vector<String>();
-		makeOTP();
-	}
+	public Server_MakeOTP() { }
 	
 	private void makeOTP()
 	{
@@ -29,16 +24,24 @@ public class Server_MakeOTP extends Server_Funtion
 		
 		try 
 		{
-			_fos = new FileOutputStream("C:\\Server\\OTP\\OTP_List.ser");
-			_oos = new ObjectOutputStream(_fos);
-			_oos.writeObject(_OTP_List);
+			if(_oneTime == 1)
+			{
+				_OTP_List = new Vector<String>();
+				_fos = new FileOutputStream("C:\\Server\\OTP\\OTP_List.ser");
+				_oos = new ObjectOutputStream(_fos);
+				_oos.writeObject(_OTP_List);
+				_oneTime++;
+			}
 			
 			FileInputStream fis = new FileInputStream("C:\\Server\\OTP\\OTP_List.ser");
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			_OTP_List = (Vector<String>) ois.readObject();
+			ois.close();
+			fis.close();
 			
 			do
 			{
+				_OTP = "";
 				for(int i = 0; i < 6; i++)
 				{
 					temp = (int)(Math.random()*10);
@@ -64,8 +67,6 @@ public class Server_MakeOTP extends Server_Funtion
 			
 			_oos.close();
 			_fos.close();
-			_ois.close();
-			_fis.close();
 		} 
 		catch (FileNotFoundException e)
 		{
@@ -81,21 +82,21 @@ public class Server_MakeOTP extends Server_Funtion
 			e.printStackTrace();
 		}
 	}
-	
-	public String getOTP()
+
+	@Override
+	public void Checker(byte[] packet) 
 	{
-		return _OTP;
+		_packetMaxCount = 1 + 1;
+		_packetCutSize = 1;
 	}
 
 	@Override
-	public void Checker(byte[] packet) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void running(Server_Client_Activity activity) {
-		// TODO Auto-generated method stub
-		
+	public void running(Server_Client_Activity activity) 
+	{
+		makeOTP();
+		activity._receiveQueue.remove();	// garbage delete
+		activity.Sender(_OTP.getBytes());
+		activity.send();
+		System.out.println("OTP Sending FINISH");
 	}
 }
