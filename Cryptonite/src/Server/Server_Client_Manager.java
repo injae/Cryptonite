@@ -68,6 +68,9 @@ public class Server_Client_Manager implements PacketRule
 		case SIGN_UP:
 			activity._funtionList.add(new Server_SignUp());
 			activity._funtionList.getLast().Checker(packet); break;
+		case MAKE_OTP:
+			activity._funtionList.add(new Server_MakeOTP());
+			activity._funtionList.getLast().Checker(packet); break;
 		}
 	}
 	
