@@ -113,19 +113,19 @@ public class Client_Login extends JFrame implements PacketRule
 			e1.printStackTrace();
 		}
     	setTitle("Cryptonite");
-        setBounds(0,0,470,645);
+        setBounds(710,200,470,645);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
  
 
         
         getContentPane().setLayout(null);
         JLayeredPane _layeredPane = new JLayeredPane();
-        _layeredPane.setBounds(0, 0, 470, 645);
+        _layeredPane.setBounds(0,0, 470, 645);
         _layeredPane.setLayout(null);
 
       
         try {
-            _img = ImageIO.read(new File("img/_login.png"));//input image
+            _img = ImageIO.read(new File("gui/login_main.png"));//input image
         } catch (IOException e) {
             System.out.println("No Image");
             System.exit(0);
@@ -137,10 +137,10 @@ public class Client_Login extends JFrame implements PacketRule
         _buttonGroup.add(_individual);
         _buttonGroup.add(_group);
         
-        _individual.setBounds(180, 200, 20, 20);
+        _individual.setBounds(180, 210, 20, 20);
         _individual.setBorder(BorderFactory.createEmptyBorder());
         _individual.setOpaque(false);
-        _group.setBounds(300, 200, 20, 20);
+        _group.setBounds(300, 210, 20, 20);
         _group.setBorder(BorderFactory.createEmptyBorder());
         _group.setOpaque(false);
         
@@ -149,13 +149,13 @@ public class Client_Login extends JFrame implements PacketRule
   
         
         _loginField = new JTextField(15);
-        _loginField.setBounds(162, 264, 180, 20);
+        _loginField.setBounds(140, 255, 190, 30);
         _layeredPane.add(_loginField);
         _loginField.setOpaque(false);
         _loginField.setForeground(Color.BLACK);
         _loginField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         _loginField.setHorizontalAlignment(JTextField.CENTER);
-        _loginField.setText("ID");
+        //_loginField.setText("");
         _loginField.addKeyListener(new KeyListener(){
      		@Override
      		public void keyPressed(KeyEvent e) {}
@@ -178,14 +178,14 @@ public class Client_Login extends JFrame implements PacketRule
          });
         
          _passwordField = new JPasswordField(15);
-         _passwordField.setBounds(162, 350, 200, 20);
+         _passwordField.setBounds(140, 315, 200, 20);
          _passwordField.setOpaque(false);
          _passwordField.setForeground(Color.BLACK);
          _passwordField.setFont(_fontid);
          _passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
          _passwordField.setHorizontalAlignment(JTextField.CENTER);
          _passwordField.setEchoChar((char)0);
-         _passwordField.setText("PASSWORD");
+         //_passwordField.setText("PASSWORD");
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
         		 _passwordField.setText("");
@@ -211,17 +211,17 @@ public class Client_Login extends JFrame implements PacketRule
          	}
          });
          
-         _Login = new JButton(new ImageIcon("img/_loginbt.png"));//input buttonimage
-         _Login.setBounds(184, 424, 80, 37);
+         _Login = new JButton(new ImageIcon("gui/login_bt.png"));//input buttonimage
+         _Login.setBounds(30, 400, 400, 50);
          _Login.setBorderPainted(false);
          _Login.setFocusPainted(false);
          _Login.setContentAreaFilled(false);
-         _Login.setRolloverIcon(new ImageIcon("img/_loginbtover"));//input buttonimage
-         _Login.setPressedIcon(new ImageIcon("img/_loginbtpr.png"));
+         //_Login.setRolloverIcon(new ImageIcon("img/login_bt_hv"));//input buttonimage
+         _Login.setPressedIcon(new ImageIcon("img/login_bt_hv.png"));
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
           		byte size=3;
-          		System.out.println("´­·È½À´Ï´Ù.");
+          		//System.out.println("´­·È½À´Ï´Ù.");
           		csc.configurePacket("login");
           		byte[] event =new byte[2];
           		event[0]=LOGIN;
@@ -260,15 +260,15 @@ public class Client_Login extends JFrame implements PacketRule
           		
           	}
          });
-         _Resistor = new JButton(new ImageIcon("img/_joinbt.png"));
+         _Resistor = new JButton(new ImageIcon("gui/register_bt.png"));
          _Resistor.setFont(_fontjoin);
          _Resistor.setForeground(Color.white);
          _Resistor.setBounds(184,480,80,37);
          _Resistor.setBorderPainted(false);
          _Resistor.setFocusPainted(false);
          _Resistor.setContentAreaFilled(false);
-         _Resistor.setRolloverIcon(new ImageIcon("img/_joinbtover"));
-         _Resistor.setPressedIcon(new ImageIcon("img/_joinbtpr.png"));
+         //_Resistor.setRolloverIcon(new ImageIcon("img/_joinbtover"));
+         _Resistor.setPressedIcon(new ImageIcon("gui/register_bt_hv.png"));
          _Resistor.addActionListener(new ActionListener() {
          	public void actionPerformed(ActionEvent arg0) {
          		new Client_SignUp();
