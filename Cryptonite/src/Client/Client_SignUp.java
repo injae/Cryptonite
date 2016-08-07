@@ -119,7 +119,7 @@ import Server.Server_DataBase;
 			_panel.setBounds(0,0,490,655);//input value  
 
 			_nameField = new JTextField();
-			_nameField.setBounds(170, 200, 160, 20);//input value
+			_nameField.setBounds(170, 200, 160, 21);//input value
 			_nameField.setFont(_font);
 			_nameField.setBorder(BorderFactory.createEmptyBorder());
 			_nameField.setForeground(Color.BLACK);

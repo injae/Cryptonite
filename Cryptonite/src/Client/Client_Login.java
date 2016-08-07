@@ -137,10 +137,10 @@ public class Client_Login extends JFrame implements PacketRule
         _buttonGroup.add(_individual);
         _buttonGroup.add(_group);
         
-        _individual.setBounds(180, 200, 20, 20);
+        _individual.setBounds(180, 210, 20, 20);
         _individual.setBorder(BorderFactory.createEmptyBorder());
         _individual.setOpaque(false);
-        _group.setBounds(300, 200, 20, 20);
+        _group.setBounds(300, 210, 20, 20);
         _group.setBorder(BorderFactory.createEmptyBorder());
         _group.setOpaque(false);
         
