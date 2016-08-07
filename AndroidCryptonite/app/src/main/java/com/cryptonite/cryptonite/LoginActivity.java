@@ -31,8 +31,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import Function.Client_Server_Connector;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -51,7 +54,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView midView;
     private EditText mPasswordView;
@@ -297,14 +299,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
+    private void setInvalidId(){
+        midView.setError(getString(R.string.error_invalid_id));
+        midView.requestFocus();
+    }
+
+    private void setIncorrectPwd(){
+        mPasswordView.setError(getString(R.string.error_incorrect_password));
+        mPasswordView.requestFocus();
+    }
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Byte, Boolean> {
 
         private final String mid;
         private final String mPassword;
+        private byte[] receiveData;
 
         UserLoginTask(String id, String password) {
             mid = id;
@@ -313,18 +325,54 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
+                Client_Server_Connector css = Client_Server_Connector.getInstance(4444);
+
+                byte[] op = new byte[2];
+                css.configurePacket("Login");
+                op[0] = 2;
+                op[1] = 3;
+
+                css.setPacket("Login",op);
+                css.setPacket("Login",mid.getBytes());
+                css.setPacket("Login",mPassword.getBytes());
+
+                css.send("Login");
+
+                receiveData = css.receiveByteArray();
+
+                switch(receiveData[0])
+                {
+                    case 1:
+                        publishProgress(receiveData[0]);
+                        return false;
+                    case 2:
+                        return true;
+                    case 3:
+                        publishProgress(receiveData[0]);
+                        return false;
+                    default:
+                        return false;
+                }
             } catch (InterruptedException e) {
                 return false;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
             }
+        }
 
-
-            // TODO: register the new account here.
-            return true;
+        @Override
+        protected void onProgressUpdate(Byte... values) {
+            switch(values[0])
+            {
+                case 1:
+                    setInvalidId();
+                    break;
+                case 3:
+                    setIncorrectPwd();
+                    break;
+            }
         }
 
         @Override
@@ -334,9 +382,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
             }
         }
 
