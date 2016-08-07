@@ -97,14 +97,14 @@ import Server.Server_DataBase;
 				e.printStackTrace();
 			}
 			setTitle("CRYPTONITE");
-			setBounds(710,200,508,730);//Input value
+			setBounds(710,200,482,725);//Input value
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			setBackground(Color.BLACK);
 			setLocationRelativeTo(null);
 			try
 			{
-				_img = ImageIO.read(new File("img/_resistor.png"));//Input MainImage
+				_img = ImageIO.read(new File("gui/signup_main.png"));//Input MainImage
 				
 			}catch(IOException e){
 				System.out.println("No Image.");
@@ -119,7 +119,7 @@ import Server.Server_DataBase;
 			_panel.setBounds(0,0,490,655);//input value  
 
 			_nameField = new JTextField();
-			_nameField.setBounds(186, 272, 160, 20);//input value
+			_nameField.setBounds(170, 200, 160, 20);//input value
 			_nameField.setFont(_font);
 			_nameField.setBorder(BorderFactory.createEmptyBorder());
 			_nameField.setForeground(Color.BLACK);
@@ -145,7 +145,7 @@ import Server.Server_DataBase;
 			_layeredpane.add(_nameField);
 
 			_idField = new JTextField();
-			_idField.setBounds(186, 326, 160, 20);//input value
+			_idField.setBounds(170, 257, 160, 20);//input value
 			_idField.setFont(_font);
 			_idField.setForeground(Color.BLACK);
 			_idField.setBorder(BorderFactory.createEmptyBorder());
@@ -169,13 +169,13 @@ import Server.Server_DataBase;
 			_layeredpane.add(_idField);
 
 			_passwdField = new JPasswordField();
-			_passwdField.setBounds(186, 380, 130, 20);//input value
+			_passwdField.setBounds(170, 315, 160, 20);//input value
 			_passwdField.setFont(_font);
 			_passwdField.setEchoChar('¡Ü');
 			_passwdField.setBorder(BorderFactory.createEmptyBorder());
 			_passwdField.setForeground(Color.BLACK);
 			/*_passwdField.setText("input condition");*/
-			//_passwdField.setOpaque(false);
+			_passwdField.setOpaque(false);
 			_passwdField.addKeyListener(new KeyListener()
 		{
 				@Override
@@ -193,7 +193,7 @@ import Server.Server_DataBase;
 			_layeredpane.add(_passwdField);
 
 			_passwdCorrectField = new JPasswordField(15);
-			_passwdCorrectField.setBounds(186, 435, 130, 20);//input value
+			_passwdCorrectField.setBounds(170, 370, 130, 20);//input value
 			_passwdCorrectField.setFont(_font);
 			_passwdCorrectField.setEchoChar('¡Ü');
 			_passwdCorrectField.setBorder(BorderFactory.createEmptyBorder());
@@ -227,7 +227,7 @@ import Server.Server_DataBase;
 		_layeredpane.add( _passwdCorrectField);
 
 		_emailField = new JTextField();
-		_emailField.setBounds(186, 490, 140, 20);//input value
+		_emailField.setBounds(170, 424, 140, 20);//input value
 		_emailField.setBorder(BorderFactory.createEmptyBorder());
 		_emailField.setForeground(Color.BLACK);
 		_emailField.setOpaque(false);
@@ -248,9 +248,9 @@ import Server.Server_DataBase;
 		});
 		_layeredpane.add(_emailField);
 
-		_same = new JButton(new ImageIcon("img/_check.png"));//Input IconImage
-		_same.setPressedIcon(new ImageIcon("img/_checkpr.png"));
-		_same.setBounds(356, 312, 80, 38);//input value
+		_same = new JButton(new ImageIcon("gui/check_bt.png"));//Input IconImage
+		_same.setPressedIcon(new ImageIcon("img/_check_bt.png"));
+		_same.setBounds(320, 250, 80, 38);//input value
 		_same.setBorderPainted(false);
 		_same.setFocusPainted(false);
 		_same.setContentAreaFilled(false);
@@ -295,11 +295,11 @@ import Server.Server_DataBase;
 		});
 		_layeredpane.add(_same);
 
-		_cancel = new JButton(new ImageIcon("img/_cancel.png"));//Input IconImage
+		_cancel = new JButton(new ImageIcon("gui/cancel_bt.png"));//Input IconImage
 /*		_cancel.setRolloverIcon(new ImageIcon(""));*/
-		_cancel.setPressedIcon(new ImageIcon("img/_cancelpr.png"));
+		_cancel.setPressedIcon(new ImageIcon("img/_cancel_hv.png"));
 
-		_cancel.setBounds(260, 544, 82, 38);//input value
+		_cancel.setBounds(190, 560, 90, 50);//input value
 		_cancel.setBorder(BorderFactory.createEmptyBorder());
 
 		_cancel.setBorderPainted(false);
@@ -316,11 +316,11 @@ import Server.Server_DataBase;
 		});
 		_layeredpane.add(_cancel);
 
-		_ok = new JButton(new ImageIcon("img/_resistor'sjoin.png"));//Input IconImage
+		_ok = new JButton(new ImageIcon("gui/signup_bt.png"));//Input IconImage
 		/*_ok.setRolloverIcon(new ImageIcon(""));*/
-		_ok.setPressedIcon(new ImageIcon("img/_resistor'sjoinpr.png"));
+		_ok.setPressedIcon(new ImageIcon("img/signup_bt_hv.png"));
 
-		_ok.setBounds(156, 544, 82, 38);//input value
+		_ok.setBounds(30, 500, 400, 50);//input value
 		_ok.setBorderPainted(false);
 		_ok.setFocusPainted(false);
 		_ok.setContentAreaFilled(false);
