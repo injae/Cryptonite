@@ -1,5 +1,7 @@
 package Function;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -8,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
+
 
 public class Client_Server_Connector extends Thread
 {
@@ -18,18 +21,18 @@ public class Client_Server_Connector extends Thread
 	private HashMap<String,Queue<ByteBuffer>> _packetList = null;
 	private Vector<String> _packetNameList = null;
 	private boolean stopFlag = false;
-	
-	private int _limit_size = 10240;
+
+	private int _limit_size = 5;
 
 	private Client_Server_Connector(int port) throws InterruptedException
 	{
-		try 
-		{		
+		try
+		{
 			_channel = SocketChannel.open();
 			_channel.configureBlocking(true);
-			_channel.connect(new InetSocketAddress("192.168.1.3", port));
+			_channel.connect(new InetSocketAddress("192.168.0.10", port));
 
-			while (!_channel.finishConnect()) 
+			while (!_channel.finishConnect())
 			{
 				Thread.sleep(1);
 				System.out.println("still connecting");
@@ -39,7 +42,9 @@ public class Client_Server_Connector extends Thread
 			_packetNameList = new Vector<String>();
 			_packetNameList.add("receive");
 			_packetList.put("receive", new LinkedList<ByteBuffer>());
-		} 
+			configurePacket("receive");
+			this.start();
+		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
@@ -50,15 +55,16 @@ public class Client_Server_Connector extends Thread
 	{
 		while(!stopFlag)
 		{
-			try 
-			{
+			try
+			{;
 				_buffer = ByteBuffer.allocateDirect(1024);
 				_channel.read(_buffer);
 				_buffer.flip();
 				_packetList.get("receive").offer(_buffer);
 			}
-			catch (IOException e) 
+			catch (IOException e)
 			{
+				System.exit(1);
 				e.printStackTrace();
 			}
 		}
@@ -85,60 +91,102 @@ public class Client_Server_Connector extends Thread
 		if(_packetList.get(packetName).size() >= _limit_size)
 		{
 			sendNotRemove(packetName);
-		}		
+		}
+
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 		buffer.put(buf);
 		buffer.flip();
 		_packetList.get(packetName).offer(buffer);
 	}
-	
+
 	public void setPacket(String packetName, ByteBuffer buffer)
 	{
 		if(_packetList.get(packetName).size() >= _limit_size)
 		{
 			sendNotRemove(packetName);
-		}		
+		}
 		_packetList.get(packetName).offer(buffer);
 	}
 
 	public void configurePacket(String packetName)
 	{
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e1) {
+			// TODO 자동 생성된 catch 블록
+			e1.printStackTrace();
+		}
 		_packetList.put(packetName, new LinkedList<ByteBuffer>());
 	}
 
-	public ByteBuffer receive()
+	public ByteBuffer receiveByteBuffer()
 	{
-		return _packetList.get("receive").remove();
-	}
-
-	private void sendNotRemove(String packetName)
-	{
-		Queue<ByteBuffer> output = _packetList.get(packetName);
-		
-		for(int i = 0; i < _limit_size; i++)
+		while(!_packetList.isEmpty())
 		{
-			try 
+			try
 			{
-				_channel.write(output.remove());
+				Thread.sleep(1);
 			}
-			catch (IOException e) 
+			catch (InterruptedException e)
 			{
 				e.printStackTrace();
 			}
 		}
+		return _packetList.get("receive").remove();
 	}
-	
-	public void send(String packetName)
+
+	public byte[] receiveByteArray() throws IOException
+	{
+		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+
+		while(_packetList.get("receive").isEmpty())
+		{
+			try
+			{
+				Thread.sleep(1);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		System.out.println("okkk");
+		buffer = _packetList.get("receive").remove();
+		byte[] temp = new byte[buffer.remaining()];
+		buffer.get(temp, 0, temp.length);
+
+		return temp;
+	}
+
+	public void sendNotRemove(String packetName)
 	{
 		Queue<ByteBuffer> output = _packetList.get(packetName);
-		
-		while(!output.isEmpty())
+
+		for(int i = 0; i < _limit_size; i++)
 		{
-			try 
+			try
 			{
 				_channel.write(output.remove());
 			}
-			catch (IOException e) 
+			catch (IOException e)
+			{
+				System.exit(1);
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void send(String packetName)
+	{
+		Queue<ByteBuffer> output = _packetList.get(packetName);
+
+		while(!output.isEmpty())
+		{
+			try
+			{
+				_channel.write(output.remove());
+			}
+			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -155,15 +203,33 @@ public class Client_Server_Connector extends Thread
 		}
 	}
 
+	public void sendAllNotRemove(String packetName)
+	{
+		Queue<ByteBuffer> output = _packetList.get(packetName);
+
+		while(!output.isEmpty())
+		{
+			try
+			{
+				_channel.write(output.remove());
+			}
+			catch (IOException e)
+			{
+				System.exit(1);
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void stopConnection()
 	{
-		try 
+		try
 		{
 			_channel.close();
-		} 
+		}
 		catch (IOException e)
 		{
-			System.out.println("Ŀ�ؼ� ����");
+			System.out.println("커넥션 오버");
 		}
 	}
 
@@ -173,10 +239,10 @@ public class Client_Server_Connector extends Thread
 		byte[] buf = new byte[1024];
 		buf[0] = 5;
 		buf[1] = 15;
-		
+
 		_buffer.put(buf);
 		_buffer.flip();
-		_channel.write(_buffer);   
+		_channel.write(_buffer);
 	}
 
 	public void stopThread()

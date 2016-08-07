@@ -8,14 +8,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
@@ -34,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
     private View mProgressView;
     private EditText mname,mid,mpassword,mpassword_re,memail;
     private ImageButton mRegisterButton;
+    private Boolean sameId = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +65,23 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        mid.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                sameId = false;
+                mid.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         memail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -149,6 +172,10 @@ public class RegisterActivity extends AppCompatActivity {
         else return false;
     }
 
+    private void setErrorId(){
+        mid.setError(getString(R.string.error_used_id));
+    }
+
 
     /**
      * Shows the progress UI and hides the login form.
@@ -212,28 +239,71 @@ public class RegisterActivity extends AppCompatActivity {
             // TODO: attempt authentication against a network service.
 
             try {
+
                 Client_Server_Connector css = Client_Server_Connector.getInstance(4444);
 
-                byte[] op = new byte[2];
-                op[0] = 5;
-                op[1] = 5;
+                byte[] op = new byte[3];
+                byte size;
 
-                Charset cs = Charset.forName("UTF-8");
+                //check duplicated id
+                if (!sameId)
+                {
+                    size = 2;
+                    op[0] = 5;
+                    op[1] = 1; // id check mode
+                    op[2] = size;
 
-                ByteBuffer name = cs.encode(mname);
-                name.flip();
+                    css.configurePacket("id");
+                    css.setPacket("id",op);
+                    css.setPacket("id",mid.getBytes());
+                    css.send("id");
+
+                    byte[] receiveData;
+                    receiveData = css.receiveByteArray();
+
+                    switch (receiveData[0])
+                    {
+                        case 1:
+                            sameId = true;
+                            break;
+                        case 2:
+                            sameId = false;
+                            break;
+                        default:
+                            sameId = false;
+                            break;
+                    }
+                }
 
 
-                css.configurePacket("register");
-                css.setPacket("register",op);
-                css.setPacket("register",name.array());
-                css.setPacket("register",mid.getBytes());
-                css.setPacket("register",mPassword.getBytes());
-                css.setPacket("register",memail.getBytes());
+                //no duplicated Id > registeration
+                if (sameId) {
+                    size = 5;
+                    op[1] = 2; // registration mode
+                    op[2] = size;
 
-                css.send("register");
+                    Charset cs = Charset.forName("UTF-8");
+                    ByteBuffer name = cs.encode(mname);
+                    name.flip();
 
+                    css.configurePacket("register");
+                    css.setPacket("register", op);
+                    css.setPacket("register", name.array());
+                    css.setPacket("register", mid.getBytes());
+                    css.setPacket("register", mPassword.getBytes());
+                    css.setPacket("register", memail.getBytes());
+
+                    css.send("register");
+
+                } else {
+                    setErrorId();
+                    return true;
+                }
             } catch (InterruptedException e) {
+                e.printStackTrace();
+                return false;
+            } catch (IOException e){
+                e.printStackTrace();
                 return false;
             }
             return true;
@@ -245,7 +315,11 @@ public class RegisterActivity extends AppCompatActivity {
             mRegisterTask = null;
             showProgress(false);
 
+            if (!sameId)
+                return;
             if (success) {
+                Toast t = Toast.makeText(getApplicationContext(),"Sign Up Success",Toast.LENGTH_LONG);
+                t.show();
                 finish();
             }
         }
