@@ -2,6 +2,8 @@ package Client;
 
 import java.util.*;
 import Function.PacketRule;
+
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.net.*;
 import java.io.*;
@@ -24,7 +26,7 @@ public class Client_FileShare_Receive implements PacketRule
 	private RandomAccessFile _raf = null;
 	private FileChannel _fileChannel = null;
 	
-	private String downloadFlag = null;
+	private String _downloadFlag = null;
 	private int _fileCount = 0;
 	private String _fileName = null;
 	private long _fileSize = 0;
@@ -64,14 +66,14 @@ public class Client_FileShare_Receive implements PacketRule
 				
 				byte[] flagByte = new byte[1024];
 				flagByte = _csc.receiveByteArray();
-				downloadFlag = new String(flagByte).trim();
+				_downloadFlag = new String(flagByte).trim();
 				
-				if(downloadFlag.equals("FALSE"))
+				if(_downloadFlag.equals("FALSE"))
 				{
 					System.out.println("There is no OTP which is equal.");
 					System.exit(1);	// Temporary
 				}
-				else if(downloadFlag.equals("TRUE"))
+				else if(_downloadFlag.equals("TRUE"))
 				{
 					byte[] temp = new byte[1024];
 					System.out.println("OTP is correct!!");
@@ -89,14 +91,37 @@ public class Client_FileShare_Receive implements PacketRule
 						_raf = new RandomAccessFile("C:\\Users\\Youn\\Desktop\\Å×½ºÆ®" + "\\" + _fileName, "rw");
 						_fileChannel = _raf.getChannel();
 						
+						ByteBuffer buffer;
+						buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 						while(_fileSize > 0)
 						{
+							buffer.clear();
+							buffer = _csc.receiveByteBuffer();
 							
+							_fileSize -= FILE_BUFFER_SIZE;
+							buffer.flip();
+							while(!_fileChannel.isOpen())
+							{
+								Thread.sleep(1);
+							}
+							_fileChannel.write(buffer);
+							
+							if(_fileSize <= 0)
+							{
+								break;
+							}
 						}
+						
+						_fileChannel.close();
+						_raf.close();
 					}
 				}
 			} 
 			catch (IOException e) 
+			{
+				e.printStackTrace();
+			} 
+			catch (InterruptedException e) 
 			{
 				e.printStackTrace();
 			}
