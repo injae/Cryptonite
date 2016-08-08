@@ -4,6 +4,11 @@ import java.util.*;
 
 import Function.PacketRule;
 
+/*
+ * @author In Jae Lee
+ * 
+ */
+
 public class Server_Client_Manager implements PacketRule
 {	
 	private static Server_Client_Manager _client_manager;
@@ -33,7 +38,7 @@ public class Server_Client_Manager implements PacketRule
 	public int getClientCode()
 	{
 		if(_usableClientCode.isEmpty()) { return ++_lastClientCode; }
-		else { return _usableClientCode.remove(); }
+		else 							{ return _usableClientCode.remove(); }
 	}
 	
 	public void register(int key, Server_Client_Activity server_client_activity)
@@ -50,28 +55,9 @@ public class Server_Client_Manager implements PacketRule
 	public void packetChecker(Server_Client_Activity activity)
 	{		
 		byte[] packet = activity._receiveQueue.removeLast();		
-			
-		switch(packet[0])
-		{
-		case AUTOBACKUP:
-			activity._funtionList.add(new Server_AutoBackup());
-			activity._funtionList.getLast().Checker(packet); break;
-		case LOGIN:
-			activity._funtionList.add(new Server_Login());
-			activity._funtionList.getLast().Checker(packet); break;
-		case FILE_SHARE_RECEIVE:
-			activity._funtionList.add(new Server_FileShare_Receive());
-			activity._funtionList.getLast().Checker(packet); break;
-		case FILE_SHARE_SEND:
-			activity._funtionList.add(new Server_FileShare_Send());
-			activity._funtionList.getLast().Checker(packet); break;
-		case SIGN_UP:
-			activity._funtionList.add(new Server_SignUp());
-			activity._funtionList.getLast().Checker(packet); break;
-		case MAKE_OTP:
-			activity._funtionList.add(new Server_MakeOTP());
-			activity._funtionList.getLast().Checker(packet); break;
-		}
+		
+		activity._funtionList.add(Server_Function_Factory.create(packet[0]));
+		activity._funtionList.getLast().Checker(packet);		
 	}
 	
 	public void stopManaging(int clientCode)

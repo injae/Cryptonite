@@ -6,6 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/*
+ * @author In Jae Lee
+ * 
+ */
+
 /* ===================================< DataBase Connector >=============================================
  *
  *  Maker   : IN JAE LEE
@@ -26,9 +31,15 @@ import java.sql.Statement;
  * ======================================================================================================
  * Example <MYSQL>
  * 
- * Server_DataBase DB;
- * DB.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+DataBase_Name, "root", "0000");
- * DB = DB.getInstance();
+ *  <First Time>
+ *  Server_DataBase db;
+ *  d b =Server_DataBase.getInstance();
+ *	db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "0000");
+ *	db.connect();
+ *
+ *	<Second Time>
+ *  Server DataBase db2;
+ *  db2 = Server_DataBase.getInstance();
  * ======================================================================================================
  */
 
@@ -49,14 +60,12 @@ public class Server_DataBase
 		
 	}
 	
-	
 	public void Init_DB(String jdbc_driver_name, String url, String id, String password)
 	{
 		_jdbc_driver_name = jdbc_driver_name;
 		_url = url;
 		_id = id;
 		_passowrd = password;
-
 	}
 	
 	public void connect()

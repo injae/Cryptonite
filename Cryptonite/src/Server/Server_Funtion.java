@@ -4,7 +4,7 @@
 package Server;
 
 /**
- * @author user
+ * @author In Jae Lee
  *
  */
 public abstract class Server_Funtion
