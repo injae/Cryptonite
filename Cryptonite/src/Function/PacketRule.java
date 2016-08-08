@@ -22,6 +22,8 @@ public interface PacketRule
 	byte DUPLICATION_CHECK_FUNCTION =1;
 	byte SIGN_UP_FUNCTION = 2;
 	
+	byte EMPTY_ID = 1;
+	byte EXIST_ID = 2;
 	/*
 	 * Order
 	 * 1. Event Code, Target + File or directory
