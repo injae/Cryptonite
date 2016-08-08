@@ -68,6 +68,7 @@ public class Server_Client_Activity implements PacketRule
 			e.printStackTrace();
 		}
 	}
+	
 	public void Sender(byte[] packet) 
 	{
 		if(_sendQueue.size() >= LIMIT_PACKET) { sendNotRemove(); }		
@@ -78,6 +79,16 @@ public class Server_Client_Activity implements PacketRule
 		
 		_sendQueue.offer(buffer);
 	}
+	
+	public void Sender(ByteBuffer packet)
+	{
+		if(_sendQueue.size() >= LIMIT_PACKET) { sendNotRemove(); }
+		
+		packet.flip();
+		
+		_sendQueue.offer(packet);
+	}
+	
 	private void sendNotRemove() 
 	{
 		try 
@@ -92,6 +103,7 @@ public class Server_Client_Activity implements PacketRule
 			e.printStackTrace();
 		}
 	}
+	
 	public void send()
 	{	
 		try 
@@ -106,6 +118,7 @@ public class Server_Client_Activity implements PacketRule
 			e.printStackTrace();
 		}
 	}
+	
 	public void Receiver() throws IOException 
 	{	
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
@@ -141,11 +154,13 @@ public class Server_Client_Activity implements PacketRule
 			}
 		}
 	}
+	
 	public void readableUpdate()
 	{
 		_readingCount = _readableQueue.remove();
 		_usedCount +=  _readingCount;
 	}
+	
 	public void finishCheck()
 	{
 		if(_usedCount == _funtionList.getFirst()._packetMaxCount)

@@ -20,9 +20,10 @@ import java.io.*;
 public class Client_FileShare_Receive implements PacketRule
 {
 	// OTP Instance
-	private String _OTP = "";
+	private String _OTP = "216974";
 	
 	// File Instance
+	private String _downloadFolder = null;
 	private RandomAccessFile _raf = null;
 	private FileChannel _fileChannel = null;
 	
@@ -33,6 +34,7 @@ public class Client_FileShare_Receive implements PacketRule
 	
 	// Another Class Instance
 	private Client_Server_Connector _csc = null;
+	private Client_FolderSelector _cfs = null;
 	
 	// Constructors
 	public Client_FileShare_Receive() 
@@ -40,6 +42,7 @@ public class Client_FileShare_Receive implements PacketRule
 		try 
 		{
 			_csc = Client_Server_Connector.getInstance(4444);
+			_cfs = new Client_FolderSelector();
 		} 
 		catch (InterruptedException e) 
 		{
@@ -52,11 +55,19 @@ public class Client_FileShare_Receive implements PacketRule
 		if(_OTP.length() != 6)
 		{
 			System.out.println("OTP length must be 6 letters.");
+			System.exit(1);		// temporary
 		}
 		else if(_OTP.length() == 6)
 		{	
 			try 
 			{
+				_cfs.folderSelectorON();
+				while(!_cfs.getSelectionEnd())
+				{
+					Thread.sleep(1);
+				}
+				_downloadFolder = _cfs.getSelectedPath();
+				
 				_csc.configurePacket("FILE_SHARE_RECEIVE");
 				byte[] event = new byte[1];
 				event[0] = FILE_SHARE_SEND;
@@ -85,10 +96,12 @@ public class Client_FileShare_Receive implements PacketRule
 					{
 						temp = _csc.receiveByteArray();
 						_fileName = new String(temp).trim();
+						System.out.println("파일 이름 : " + _fileName);
 						temp = _csc.receiveByteArray();
 						_fileSize = Long.parseLong(new String(temp).trim());
+						System.out.println("파일 사이즈 : " + _fileSize);
 						
-						_raf = new RandomAccessFile("C:\\Users\\Youn\\Desktop\\테스트" + "\\" + _fileName, "rw");
+						_raf = new RandomAccessFile(_downloadFolder + "\\" + _fileName, "rw");
 						_fileChannel = _raf.getChannel();
 						
 						ByteBuffer buffer;
@@ -96,7 +109,9 @@ public class Client_FileShare_Receive implements PacketRule
 						while(_fileSize > 0)
 						{
 							buffer.clear();
+							System.out.println("여기까진옴");
 							buffer = _csc.receiveByteBuffer();
+							System.out.println("의심구간 지나침");
 							
 							_fileSize -= FILE_BUFFER_SIZE;
 							buffer.flip();
@@ -124,6 +139,11 @@ public class Client_FileShare_Receive implements PacketRule
 			catch (InterruptedException e) 
 			{
 				e.printStackTrace();
+			}
+			catch (NullPointerException e)
+			{
+				System.out.println("You does not select the folder.");
+				System.exit(1);
 			}
 			
 		}
