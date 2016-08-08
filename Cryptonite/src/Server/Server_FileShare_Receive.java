@@ -18,7 +18,7 @@ import Function.PacketRule;
 public class Server_FileShare_Receive extends Server_Funtion implements PacketRule
 {
 	// Address
-	private String _address = "C:\\Server\\Backup";
+	private String _address = "C:\\Server\\Share";
 	
 	// Instance
 	private int _count = 1;

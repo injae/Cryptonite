@@ -58,7 +58,6 @@ public class Client_Server_Connector extends Thread
 				_channel.read(_buffer);
 				_buffer.flip();
 				_packetList.get("receive").offer(_buffer);
-				System.out.println("µé¿È");
 			}
 			catch (IOException e) 
 			{
@@ -148,7 +147,6 @@ public class Client_Server_Connector extends Thread
 				e.printStackTrace();
 			}
 		}
-		System.out.println("okkk");
 		buffer = _packetList.get("receive").remove();
 		byte[] temp = new byte[buffer.remaining()];
 		buffer.get(temp, 0, temp.length);
