@@ -1,17 +1,17 @@
-package Client;
+package Server;
 
 import java.security.SecureRandom;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-public class Client_KeyGenerator {
+public class Server_KeyGenerator {
 	private byte[] _salt = null;
 	private SecretKey _keyData = null;
 	private int _iterationCount = 0;
 	private SecureRandom _random = null;
 
-	public Client_KeyGenerator()
+	public Server_KeyGenerator()
 	{
 		init();
 	}
