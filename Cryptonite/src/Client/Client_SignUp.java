@@ -20,6 +20,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,7 +40,7 @@ import Server.Server_DataBase;
 		public static void main(String[] args){
 			new Client_SignUp();
 		}
-		
+		private boolean _checklength=true;
 		private boolean _checkID = true;
 		private boolean _checkSame=false;
 		private boolean _checkPassword=false;
@@ -73,6 +74,7 @@ import Server.Server_DataBase;
 		JPasswordField _passwdField;
 		JPasswordField _passwdCorrectField;
 		
+		
 		private String _name="name";
 		private String _id="id";
 		private String _email="email";
@@ -86,10 +88,12 @@ import Server.Server_DataBase;
 		JButton _cancel;
 
 		 Font _font = new Font ("SansSerif", Font.BOLD,17);
+		 Font _precondition_font = new Font ("SansSerif", Font.ITALIC,16);
 	
 		Client_Server_Connector _css;
 
 		public Client_SignUp(){
+			                                              
 			try {
 				_csc=Client_Server_Connector.getInstance(4444);
 			} catch (InterruptedException e) {
@@ -167,14 +171,13 @@ import Server.Server_DataBase;
 				public void keyTyped(KeyEvent _e) { }
 			}); 
 			_layeredpane.add(_idField);
-
+			
 			_passwdField = new JPasswordField();
 			_passwdField.setBounds(170, 315, 160, 20);//input value
 			_passwdField.setFont(_font);
 			_passwdField.setEchoChar('¡Ü');
 			_passwdField.setBorder(BorderFactory.createEmptyBorder());
 			_passwdField.setForeground(Color.BLACK);
-			/*_passwdField.setText("input condition");*/
 			_passwdField.setOpaque(false);
 			_passwdField.addKeyListener(new KeyListener()
 		{
@@ -185,6 +188,7 @@ import Server.Server_DataBase;
 				public void keyReleased(KeyEvent _e) 
 				{
 					_password = new String(_passwdField.getPassword());
+				
 			}
 
 				@Override
@@ -193,7 +197,7 @@ import Server.Server_DataBase;
 			_layeredpane.add(_passwdField);
 
 			_passwdCorrectField = new JPasswordField(15);
-			_passwdCorrectField.setBounds(170, 370, 130, 20);//input value
+			_passwdCorrectField.setBounds(170, 370, 160, 20);//input value
 			_passwdCorrectField.setFont(_font);
 			_passwdCorrectField.setEchoChar('¡Ü');
 			_passwdCorrectField.setBorder(BorderFactory.createEmptyBorder());
@@ -213,7 +217,7 @@ import Server.Server_DataBase;
 				{
 					_checkPassword = true;
 				}
-				else if( _passwdCorrectField.equals(_password) == false &&  _passwdCorrectField.equals(null) == false)
+				else if( _passwdCorrectField.equals(_password) == false ||  _passwdCorrectField.equals(null) == false)
 				{
 					_checkPassword = false;
 				}
@@ -280,9 +284,14 @@ import Server.Server_DataBase;
 					{
 					case 1:
 						_checkSame=true;
+						showMessage("ID", "This ID can be used.");
 						break;
-					case 2:
+					case 2 :
+						_checkSame=true;
+						showMessage("ID", "This ID can be used.");
+					case 3:
 						_checkSame=false;
+						showMessage("ERROR", "This ID is already in use. Please use another ID.");
 						break;
 					}
 					
@@ -329,17 +338,30 @@ import Server.Server_DataBase;
 		{
 			public void actionPerformed(ActionEvent _arg0)
 			{
+				if(_password.length()<5||_passwordCorrect.length()<5){
+					_checklength=false;
+				}
+				else if(_password.length()>=5&&_passwordCorrect.length()>=5){
+					_checklength=true;
+				}
 				if(!_name.equals("name") && !_id.equals("id")&& !_password.equals("password") &&!_passwordCorrect.equals("passwordCorrect") 
 						&& !_email.equals("email") &&_checkSame)
 				{
-					if(_checkPassword)
+					if(_checkPassword&&_checklength)
 					{
 						 _goSignUP=true;
 						
 					}
-					else if(!_checkPassword)
+					else if(_checkPassword&&!_checklength)
+					{
+						showMessage("ERROR", "Please check the requirements of the password.");
+					}
+					else if(!_checkPassword&&_checklength)
 					{
 						showMessage("ERROR", "Passcodes did not match.");
+					}
+					else if (!_checkPassword&&!_checklength){
+						showMessage("ERROR","Please check the requirements of the password. andPasscodes did not match.");
 					}
 				}
 				
@@ -356,10 +378,10 @@ import Server.Server_DataBase;
 					if(!_checkSame){
 						showMessage("ERROR", "Check whether the duplicates ID");
 					}
-					else if(_goSignUP==false&&_checkSame)
+				/*	else if(_checkSame)
 					{
 						showMessage("ERROR", "Did not enter the all items. Or ID are duplicated. Or Passcodes did not match.");
-					}
+					}*/
 				}
 			}
 		});
@@ -376,6 +398,9 @@ import Server.Server_DataBase;
 		public void paint(Graphics _g)
 		{
 			_g.drawImage(_img,0,0,null);
+			_g.setColor(Color.BLACK);
+			_g.setFont(_precondition_font);
+			_g.drawString("->Please enter at least 5 characters.", 100, 355);
 		}
 	}
 }
@@ -467,11 +492,11 @@ class SHA_256 implements PacketRule
 			_css.send("resistor");
 		}
 		public void SHA_Encryption(){
-			setName();
 			setPWD();
-			setEmail();
+			/*setName();
+			setEmail();*/
 		}
-		private void setName()
+		/*private void setName()
 		{
 			try {
 				_messageDigest = MessageDigest.getInstance("SHA-256");
@@ -481,7 +506,7 @@ class SHA_256 implements PacketRule
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 
 		private void setPWD()
 		{
@@ -495,7 +520,7 @@ class SHA_256 implements PacketRule
 			}
 		}	
 
-		private void setEmail()
+	/*	private void setEmail()
 		{
 			try {
 				_messageDigest = MessageDigest.getInstance("SHA-256");
@@ -505,5 +530,5 @@ class SHA_256 implements PacketRule
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}	
