@@ -44,25 +44,32 @@ public class Server_FileShare_Send extends Server_Funtion
 	
 	private void OTP_Check()
 	{
-		_shareFolder = new File("C:\\Server\\Share");
-		_fileList = _shareFolder.list();
-		
-		for(int i = 0; i < _fileList.length; i++)
+		try
 		{
-			_st = new StringTokenizer(_fileList[i], "¡Ú");
-			if(_st.nextToken().equals(_OTP))
+			_shareFolder = new File("C:\\Server\\Share");
+			_fileList = _shareFolder.list();
+			
+			for(int i = 0; i < _fileList.length; i++)
 			{
-				_filesVector.add(_fileList[i]);
-				_temporaryFlag = true;
+				_st = new StringTokenizer(_fileList[i], "¡Ú");
+				if(_st.nextToken().equals(_OTP))
+				{
+					_filesVector.add(_fileList[i]);
+					_temporaryFlag = true;
+				}
+			}
+			if(_temporaryFlag == true)
+			{
+				_downloadFlag = "TRUE";
+			}
+			else
+			{
+				_downloadFlag = "FALSE";
 			}
 		}
-		if(_temporaryFlag == true)
+		catch (NullPointerException e)
 		{
-			_downloadFlag = "TRUE";
-		}
-		else
-		{
-			_downloadFlag = "FALSE";
+			System.out.println("There is no file.");
 		}
 	}
 	
@@ -127,8 +134,10 @@ public class Server_FileShare_Send extends Server_Funtion
 						//activity.send();
 					}
 					
-					//activity.send();
+					activity.send();
 					_fileChannel.close();
+					_raf.close();
+					sendingFile.deleteOnExit();
 				}
 				catch (FileNotFoundException e) 
 				{
@@ -138,8 +147,6 @@ public class Server_FileShare_Send extends Server_Funtion
 				{
 					e.printStackTrace();
 				}
-				
-				
 			}
 		}
 	}

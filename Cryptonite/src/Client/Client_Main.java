@@ -18,10 +18,10 @@ public class Client_Main
 		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
 		cfs.start();*/
 		
-	/*	Client_FileShare_Receive cfr = new Client_FileShare_Receive();
-		cfr.receiveFiles();*/
+		Client_FileShare_Receive cfr = new Client_FileShare_Receive();
+		cfr.receiveFiles();
 		
-		Client_Login cl = new Client_Login();
+		//Client_Login cl = new Client_Login();
 		//Client_SignUp csu = new Client_SignUp();
 		
 		/*for(int i = 0 ; i< 15; i++)

@@ -118,7 +118,21 @@ public class Client_Server_Connector extends Thread
 
 	public ByteBuffer receiveByteBuffer()
 	{
-		while(!_packetList.isEmpty())
+		for(int i = 0; i < 1000; i++)
+		{
+			while(_packetList.get("receive").isEmpty())
+			{
+				try 
+				{
+					Thread.sleep(1);
+				} 
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		/*while(_packetList.get("receive").isEmpty())
 		{
 			try 
 			{
@@ -128,7 +142,8 @@ public class Client_Server_Connector extends Thread
 			{
 				e.printStackTrace();
 			}
-		}
+		}*/
+		
 		return _packetList.get("receive").remove();
 	}
 	
