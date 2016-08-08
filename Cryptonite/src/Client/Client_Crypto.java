@@ -1,19 +1,15 @@
 package Client;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.crypto.*;
 
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-
-public abstract class Client_Crypto {
-	SecretKey _key = null;
-	int _mode = 0;
+public class Client_Crypto {
+	public static final int _encrypt = Cipher.ENCRYPT_MODE;
+	public static final int _decrypt = Cipher.DECRYPT_MODE;
+	
+	private byte[] _resultData = null;
+	
+	private SecretKey _key = null;
+	private int _mode = 0;
 
 	// Constructor
 	public Client_Crypto() {
@@ -32,71 +28,42 @@ public abstract class Client_Crypto {
 		this._mode = _mode;
 	}
 	
-	public abstract void push(byte[] target);
-	public abstract byte[] pop();
+	public static int calc(int capacity){
+		int reminder = capacity%32;
+		if (reminder != 0){
+			return capacity-reminder+32;
+		} else return capacity;
+	}
 	
-	public abstract boolean execute();
-
-	// 상속클래스
-	public class Client_FileCrypt {
-		static final String algorithm = "AES";
+	public boolean push (byte[] target){
+		return false;
+	}
+	public byte[] pop (){
+		return null;
+	}
+	
+	// Encrypting Core
+	public class Client_AES256 {
+		private static final String algorithm = "AES"; 
 		private static final String transformation = algorithm + "/ECB/PKCS5Padding";
-
-		File _source = null;
-		File _dest = null;
-
-		@SuppressWarnings("finally")
-		private boolean execute() {
-			Cipher cipher = null;
+		
+		public boolean push (byte[] target){
 			try {
-				cipher = Cipher.getInstance(transformation);
+				Cipher cipher = Cipher.getInstance(transformation);
 				cipher.init(_mode, _key);
-			} catch (Exception e) {
-				//키 용도와 알고리즘이 불일치할 경우
-				System.out.println("Not Matched Algorithm!!");
-				return false;
-			}
-			
-			BufferedInputStream input = null;
-			BufferedOutputStream output = null;
-
-			try {
-				input = new BufferedInputStream(new FileInputStream(_source));
-				output = new BufferedOutputStream(new FileOutputStream(_dest));
-				byte[] buffer = new byte[1024];
-				int read = -1;
-				while ((read = input.read(buffer)) != -1) {
-					output.write(cipher.update(buffer, 0, read));
-				}
-				output.write(cipher.doFinal());
-			} catch (Exception e) {
-				return false;
-			} finally {
-				if (output != null) {
-					try {
-						output.close();
-					} catch (IOException ie) {
-						return true;
-					}
-				}
-				if (input != null) {
-					try {
-						input.close();
-					} catch (IOException ie) {
-						return true;
-					}
-				}
+				_resultData = cipher.doFinal(target);
 				return true;
-			}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}		
+		}
+		public byte[] pop(){
+			return _resultData;
 		}
 	}
-
-	public class Client_PwCrypt {
-
-	}
-
-	// Encrypting Core
-	private class Client_AES256 {
-
+	
+	public class Client_RSA1024 {
+		
 	}
 }
