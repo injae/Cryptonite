@@ -12,28 +12,33 @@ import java.util.Queue;
 
 import Function.PacketRule;
 
+/*
+ * @author In Jae Lee
+ * 
+ */
+
 public class Server_Client_Activity implements PacketRule 
 {
-	private SocketChannel _channel;
+	private final static int LIMIT_PACKET = 10;
 	
-	public Deque<byte[]> _receiveQueue; 
-	public Queue<ByteBuffer> _sendQueue;
+	private SocketChannel _channel;
+	private Server_Client_Manager _manager;
 	
 	private Queue<Integer> _readableQueue;
 	
 	private int _packetCount = 0;
-	public Integer _readableCount = 0;
-	public int _readingCount = 0;
 	private int _usedCount = 1;
-	
 	private int _clientCode = 0;
-	private int LIMIT_PACKET = 10;
 	
-	public Server_User_Info _loginInfo;	
+	public Deque<byte[]> _receiveQueue; 
+	public Queue<ByteBuffer> _sendQueue;
 	public LinkedList<Server_Funtion> _funtionList;
 	
-	public Server_Client_Manager _manager;
-	
+	public Integer _readableCount = 0;
+	public int _readingCount = 0;
+
+	public Server_User_Info _loginInfo;	
+
 	public Server_Client_Activity(Selector selector, SelectionKey key, int clientCode)
 	{
 		try 
@@ -51,10 +56,10 @@ public class Server_Client_Activity implements PacketRule
             _receiveQueue = new LinkedList<byte[]>();            
             _sendQueue = new LinkedList<ByteBuffer>();
             _readableQueue = new LinkedList<Integer>();
+            _funtionList = new LinkedList<Server_Funtion>();
             
             _loginInfo = new Server_User_Info();
             _manager = Server_Client_Manager.getInstance();
-            _funtionList = new LinkedList<Server_Funtion>();
 
             System.out.println(_channel.toString() + "connect");
 		} 
@@ -63,58 +68,48 @@ public class Server_Client_Activity implements PacketRule
 			e.printStackTrace();
 		}
 	}
-	
-	public int getClientCode()
-	{
-		return _clientCode;
-	}
-	
 	public void Sender(byte[] packet) 
 	{
-		if(_sendQueue.size() >= LIMIT_PACKET)
-		{
-			sendNotRemove();
-		}		
+		if(_sendQueue.size() >= LIMIT_PACKET) { sendNotRemove(); }		
+		
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 		buffer.put(packet);
 		buffer.flip();
+		
 		_sendQueue.offer(buffer);
 	}
-	
 	private void sendNotRemove() 
 	{
-		for(int i = 0; i < LIMIT_PACKET; i++)
+		try 
 		{
-			try 
+			for(int i = 0; i < LIMIT_PACKET; i++)
 			{
-				_channel.write(_sendQueue.remove());
-			}
-			catch (IOException e) 
-			{
-				e.printStackTrace();
+				_channel.write(_sendQueue.remove());			
 			}
 		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
-	
 	public void send()
 	{	
-		while(!_sendQueue.isEmpty())
+		try 
 		{
-			try 
+			while(!_sendQueue.isEmpty())
 			{
 				_channel.write(_sendQueue.remove());
 			}
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
-		}		
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
-
 	public void Receiver() throws IOException 
 	{	
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
-		int count = _channel.read(buffer);		
+		_channel.read(buffer);		
 		
 		buffer.flip();
 		byte[] array = new byte[buffer.remaining()];
@@ -124,7 +119,6 @@ public class Server_Client_Activity implements PacketRule
 		_packetCount++;
 		_readableCount++;
 		
-		//System.out.println(_channel.toString() + "read :" + count);	
 		if(_packetCount == 1)
 		{
 			_readableCount--;
@@ -152,14 +146,12 @@ public class Server_Client_Activity implements PacketRule
 		_readingCount = _readableQueue.remove();
 		_usedCount +=  _readingCount;
 	}
-	
 	public void finishCheck()
 	{
 		if(_usedCount == _funtionList.getFirst()._packetMaxCount)
 		{
 			_funtionList.removeFirst();
 			_usedCount = 1;
-			System.out.println("finish");
 		}
 	}
 	
@@ -175,6 +167,9 @@ public class Server_Client_Activity implements PacketRule
 			return false;	
 		}
 	}
+	
+	public int getClientCode() { return _clientCode; }
+	public Server_User_Info getUserInfo() { return _loginInfo; }
 	
 	public void close() 
 	{

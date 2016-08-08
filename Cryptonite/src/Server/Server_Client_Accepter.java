@@ -5,12 +5,10 @@ import java.net.InetSocketAddress;
 import java.nio.channels.*;
 import java.util.*;
 
-/* Class: Server_Client_Accepter
- * This class is 
+/*
+ * @author In Jae Lee
  * 
- * 
- * 
- * */
+ */
 
 public class Server_Client_Accepter extends Thread
 {
@@ -40,7 +38,6 @@ public class Server_Client_Accepter extends Thread
 	public void run()
 	{
 		SelectionKey key = null;
-		int count = 0;
 	
 		while(!Thread.interrupted())
 		{	
@@ -65,14 +62,13 @@ public class Server_Client_Accepter extends Thread
 				        {			        	
 				        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
 				        	activity.Receiver();				        	
-			        }
+				        }
 				        else if(key.isWritable())
 				        { 
 				        	System.out.println("¾¸!!!!!!!!!!!!!!!!!");
 				        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
 				        }
 			        }
-			        count++;
 			    }	
 			    _manager.run();
 			    //System.err.println("ÀÛµ¿È½¼ö : " + count); count = 0;
