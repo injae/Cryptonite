@@ -6,7 +6,7 @@ import Function.PacketRule;
 
 /*
  * @author In Jae Lee
- * 
+ * if you add new function show Server_Function_Factory
  */
 
 public class Server_Client_Manager implements PacketRule

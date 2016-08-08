@@ -18,6 +18,10 @@ public interface PacketRule
 	byte DIRECTORY = 2;
 	//---------------------------------------
 	
+	// SIGN UP
+	byte DUPLICATION_CHECK_FUNCTION =1;
+	byte SIGN_UP_FUNCTION = 2;
+	
 	/*
 	 * Order
 	 * 1. Event Code, Target + File or directory

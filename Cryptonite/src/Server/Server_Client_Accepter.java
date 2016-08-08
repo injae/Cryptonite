@@ -70,8 +70,7 @@ public class Server_Client_Accepter extends Thread
 				        }
 			        }
 			    }	
-			    _manager.run();
-			    //System.err.println("ÀÛµ¿È½¼ö : " + count); count = 0;
+			    _manager.run();			 
 			}
 			catch (IOException e) 
 			{
