@@ -131,13 +131,11 @@ public class Server_FileShare_Send extends Server_Funtion
 						_fileSize -= 1024;
 						buffer.flip();
 						activity.Sender(buffer);
-						//activity.send();
 					}
 					
 					activity.send();
 					_fileChannel.close();
 					_raf.close();
-					sendingFile.deleteOnExit();
 				}
 				catch (FileNotFoundException e) 
 				{
@@ -147,6 +145,12 @@ public class Server_FileShare_Send extends Server_Funtion
 				{
 					e.printStackTrace();
 				}
+			}
+			
+			for(int i = 0; i < _filesVector.size(); i++)
+			{
+				File sendingFile = new File("C:\\Server\\Share" + "\\" + _filesVector.get(i));
+				sendingFile.delete();
 			}
 		}
 	}
