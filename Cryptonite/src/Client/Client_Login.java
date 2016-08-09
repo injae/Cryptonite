@@ -231,6 +231,7 @@ public class Client_Login extends JFrame implements PacketRule
 	          			break;
 	          		case 3 : 
 	          			showMessage("Error", "Wrong password"); 
+	          			break;
 	          		}
 				} catch (IOException e1) {
 					// TODO 자동 생성된 catch 블록

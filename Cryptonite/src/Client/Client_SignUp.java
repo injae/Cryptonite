@@ -76,7 +76,7 @@ import Server.Server_DataBase;
 		
 		
 		private String _name="name";
-		private String _id="id";
+		private String _id="";
 		private String _email="email";
 		private String _password="password";
 		private String _passwordCorrect="passwordCorrect";
@@ -279,23 +279,41 @@ import Server.Server_DataBase;
 					byte[] _Checkid;
 					
 						_Checkid = _csc.receiveByteArray();
-					System.out.println(_Checkid[0]);
-					switch(_Checkid[0])
-					{
-					case 1:
-						_checkSame=true;
-						showMessage("ID", "This ID can be used.");
-						break;
-					case 2 :
-						_checkSame=true;
-						showMessage("ID", "This ID can be used.");
-					case 3:
-						_checkSame=false;
-						showMessage("ERROR", "This ID is already in use. Please use another ID.");
-						break;
+						System.out.println(_Checkid[0]);
+						/*if(_id.length()<3)
+						{ 
+							_checkID=false;
+						}*/
+						if(_id.equals(""))
+						{ 
+							_checkID=false;
+						}
+						System.out.println(_id);
+						System.out.println(_checkID);
+						switch(_Checkid[0])
+						{
+						case 1 :
+							_checkSame=true;
+							
+							if(_checkID)
+							{ 
+								if(_id.length()<3){showMessage("ERROR", "Please insert at least 3 characters");}
+								else{showMessage("ID", "This ID can be used."); }
+								
+							}
+							else
+							{  
+								showMessage("ERROR", "Please insert ID");
+								_checkID=true;
+								/*	if(_id.length()==2&&(_id.equals("id"))){ showMessage("ERROR", "Please insert ID");}
+								else { showMessage("ERROR", "Please insert at least 3 characters");}*/
+							}
+							break;
+						case 2:
+							_checkSame=false;
+							showMessage("ERROR", "This ID is already in use. Please use another ID.");
+							break;
 					}
-					
-					System.out.println(_checkSame);
 				} catch (IOException e) {
 					// TODO 자동 생성된 catch 블록
 					e.printStackTrace();
@@ -344,8 +362,8 @@ import Server.Server_DataBase;
 				else if(_password.length()>=5&&_passwordCorrect.length()>=5){
 					_checklength=true;
 				}
-				if(!_name.equals("name") && !_id.equals("id")&& !_password.equals("password") &&!_passwordCorrect.equals("passwordCorrect") 
-						&& !_email.equals("email") &&_checkSame)
+				if(!_name.equals("name") && !_id.equals("")&& !_password.equals("password") &&!_passwordCorrect.equals("passwordCorrect") 
+						&& !_email.equals("email") &&_checkSame&&_checkID)
 				{
 					if(_checkPassword&&_checklength)
 					{
@@ -364,6 +382,10 @@ import Server.Server_DataBase;
 						showMessage("ERROR","Please check the requirements of the password. andPasscodes did not match.");
 					}
 				}
+				else
+				{
+					showMessage("ERROR", "Please fill in all the blanks.");
+				}
 				
 				if(_goSignUP){
 					
@@ -375,9 +397,15 @@ import Server.Server_DataBase;
 					dispose();
 				}
 				else{
-					if(!_checkSame){
+					if(!_checkSame&&_checkID)
+					{
 						showMessage("ERROR", "Check whether the duplicates ID");
 					}
+					else if(_checkSame&&!_checkID)
+					{
+						showMessage("ERROR", "Check ID's precondition(?)");
+					}
+					else{showMessage("ERROR", "Check whether the duplicates ID and ID's precondition");}
 				/*	else if(_checkSame)
 					{
 						showMessage("ERROR", "Did not enter the all items. Or ID are duplicated. Or Passcodes did not match.");
@@ -400,7 +428,8 @@ import Server.Server_DataBase;
 			_g.drawImage(_img,0,0,null);
 			_g.setColor(Color.BLACK);
 			_g.setFont(_precondition_font);
-			_g.drawString("->Please enter at least 5 characters.", 100, 355);
+			_g.drawString("->Please insert at least 5 characters.", 100, 355);
+			_g.drawString("->Please insert at least 3 characters.", 100, 300);
 		}
 	}
 }
