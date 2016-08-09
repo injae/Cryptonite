@@ -173,7 +173,7 @@ import Server.Server_DataBase;
 			_layeredpane.add(_idField);
 			
 			_passwdField = new JPasswordField();
-			_passwdField.setBounds(170, 315, 160, 20);//input value
+			_passwdField.setBounds(170, 313, 160, 20);//input value
 			_passwdField.setFont(_font);
 			_passwdField.setEchoChar('¡Ü');
 			_passwdField.setBorder(BorderFactory.createEmptyBorder());

@@ -57,7 +57,7 @@ public class Client_Login extends JFrame implements PacketRule
     }
     
 	private boolean _checkLogin =false;
-    private boolean _firstTime = true;
+    private boolean _firstTime = false;
     
     JTextField _loginField;
     JPasswordField _passwordField;
@@ -134,20 +134,6 @@ public class Client_Login extends JFrame implements PacketRule
         MyPanel _panel = new MyPanel();
         _panel.setBounds(0, 0, 470, 645);
         
-        _buttonGroup.add(_individual);
-        _buttonGroup.add(_group);
-        
-        _individual.setBounds(180, 210, 20, 20);
-        _individual.setBorder(BorderFactory.createEmptyBorder());
-        _individual.setOpaque(false);
-        _group.setBounds(300, 210, 20, 20);
-        _group.setBorder(BorderFactory.createEmptyBorder());
-        _group.setOpaque(false);
-        
-        _layeredPane.add(_individual);
-        _layeredPane.add(_group);
-  
-        
         _loginField = new JTextField(15);
         _loginField.setBounds(140, 255, 190, 30);
         _layeredPane.add(_loginField);
@@ -155,7 +141,6 @@ public class Client_Login extends JFrame implements PacketRule
         _loginField.setForeground(Color.BLACK);
         _loginField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         _loginField.setHorizontalAlignment(JTextField.CENTER);
-        //_loginField.setText("");
         _loginField.addKeyListener(new KeyListener(){
      		@Override
      		public void keyPressed(KeyEvent e) {}
@@ -165,10 +150,7 @@ public class Client_Login extends JFrame implements PacketRule
      		}
      		@Override
      		public void keyTyped(KeyEvent e) {
-     			if(_firstTime == true){
-     				_loginField.setText("");
-     				_firstTime = false;
-     			}
+     			_loginField.setText("");
      		}
            });
          _loginField.addMouseListener(new MouseAdapter(){
@@ -234,7 +216,7 @@ public class Client_Login extends JFrame implements PacketRule
           		try 
           		{
 	          		byte[] checkLogin = new byte[1024];
-					
+	          		
 					checkLogin = csc.receiveByteArray();
 				
 	          		switch(checkLogin[0]){
@@ -242,22 +224,18 @@ public class Client_Login extends JFrame implements PacketRule
 	          			showMessage("Error", "No id");
 	          			break;
 	          		case 2 : 
-	          			showMessage("LOGIN", "Welcome,\t"+_id); 
+	          			showMessage("LOGIN", "Welcome,\t"+_id);
+	          			if(checkLogin[1]==1){
+	          				showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
+	          			}
 	          			break;
 	          		case 3 : 
 	          			showMessage("Error", "Wrong password"); 
-	          		}
-	          		if(_individual.isSelected()){
-	          			
-	          		}
-	          		if(_group.isSelected()){
-	          			
 	          		}
 				} catch (IOException e1) {
 					// TODO 자동 생성된 catch 블록
 					e1.printStackTrace();
 				}
-          		
           	}
          });
          _Resistor = new JButton(new ImageIcon("gui/register_bt.png"));
