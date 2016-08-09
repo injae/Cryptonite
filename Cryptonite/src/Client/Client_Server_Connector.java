@@ -107,16 +107,18 @@ public class Client_Server_Connector extends Thread
 
 	public void configurePacket(String packetName)
 	{
-		try {
+		try 
+		{
 			Thread.sleep(100);
-		} catch (InterruptedException e1) {
-			// TODO 자동 생성된 catch 블록
+		}
+		catch (InterruptedException e1) 
+		{
 			e1.printStackTrace();
 		}
 		_packetList.put(packetName, new LinkedList<ByteBuffer>());
 	}
 
-	public ByteBuffer receiveByteBuffer()
+	public synchronized ByteBuffer receiveByteBuffer()
 	{
 		for(int i = 0; i < 1000; i++)
 		{
@@ -136,7 +138,7 @@ public class Client_Server_Connector extends Thread
 		return _packetList.get("receive").remove();
 	}
 	
-	public byte[] receiveByteArray() throws IOException
+	public synchronized byte[] receiveByteArray() throws IOException
 	{
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 		

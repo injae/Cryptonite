@@ -26,8 +26,7 @@ public class Server_Client_Accepter extends Thread
 	        _selector = Selector.open();	        
 	        channel.register(_selector, SelectionKey.OP_ACCEPT);
 	        
-	        _manager = Server_Client_Manager.getInstance();
-	       
+	        _manager = Server_Client_Manager.getInstance();	       
 		 }
 		 catch (IOException e)
 		 {
