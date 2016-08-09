@@ -26,8 +26,7 @@ public class Client_KeyGenerator {
 		_salt = saltGen();
 		_iterationCount = iCGen(); 
 	}
-	
-	
+		
 	//private function
 	private SecretKey aesKeyGen(){
 		byte[] keyData = new byte[32];
@@ -46,6 +45,6 @@ public class Client_KeyGenerator {
 	}
 }
 
-/* 비밀키와 솔트값과 반복카운트 값을 동시에 생성함
- * 한 아이디에 부여할 때마다 init()을 호출해줘야함
+/* 鍮꾨��궎�� �넄�듃媛믨낵 諛섎났移댁슫�듃 媛믪쓣 �룞�떆�뿉 �깮�꽦�븿
+ * �븳 �븘�씠�뵒�뿉 遺��뿬�븷 �븣留덈떎 init()�쓣 �샇異쒗빐以섏빞�븿
  */

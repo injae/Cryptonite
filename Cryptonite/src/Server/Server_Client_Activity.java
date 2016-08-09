@@ -23,12 +23,12 @@ public class Server_Client_Activity implements PacketRule
 	
 	private SocketChannel _channel;
 	private Server_Client_Manager _manager;
+	private int _clientCode;
 	
 	private Queue<Integer> _readableQueue;
 	
 	private int _packetCount = 0;
 	private int _usedCount = 1;
-	private int _clientCode = 0;
 	
 	public Deque<byte[]> _receiveQueue; 
 	public Queue<ByteBuffer> _sendQueue;
@@ -104,13 +104,13 @@ public class Server_Client_Activity implements PacketRule
 		}
 	}
 	
-	public void send()
+	public  void send()
 	{	
 		try 
 		{
 			while(!_sendQueue.isEmpty())
 			{
-				_channel.write(_sendQueue.remove());
+				synchronized(_sendQueue) { _channel.write(_sendQueue.remove()); }
 			}
 		}
 		catch (IOException e) 
@@ -123,7 +123,7 @@ public class Server_Client_Activity implements PacketRule
 	{	
 		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
 		_channel.read(buffer);		
-		
+
 		buffer.flip();
 		byte[] array = new byte[buffer.remaining()];
 		buffer.get(array);

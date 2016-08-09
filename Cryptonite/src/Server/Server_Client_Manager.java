@@ -12,18 +12,20 @@ import Function.PacketRule;
 public class Server_Client_Manager implements PacketRule
 {	
 	private static Server_Client_Manager _client_manager;
+	private Server_DataBase _db;
 	
 	private HashMap<Integer ,Server_Client_Activity> _clientList;	
-	private Queue<Integer> _usableClientCode;
-	
-	private int _lastClientCode;
+	private Queue<Integer> _usableActivityCode;
 	private Queue<Integer> _runningQueue;
-	
+	private int _lastClientCode;
+
 	private Server_Client_Manager() 
 	{
 		_clientList = new HashMap<Integer, Server_Client_Activity>();
 		_runningQueue = new LinkedList<Integer>();
-		_usableClientCode = new LinkedList<Integer>();
+		_usableActivityCode = new LinkedList<Integer>();
+		
+		_db = Server_DataBase.getInstance();
 	}
 	
 	public static Server_Client_Manager getInstance()
@@ -37,8 +39,8 @@ public class Server_Client_Manager implements PacketRule
 	
 	public int getClientCode()
 	{
-		if(_usableClientCode.isEmpty()) { return ++_lastClientCode; }
-		else 							{ return _usableClientCode.remove(); }
+		if(_usableActivityCode.isEmpty()) { return ++_lastClientCode; }
+		else 							  { return _usableActivityCode.remove(); }
 	}
 	
 	public void register(int key, Server_Client_Activity server_client_activity)
@@ -64,7 +66,7 @@ public class Server_Client_Manager implements PacketRule
 	{
 		if(_clientList.get(clientCode)._receiveQueue.isEmpty()) 
 		_clientList.remove(clientCode);
-		_usableClientCode.offer(clientCode);
+		_usableActivityCode.offer(clientCode);
 	}
 	
 	public void run()

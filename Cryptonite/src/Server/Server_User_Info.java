@@ -2,8 +2,8 @@ package Server;
 
 public class Server_User_Info 
 {
-	private int _user_Code = 0;
-	private int _activityCode = 0;
+	private int _user_Code;
+	private int _activityCode;
 	
 	public void reset()
 	{
