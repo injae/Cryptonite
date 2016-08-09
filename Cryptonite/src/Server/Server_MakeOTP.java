@@ -84,19 +84,19 @@ public class Server_MakeOTP extends Server_Funtion
 	}
 
 	@Override
-	public void Checker(byte[] packet) 
+	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
+		_activity = activity;
 		_packetMaxCount = 1 + 1;
 		_packetCutSize = 1;
 	}
 
 	@Override
-	public void running(Server_Client_Activity activity) 
+	public void running() 
 	{
 		makeOTP();
-		activity._receiveQueue.remove();	// garbage delete
-		activity.Sender(_OTP.getBytes());
-		activity.send();
+		_activity.receive.getByte();	// garbage delete
+		_activity.send.setPacket(_OTP.getBytes()).write();
 		System.out.println("OTP Sending FINISH");
 	}
 }

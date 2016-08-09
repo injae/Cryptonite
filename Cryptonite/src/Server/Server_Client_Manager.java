@@ -56,10 +56,11 @@ public class Server_Client_Manager implements PacketRule
 	
 	public void packetChecker(Server_Client_Activity activity)
 	{		
-		byte[] packet = activity._receiveQueue.removeLast();		
+		//byte[] packet = activity._receiveQueue.removeLast();		
+		byte[] packet = activity.receive.getByte();
 		
 		activity._funtionList.add(Server_Function_Factory.create(packet[0]));
-		activity._funtionList.getLast().Checker(packet);		
+		activity._funtionList.getLast().Checker(packet,activity);		
 	}
 	
 	public void stopManaging(int clientCode)
@@ -75,7 +76,7 @@ public class Server_Client_Manager implements PacketRule
 		{
 			Server_Client_Activity activity = _clientList.get(_runningQueue.remove());	
 			activity.readableUpdate();
-			activity._funtionList.getFirst().running(activity);
+			activity._funtionList.getFirst().running();
 			activity.finishCheck();
 		}
 	}

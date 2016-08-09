@@ -65,6 +65,23 @@ public class PacketProcesser
 		}
 	}
 	
+	public synchronized PacketProcesser setPacket(byte[] packet, int size)
+	{
+		byte[] temp = new byte[size];
+		
+		for(int i =0; i < packet.length; i++)
+		{
+			temp[i] = packet[i];
+		}
+		
+		ByteBuffer buf = allocate(temp.length);
+		buf.put(temp);
+		buf.flip();
+		_queue.add(buf);
+		
+		return this;
+	}
+	
 	public synchronized PacketProcesser setPacket(byte[] packet)
 	{
 		ByteBuffer buf = allocate(packet.length);
@@ -102,7 +119,8 @@ public class PacketProcesser
 		try 
 		{
 			ByteBuffer buf = allocate(LIMIT_SIZE);			
-			_input.read(buf);
+			int count = _input.read(buf);
+			System.out.println(buf.toString()+count);
 			buf.flip();
 			_queue.add(buf);
 		}
@@ -119,6 +137,7 @@ public class PacketProcesser
 		try 
 		{
 			ByteBuffer buf = _queue.remove();
+			System.out.println(buf.toString());
 			_output.write(buf);
 		}
 		catch (IOException e) 

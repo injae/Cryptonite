@@ -41,8 +41,6 @@ public class Client_FileShare_Send implements PacketRule
 	// Constructors
 	public Client_FileShare_Send()
 	{
-		ByteChannel b = _fileChannel;
-		
 		try 
 		{
 			_csc = Client_Server_Connector.getInstance(4444);

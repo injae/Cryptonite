@@ -77,8 +77,10 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	}
 	
 	@Override
-	public void Checker(byte[] packet) 
+	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
+		_activity = activity;
+		
 		if(packet[1] == DIRECTORY)
 		{
 			_checkProperty = "DIRECTORY";
@@ -101,12 +103,12 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	}
 
 	@Override
-	public void running(Server_Client_Activity activity) 
+	public void running() 
 	{
 		System.out.println("NOW AUTOBACKUP RUNNING");
 		if(_checkProperty.equals("DIRECTORY"))
 		{
-			_fileName = new String(activity._receiveQueue.remove()).trim();
+			_fileName = new String(_activity._receiveQueue.remove()).trim();
 			File newFolder = new File(_address + "\\" + _fileName);
 			newFolder.mkdir();
 		}
@@ -116,11 +118,11 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			{
 				ByteBuffer buffer;
 				buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-				while(activity.IsReadable())
+				while(_activity.IsReadable())
 				{
 					_count++;
 					buffer.clear();
-					buffer.put(activity._receiveQueue.remove());
+					buffer.put(_activity._receiveQueue.remove());
 					
 					_fileSize -= FILE_BUFFER_SIZE;
 					buffer.flip();

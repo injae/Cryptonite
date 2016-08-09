@@ -202,10 +202,10 @@ public class copy_login extends JFrame implements PacketRule
           		event[0]=LOGIN;
           		event[1]=3;          		
           		p.setPacket(event).write();
-          		p.setPacket(_id.getBytes()).write();
-          		p.setPacket(_password.getBytes()).write();    
+          		p.setPacket(_id.getBytes(),500).write();
+          		p.setPacket(_password.getBytes(),500).write();    
           		
-
+          		p.setAllocate(2);
           		byte[] checkLogin =  p.read().getByte();
           		switch(checkLogin[0]){
           		case 1 :

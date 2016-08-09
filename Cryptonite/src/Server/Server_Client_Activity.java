@@ -10,6 +10,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import Function.PacketProcesser;
 import Function.PacketRule;
 
 /*
@@ -33,6 +34,9 @@ public class Server_Client_Activity implements PacketRule
 	public Deque<byte[]> _receiveQueue; 
 	public Queue<ByteBuffer> _sendQueue;
 	public LinkedList<Server_Funtion> _funtionList;
+	
+	public PacketProcesser receive;
+	public PacketProcesser send;
 	
 	public Integer _readableCount = 0;
 	public int _readingCount = 0;
@@ -62,85 +66,32 @@ public class Server_Client_Activity implements PacketRule
             _manager = Server_Client_Manager.getInstance();
 
             System.out.println(_channel.toString() + "connect");
+            
+            receive = new PacketProcesser(_channel, true);
+            send = new PacketProcesser(_channel, true); 
+            
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
 	}
-	
-	public void Sender(byte[] packet) 
-	{
-		if(_sendQueue.size() >= LIMIT_PACKET) { sendNotRemove(); }		
-		
-		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
-		buffer.put(packet);
-		buffer.flip();
-		
-		_sendQueue.offer(buffer);
-	}
-	
-	public void Sender(ByteBuffer packet)
-	{
-		if(_sendQueue.size() >= LIMIT_PACKET) { sendNotRemove(); }
-		
-		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
-		buffer.put(packet);
-		buffer.flip();
-		
-		_sendQueue.offer(buffer);
-	}
-	
-	private void sendNotRemove() 
-	{
-		try 
-		{
-			for(int i = 0; i < LIMIT_PACKET; i++)
-			{
-				_channel.write(_sendQueue.remove());			
-			}
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public  void send()
-	{	
-		try 
-		{
-			while(!_sendQueue.isEmpty())
-			{
-				synchronized(_sendQueue) { _channel.write(_sendQueue.remove()); }
-			}
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-	}
-	
+
 	public void Receiver() throws IOException 
 	{	
-		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);		
-		_channel.read(buffer);		
-
-		buffer.flip();
-		byte[] array = new byte[buffer.remaining()];
-		buffer.get(array);
+		receive.read();
 		
-		_receiveQueue.add(array);
 		_packetCount++;
 		_readableCount++;
 		
 		if(_packetCount == 1)
 		{
 			_readableCount--;
-			_manager.packetChecker(this);
+			_manager.packetChecker(this);		
 		}
 		else
 		{
+
 			if(_funtionList.getLast()._packetMaxCount == _packetCount)
 			{
 				_readableQueue.offer(_readableCount);
