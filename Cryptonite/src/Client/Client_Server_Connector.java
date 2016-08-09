@@ -132,17 +132,6 @@ public class Client_Server_Connector extends Thread
 				}
 			}
 		}
-		/*while(_packetList.get("receive").isEmpty())
-		{
-			try 
-			{
-				Thread.sleep(1);
-			} 
-			catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-		}*/
 		
 		return _packetList.get("receive").remove();
 	}
