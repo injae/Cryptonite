@@ -120,17 +120,21 @@ public class Client_Server_Connector extends Thread
 
 	public synchronized ByteBuffer receiveByteBuffer()
 	{
-		while(!_packetList.isEmpty())
+		for(int i = 0; i < 1000; i++)
 		{
-			try 
+			while(_packetList.get("receive").isEmpty())
 			{
-				Thread.sleep(1);
-			} 
-			catch (InterruptedException e)
-			{
-				e.printStackTrace();
+				try 
+				{
+					Thread.sleep(1);
+				} 
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
+		
 		return _packetList.get("receive").remove();
 	}
 	

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public class Server_Login extends Server_Funtion
 {
-	Server_DataBase _db = Server_DataBase.getInstance();
+	Server_DataBase db = Server_DataBase.getInstance();
 	
 	@Override
 	public void Checker(byte[] packet) 
@@ -22,7 +22,7 @@ public class Server_Login extends Server_Funtion
 		try
 	    {
 		   byte[] _checkLogin=new byte[1024];
-	       ResultSet _rs  = _db.Query("select * from test where id like '"+ id +"';");
+	       ResultSet _rs  = db.Query("select * from test where id like '"+ id +"';");
 	       	    
 	       if(!_rs.next()) 
 	       {	
@@ -30,10 +30,19 @@ public class Server_Login extends Server_Funtion
 	       }
 	       else
 	       { 	
-		       String _get_pwd = _rs.getString(3);// 두번째 필드의 데이터
+		       String _get_pwd = _rs.getString(3);
+		       int _get_count = _rs.getInt(5);
 		       
-		       if(_get_pwd.equals(password)) { _checkLogin[0]=2; }
-		       else 						 { _checkLogin[0]=3; }   
+		       if(_get_pwd.equals(password)) 
+		       { 
+		    	   _checkLogin[0]=2;
+		    	   if(_get_count==1)
+		    	   {
+		    		   _checkLogin[1]=1;
+		    		   db.Update("update test set count=2 where id='"+id+"';");
+		    	   }
+		    	}
+		       else 					 { _checkLogin[0]=3; }   
 	       }
 	       activity.Sender(_checkLogin);
 	       activity.send();

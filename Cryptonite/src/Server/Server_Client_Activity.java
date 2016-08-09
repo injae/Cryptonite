@@ -84,9 +84,11 @@ public class Server_Client_Activity implements PacketRule
 	{
 		if(_sendQueue.size() >= LIMIT_PACKET) { sendNotRemove(); }
 		
-		packet.flip();
+		ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+		buffer.put(packet);
+		buffer.flip();
 		
-		_sendQueue.offer(packet);
+		_sendQueue.offer(buffer);
 	}
 	
 	private void sendNotRemove() 
