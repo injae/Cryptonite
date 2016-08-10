@@ -20,7 +20,7 @@ import java.io.*;
 public class Client_FileShare_Receive implements PacketRule
 {
 	// OTP Instance
-	private String _OTP = "751583";
+	private String _OTP = "545916";
 	
 	// File Instance
 	private String _downloadFolder = null;
@@ -95,9 +95,11 @@ public class Client_FileShare_Receive implements PacketRule
 						temp = _csc.recieve.read().getByte();
 						_fileName = new String(temp).trim();
 						System.out.println("파일 이름 : " + _fileName);
+						
 						temp = _csc.recieve.read().getByte();
 						_fileSize = Long.parseLong(new String(temp).trim());
 						System.out.println("파일 사이즈 : " + _fileSize);
+						_csc.recieve.setAllocate(_fileSize);
 						
 						_raf = new RandomAccessFile(_downloadFolder + "\\" + _fileName, "rw");
 						_fileChannel = _raf.getChannel();

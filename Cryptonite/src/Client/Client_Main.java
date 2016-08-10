@@ -14,11 +14,11 @@ public class Client_Main
 	{		
 		Client_Server_Connector csc = Client_Server_Connector.getInstance();
 			
-		Client_AutoBackup cab = new Client_AutoBackup();
-		cab.start();
+		/*Client_AutoBackup cab = new Client_AutoBackup();
+		cab.start();*/
 		
-		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
-		cfs.start();*/
+		Client_FileShare_Send cfs = new Client_FileShare_Send();
+		cfs.start();
 		
 		/*Client_FileShare_Receive cfr = new Client_FileShare_Receive();
 		cfr.receiveFiles();*/
