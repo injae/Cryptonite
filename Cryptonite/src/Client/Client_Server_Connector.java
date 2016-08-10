@@ -17,7 +17,7 @@ public class Client_Server_Connector extends Thread
 	private static Client_Server_Connector _singleton = null;
 
 	private SocketChannel _channel;
-	public PacketProcesser recieve;
+	public PacketProcesser receive;
 	public PacketProcesser send;
 
 	private Client_Server_Connector() throws InterruptedException
@@ -34,7 +34,7 @@ public class Client_Server_Connector extends Thread
 				System.out.println("still connecting");
 			}
 			
-			recieve = new PacketProcesser(_channel, false);
+			receive = new PacketProcesser(_channel, false);
 			send = new PacketProcesser(_channel, false);			
 		} 
 		catch (IOException e)

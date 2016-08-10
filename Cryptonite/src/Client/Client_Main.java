@@ -17,18 +17,18 @@ public class Client_Main
 		/*Client_AutoBackup cab = new Client_AutoBackup();
 		cab.start();*/
 		
-		Client_FileShare_Send cfs = new Client_FileShare_Send();
-		cfs.start();
+		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
+		cfs.start();*/
 		
-		/*Client_FileShare_Receive cfr = new Client_FileShare_Receive();
-		cfr.receiveFiles();*/
+		Client_FileShare_Receive cfr = new Client_FileShare_Receive();
+		cfr.receiveFiles();
 		
 		/*Client_Login cl = new Client_Login();*/
 
-		while(true)
+		/*while(true)
 		{
 			Thread.sleep(10);
-		}
+		}*/
 		
 	}
 }

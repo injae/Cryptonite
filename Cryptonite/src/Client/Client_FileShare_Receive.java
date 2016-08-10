@@ -1,6 +1,8 @@
 package Client;
 
 import java.util.*;
+
+import Function.PacketProcesser;
 import Function.PacketRule;
 
 import java.nio.ByteBuffer;
@@ -20,7 +22,7 @@ import java.io.*;
 public class Client_FileShare_Receive implements PacketRule
 {
 	// OTP Instance
-	private String _OTP = "545916";
+	private String _OTP = "413588";
 	
 	// File Instance
 	private String _downloadFolder = null;
@@ -74,7 +76,7 @@ public class Client_FileShare_Receive implements PacketRule
 				_csc.send.setPacket(_OTP.getBytes()).write();	// OTP Sending				
 				
 			
-				byte[] flagByte = _csc.recieve.read().getByte();
+				byte[] flagByte = _csc.receive.read().getByte();
 				_downloadFlag = new String(flagByte).trim();
 				
 				if(_downloadFlag.equals("FALSE"))
@@ -86,29 +88,42 @@ public class Client_FileShare_Receive implements PacketRule
 				{
 					
 					System.out.println("OTP is correct!!");
-					byte[] temp = _csc.recieve.read().getByte();
+					byte[] temp = _csc.receive.read().getByte();
 					_fileCount = Integer.parseInt(new String(temp).trim());
 					System.out.println("fileCount : " + _fileCount);
 					
 					for(int i = 0; i < _fileCount; i++)
 					{
-						temp = _csc.recieve.read().getByte();
+						temp = _csc.receive.read().getByte();
 						_fileName = new String(temp).trim();
 						System.out.println("파일 이름 : " + _fileName);
 						
-						temp = _csc.recieve.read().getByte();
+						temp = _csc.receive.read().getByte();
 						_fileSize = Long.parseLong(new String(temp).trim());
 						System.out.println("파일 사이즈 : " + _fileSize);
-						_csc.recieve.setAllocate(_fileSize);
+						//System.out.println("나누기 : " + (_fileSize / 1024));
+						//_csc.receive.setAllocate(_fileSize);
 						
 						_raf = new RandomAccessFile(_downloadFolder + "\\" + _fileName, "rw");
 						_fileChannel = _raf.getChannel();
+						PacketProcesser p = new PacketProcesser(_fileChannel, false);
+						_csc.receive.setAllocate(_fileSize);
 						
-						ByteBuffer buffer;
-						//buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
+						//int count = 0;
+						while(!_csc.receive.isAllocatorEmpty())
+						{
+							//count++;
+							//System.out.println(count);
+							p.setPacket(_csc.receive.read().getByteBuf()).write();
+						}
+						p.close();
+						//System.out.println("튀어나옴");
+						
+						/*ByteBuffer buffer;
+						buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 						while(_fileSize > 0)
 						{														
-							buffer = _csc.recieve.read().getByteBuf();
+							buffer = _csc.receive.read().getByteBuf();
 							//System.out.println(buffer);
 							_fileSize -= FILE_BUFFER_SIZE;
 							//buffer.flip();
@@ -122,9 +137,9 @@ public class Client_FileShare_Receive implements PacketRule
 							{
 								break;
 							}
-						}
+						}*/
 						
-						_fileChannel.close();
+						//_fileChannel.close();
 						_raf.close();
 					}
 				}

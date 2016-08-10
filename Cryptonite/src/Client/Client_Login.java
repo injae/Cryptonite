@@ -211,7 +211,7 @@ public class Client_Login extends JFrame implements PacketRule
           		csc.send.setPacket(_password.getBytes()).write();
           		System.out.println(_id+"\t"+_password);
 
-          		byte[] checkLogin = csc.recieve.read().getByte();
+          		byte[] checkLogin = csc.receive.read().getByte();
 			
           		switch(checkLogin[0]){
           		case 1 :

@@ -99,13 +99,13 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		{
 			e.printStackTrace();
 		}
-		_activity.receive.setAllocate((int)_fileSize);
+		_activity.receive.setAllocate(_fileSize);
 	}
 
 	@Override
 	public void running()
 	{
-		System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
+		//System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
 		try
 		{
 			ByteBuffer buffer;
@@ -129,7 +129,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 					break;
 				}
 			}
-			System.out.println("Count : " + _count);
+			//System.out.println("Count : " + _count);
 			
 			if(_count == _packetMaxCount)
 			{
