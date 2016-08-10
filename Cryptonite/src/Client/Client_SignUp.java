@@ -3,6 +3,8 @@ package Client;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -41,6 +43,7 @@ import Server.Server_DataBase;
 		public static void main(String[] args){
 			new Client_SignUp();
 		}
+		private boolean _checkBlank=true;
 		private boolean _checklength=true;
 		private boolean _checkID = true;
 		private boolean _checkSame=false;
@@ -64,10 +67,8 @@ import Server.Server_DataBase;
 			JOptionPane.showMessageDialog(null, _message, _title, JOptionPane.INFORMATION_MESSAGE);
 		}
 
-		private String serverIP=null;//input serverip
-		//private int serverPort = 10000;
+		private String serverIP=null;
 		private SocketChannel socket=null;
-
 		
 		JTextField _nameField;
 		JTextField _idField;
@@ -77,7 +78,7 @@ import Server.Server_DataBase;
 		
 		
 		private String _name="name";
-		private String _id="id";
+		private String _id="";
 		private String _email="email";
 		private String _password="password";
 		private String _passwordCorrect="passwordCorrect";
@@ -89,7 +90,7 @@ import Server.Server_DataBase;
 		JButton _cancel;
 
 		 Font _font = new Font ("SansSerif", Font.BOLD,17);
-		 Font _precondition_font = new Font ("SansSerif", Font.ITALIC,16);
+		 Font _precondition_font = new Font ("Dialog", Font.BOLD,16);
 	
 		Client_Server_Connector _css;
 
@@ -102,14 +103,24 @@ import Server.Server_DataBase;
 				e.printStackTrace();
 			}
 			setTitle("CRYPTONITE");
-			setBounds(710,200,482,725);//Input value
+			setBounds(710,200,456,700);
+			setResizable(false);
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			setBackground(Color.BLACK);
 			setLocationRelativeTo(null);
+			try{
+				 Toolkit tk = Toolkit.getDefaultToolkit(); 
+				 Image image = tk.getImage("gui/logo.png");
+				 this.setIconImage(image);
+			}
+			catch(Exception e)
+			{
+				System.out.println("Appilcation icon not found");
+			}
 			try
 			{
-				_img = ImageIO.read(new File("gui/signup_main.png"));//Input MainImage
+				_img = ImageIO.read(new File("gui/signup_main.png"));
 				
 			}catch(IOException e){
 				System.out.println("No Image.");
@@ -117,14 +128,14 @@ import Server.Server_DataBase;
 			}
 
 			JLayeredPane _layeredpane =new JLayeredPane();
-			_layeredpane.setBounds(0, 0, 510, 660);//input value
+			_layeredpane.setBounds(0, 0, 490,655);//input value
 			_layeredpane.setLayout(null);
 
 			Mypanel _panel = new Mypanel();
-			_panel.setBounds(0,0,490,655);//input value  
+			_panel.setBounds(0,0,490,655);
 
 			_nameField = new JTextField();
-			_nameField.setBounds(170, 200, 160, 21);//input value
+			_nameField.setBounds(170, 200, 160, 21);
 			_nameField.setFont(_font);
 			_nameField.setBorder(BorderFactory.createEmptyBorder());
 			_nameField.setForeground(Color.BLACK);
@@ -253,9 +264,9 @@ import Server.Server_DataBase;
 		});
 		_layeredpane.add(_emailField);
 
-		_same = new JButton(new ImageIcon("gui/check_bt.png"));//Input IconImage
+		_same = new JButton(new ImageIcon("gui/check_bt.png"));
 		_same.setPressedIcon(new ImageIcon("img/_check_bt.png"));
-		_same.setBounds(320, 250, 80, 38);//input value
+		_same.setBounds(320, 250, 80, 38);
 		_same.setBorderPainted(false);
 		_same.setFocusPainted(false);
 		_same.setContentAreaFilled(false);
@@ -275,16 +286,30 @@ import Server.Server_DataBase;
 			
 				byte[] Checkid = _csc.receive.read().getByte();
 				System.out.println(Checkid[0]);
+				if(_id.equals(""))
+				{ 
+					_checkID=false;
+				}
+				System.out.println(_id);
+				System.out.println(_checkID);
 				switch(Checkid[0])
 				{
-				case 1:
+				case 1 :
 					_checkSame=true;
-					showMessage("ID", "This ID can be used.");
+					
+					if(_checkID)
+					{ 
+						if(_id.length()<3){ showMessage("ERROR", "Please insert at least 3 characters"); }
+						else			  { showMessage("ID", "This ID can be used."); }
+						
+					}
+					else
+					{  
+						showMessage("ERROR", "Please insert ID");
+						_checkID=true;
+					}
 					break;
-				case 2 :
-					_checkSame=true;
-					showMessage("ID", "This ID can be used.");
-				case 3:
+				case 2:
 					_checkSame=false;
 					showMessage("ERROR", "This ID is already in use. Please use another ID.");
 					break;
@@ -293,7 +318,7 @@ import Server.Server_DataBase;
 		});
 		_layeredpane.add(_same);
 
-		_cancel = new JButton(new ImageIcon("gui/cancel_bt.png"));//Input IconImage
+		_cancel = new JButton(new ImageIcon("gui/cancel_bt.png"));
 /*		_cancel.setRolloverIcon(new ImageIcon(""));*/
 		_cancel.setPressedIcon(new ImageIcon("img/_cancel_hv.png"));
 
@@ -314,7 +339,7 @@ import Server.Server_DataBase;
 		});
 		_layeredpane.add(_cancel);
 
-		_ok = new JButton(new ImageIcon("gui/signup_bt.png"));//Input IconImage
+		_ok = new JButton(new ImageIcon("gui/signup_bt.png"));
 		/*_ok.setRolloverIcon(new ImageIcon(""));*/
 		_ok.setPressedIcon(new ImageIcon("img/signup_bt_hv.png"));
 
@@ -333,8 +358,8 @@ import Server.Server_DataBase;
 				else if(_password.length()>=5&&_passwordCorrect.length()>=5){
 					_checklength=true;
 				}
-				if(!_name.equals("name") && !_id.equals("id")&& !_password.equals("password") &&!_passwordCorrect.equals("passwordCorrect") 
-						&& !_email.equals("email") &&_checkSame)
+				if(!_name.equals("name") && !_id.equals("")&& !_password.equals("password") &&!_passwordCorrect.equals("passwordCorrect") 
+						&& !_email.equals("email") &&_checkSame&&_checkID)
 				{
 					if(_checkPassword&&_checklength)
 					{
@@ -350,8 +375,13 @@ import Server.Server_DataBase;
 						showMessage("ERROR", "Passcodes did not match.");
 					}
 					else if (!_checkPassword&&!_checklength){
-						showMessage("ERROR","Please check the requirements of the password. andPasscodes did not match.");
+						showMessage("ERROR","Please check the requirements of the password. and Passcodes did not match.");
 					}
+				}
+				else
+				{
+					showMessage("ERROR", "Please fill in all the blanks.");
+					_checkBlank=false;
 				}
 				
 				if(_goSignUP){
@@ -363,14 +393,18 @@ import Server.Server_DataBase;
 
 					dispose();
 				}
-				else{
-					if(!_checkSame){
+				else if(!_goSignUP&&_checkBlank)
+				{
+					if(!_checkSame&&_checkID)
+					{
 						showMessage("ERROR", "Check whether the duplicates ID");
 					}
-				/*	else if(_checkSame)
+					else if(_checkSame&&!_checkID)
 					{
-						showMessage("ERROR", "Did not enter the all items. Or ID are duplicated. Or Passcodes did not match.");
-					}*/
+						showMessage("ERROR", "Check ID's precondition(?)");
+					}
+					else if(!_checkSame&&!_checkID){showMessage("ERROR", "Check whether the duplicates ID and ID's precondition");}
+		
 				}
 			}
 		});
@@ -390,6 +424,7 @@ import Server.Server_DataBase;
 			_g.setColor(Color.BLACK);
 			_g.setFont(_precondition_font);
 			_g.drawString("->Please enter at least 5 characters.", 100, 355);
+			_g.drawString("->Please enter at least 3 characters.", 100, 300);
 		}
 	}
 }
@@ -452,21 +487,8 @@ class SHA_256 implements PacketRule
 		}
 		public void SHA_Encryption(){
 			setPWD();
-			/*setName();
-			setEmail();*/
 		}
-		/*private void setName()
-		{
-			try {
-				_messageDigest = MessageDigest.getInstance("SHA-256");
-				_temp_name = _name.getBytes();
-				_messageDigest.update(_temp_name);
-				this._name = new String(Function.Base64Coder.encode(_messageDigest.digest()));
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			}
-		}*/
-
+		
 		private void setPWD()
 		{
 			try {
@@ -479,15 +501,5 @@ class SHA_256 implements PacketRule
 			}
 		}	
 
-	/*	private void setEmail()
-		{
-			try {
-				_messageDigest = MessageDigest.getInstance("SHA-256");
-				_temp_email = _email.getBytes();
-				_messageDigest.update(_temp_email);
-				_email = new String(Function.Base64Coder.encode(_messageDigest.digest()));
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			}
-		}*/
+	
 	}	
