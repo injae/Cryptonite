@@ -44,13 +44,12 @@ public class PacketProcesser
 			for(long i = size / LIMIT_SIZE; i > 0; i--)
 			{
 				_allocator.add(LIMIT_SIZE);
-				System.out.println(LIMIT_SIZE);
 			}
-			if(remain > 0) { _allocator.add((int)remain); System.out.println(remain); }
+			if(remain > 0) { _allocator.add((int)remain);}
 		}
 		else   
 		{
-			_allocator.add((int)size); System.out.println(size);
+			_allocator.add((int)size);
 		}
 		
 		return this;
@@ -97,7 +96,7 @@ public class PacketProcesser
 	
 	public PacketProcesser setPacket(ByteBuffer packet)
 	{
-		packet.flip();
+		if(!packet.hasRemaining()) { packet.flip(); }	
 		_queue.add(packet);
 		
 		return this;
@@ -122,9 +121,9 @@ public class PacketProcesser
 		try 
 		{
 			ByteBuffer buf = allocate(LIMIT_SIZE);			
-			int count = _input.read(buf);
-			System.out.println(buf.toString()+count);
+			_input.read(buf);
 			buf.flip();
+			System.out.println(buf.toString());
 			_queue.add(buf);
 		}
 		catch (IOException e)
@@ -140,7 +139,7 @@ public class PacketProcesser
 		try 
 		{
 			ByteBuffer buf = _queue.remove();
-			System.out.println(buf.toString());
+
 			_output.write(buf);
 		}
 		catch (IOException e) 
@@ -164,5 +163,10 @@ public class PacketProcesser
 	public boolean isEmpty()
 	{
 		return _queue.isEmpty();
+	}
+	
+	public boolean isAllocatorEmpty()
+	{
+		return _allocator.isEmpty();
 	}
 }
