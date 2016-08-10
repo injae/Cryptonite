@@ -14,8 +14,8 @@ public class Client_Main
 	{		
 		Client_Server_Connector csc = Client_Server_Connector.getInstance();
 			
-		/*Client_AutoBackup cab = new Client_AutoBackup();
-		cab.start();*/
+		Client_AutoBackup cab = new Client_AutoBackup();
+		cab.start();
 		
 		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
 		cfs.start();*/
@@ -23,14 +23,8 @@ public class Client_Main
 		/*Client_FileShare_Receive cfr = new Client_FileShare_Receive();
 		cfr.receiveFiles();*/
 		
-		Client_Login cl = new Client_Login();
+		/*Client_Login cl = new Client_Login();*/
 
-		/*for(int i = 0 ; i< 15; i++)
-		{
-			Thread.sleep(10);
-			ccs.justSend();	
-		}*/
-		
 		while(true)
 		{
 			Thread.sleep(10);

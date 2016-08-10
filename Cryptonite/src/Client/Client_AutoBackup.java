@@ -82,7 +82,8 @@ public class Client_AutoBackup extends Thread implements PacketRule
 				{
 					_raf = new RandomAccessFile(_encryptedVector.get(0),"rw");
 					_fileChannel = _raf.getChannel();
-					
+					PacketProcesser p = new PacketProcesser(_fileChannel, false);
+
 					byte[] temp = new byte[1024];
 					temp[0] = AUTOBACKUP;
 					temp[1] = FILE;
@@ -91,16 +92,12 @@ public class Client_AutoBackup extends Thread implements PacketRule
 					Function.frontInsertByte(4, String.valueOf(_fileSize).getBytes(), temp);
 					Function.frontInsertByte(4 + String.valueOf(_fileSize).getBytes().length, _fileName.getBytes(), temp);
 					_csc.send.setPacket(temp).write();
-					
-					ByteBuffer buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-					while(_fileSize > 0)
-					{						
-						buffer.clear();
-						_fileSize -= 1024;
-						_fileChannel.read(buffer);
-						_csc.send.setPacket(buffer).write();
+					p.setAllocate(_fileSize);
+					while(!p.isAllocatorEmpty())
+					{
+						_csc.send.setPacket(p.read().getByteBuf()).write();
 					}
-					_fileChannel.close();
+					p.close();
 				} 
 				catch (FileNotFoundException e) 
 				{
