@@ -96,7 +96,7 @@ import Server.Server_DataBase;
 		public Client_SignUp(){
 			                                              
 			try {
-				_csc=Client_Server_Connector.getInstance(4444);
+				_csc=Client_Server_Connector.getInstance();
 			} catch (InterruptedException e) {
 				// TODO 자동 생성된 catch 블록
 				e.printStackTrace();
@@ -190,7 +190,7 @@ import Server.Server_DataBase;
 				{
 					_password = new String(_passwdField.getPassword());
 				
-			}
+				}
 
 				@Override
 				public void keyTyped(KeyEvent _e) { }
@@ -264,42 +264,30 @@ import Server.Server_DataBase;
 			public void actionPerformed(ActionEvent arg0)
 			{
 				byte size=2;
-				_csc.configurePacket("id");
-				
-				byte[] event=new byte[3];
+				byte[] event=new byte[1024];
 				event[0] =SIGN_UP;
 				event[1]=1;
 				event[2]=size;
 			
-				_csc.setPacket("id", event);
-				_csc.setPacket("id", _id.getBytes());
-				
-				_csc.send("id");
-				try 
+				_csc.send.setPacket(event).write();
+				_csc.send.setPacket(_id.getBytes(),500).write();				
+
+			
+				byte[] Checkid = _csc.recieve.read().getByte();
+				System.out.println(Checkid[0]);
+				switch(Checkid[0])
 				{
-					byte[] _Checkid;
-					
-						_Checkid = _csc.receiveByteArray();
-					System.out.println(_Checkid[0]);
-					switch(_Checkid[0])
-					{
-					case 1:
-						_checkSame=true;
-						showMessage("ID", "This ID can be used.");
-						break;
-					case 2 :
-						_checkSame=true;
-						showMessage("ID", "This ID can be used.");
-					case 3:
-						_checkSame=false;
-						showMessage("ERROR", "This ID is already in use. Please use another ID.");
-						break;
-					}
-					
-					System.out.println(_checkSame);
-				} catch (IOException e) {
-					// TODO 자동 생성된 catch 블록
-					e.printStackTrace();
+				case 1:
+					_checkSame=true;
+					showMessage("ID", "This ID can be used.");
+					break;
+				case 2 :
+					_checkSame=true;
+					showMessage("ID", "This ID can be used.");
+				case 3:
+					_checkSame=false;
+					showMessage("ERROR", "This ID is already in use. Please use another ID.");
+					break;
 				}
 			}
 		});
@@ -430,7 +418,7 @@ class SHA_256 implements PacketRule
 		public SHA_256(String _name, String _id, String _password, String _email/*, byte[] _AES_Key, byte[] _salt, int _iteration*/)
 		{	
 			try {
-				_css=Client_Server_Connector.getInstance(4444);
+				_css=Client_Server_Connector.getInstance();
 			} catch (InterruptedException e) {
 				
 				e.printStackTrace();
@@ -448,49 +436,19 @@ class SHA_256 implements PacketRule
 		}
 		
 		public void sendPrivacy(){
-			_css.configurePacket("resistor");
 			_size=5;
 					
-			byte[] _buf = new byte[3];
+			byte[] _buf = new byte[1024];
 			_buf[0] = SIGN_UP;
 			_buf[1]=2;
 			_buf[2] = _size;
-		 	/*ByteBuffer _message = ByteBuffer.allocateDirect(1024);
-			ByteBuffer _name_byte = ByteBuffer.allocateDirect(1024);
-			ByteBuffer _id_byte = ByteBuffer.allocateDirect(1024);
-			ByteBuffer _password_byte = ByteBuffer.allocateDirect(1024);
-			ByteBuffer _email_byte = ByteBuffer.allocateDirect(1024);
-
 			Charset _charset = Charset.forName("UTF-8");
 			
-			_message.put(_buf);
-			_name_byte.put( _name.getBytes());
-			_name_byte=_charset.encode(_name).array();
-			_id_byte.put(_id.getBytes());
-			_password_byte.put(_password.getBytes());
-			_email_byte.put(_email.getBytes());
-			
-			_message.flip();
-			_name_byte.flip();
-			_id_byte.flip();
-			_password_byte.flip();
-			_email_byte.flip();
-			
-			_css.setPacket("resistor", _message);
-			_css.setPacket("resistor",_name_byte);
-			_css.setPacket("resistor",_id_byte);
-			_css.setPacket("resistor",_password_byte);
-			_css.setPacket("resistor",_email_byte);
-			*/
-			Charset _charset = Charset.forName("UTF-8");
-			
-			_css.setPacket("resistor", _buf);
-			_css.setPacket("resistor",_charset.encode(_name).array());
-			_css.setPacket("resistor",_id.getBytes());
-			_css.setPacket("resistor",_password.getBytes());
-			_css.setPacket("resistor",_email.getBytes());
-			
-			_css.send("resistor");
+			_css.send.setPacket(_buf).write();
+			_css.send.setPacket(_charset.encode(_name).array(),500).write();
+			_css.send.setPacket(_id.getBytes(),500).write();
+			_css.send.setPacket(_password.getBytes(),500).write();
+			_css.send.setPacket(_email.getBytes(),500).write();
 		}
 		public void SHA_Encryption(){
 			setPWD();

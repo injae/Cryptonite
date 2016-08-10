@@ -17,7 +17,7 @@ import Function.*;
 public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
 	// protectedFolder
-	private String _address = "C:\\Å×½ºÆ®";
+	private String _address = "C:\\Server\\Backup";
 	private File _protectedFolder = new File(_address);
 	
 	// Instance
@@ -77,8 +77,9 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	}
 	
 	@Override
-	public void Checker(byte[] packet) 
+	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
+		_activity = activity;
 		if(packet[1] == DIRECTORY)
 		{
 			_checkProperty = "DIRECTORY";
@@ -98,15 +99,16 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 
 		}
 		System.out.println("packetMaxCount : " + _packetMaxCount);
+		_activity.receive.setAllocate(_fileSize);
 	}
 
 	@Override
-	public void running(Server_Client_Activity activity) 
+	public void running() 
 	{
 		System.out.println("NOW AUTOBACKUP RUNNING");
 		if(_checkProperty.equals("DIRECTORY"))
 		{
-			_fileName = new String(activity._receiveQueue.remove()).trim();
+			_fileName = new String(_activity.receive.getByte()).trim();
 			File newFolder = new File(_address + "\\" + _fileName);
 			newFolder.mkdir();
 		}
@@ -116,11 +118,11 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			{
 				ByteBuffer buffer;
 				buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-				while(activity.IsReadable())
+				while(_activity.IsReadable())
 				{
 					_count++;
 					buffer.clear();
-					buffer.put(activity._receiveQueue.remove());
+					buffer.put(_activity.receive.getByte());
 					
 					_fileSize -= FILE_BUFFER_SIZE;
 					buffer.flip();

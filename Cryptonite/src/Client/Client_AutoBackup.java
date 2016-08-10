@@ -17,9 +17,6 @@ import Function.*;
 
 public class Client_AutoBackup extends Thread implements PacketRule
 {
-	// SocketChannel
-	private int _port = 4444;
-	
 	// File or Directory
 	private File _checkProperty = null;
 	private String _fileName = null;
@@ -41,7 +38,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 	{
 		try 
 		{
-			_csc = Client_Server_Connector.getInstance(4444);
+			_csc = Client_Server_Connector.getInstance();
 		} 
 		catch (InterruptedException e) 
 		{
@@ -53,7 +50,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 	public synchronized void run()
 	{
 		_encryptedVector = new Vector<String>();
-		_encryptedVector.add("C:\\Users\\Youn\\Pictures\\바탕화면.jpg");
+		_encryptedVector.add("C:\\Server\\test.mp3");
 
 		try 
 		{
@@ -69,19 +66,15 @@ public class Client_AutoBackup extends Thread implements PacketRule
 			_fileName = _checkProperty.getName();
 			_fileSize = _checkProperty.length();
 			
-			_csc.configurePacket("AUTOBACKUP");
-			
 			if(_checkProperty.isDirectory())
 			{
 				// 난 디렉토리다, 디렉토리명
-				byte[] temp = new byte[2];
+				byte[] temp = new byte[1024];
 				temp[0] = AUTOBACKUP;
 				temp[1] = DIRECTORY;
 				
-				_csc.setPacket("AUTOBACKUP", temp);
-				_csc.setPacket("AUTOBACKUP", _fileName.getBytes());
-				
-				_csc.send("AUTOBACKUP");
+				_csc.send.setPacket(temp).write();
+				_csc.send.setPacket(_fileName.getBytes()).write();
 			}
 			else if(_checkProperty.isFile())
 			{
@@ -90,27 +83,23 @@ public class Client_AutoBackup extends Thread implements PacketRule
 					_raf = new RandomAccessFile(_encryptedVector.get(0),"rw");
 					_fileChannel = _raf.getChannel();
 					
-					byte[] temp = new byte[200];
+					byte[] temp = new byte[1024];
 					temp[0] = AUTOBACKUP;
 					temp[1] = FILE;
 					temp[2] = (byte)String.valueOf(_fileSize).getBytes().length;
 					temp[3] = (byte)_fileName.getBytes().length;
 					Function.frontInsertByte(4, String.valueOf(_fileSize).getBytes(), temp);
 					Function.frontInsertByte(4 + String.valueOf(_fileSize).getBytes().length, _fileName.getBytes(), temp);
-					_csc.setPacket("AUTOBACKUP", temp);
+					_csc.send.setPacket(temp).write();
 					
-					ByteBuffer buffer;
+					ByteBuffer buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 					while(_fileSize > 0)
-					{
-						buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
+					{						
 						buffer.clear();
 						_fileSize -= 1024;
 						_fileChannel.read(buffer);
-						buffer.flip();
-						_csc.setPacket("AUTOBACKUP", buffer);
+						_csc.send.setPacket(buffer).write();
 					}
-					
-					_csc.send("AUTOBACKUP");
 					_fileChannel.close();
 				} 
 				catch (FileNotFoundException e) 

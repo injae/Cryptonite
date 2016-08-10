@@ -8,16 +8,18 @@ public class Server_Login extends Server_Funtion
 	Server_DataBase db = Server_DataBase.getInstance();
 	
 	@Override
-	public void Checker(byte[] packet) 
+	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
+		_activity = activity;
+		_activity.receive.setAllocate(500).setAllocate(500);
 		_packetMaxCount=packet[1];	
 	}
 
 	@Override
-	public void running(Server_Client_Activity activity)
+	public void running()
 	{
-		String id = new String( activity._receiveQueue.remove()).trim();
-		String password= new String( activity._receiveQueue.remove()).trim();
+		String id = new String( _activity.receive.getByte()).trim();
+		String password= new String( _activity.receive.getByte()).trim();
 		
 		try
 	    {
@@ -44,8 +46,7 @@ public class Server_Login extends Server_Funtion
 		    	}
 		       else 					 { _checkLogin[0]=3; }   
 	       }
-	       activity.Sender(_checkLogin);
-	       activity.send();
+	       _activity.send.setPacket(_checkLogin).write();
 	    }
 	    catch(SQLException e1)
 	    {

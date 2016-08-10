@@ -83,8 +83,10 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	}
 	
 	@Override
-	public void Checker(byte[] packet) 
+	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
+		_activity = activity;
+		_activity.receive.setAllocate((int)_fileSize);
 		setFileInformation(packet);
 		_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		
@@ -101,18 +103,18 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	}
 
 	@Override
-	public void running(Server_Client_Activity activity)
+	public void running()
 	{
 		System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
 		try
 		{
 			ByteBuffer buffer;
 			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-			while(activity.IsReadable())
+			while(_activity.IsReadable())
 			{
 				_count++;
 				buffer.clear();
-				buffer.put(activity._receiveQueue.remove());
+				buffer.put(_activity.receive.getByte());
 				
 				_fileSize -= FILE_BUFFER_SIZE;
 				buffer.flip();

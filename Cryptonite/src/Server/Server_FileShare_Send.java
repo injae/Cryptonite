@@ -77,29 +77,29 @@ public class Server_FileShare_Send extends Server_Funtion
 	}
 	
 	@Override
-	public void Checker(byte[] packet) 
+	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
+		_activity = activity;
 		_packetMaxCount = 1 + 1;
 		_packetCutSize = 1;
 		_filesVector = new Vector<String>();
 	}
 
 	@Override
-	public void running(Server_Client_Activity activity) 
+	public void running() 
 	{
 		byte[] temp = new byte[1024];
-		temp = activity._receiveQueue.remove();
+		temp = _activity.receive.getByte();
 		_OTP = new String(temp).trim();
 		System.out.println("Receiving OTP : " + _OTP);
 		OTP_Check();
-		activity.Sender(_downloadFlag.getBytes());
-		activity.send();	// temporary
+		_activity.send.setPacket(_downloadFlag.getBytes());
+		_activity.send.write();	// temporary
 		
 		if(_temporaryFlag == true)
 		{
 			changeByte(String.valueOf(_filesVector.size()).getBytes());
-			activity.Sender(_tempByte);
-			activity.send();
+			_activity.send.setPacket(_tempByte).write();
 			
 			for(int i = 0; i < _filesVector.size(); i++)
 			{
@@ -115,12 +115,10 @@ public class Server_FileShare_Send extends Server_Funtion
 					_fileSize = sendingFile.length();
 					
 					changeByte(_fileName.getBytes());
-					activity.Sender(_tempByte);
-					activity.send();
+					_activity.send.setPacket(_tempByte).write();
 					
 					changeByte(String.valueOf(_fileSize).getBytes());
-					activity.Sender(_tempByte);
-					activity.send();
+					_activity.send.setPacket(_tempByte).write();
 					
 					_raf = new RandomAccessFile("C:\\Server\\Share" + "\\" + _filesVector.get(i), "rw");
 					_fileChannel = _raf.getChannel();
@@ -133,10 +131,8 @@ public class Server_FileShare_Send extends Server_Funtion
 						_fileChannel.read(buffer);
 						_fileSize -= 1024;
 						buffer.flip();
-						activity.Sender(buffer);
+						_activity.send.setPacket(buffer).write();
 					}
-					
-					activity.send();
 					_fileChannel.close();
 					_raf.close();
 				}

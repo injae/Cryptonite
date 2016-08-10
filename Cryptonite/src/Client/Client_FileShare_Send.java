@@ -41,11 +41,9 @@ public class Client_FileShare_Send implements PacketRule
 	// Constructors
 	public Client_FileShare_Send()
 	{
-		ByteChannel b = _fileChannel;
-		
 		try 
 		{
-			_csc = Client_Server_Connector.getInstance(4444);
+			_csc = Client_Server_Connector.getInstance();
 			_cfs = new Client_FileSelector();
 		}
 		catch (InterruptedException e) 
@@ -93,23 +91,15 @@ public class Client_FileShare_Send implements PacketRule
 	{
 		byte[] garbage = new byte[1024];
 
-		try 
-		{
-			_csc.configurePacket("FILE_SHARE_SEND");
-			byte[] OTP_Packet = new byte[100];
-			OTP_Packet[0] = MAKE_OTP;
-			_csc.setPacket("FILE_SHARE_SEND", OTP_Packet);
-			_csc.setPacket("FILE_SHARE_SEND", garbage);
-			_csc.sendAllNotRemove("FILE_SHARE_SEND");
-			
-			byte[] OTP_Byte = new byte[1024];
-			OTP_Byte = _csc.receiveByteArray();
-			_OTP = new String(OTP_Byte).trim();
-		}
-		catch (IOException e1) 
-		{
-			e1.printStackTrace();
-		}
+		byte[] OTP_Packet = new byte[100];
+		OTP_Packet[0] = MAKE_OTP;
+		_csc.send.setPacket(OTP_Packet).write();
+		_csc.send.setPacket(garbage).write();			
+		
+		
+		byte[] OTP_Byte = _csc.recieve.read().getByte();
+		_OTP = new String(OTP_Byte).trim();
+
 		changeFilesName();
 		
 		
@@ -117,15 +107,14 @@ public class Client_FileShare_Send implements PacketRule
 		{
 			try 
 			{
-				_csc.configurePacket("FILE_SHARE_SEND");
-				byte[] packet = new byte[100];
+				byte[] packet = new byte[1024];
 				packet[0] = FILE_SHARE_RECEIVE;
 				packet[1] = (byte)_fileNameArray.length;
 				packet[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
 				packet[3] = (byte)_fileNameArray[i].getBytes().length;
 				Function.frontInsertByte(4, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
 				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, _fileNameArray[i].getBytes(), packet);
-				_csc.setPacket("FILE_SHARE_SEND", packet);	// 1
+				_csc.send.setPacket(packet).write();	// 1
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
 				_fileChannel = _raf.getChannel();
@@ -137,12 +126,9 @@ public class Client_FileShare_Send implements PacketRule
 					buffer.clear();
 					_fileSizeArray[i] -= 1024;
 					_fileChannel.read(buffer);
-					buffer.flip();
-					_csc.setPacket("FILE_SHARE_SEND", buffer);
+					_csc.send.setPacket(buffer).write();
 				}
-				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
-				
-				_csc.send("FILE_SHARE_SEND");
+				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");			
 				_fileChannel.close();
 			} 
 			catch (FileNotFoundException e) 
