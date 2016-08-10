@@ -31,6 +31,7 @@ public class Server_FileShare_Send extends Server_Funtion
 	private RandomAccessFile _raf = null;
 	private FileChannel _fileChannel = null;
 	private ArrayList<String> _fileCountList = null;
+	private String _searchedFile = "DEFAULT";
 	private String _fileName = null;
 	private long _fileSize = 0;
 	private byte[] _tempByte = null;
@@ -57,11 +58,13 @@ public class Server_FileShare_Send extends Server_Funtion
 				_st = new StringTokenizer(_fileList[i], "★");
 				if(_st.nextToken().equals(_OTP))
 				{
-					_fileCountList.add(_fileList[i]);
+					_searchedFile = _fileList[i];
+					//_fileCountList.add(_fileList[i]);
 					_temporaryFlag = true;
+					break;
 				}
 			}
-			if(_temporaryFlag == true)
+			if(_temporaryFlag)
 			{
 				_downloadFlag = "TRUE";
 			}
@@ -82,79 +85,80 @@ public class Server_FileShare_Send extends Server_Funtion
 		_activity = activity;
 		_packetMaxCount = 1 + 1;
 		_packetCutSize = 1;
-		_fileCountList = new ArrayList<String>();
+		_activity.receive.setAllocate(30);
+		//_fileCountList = new ArrayList<String>();
 	}
 
 	@Override
 	public void running() 
 	{
-		byte[] temp = new byte[1024];
-		temp = _activity.receive.getByte();
-		_OTP = new String(temp).trim();
+		_OTP = new String(_activity.receive.getByte()).trim();
 		System.out.println("Receiving OTP : " + _OTP);
 		OTP_Check();
 		_activity.send.setPacket(_downloadFlag.getBytes()).write();
 		
 		if(_temporaryFlag)
 		{
-			changeByte(String.valueOf(_fileCountList.size()).getBytes());
-			_activity.send.setPacket(_tempByte).write();
+			/*changeByte(String.valueOf(_fileCountList.size()).getBytes());
+			_activity.send.setPacket(_tempByte).write();*/
 			
-			for(int i = 0; i < _fileCountList.size(); i++)
+			/*for(int i = 0; i < _fileCountList.size(); i++)
+			{*/
+			try 
 			{
-				try 
+				File sendingFile = new File("C:\\Server\\Share" + "\\" + _searchedFile);
+				StringTokenizer st_temp = new StringTokenizer(_searchedFile, "★");
+				int count = 0;
+				while(st_temp.hasMoreTokens())
 				{
-					File sendingFile = new File("C:\\Server\\Share" + "\\" + _fileCountList.get(i));
-					StringTokenizer st_temp = new StringTokenizer(_fileCountList.get(i), "★");
-					int count = 0;
-					while(st_temp.hasMoreTokens())
-					{
-						_fileName = st_temp.nextToken();
-					}
-					_fileSize = sendingFile.length();
-					
-					changeByte(_fileName.getBytes());
-					_activity.send.setPacket(_tempByte).write();
-					System.out.println("파일 이름(서버) : " + _fileName);
-					
-					changeByte(String.valueOf(_fileSize).getBytes());
-					_activity.send.setPacket(_tempByte).write();
-					System.out.println("파일 용량(서버) : " + _fileSize);
-					
-					_raf = new RandomAccessFile("C:\\Server\\Share" + "\\" + _fileCountList.get(i), "rw");
-					_fileChannel = _raf.getChannel();
-					PacketProcesser p = new PacketProcesser(_fileChannel, false);
-					p.setAllocate(_fileSize);
-					
-					while(!p.isAllocatorEmpty())
-					{
-						_activity.send.setPacket(p.read().getByteBuf()).write();
-					}
-					p.close();
-					
-					/*ByteBuffer buffer;
-					while(_fileSize > 0)
-					{
-						buffer = ByteBuffer.allocateDirect(1024);
-						buffer.clear();
-						_fileChannel.read(buffer);
-						_fileSize -= 1024;
-						//buffer.flip();
-						_activity.send.setPacket(buffer).write();
-					}
-					_fileChannel.close();*/
-					_raf.close();
-					sendingFile.delete();
+					_fileName = st_temp.nextToken();
 				}
-				catch (FileNotFoundException e) 
+				_fileSize = sendingFile.length();
+				
+				changeByte(_fileName.getBytes());
+				_activity.send.setPacket(_tempByte, 1024).write();
+				System.out.println("파일 이름(서버) : " + _fileName);
+				
+				changeByte(String.valueOf(_fileSize).getBytes());
+				_activity.send.setPacket(_tempByte, 1024).write();
+				System.out.println("파일 용량(서버) : " + _fileSize);
+				
+				_raf = new RandomAccessFile("C:\\Server\\Share" + "\\" + _searchedFile, "rw");
+				_fileChannel = _raf.getChannel();
+				PacketProcesser p = new PacketProcesser(_fileChannel, false);
+				p.setAllocate(_fileSize);
+				
+				while(!p.isAllocatorEmpty())
 				{
-					e.printStackTrace();
-				} 
-				catch (IOException e) 
-				{
-					e.printStackTrace();
+					_activity.send.setPacket(p.read().getByteBuf()).write();
 				}
+				p.close();
+				
+				//_fileCountList.remove(0);
+				
+				/*ByteBuffer buffer;
+				while(_fileSize > 0)
+				{
+					buffer = ByteBuffer.allocateDirect(1024);
+					buffer.clear();
+					_fileChannel.read(buffer);
+					_fileSize -= 1024;
+					//buffer.flip();
+					_activity.send.setPacket(buffer).write();
+				}
+				_fileChannel.close();*/
+				_raf.close();
+				sendingFile.delete();
 			}
+			catch (FileNotFoundException e) 
+			{
+				e.printStackTrace();
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+			//}
 			
 			/*for(int i = 0; i < _fileCountList.size(); i++)
 			{
