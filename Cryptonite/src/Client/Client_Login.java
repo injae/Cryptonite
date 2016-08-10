@@ -4,6 +4,8 @@ package Client;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -106,6 +108,15 @@ public class Client_Login extends JFrame implements PacketRule
 	}
     
     public Client_Login(){
+    	try{
+			 Toolkit tk = Toolkit.getDefaultToolkit(); 
+			 Image image = tk.getImage("gui/logo.png");
+			 this.setIconImage(image);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Appilcation icon not found");
+		}
     	try {
 			csc=Client_Server_Connector.getInstance();
 		} catch (InterruptedException e1) {
@@ -113,7 +124,8 @@ public class Client_Login extends JFrame implements PacketRule
 			e1.printStackTrace();
 		}
     	setTitle("Cryptonite");
-        setBounds(710,200,470,645);
+        setBounds(710,200,456,700);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
  
 
