@@ -273,7 +273,7 @@ import Server.Server_DataBase;
 				_csc.send.setPacket(_id.getBytes(),500).write();				
 
 			
-				byte[] Checkid = _csc.recieve.read().getByte();
+				byte[] Checkid = _csc.receive.read().getByte();
 				System.out.println(Checkid[0]);
 				switch(Checkid[0])
 				{

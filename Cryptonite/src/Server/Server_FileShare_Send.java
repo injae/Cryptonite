@@ -30,7 +30,7 @@ public class Server_FileShare_Send extends Server_Funtion
 	// File Instance
 	private RandomAccessFile _raf = null;
 	private FileChannel _fileChannel = null;
-	private Vector<String> _filesVector = null;
+	private ArrayList<String> _fileCountList = null;
 	private String _fileName = null;
 	private long _fileSize = 0;
 	private byte[] _tempByte = null;
@@ -57,7 +57,7 @@ public class Server_FileShare_Send extends Server_Funtion
 				_st = new StringTokenizer(_fileList[i], "★");
 				if(_st.nextToken().equals(_OTP))
 				{
-					_filesVector.add(_fileList[i]);
+					_fileCountList.add(_fileList[i]);
 					_temporaryFlag = true;
 				}
 			}
@@ -82,7 +82,7 @@ public class Server_FileShare_Send extends Server_Funtion
 		_activity = activity;
 		_packetMaxCount = 1 + 1;
 		_packetCutSize = 1;
-		_filesVector = new Vector<String>();
+		_fileCountList = new ArrayList<String>();
 	}
 
 	@Override
@@ -93,20 +93,19 @@ public class Server_FileShare_Send extends Server_Funtion
 		_OTP = new String(temp).trim();
 		System.out.println("Receiving OTP : " + _OTP);
 		OTP_Check();
-		_activity.send.setPacket(_downloadFlag.getBytes());
-		_activity.send.write();	// temporary
+		_activity.send.setPacket(_downloadFlag.getBytes()).write();
 		
-		if(_temporaryFlag == true)
+		if(_temporaryFlag)
 		{
-			changeByte(String.valueOf(_filesVector.size()).getBytes());
+			changeByte(String.valueOf(_fileCountList.size()).getBytes());
 			_activity.send.setPacket(_tempByte).write();
 			
-			for(int i = 0; i < _filesVector.size(); i++)
+			for(int i = 0; i < _fileCountList.size(); i++)
 			{
 				try 
 				{
-					File sendingFile = new File("C:\\Server\\Share" + "\\" + _filesVector.get(i));
-					StringTokenizer st_temp = new StringTokenizer(_filesVector.get(i), "★");
+					File sendingFile = new File("C:\\Server\\Share" + "\\" + _fileCountList.get(i));
+					StringTokenizer st_temp = new StringTokenizer(_fileCountList.get(i), "★");
 					int count = 0;
 					while(st_temp.hasMoreTokens())
 					{
@@ -120,13 +119,20 @@ public class Server_FileShare_Send extends Server_Funtion
 					
 					changeByte(String.valueOf(_fileSize).getBytes());
 					_activity.send.setPacket(_tempByte).write();
-					_activity.send.setAllocate(_fileSize);
 					System.out.println("파일 용량(서버) : " + _fileSize);
 					
-					_raf = new RandomAccessFile("C:\\Server\\Share" + "\\" + _filesVector.get(i), "rw");
+					_raf = new RandomAccessFile("C:\\Server\\Share" + "\\" + _fileCountList.get(i), "rw");
 					_fileChannel = _raf.getChannel();
+					PacketProcesser p = new PacketProcesser(_fileChannel, false);
+					p.setAllocate(_fileSize);
 					
-					ByteBuffer buffer;
+					while(!p.isAllocatorEmpty())
+					{
+						_activity.send.setPacket(p.read().getByteBuf()).write();
+					}
+					p.close();
+					
+					/*ByteBuffer buffer;
 					while(_fileSize > 0)
 					{
 						buffer = ByteBuffer.allocateDirect(1024);
@@ -136,7 +142,7 @@ public class Server_FileShare_Send extends Server_Funtion
 						//buffer.flip();
 						_activity.send.setPacket(buffer).write();
 					}
-					_fileChannel.close();
+					_fileChannel.close();*/
 					_raf.close();
 					sendingFile.delete();
 				}
@@ -150,9 +156,9 @@ public class Server_FileShare_Send extends Server_Funtion
 				}
 			}
 			
-			/*for(int i = 0; i < _filesVector.size(); i++)
+			/*for(int i = 0; i < _fileCountList.size(); i++)
 			{
-				File sendingFile = new File("C:\\Server\\Share" + "\\" + _filesVector.get(i));
+				File sendingFile = new File("C:\\Server\\Share" + "\\" + _fileCountList.get(i));
 				sendingFile.delete();
 			}*/
 		}

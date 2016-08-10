@@ -57,7 +57,9 @@ public class Server_Client_Manager implements PacketRule
 		byte[] packet = activity.receive.getByte();
 		
 		activity._funtionList.add(Server_Function_Factory.create(packet[0]));
-		activity._funtionList.getLast().Checker(packet,activity);		
+		activity._funtionList.getLast().Checker(packet,activity);
+		System.out.println("맨아래에 출력하나");
+		System.out.println(packet[0]);
 	}
 	
 	public void stopManaging(int clientCode)

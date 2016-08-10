@@ -97,11 +97,10 @@ public class Client_FileShare_Send implements PacketRule
 		_csc.send.setPacket(garbage).write();			
 		
 		
-		byte[] OTP_Byte = _csc.recieve.read().getByte();
+		byte[] OTP_Byte = _csc.receive.read().getByte();
 		_OTP = new String(OTP_Byte).trim();
 
 		changeFilesName();
-		
 		
 		for(int i = 0; i < _fileNameArray.length; i++)
 		{
@@ -115,11 +114,20 @@ public class Client_FileShare_Send implements PacketRule
 				Function.frontInsertByte(4, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
 				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, _fileNameArray[i].getBytes(), packet);
 				_csc.send.setPacket(packet).write();	// 1
+				//_csc.send.setAllocate(_fileSizeArray[i]);
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
 				_fileChannel = _raf.getChannel();
+				PacketProcesser p = new PacketProcesser(_fileChannel, false);
+				p.setAllocate(_fileSizeArray[i]);
 				
-				ByteBuffer buffer;
+				while(!p.isAllocatorEmpty())
+				{
+					_csc.send.setPacket(p.read().getByteBuf()).write();
+				}
+				p.close();
+				
+				/*ByteBuffer buffer;
 				while(_fileSizeArray[i] > 0)
 				{
 					buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
@@ -127,9 +135,9 @@ public class Client_FileShare_Send implements PacketRule
 					_fileSizeArray[i] -= 1024;
 					_fileChannel.read(buffer);
 					_csc.send.setPacket(buffer).write();
-				}
+				}*/
 				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");			
-				_fileChannel.close();
+				//_fileChannel.close();
 			} 
 			catch (FileNotFoundException e) 
 			{
