@@ -31,9 +31,14 @@ public class PacketProcesser
 		_allocator = new LinkedList<Integer>();
 	}
 	
-	public synchronized int capacity()
+	public int capacity()
 	{
 		return _queue.size();
+	}
+	
+	public int allocatorCapacity()
+	{
+		return _allocator.size();
 	}
 	
 	public PacketProcesser setAllocate(long size)
@@ -59,11 +64,11 @@ public class PacketProcesser
 	{
 		if(_allocator.isEmpty())
 		{
-			return ByteBuffer.allocateDirect(size);
+			return ByteBuffer.allocate(size);
 		}
 		else
 		{
-			return ByteBuffer.allocateDirect(_allocator.remove());
+			return ByteBuffer.allocate(_allocator.remove());
 		}
 	}
 	
@@ -121,9 +126,10 @@ public class PacketProcesser
 		try 
 		{
 			ByteBuffer buf = allocate(LIMIT_SIZE);
+
 			_input.read(buf);
 			buf.flip();
-			//System.out.println(buf.toString());
+		
 			_queue.add(buf);
 		}
 		catch (IOException e)
@@ -140,7 +146,11 @@ public class PacketProcesser
 		{
 			ByteBuffer buf = _queue.remove();
 
-			_output.write(buf);
+			while(buf.hasRemaining())
+			{
+				_output.write(buf);
+			}
+			System.out.println("write:"+buf.toString());
 		}
 		catch (IOException e) 
 		{

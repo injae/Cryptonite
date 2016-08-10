@@ -53,7 +53,7 @@ public class Client_FileShare_Send implements PacketRule
 	}
 	
 	// Methods
-	public void start()	// when you click the button which turn on 1:1 file share system.
+	public void click()	// when you click the button which turn on 1:1 file share system.
 	{
 		_cfs.fileFinderON();
 		while(!_cfs.getSelectionFinish())
@@ -96,7 +96,6 @@ public class Client_FileShare_Send implements PacketRule
 		_csc.send.setPacket(OTP_Packet).write();
 		_csc.send.setPacket(garbage).write();			
 		
-		
 		byte[] OTP_Byte = _csc.receive.read().getByte();
 		_OTP = new String(OTP_Byte).trim();
 
@@ -126,18 +125,7 @@ public class Client_FileShare_Send implements PacketRule
 					_csc.send.setPacket(p.read().getByteBuf()).write();
 				}
 				p.close();
-				
-				/*ByteBuffer buffer;
-				while(_fileSizeArray[i] > 0)
-				{
-					buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-					buffer.clear();
-					_fileSizeArray[i] -= 1024;
-					_fileChannel.read(buffer);
-					_csc.send.setPacket(buffer).write();
-				}*/
 				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");			
-				//_fileChannel.close();
 			} 
 			catch (FileNotFoundException e) 
 			{
@@ -149,6 +137,7 @@ public class Client_FileShare_Send implements PacketRule
 				e.printStackTrace();
 			}
 		}
+		System.out.println("전부 보냈어요");
 	}
 	
 	private void changeFilesName()

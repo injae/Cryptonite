@@ -1,6 +1,7 @@
 package Client;
 
 import java.util.*;
+import java.util.concurrent.SynchronousQueue;
 
 import Function.PacketProcesser;
 import Function.PacketRule;
@@ -22,15 +23,13 @@ import java.io.*;
 public class Client_FileShare_Receive implements PacketRule
 {
 	// OTP Instance
-	private String _OTP = "413588";
+	private String _OTP = "791335";
 	
 	// File Instance
 	private String _downloadFolder = null;
 	private RandomAccessFile _raf = null;
-	private FileChannel _fileChannel = null;
 	
 	private String _downloadFlag = null;
-	private int _fileCount = 0;
 	private String _fileName = null;
 	private long _fileSize = 0;
 	
@@ -71,15 +70,14 @@ public class Client_FileShare_Receive implements PacketRule
 				_downloadFolder = _cfs.getSelectedPath();
 				
 				while(true)
-				{
-					
+				{					
 					byte[] event = new byte[1024];
 					event[0] = FILE_SHARE_SEND;
 					_csc.send.setPacket(event).write();
+					
 					_csc.send.setPacket(_OTP.getBytes(), 30).write();	// OTP Sending	
-				
-					byte[] flagByte = _csc.receive.read().getByte();
-					_downloadFlag = new String(flagByte).trim();
+					
+					_downloadFlag = new String(_csc.receive.read().getByte()).trim();
 					
 					if(_downloadFlag.equals("FALSE"))
 					{
@@ -88,24 +86,26 @@ public class Client_FileShare_Receive implements PacketRule
 					}
 					else if(_downloadFlag.equals("TRUE"))
 					{		
-						_csc.receive.setAllocate(1024);
+						_csc.receive.setAllocate(500);
 						_fileName = new String(_csc.receive.read().getByte()).trim();
 						System.out.println("파일 이름 : " + _fileName);
 						
-						_csc.receive.setAllocate(1024);
+						_csc.receive.setAllocate(500);
 						_fileSize = Long.parseLong(new String(_csc.receive.read().getByte()).trim());
 						System.out.println("파일 사이즈 : " + _fileSize);
 						
+						System.out.println(_csc.receive.allocatorCapacity());
 						_raf = new RandomAccessFile(_downloadFolder + "\\" + _fileName, "rw");
-						_fileChannel = _raf.getChannel();
-						PacketProcesser p = new PacketProcesser(_fileChannel, false);
+						
+						PacketProcesser p = new PacketProcesser(_raf.getChannel(), false);
 						_csc.receive.setAllocate(_fileSize);
 						
 						while(!_csc.receive.isAllocatorEmpty())
 						{
 							p.setPacket(_csc.receive.read().getByteBuf()).write();
+							System.out.println(_csc.receive.allocatorCapacity());
 						}
-						
+						System.out.println("다읽음");
 						_raf.close();
 						p.close();
 					}

@@ -52,8 +52,7 @@ public class Server_Client_Manager implements PacketRule
 	}
 	
 	public void packetChecker(Server_Client_Activity activity)
-	{		
-		//byte[] packet = activity._receiveQueue.removeLast();		
+	{			
 		byte[] packet = activity.receive.getByte();
 		
 		activity._funtionList.add(Server_Function_Factory.create(packet[0]));
