@@ -379,7 +379,7 @@ import Server.Server_DataBase;
 						showMessage("ERROR", "Passcodes did not match.");
 					}
 					else if (!_checkPassword&&!_checklength){
-						showMessage("ERROR","Please check the requirements of the password. andPasscodes did not match.");
+						showMessage("ERROR","Please check the requirements of the password. and Passcodes did not match.");
 					}
 				}
 				else
@@ -405,7 +405,7 @@ import Server.Server_DataBase;
 					{
 						showMessage("ERROR", "Check ID's precondition(?)");
 					}
-					else{showMessage("ERROR", "Check whether the duplicates ID and ID's precondition");}
+					else if(!_checkSame&&!_checkID){showMessage("ERROR", "Check whether the duplicates ID and ID's precondition");}
 				/*	else if(_checkSame)
 					{
 						showMessage("ERROR", "Did not enter the all items. Or ID are duplicated. Or Passcodes did not match.");
