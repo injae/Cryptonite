@@ -107,7 +107,7 @@ public class Client_Login extends JFrame implements PacketRule
     
     public Client_Login(){
     	try {
-			csc=Client_Server_Connector.getInstance(4444);
+			csc=Client_Server_Connector.getInstance();
 		} catch (InterruptedException e1) {
 			// TODO 자동 생성된 catch 블록
 			e1.printStackTrace();
@@ -203,39 +203,30 @@ public class Client_Login extends JFrame implements PacketRule
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
           		byte size=3;
-          		//System.out.println("눌렸습니다.");
-          		csc.configurePacket("login");
-          		byte[] event =new byte[2];
+          		byte[] event =new byte[1024];
           		event[0]=LOGIN;
           		event[1]=size;
-          		csc.setPacket("login", event);
-          		csc.setPacket("login", _id.getBytes());
-          		csc.setPacket("login", _password.getBytes());
+          		csc.send.setPacket(event).write();
+          		csc.send.setPacket(_id.getBytes()).write();
+          		csc.send.setPacket(_password.getBytes()).write();
           		System.out.println(_id+"\t"+_password);
-          		csc.send("login");
-          		try 
-          		{
-	          		byte[] checkLogin = new byte[1024];
-	          		
-					checkLogin = csc.receiveByteArray();
-				
-	          		switch(checkLogin[0]){
-	          		case 1 :
-	          			showMessage("Error", "No id");
-	          			break;
-	          		case 2 : 
-	          			showMessage("LOGIN", "Welcome,\t"+_id);
-	          			if(checkLogin[1]==1){
-	          				showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
-	          			}
-	          			break;
-	          		case 3 : 
-	          			showMessage("Error", "Wrong password"); 
-	          		}
-				} catch (IOException e1) {
-					// TODO 자동 생성된 catch 블록
-					e1.printStackTrace();
-				}
+
+          		byte[] checkLogin = csc.recieve.read().getByte();
+			
+          		switch(checkLogin[0]){
+          		case 1 :
+          			showMessage("Error", "No id");
+          			break;
+          		case 2 : 
+          			showMessage("LOGIN", "Welcome,\t"+_id);
+          			if(checkLogin[1]==1){
+          				showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
+          			}
+          			break;
+          		case 3 : 
+          			showMessage("Error", "Wrong password"); 
+          		}
+
           	}
          });
          _Resistor = new JButton(new ImageIcon("gui/register_bt.png"));

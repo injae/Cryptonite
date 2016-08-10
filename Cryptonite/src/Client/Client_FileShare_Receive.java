@@ -41,7 +41,7 @@ public class Client_FileShare_Receive implements PacketRule
 	{
 		try 
 		{
-			_csc = Client_Server_Connector.getInstance(4444);
+			_csc = Client_Server_Connector.getInstance();
 			_cfs = new Client_FolderSelector();
 		} 
 		catch (InterruptedException e) 
@@ -68,15 +68,13 @@ public class Client_FileShare_Receive implements PacketRule
 				}
 				_downloadFolder = _cfs.getSelectedPath();
 				
-				_csc.configurePacket("FILE_SHARE_RECEIVE");
-				byte[] event = new byte[1];
+				byte[] event = new byte[1024];
 				event[0] = FILE_SHARE_SEND;
-				_csc.setPacket("FILE_SHARE_RECEIVE", event);
-				_csc.setPacket("FILE_SHARE_RECEIVE", _OTP.getBytes());	// OTP Sending
-				_csc.sendAllNotRemove("FILE_SHARE_RECEIVE");
+				_csc.send.setPacket(event).write();
+				_csc.send.setPacket(_OTP.getBytes()).write();	// OTP Sending				
 				
-				byte[] flagByte = new byte[1024];
-				flagByte = _csc.receiveByteArray();
+			
+				byte[] flagByte = _csc.recieve.read().getByte();
 				_downloadFlag = new String(flagByte).trim();
 				
 				if(_downloadFlag.equals("FALSE"))
@@ -86,18 +84,18 @@ public class Client_FileShare_Receive implements PacketRule
 				}
 				else if(_downloadFlag.equals("TRUE"))
 				{
-					byte[] temp = new byte[1024];
+					
 					System.out.println("OTP is correct!!");
-					temp = _csc.receiveByteArray();
+					byte[] temp = _csc.recieve.read().getByte();
 					_fileCount = Integer.parseInt(new String(temp).trim());
 					System.out.println("fileCount : " + _fileCount);
 					
 					for(int i = 0; i < _fileCount; i++)
 					{
-						temp = _csc.receiveByteArray();
+						temp = _csc.recieve.read().getByte();
 						_fileName = new String(temp).trim();
 						System.out.println("파일 이름 : " + _fileName);
-						temp = _csc.receiveByteArray();
+						temp = _csc.recieve.read().getByte();
 						_fileSize = Long.parseLong(new String(temp).trim());
 						System.out.println("파일 사이즈 : " + _fileSize);
 						
@@ -107,10 +105,8 @@ public class Client_FileShare_Receive implements PacketRule
 						ByteBuffer buffer;
 						//buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 						while(_fileSize > 0)
-						{
-							//buffer.clear();
-							buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-							buffer = _csc.receiveByteBuffer();
+						{														
+							buffer = _csc.recieve.read().getByteBuf();
 							//System.out.println(buffer);
 							_fileSize -= FILE_BUFFER_SIZE;
 							//buffer.flip();

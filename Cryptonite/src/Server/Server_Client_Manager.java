@@ -12,7 +12,6 @@ import Function.PacketRule;
 public class Server_Client_Manager implements PacketRule
 {	
 	private static Server_Client_Manager _client_manager;
-	private Server_DataBase _db;
 	
 	private HashMap<Integer ,Server_Client_Activity> _clientList;	
 	private Queue<Integer> _usableActivityCode;
@@ -24,8 +23,6 @@ public class Server_Client_Manager implements PacketRule
 		_clientList = new HashMap<Integer, Server_Client_Activity>();
 		_runningQueue = new LinkedList<Integer>();
 		_usableActivityCode = new LinkedList<Integer>();
-		
-		_db = Server_DataBase.getInstance();
 	}
 	
 	public static Server_Client_Manager getInstance()
@@ -65,7 +62,7 @@ public class Server_Client_Manager implements PacketRule
 	
 	public void stopManaging(int clientCode)
 	{
-		if(_clientList.get(clientCode)._receiveQueue.isEmpty()) 
+		if(_clientList.get(clientCode).receive.isEmpty()) 
 		_clientList.remove(clientCode);
 		_usableActivityCode.offer(clientCode);
 	}

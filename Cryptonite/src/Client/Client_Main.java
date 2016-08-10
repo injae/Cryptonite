@@ -12,8 +12,7 @@ public class Client_Main
 {
 	public static void main(String[] args) throws InterruptedException, IOException
 	{		
-		//Client_Server_Connector csc = Client_Server_Connector.getInstance(4444);
-		//csc.start();
+		Client_Server_Connector csc = Client_Server_Connector.getInstance();
 			
 		/*Client_AutoBackup cab = new Client_AutoBackup();
 		cab.start();*/
@@ -24,11 +23,8 @@ public class Client_Main
 		/*Client_FileShare_Receive cfr = new Client_FileShare_Receive();
 		cfr.receiveFiles();*/
 		
-		//Client_Login cl = new Client_Login();
-		//Client_SignUp csu = new Client_SignUp();
-		
-		copy_login cp = new copy_login();
-		
+		Client_Login cl = new Client_Login();
+
 		/*for(int i = 0 ; i< 15; i++)
 		{
 			Thread.sleep(10);

@@ -17,7 +17,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	{
 		_activity = activity;
 		_mode=packet[1];
-		if(_mode == DUPLICATION_CHECK_FUNCTION){ _activity.receive.setAllocate(500).setAllocate(500); }
+		if(_mode == DUPLICATION_CHECK_FUNCTION){ _activity.receive.setAllocate(500); }
 		else if(_mode == SIGN_UP_FUNCTION) { activity.receive.setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500);}
 		_packetMaxCount = packet[2];	
 	}
@@ -38,7 +38,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	{
 		try
 	    {
-		   String client_id = new String( _activity._receiveQueue.remove()).trim();
+		   String client_id = new String( _activity.receive.getByte()).trim();
 		    
 		   byte[] _checkid=new byte[2];
 	       ResultSet _rs  = db.Query("select * from test where id like '"+ client_id +"';");
@@ -46,8 +46,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	       if(!_rs.next()) { _checkid[0]=1; }
 	       else 		   { _checkid[0]=2; }
 	       
-	       _activity.Sender(_checkid);
-	       _activity.send();
+	       _activity.send.setPacket(_checkid).write();
 	    }
 	    catch(SQLException e1)
 	    {

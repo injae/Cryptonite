@@ -30,9 +30,7 @@ public class Server_Client_Activity implements PacketRule
 	
 	private int _packetCount = 0;
 	private int _usedCount = 1;
-	
-	public Deque<byte[]> _receiveQueue; 
-	public Queue<ByteBuffer> _sendQueue;
+
 	public LinkedList<Server_Funtion> _funtionList;
 	
 	public PacketProcesser receive;
@@ -57,8 +55,6 @@ public class Server_Client_Activity implements PacketRule
             
             _clientCode = clientCode;
             
-            _receiveQueue = new LinkedList<byte[]>();            
-            _sendQueue = new LinkedList<ByteBuffer>();
             _readableQueue = new LinkedList<Integer>();
             _funtionList = new LinkedList<Server_Funtion>();
             
