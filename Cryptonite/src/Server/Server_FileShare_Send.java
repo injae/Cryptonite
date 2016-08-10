@@ -116,9 +116,12 @@ public class Server_FileShare_Send extends Server_Funtion
 					
 					changeByte(_fileName.getBytes());
 					_activity.send.setPacket(_tempByte).write();
+					System.out.println("파일 이름(서버) : " + _fileName);
 					
 					changeByte(String.valueOf(_fileSize).getBytes());
 					_activity.send.setPacket(_tempByte).write();
+					_activity.send.setAllocate(_fileSize);
+					System.out.println("파일 용량(서버) : " + _fileSize);
 					
 					_raf = new RandomAccessFile("C:\\Server\\Share" + "\\" + _filesVector.get(i), "rw");
 					_fileChannel = _raf.getChannel();
@@ -130,11 +133,12 @@ public class Server_FileShare_Send extends Server_Funtion
 						buffer.clear();
 						_fileChannel.read(buffer);
 						_fileSize -= 1024;
-						buffer.flip();
+						//buffer.flip();
 						_activity.send.setPacket(buffer).write();
 					}
 					_fileChannel.close();
 					_raf.close();
+					sendingFile.delete();
 				}
 				catch (FileNotFoundException e) 
 				{
@@ -146,11 +150,11 @@ public class Server_FileShare_Send extends Server_Funtion
 				}
 			}
 			
-			for(int i = 0; i < _filesVector.size(); i++)
+			/*for(int i = 0; i < _filesVector.size(); i++)
 			{
 				File sendingFile = new File("C:\\Server\\Share" + "\\" + _filesVector.get(i));
 				sendingFile.delete();
-			}
+			}*/
 		}
 	}
 }

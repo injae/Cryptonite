@@ -120,10 +120,10 @@ public class PacketProcesser
 	{
 		try 
 		{
-			ByteBuffer buf = allocate(LIMIT_SIZE);			
+			ByteBuffer buf = allocate(LIMIT_SIZE);
 			_input.read(buf);
 			buf.flip();
-			System.out.println(buf.toString());
+			//System.out.println(buf.toString());
 			_queue.add(buf);
 		}
 		catch (IOException e)

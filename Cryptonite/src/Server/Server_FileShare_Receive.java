@@ -86,7 +86,6 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
 		_activity = activity;
-		_activity.receive.setAllocate((int)_fileSize);
 		setFileInformation(packet);
 		_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		
@@ -100,6 +99,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		{
 			e.printStackTrace();
 		}
+		_activity.receive.setAllocate((int)_fileSize);
 	}
 
 	@Override
