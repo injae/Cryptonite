@@ -23,7 +23,7 @@ import java.io.*;
 public class Client_FileShare_Receive implements PacketRule
 {
 	// OTP Instance
-	private String _OTP = "791335";
+	private String _OTP = "795208";
 	
 	// File Instance
 	private String _downloadFolder = null;
@@ -103,7 +103,7 @@ public class Client_FileShare_Receive implements PacketRule
 						while(!_csc.receive.isAllocatorEmpty())
 						{
 							p.setPacket(_csc.receive.read().getByteBuf()).write();
-							System.out.println(_csc.receive.allocatorCapacity());
+							//System.out.println(_csc.receive.allocatorCapacity());
 						}
 						System.out.println("¥Ÿ¿–¿Ω");
 						_raf.close();
