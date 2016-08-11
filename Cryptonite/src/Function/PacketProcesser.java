@@ -150,7 +150,7 @@ public class PacketProcesser
 			{
 				_output.write(buf);
 			}
-			System.out.println("write:"+buf.toString());
+			//System.out.println("write:"+buf.toString());
 		}
 		catch (IOException e) 
 		{
