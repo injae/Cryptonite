@@ -1,14 +1,8 @@
 package Client;
 
-import java.nio.*;
 import java.nio.channels.*;
 import java.io.*;
 import java.util.*;
-
-import javax.crypto.SecretKey;
-
-import Crypto.AES256;
-import Crypto.Crypto;
 import Function.*;
 
 /*
@@ -107,10 +101,6 @@ public class Client_AutoBackup extends Thread implements PacketRule
 				{
 					e.printStackTrace();
 				} 
-				catch (IOException e) 
-				{
-					e.printStackTrace();
-				}
 			}
 			
 			_encryptedVector.remove(0);

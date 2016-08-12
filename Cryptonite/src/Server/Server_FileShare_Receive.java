@@ -38,7 +38,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	// FileChannel and RandomAccessFile
 	private RandomAccessFile _raf = null;
 	private FileChannel _fileChannel = null;
-	
+	PacketProcessor p = null;
 	// Constructors
 	public Server_FileShare_Receive() { }
 	
@@ -101,74 +101,24 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 			e.printStackTrace();
 		}
 		_activity.receive.setAllocate(_fileSize);
+		
+		PacketProcessor p = new PacketProcessor(_fileChannel, false);
 	}
 
 	@Override
 	public void running()
 	{
 		//System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
-		
-		/*PacketProcessor p = new PacketProcessor(_fileChannel, false);
-		_activity.receive.setAllocate(_fileSize);
-		
 		while(_activity.IsReadable())
 		{
 			_count++;
-			p.setPacket(_activity.receive.getByteBuf()).write();
+			p.setPacket(_activity.receive.getByte()).write();
 		}
-		System.out.println("s");
 		if(_count == _packetMaxCount)
 		{
 			System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
 			p.close();
-			//_fileChannel.close();
 			_count = 1;
-		}*/
-		
-		try
-		{	
-			ByteBuffer buffer;
-			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-			while(_activity.IsReadable())
-			{
-				_count++;
-				buffer.clear();
-				buffer.put(_activity.receive.getByteBuf());
-				
-				_fileSize -= FILE_BUFFER_SIZE;
-				buffer.flip();
-				while(!_fileChannel.isOpen())
-				{
-					Thread.sleep(1);
-				}
-				_fileChannel.write(buffer);
-				
-				if(_fileSize <= 0)
-				{
-					break;
-				}
-			}
-			//System.out.println("Count : " + _count);
-			
-			if(_count == _packetMaxCount)
-			{
-				System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
-				//p.close();
-				_fileChannel.close();
-				_count = 1;
-			}
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
 		}
 	}
 }
