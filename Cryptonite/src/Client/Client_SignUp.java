@@ -44,10 +44,10 @@ import Crypto.userKeyGenerator;
 		public static void main(String[] args){
 			new Client_SignUp();
 		}
-		private boolean _checkBlank=true;
+		private boolean _checkBlank=false;
 		private boolean _checklength=true;
-		private boolean _checkID = true;
 		private boolean _checkSame=false;
+		private boolean _checkemail=false;
 		private boolean _checkPassword=false;
 		public static boolean _goSignUP = false;
 		public static boolean _goFolderScan = false;
@@ -78,11 +78,11 @@ import Crypto.userKeyGenerator;
 		JPasswordField _passwdCorrectField;
 		
 		
-		private String _name="name";
+		private String _name="";
 		private String _id="";
-		private String _email="email";
-		private String _password="password";
-		private String _passwordCorrect="passwordCorrect";
+		private String _email="";
+		private String _password="";
+		private String _passwordCorrect="";
 		
 		Client_Server_Connector _csc;
 
@@ -201,7 +201,6 @@ import Crypto.userKeyGenerator;
 				public void keyReleased(KeyEvent _e) 
 				{
 					_password = new String(_passwdField.getPassword());
-				
 				}
 
 				@Override
@@ -257,6 +256,7 @@ import Crypto.userKeyGenerator;
 			public void keyReleased(KeyEvent _e)
 			{
 				_email = _emailField.getText();
+				if(_email.contains("@")){ _checkemail=true; }
 			}
 
 			@Override
@@ -289,34 +289,21 @@ import Crypto.userKeyGenerator;
 				System.out.println(Checkid[0]);
 				if(_id.equals(""))
 				{ 
-					_checkID=false;
+					showMessage("ERROR", "Please insert ID");
 				}
-				System.out.println(_id);
-				System.out.println(_checkID);
-				switch(Checkid[0])
+				else
 				{
-				case 1 :
-					_checkSame=true;
-					
-					if(_checkID)
-					{ 
-						/*if(_id.length()<3){ showMessage("ERROR", "Please insert at least 3 characters"); }
-						else			  { showMessage("ID", "This ID can be used."); }*/
+					switch(Checkid[0])
+					{
+					case 1 :
+						_checkSame=true;
 						showMessage("ID", "This ID can be used."); 
-						
+						break;
+					case 2:
+						showMessage("ERROR", "This ID is already in use. Please use another ID.");
+						break;
 					}
-					else
-					{  
-						showMessage("ERROR", "Please insert ID");
-						_checkID=true;
-					}
-					break;
-				case 2:
-					_checkSame=false;
-					showMessage("ERROR", "This ID is already in use. Please use another ID.");
-					break;
 				}
-				
 			}
 		});
 		_layeredpane.add(_same);
@@ -361,7 +348,50 @@ import Crypto.userKeyGenerator;
 				else if(_password.length()>=5&&_passwordCorrect.length()>=5){
 					_checklength=true;
 				}
-				if(!_name.equals("name") && !_id.equals("")&& !_password.equals("password") &&!_passwordCorrect.equals("passwordCorrect") 
+				
+				if(!_name.equals("") && !_id.equals("")&& !_password.equals("") &&!_passwordCorrect.equals("") 
+						&& !_email.equals(""))
+				{
+					_checkBlank=true;
+				}
+				else{_checkBlank=false;}
+				
+				if(_checkBlank)
+				{
+					if(_checkSame)
+					{
+						if(_checklength)
+						{
+							if(_checkPassword)
+							{
+								if(_checkemail){
+									_goSignUP=true;
+								}
+								else{ showMessage("ERROR", "이메일 조건이 맞지 않습니다."); }
+							}
+							else { showMessage("ERROR", "Passcodes did not match."); }
+						}
+						else{ showMessage("ERROR", "Please check the requirements of the password."); }
+					}
+					else{ showMessage("ERROR", "Check whether the duplicates ID");}
+				}
+				else{ showMessage("ERROR", "Please fill in all the blanks.");}
+
+				if(_goSignUP){
+					
+					showMessage("WELCOME!", "WELCOME TO CRYPTONITE!.");
+
+					userKeyGenerator _ukg = new userKeyGenerator();
+					_ukg.init();
+					_sha = new SHA_256(_name,_id,_password,_email,_ukg.getAesKeyToString(), _ukg.getSaltToString(), _ukg.getIterationCountToString());
+
+					dispose();
+				}
+
+			}
+				
+				/*
+				if(_checkBlank&&!_name.equals("name") && !_id.equals("")&& !_password.equals("password") &&!_passwordCorrect.equals("passwordCorrect") 
 						&& !_email.equals("email") &&_checkSame&&_checkID)
 				{
 					if(_checkPassword&&_checklength)
@@ -383,8 +413,14 @@ import Crypto.userKeyGenerator;
 				}
 				else
 				{
+					if(!_checkBlank)
+					{
 					showMessage("ERROR", "Please fill in all the blanks.");
-					_checkBlank=false;
+					}
+					if(!_checkSame&&_checkID)
+					{
+						showMessage("ERROR", "Check whether the duplicates ID");
+					}
 				}
 				
 				if(_goSignUP){
@@ -397,7 +433,7 @@ import Crypto.userKeyGenerator;
 
 					dispose();
 				}
-				else if(!_goSignUP&&_checkBlank)
+				else if(!_goSignUP)
 				{
 					if(!_checkSame&&_checkID)
 					{
@@ -410,7 +446,7 @@ import Crypto.userKeyGenerator;
 					else if(!_checkSame&&!_checkID){showMessage("ERROR", "Check whether the duplicates ID and ID's precondition");}
 		
 				}
-			}
+			}*/
 		});
 
 		_layeredpane.add(_ok);
