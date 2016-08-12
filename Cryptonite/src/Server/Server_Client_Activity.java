@@ -10,7 +10,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import Function.PacketProcesser;
+import Function.PacketProcessor;
 import Function.PacketRule;
 
 /*
@@ -33,8 +33,8 @@ public class Server_Client_Activity implements PacketRule
 
 	public LinkedList<Server_Funtion> _funtionList;
 	
-	public PacketProcesser receive;
-	public PacketProcesser send;
+	public PacketProcessor receive;
+	public PacketProcessor send;
 	
 	public Integer _readableCount = 0;
 	public int _readingCount = 0;
@@ -63,8 +63,8 @@ public class Server_Client_Activity implements PacketRule
 
             System.out.println(_channel.toString() + "connect");
             
-            receive = new PacketProcesser(_channel, true);
-            send = new PacketProcesser(_channel, true); 
+            receive = new PacketProcessor(_channel, true);
+            send = new PacketProcessor(_channel, true); 
             
 		} 
 		catch (IOException e) 

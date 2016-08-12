@@ -82,7 +82,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 				{
 					_raf = new RandomAccessFile(_encryptedVector.get(0),"rw");
 					_fileChannel = _raf.getChannel();
-					PacketProcesser p = new PacketProcesser(_fileChannel, false);
+					PacketProcessor p = new PacketProcessor(_fileChannel, false);
 
 					byte[] temp = new byte[1024];
 					temp[0] = AUTOBACKUP;

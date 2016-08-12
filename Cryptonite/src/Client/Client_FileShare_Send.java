@@ -117,7 +117,7 @@ public class Client_FileShare_Send implements PacketRule
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
 				_fileChannel = _raf.getChannel();
-				PacketProcesser p = new PacketProcesser(_fileChannel, false);
+				PacketProcessor p = new PacketProcessor(_fileChannel, false);
 				p.setAllocate(_fileSizeArray[i]);
 				
 				while(!p.isAllocatorEmpty())

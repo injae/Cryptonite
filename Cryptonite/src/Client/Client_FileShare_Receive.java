@@ -3,7 +3,7 @@ package Client;
 import java.util.*;
 import java.util.concurrent.SynchronousQueue;
 
-import Function.PacketProcesser;
+import Function.PacketProcessor;
 import Function.PacketRule;
 
 import java.nio.ByteBuffer;
@@ -97,7 +97,7 @@ public class Client_FileShare_Receive implements PacketRule
 						System.out.println(_csc.receive.allocatorCapacity());
 						_raf = new RandomAccessFile(_downloadFolder + "\\" + _fileName, "rw");
 						
-						PacketProcesser p = new PacketProcesser(_raf.getChannel(), false);
+						PacketProcessor p = new PacketProcessor(_raf.getChannel(), false);
 						_csc.receive.setAllocate(_fileSize);
 						
 						while(!_csc.receive.isAllocatorEmpty())

@@ -2,7 +2,7 @@ package Client;
 
 import java.io.IOException;
 
-import Function.PacketProcesser;
+import Function.PacketProcessor;
 
 /**
  * @author user
