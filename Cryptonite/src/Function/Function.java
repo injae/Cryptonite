@@ -21,6 +21,7 @@ public class Function
 		}
 	}
 	
+	//May be it cause Endian Probelm
 	public static byte[] intToByteArray(final int integer) {
 		ByteBuffer buff = ByteBuffer.allocate(Integer.SIZE / 8);
 		buff.putInt(integer);

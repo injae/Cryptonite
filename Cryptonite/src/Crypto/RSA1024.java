@@ -5,7 +5,7 @@ import javax.crypto.SecretKey;
 
 public class RSA1024 extends Crypto{
 	private static final String algorithm = "RSA"; 
-	private static final String transformation = algorithm + "/ECB/PKCS5Padding";
+	private static final String transformation = algorithm + "/None/PKCS1Padding";
 	
 	//Constructor
 	public RSA1024() {
