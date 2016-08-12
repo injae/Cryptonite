@@ -32,6 +32,7 @@ import javax.swing.JTextField;
 import Function.PacketProcessor;
 import Function.PacketRule;
 import Server.Server_DataBase;
+import Crypto.userKeyGenerator;
 
 	public class Client_SignUp extends JFrame implements PacketRule //Create new account
 	//Create new page
@@ -390,8 +391,8 @@ import Server.Server_DataBase;
 					
 					showMessage("WELCOME!", "WELCOME TO CRYPTONITE!.");
 
-					//userKeyGenerator _ukg = new userKeyGenerator();
-					_sha = new SHA_256(_name,_id,_password,_email/*,_ukg.genEncAesKey(_password), _ukg.getSalt(), _ukg.getIterationCount()*/);
+					userKeyGenerator _ukg = new userKeyGenerator();
+					_sha = new SHA_256(_name,_id,_password,_email,_ukg.getAesKeyBytes(), _ukg.getSalt(), _ukg.getIterationCountBytes());
 
 					dispose();
 				}
@@ -443,7 +444,7 @@ class SHA_256 implements PacketRule
 
 		private byte[] _AES_Key;
 		private byte[] _salt;
-		private int _iteration;
+		private byte[] _iteration;
 
 		private byte[] _temp_name;
 		private byte[] _temp_pwd;
@@ -452,7 +453,7 @@ class SHA_256 implements PacketRule
 		private byte[] _temp_data;
 		private byte _size;
 
-		public SHA_256(String _name, String _id, String _password, String _email/*, byte[] _AES_Key, byte[] _salt, int _iteration*/)
+		public SHA_256(String _name, String _id, String _password, String _email, byte[] _AES_Key, byte[] _salt, byte[] _iteration)
 		{	
 			try {
 				_css=Client_Server_Connector.getInstance();
@@ -464,9 +465,9 @@ class SHA_256 implements PacketRule
 			this._id = _id;
 			this._password = _password;
 			this._email = _email;
-			/*this._AES_Key = _AES_Key;
+			this._AES_Key = _AES_Key;
 		 	this._salt = _salt;
-		 	this._iteration = _iteration;*/
+		 	this._iteration = _iteration;
 
 			SHA_Encryption();
 			sendPrivacy();
@@ -486,6 +487,9 @@ class SHA_256 implements PacketRule
 			_css.send.setPacket(_id.getBytes(),500).write();
 			_css.send.setPacket(_password.getBytes(),500).write();
 			_css.send.setPacket(_email.getBytes(),500).write();
+			_css.send.setPacket(_AES_Key, 500).write();
+			_css.send.setPacket(_salt, 500).write();
+			_css.send.setPacket(_iteration, 500).write();
 		}
 		public void SHA_Encryption(){
 			setPWD();
