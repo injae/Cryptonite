@@ -28,6 +28,7 @@ public class userKeyGenerator {
 	public String getAesKeyToString() { return Base64.getEncoder().encodeToString(getAesKeyBytes()); }
 	
 	public byte[] getSalt() { return _salt; }
+	public String getSaltToByte() { return new String(_salt); }
 	
 	public int getIterationCount() { return _iterationCount; }
 	public byte[] getIterationCountBytes() { return Function.intToByteArray(_iterationCount); }
