@@ -17,9 +17,9 @@ public class Client_Main
 		/*Client_AutoBackup cab = new Client_AutoBackup();
 		cab.start();*/
 		
-		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
+		Client_FileShare_Send cfs = new Client_FileShare_Send();
 		cfs.click();
-		*/
+		
 		/*Client_FileShare_Receive cfr = new Client_FileShare_Receive();
 		cfr.receiveFiles();*/
 		
