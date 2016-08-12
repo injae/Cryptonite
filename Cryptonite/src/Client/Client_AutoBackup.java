@@ -68,7 +68,6 @@ public class Client_AutoBackup extends Thread implements PacketRule
 			
 			if(_checkProperty.isDirectory())
 			{
-				// 난 디렉토리다, 디렉토리명
 				byte[] temp = new byte[1024];
 				temp[0] = AUTOBACKUP;
 				temp[1] = DIRECTORY;
