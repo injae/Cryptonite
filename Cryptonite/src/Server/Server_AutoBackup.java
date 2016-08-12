@@ -128,7 +128,8 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 				System.out.println("³¡");
 				p.close();
 				_count = 1;
-			}*/
+			}
+			*/
 			
 			try 
 			{
