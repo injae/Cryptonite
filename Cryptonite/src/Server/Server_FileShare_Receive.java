@@ -19,7 +19,7 @@ import Function.PacketProcessor;
 public class Server_FileShare_Receive extends Server_Funtion implements PacketRule
 {
 	// Address
-	private String _address = "C:\\Server\\Share";
+	private String _address = "/Cryptonite/Server_Folder/Share";
 	
 	// Instance
 	private int _count = 1;
