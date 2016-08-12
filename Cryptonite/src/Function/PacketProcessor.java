@@ -64,11 +64,11 @@ public class PacketProcessor
 	{
 		if(_allocator.isEmpty())
 		{
-			return ByteBuffer.allocate(size);
+			return ByteBuffer.allocateDirect(size);
 		}
 		else
 		{
-			return ByteBuffer.allocate(_allocator.remove());
+			return ByteBuffer.allocateDirect(_allocator.remove());
 		}
 	}
 	

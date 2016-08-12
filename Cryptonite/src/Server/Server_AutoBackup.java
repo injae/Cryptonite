@@ -17,7 +17,7 @@ import Function.*;
 public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
 	// protectedFolder
-	private String _address = "C:\\Server\\Backup";
+	private String _address = "/Cryptonite/Server_Folder/Backup";
 	private File _protectedFolder = new File(_address);
 	
 	// Instance
@@ -114,6 +114,22 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		}
 		else if(_checkProperty.equals("FILE"))
 		{
+			/*PacketProcessor p = new PacketProcessor(_fileChannel, false);
+			_activity.receive.setAllocate(_fileSize);
+			
+			while(_activity.IsReadable())
+			{
+				_count++;
+				p.setPacket(_activity.receive.getByteBuf()).write();
+			}
+			
+			if(_count == _packetMaxCount)
+			{
+				System.out.println("³¡");
+				p.close();
+				_count = 1;
+			}*/
+			
 			try 
 			{
 				ByteBuffer buffer;
