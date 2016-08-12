@@ -218,7 +218,7 @@ public class Client_Login extends JFrame implements PacketRule
           		event[0]=LOGIN;
           		event[1]=size;
           		csc.send.setPacket(event).write();
-          		csc.send.setPacket(_id.getBytes(),500).write();
+          		csc.send.setPacket(_id.getBytes(),500).write();//¼öÁ¤
           		csc.send.setPacket(_password.getBytes(),500).write();
           		System.out.println(_id+"\t"+_password);
 
