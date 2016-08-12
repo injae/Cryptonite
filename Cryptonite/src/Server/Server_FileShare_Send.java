@@ -37,7 +37,7 @@ public class Server_FileShare_Send extends Server_Funtion
 	{
 		try
 		{
-			_shareFolder = new File("C:\\Server\\Share");
+			_shareFolder = new File("/Cryptonite/Server_Folder/Share");
 			_fileList = _shareFolder.list();
 			
 			for(int i = 0; i < _fileList.length; i++)
