@@ -4,6 +4,11 @@ import java.nio.*;
 import java.nio.channels.*;
 import java.io.*;
 import java.util.*;
+
+import javax.crypto.SecretKey;
+
+import Crypto.AES256;
+import Crypto.Crypto;
 import Function.*;
 
 /*
@@ -68,7 +73,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 			
 			if(_checkProperty.isDirectory())
 			{
-				// ³­ µð·ºÅä¸®´Ù, µð·ºÅä¸®¸í
+				// ï¿½ï¿½ ï¿½ï¿½ï¿½ä¸®ï¿½ï¿½, ï¿½ï¿½ï¿½ä¸®ï¿½ï¿½
 				byte[] temp = new byte[1024];
 				temp[0] = AUTOBACKUP;
 				temp[1] = DIRECTORY;
