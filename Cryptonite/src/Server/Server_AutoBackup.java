@@ -114,7 +114,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		}
 		else if(_checkProperty.equals("FILE"))
 		{
-			/*PacketProcessor p = new PacketProcessor(_fileChannel, false);
+			PacketProcessor p = new PacketProcessor(_fileChannel, false);
 			_activity.receive.setAllocate(_fileSize);
 			
 			while(_activity.IsReadable())
@@ -128,9 +128,9 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 				System.out.println("³¡");
 				p.close();
 				_count = 1;
-			}*/
+			}
 			
-			try 
+			/*try 
 			{
 				ByteBuffer buffer;
 				buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
@@ -172,7 +172,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			catch (InterruptedException e) 
 			{
 				e.printStackTrace();
-			}
+			}*/
 		}
 	}
 }
