@@ -11,11 +11,13 @@ public class KeyGenerator {
 	private int _iterationCount = 0;
 	private SecureRandom _random = null;
 
+	//Constructor
 	public KeyGenerator()
 	{
 		init();
 	}
 	
+	//Getter
 	public SecretKey getAesKey() { return _keyData; }
 	public byte[] getSalt() { return _salt; }
 	public int getIterationCount() { return _iterationCount; }
