@@ -37,7 +37,7 @@ public class Server_FileShare_Send extends Server_Funtion
 	{
 		try
 		{
-			_shareFolder = new File("/Cryptonite/Server_Folder/Share");
+			_shareFolder = new File("Server_Folder\\Share");
 			_fileList = _shareFolder.list();
 			
 			for(int i = 0; i < _fileList.length; i++)
@@ -88,7 +88,7 @@ public class Server_FileShare_Send extends Server_Funtion
 		{
 			try 
 			{
-				File sendingFile = new File("C:\\Server\\Share" + "\\" + _searchedFile);
+				File sendingFile = new File("Server_Folder\\Share" + "\\" + _searchedFile);
 				StringTokenizer st_temp = new StringTokenizer(_searchedFile, "★");
 				while(st_temp.hasMoreTokens())
 				{
@@ -102,13 +102,13 @@ public class Server_FileShare_Send extends Server_Funtion
 				_activity.send.setPacket(String.valueOf(_fileSize).getBytes(), 500).write();
 				System.out.println("파일 용량(서버) : " + _fileSize);
 				
-				_raf = new RandomAccessFile("C:\\Server\\Share" + "\\" + _searchedFile, "rw");
+				_raf = new RandomAccessFile("Server_Folder\\Share" + "\\" + _searchedFile, "rw");
 				PacketProcessor p = new PacketProcessor(_raf.getChannel(), false);
 				p.setAllocate(_fileSize);
 				
 				while(!p.isAllocatorEmpty())
 				{
-					_activity.send.setPacket(p.read().getByteBuf()).write();
+					_activity.send.setPacket(p.read().getByte()).write();
 					//System.out.println(p.allocatorCapacity());
 				}
 				_raf.close();

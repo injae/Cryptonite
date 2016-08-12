@@ -122,7 +122,7 @@ public class Client_FileShare_Send implements PacketRule
 				
 				while(!p.isAllocatorEmpty())
 				{
-					_csc.send.setPacket(p.read().getByteBuf()).write();
+					_csc.send.setPacket(p.read().getByte()).write();
 				}
 				p.close();
 				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");			

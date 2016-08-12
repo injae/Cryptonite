@@ -31,7 +31,7 @@ public class Server_Login extends Server_Funtion
 	    	   _checkLogin[0]=1; 
 	       }
 	       else
-	       { 	
+	       { 
 		       String _get_pwd = _rs.getString(3);
 		       int _get_count = _rs.getInt(5);
 		       
