@@ -2,7 +2,7 @@ package Server;
 
 import java.util.*;
 
-import Function.PacketProcesser;
+import Function.PacketProcessor;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -103,7 +103,7 @@ public class Server_FileShare_Send extends Server_Funtion
 				System.out.println("파일 용량(서버) : " + _fileSize);
 				
 				_raf = new RandomAccessFile("C:\\Server\\Share" + "\\" + _searchedFile, "rw");
-				PacketProcesser p = new PacketProcesser(_raf.getChannel(), false);
+				PacketProcessor p = new PacketProcessor(_raf.getChannel(), false);
 				p.setAllocate(_fileSize);
 				
 				while(!p.isAllocatorEmpty())

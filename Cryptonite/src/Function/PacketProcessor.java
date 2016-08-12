@@ -10,7 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
-public class PacketProcesser 
+public class PacketProcessor 
 {
 	private Queue<ByteBuffer> _queue;
 	private Queue<Integer> _allocator;
@@ -20,7 +20,7 @@ public class PacketProcesser
 	
 	private final int LIMIT_SIZE = 1024;
 	
-	public PacketProcesser(Object channel, boolean blocking)
+	public PacketProcessor(Object channel, boolean blocking)
 	{
 		_output = (GatheringByteChannel) channel;
 		_input = (ScatteringByteChannel) channel;
@@ -41,7 +41,7 @@ public class PacketProcesser
 		return _allocator.size();
 	}
 	
-	public PacketProcesser setAllocate(long size)
+	public PacketProcessor setAllocate(long size)
 	{
 		if(size > 1024)
 		{
@@ -72,7 +72,7 @@ public class PacketProcesser
 		}
 	}
 	
-	public PacketProcesser setPacket(byte[] packet, int size)
+	public PacketProcessor setPacket(byte[] packet, int size)
 	{
 		byte[] temp = new byte[size];
 		
@@ -89,7 +89,7 @@ public class PacketProcesser
 		return this;
 	}
 	
-	public PacketProcesser setPacket(byte[] packet)
+	public PacketProcessor setPacket(byte[] packet)
 	{
 		ByteBuffer buf = allocate(packet.length);
 		buf.put(packet);
@@ -99,7 +99,7 @@ public class PacketProcesser
 		return this;
 	}
 	
-	public PacketProcesser setPacket(ByteBuffer packet)
+	public PacketProcessor setPacket(ByteBuffer packet)
 	{
 		if(!packet.hasRemaining()) { packet.flip(); }	
 		_queue.add(packet);
@@ -121,7 +121,7 @@ public class PacketProcesser
 	}
 	
 	
-	public PacketProcesser read()
+	public PacketProcessor read()
 	{
 		try 
 		{
