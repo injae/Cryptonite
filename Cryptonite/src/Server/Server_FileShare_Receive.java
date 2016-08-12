@@ -5,6 +5,7 @@ import java.nio.channels.*;
 import java.util.Vector;
 import java.io.*;
 import Function.PacketRule;
+import Function.PacketProcessor;
 
 /*
  * Developer : Youn Hee Seung
@@ -106,8 +107,26 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	public void running()
 	{
 		//System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
-		try
+		
+		PacketProcessor p = new PacketProcessor(_fileChannel, false);
+		_activity.receive.setAllocate(_fileSize);
+		
+		while(_activity.IsReadable())
 		{
+			_count++;
+			p.setPacket(_activity.receive.getByteBuf()).write();
+		}
+		
+		if(_count == _packetMaxCount)
+		{
+			System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
+			p.close();
+			//_fileChannel.close();
+			_count = 1;
+		}
+		
+		/*try
+		{	
 			ByteBuffer buffer;
 			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
 			while(_activity.IsReadable())
@@ -134,6 +153,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 			if(_count == _packetMaxCount)
 			{
 				System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
+				//p.close();
 				_fileChannel.close();
 				_count = 1;
 			}
@@ -149,6 +169,6 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		catch (InterruptedException e) 
 		{
 			e.printStackTrace();
-		}
+		}*/
 	}
 }
