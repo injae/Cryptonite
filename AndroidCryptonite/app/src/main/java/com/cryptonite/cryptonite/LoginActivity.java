@@ -326,20 +326,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                Client_Server_Connector css = Client_Server_Connector.getInstance(4444);
+                Client_Server_Connector css = Client_Server_Connector.getInstance();
 
-                byte[] op = new byte[2];
-                css.configurePacket("Login");
+                byte[] op = new byte[1024];
                 op[0] = 2;
                 op[1] = 3;
 
-                css.setPacket("Login",op);
-                css.setPacket("Login",mid.getBytes());
-                css.setPacket("Login",mPassword.getBytes());
+                css.send.setPacket(op).write();
+                css.send.setPacket(mid.getBytes(),500).write();
+                css.send.setPacket(mPassword.getBytes(),500).write();
 
-                css.send("Login");
-
-                receiveData = css.receiveByteArray();
+                receiveData = css.receive.read().getByte();
 
                 switch(receiveData[0])
                 {
@@ -355,9 +352,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         return false;
                 }
             } catch (InterruptedException e) {
-                return false;
-            } catch (IOException e) {
-                e.printStackTrace();
                 return false;
             }
         }
@@ -381,7 +375,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         }
 

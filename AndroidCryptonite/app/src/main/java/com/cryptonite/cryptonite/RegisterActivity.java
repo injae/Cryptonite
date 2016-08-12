@@ -240,9 +240,9 @@ public class RegisterActivity extends AppCompatActivity {
 
             try {
 
-                Client_Server_Connector css = Client_Server_Connector.getInstance(4444);
+                Client_Server_Connector css = Client_Server_Connector.getInstance();
 
-                byte[] op = new byte[3];
+                byte[] op = new byte[1024];
                 byte size;
 
                 //check duplicated id
@@ -253,13 +253,12 @@ public class RegisterActivity extends AppCompatActivity {
                     op[1] = 1; // id check mode
                     op[2] = size;
 
-                    css.configurePacket("id");
-                    css.setPacket("id",op);
-                    css.setPacket("id",mid.getBytes());
-                    css.send("id");
+                    css.send.setPacket(op).write();
+                    css.send.setPacket(mid.getBytes(),500).write();
+
 
                     byte[] receiveData;
-                    receiveData = css.receiveByteArray();
+                    receiveData = css.receive.read().getByte();
 
                     switch (receiveData[0])
                     {
@@ -286,23 +285,18 @@ public class RegisterActivity extends AppCompatActivity {
                     ByteBuffer name = cs.encode(mname);
                     name.flip();
 
-                    css.configurePacket("register");
-                    css.setPacket("register", op);
-                    css.setPacket("register", name.array());
-                    css.setPacket("register", mid.getBytes());
-                    css.setPacket("register", mPassword.getBytes());
-                    css.setPacket("register", memail.getBytes());
 
-                    css.send("register");
+                    css.send.setPacket(op).write();
+                    css.send.setPacket(name.array(),500).write();
+                    css.send.setPacket(mid.getBytes(),500).write();
+                    css.send.setPacket(mPassword.getBytes(),500).write();
+                    css.send.setPacket(memail.getBytes(),500).write();
 
                 } else {
                     setErrorId();
                     return true;
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                return false;
-            } catch (IOException e){
                 e.printStackTrace();
                 return false;
             }

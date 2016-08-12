@@ -1,0 +1,180 @@
+package Function;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.GatheringByteChannel;
+import java.nio.channels.ScatteringByteChannel;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class PacketProcessor
+{
+    private Queue<ByteBuffer> _queue;
+    private Queue<Integer> _allocator;
+
+    private GatheringByteChannel _output;
+    private ScatteringByteChannel _input;
+
+    private final int LIMIT_SIZE = 1024;
+
+    public PacketProcessor(Object channel, boolean blocking)
+    {
+        _output = (GatheringByteChannel) channel;
+        _input = (ScatteringByteChannel) channel;
+
+        if(blocking) { _queue = new LinkedBlockingQueue<ByteBuffer>(); }
+        else		 { _queue = new LinkedList<ByteBuffer>();          }
+
+        _allocator = new LinkedList<Integer>();
+    }
+
+    public int capacity()
+    {
+        return _queue.size();
+    }
+
+    public int allocatorCapacity()
+    {
+        return _allocator.size();
+    }
+
+    public PacketProcessor setAllocate(long size)
+    {
+        if(size > 1024)
+        {
+            long remain = size % LIMIT_SIZE;
+            for(long i = size / LIMIT_SIZE; i > 0; i--)
+            {
+                _allocator.add(LIMIT_SIZE);
+            }
+            if(remain > 0) { _allocator.add((int)remain);}
+        }
+        else
+        {
+            _allocator.add((int)size);
+        }
+
+        return this;
+    }
+
+    private ByteBuffer allocate(int size)
+    {
+        if(_allocator.isEmpty())
+        {
+            return ByteBuffer.allocate(size);
+        }
+        else
+        {
+            return ByteBuffer.allocate(_allocator.remove());
+        }
+    }
+
+    public PacketProcessor setPacket(byte[] packet, int size)
+    {
+        byte[] temp = new byte[size];
+
+        for(int i =0; i < packet.length; i++)
+        {
+            temp[i] = packet[i];
+        }
+
+        ByteBuffer buf = allocate(temp.length);
+        buf.put(temp);
+        buf.flip();
+        _queue.add(buf);
+
+        return this;
+    }
+
+    public PacketProcessor setPacket(byte[] packet)
+    {
+        ByteBuffer buf = allocate(packet.length);
+        buf.put(packet);
+        buf.flip();
+        _queue.add(buf);
+
+        return this;
+    }
+
+    public PacketProcessor setPacket(ByteBuffer packet)
+    {
+        if(!packet.hasRemaining()) { packet.flip(); }
+        _queue.add(packet);
+
+        return this;
+    }
+
+    public ByteBuffer getByteBuf()
+    {
+        return _queue.remove();
+    }
+
+    public byte[] getByte()
+    {
+        ByteBuffer buf = _queue.remove();
+        byte[] array = new byte[buf.remaining()];
+        buf.get(array);
+        return array;
+    }
+
+
+    public PacketProcessor read()
+    {
+        try
+        {
+            ByteBuffer buf = allocate(LIMIT_SIZE);
+
+            _input.read(buf);
+            buf.flip();
+
+            _queue.add(buf);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return this;
+    }
+
+    public void write()
+    {
+        try
+        {
+            ByteBuffer buf = _queue.remove();
+
+            while(buf.hasRemaining())
+            {
+                _output.write(buf);
+            }
+            System.out.println("write:"+buf.toString());
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void close()
+    {
+        try
+        {
+            _output.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isEmpty()
+    {
+        return _queue.isEmpty();
+    }
+
+    public boolean isAllocatorEmpty()
+    {
+        return _allocator.isEmpty();
+    }
+}
