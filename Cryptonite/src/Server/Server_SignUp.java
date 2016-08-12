@@ -62,13 +62,16 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		Charset cs =Charset.forName("UTF-8");
 		ByteBuffer bb=ByteBuffer.allocateDirect(1024);			
 		bb.put(_activity.receive.getByte()); bb.flip();			
-		String name=cs.decode(bb).toString().trim();
 		
+		String name=cs.decode(bb).toString().trim();
 		String id=new String(_activity.receive.getByte()).trim();
 		String password=new String(_activity.receive.getByte()).trim();
 		String email=new String(_activity.receive.getByte()).trim();
+		byte[] AES_key=_activity.receive.getByte();
+		byte[] _salt=_activity.receive.getByte();
+		byte[] _iteration=_activity.receive.getByte();
 
-		db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"','"+count+"');");
+		db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"','"+count+"','"+AES_key+"','"+_salt+"','"+_iteration+"');");
 	}
 	
 }
