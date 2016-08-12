@@ -4,6 +4,7 @@ import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.SecureRandom;
+import java.util.Base64;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -24,9 +25,13 @@ public class userKeyGenerator {
 	//Getter
 	public SecretKey getAesKey() { return _keyData; }
 	public byte[] getAesKeyBytes() { return _keyData.getEncoded(); }
+	public String getAesKeyToString() { return Base64.getEncoder().encodeToString(getAesKeyBytes()); }
+	
 	public byte[] getSalt() { return _salt; }
+	
 	public int getIterationCount() { return _iterationCount; }
 	public byte[] getIterationCountBytes() { return Function.intToByteArray(_iterationCount); }
+	public String getIterationCountToString() { return Integer.toString(_iterationCount); }
 	
 	public void init(){
 		_random = new SecureRandom();
