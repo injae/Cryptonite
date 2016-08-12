@@ -25,9 +25,9 @@ public class Server_Login extends Server_Funtion
 	    {
 		   byte[] _checkLogin=new byte[1024];
 	       ResultSet _rs  = db.Query("select * from test where id like '"+ id +"';");
-	       	    
+	       System.out.println("id Ã£À½");	    
 	       if(!_rs.next()) 
-	       {	
+	       {	 
 	    	   _checkLogin[0]=1; 
 	       }
 	       else
@@ -44,14 +44,14 @@ public class Server_Login extends Server_Funtion
 		    		   db.Update("update test set count=2 where id='"+id+"';");
 		    	   }
 		    	}
-		       else 					 { _checkLogin[0]=3; }   
+		       else 	{ _checkLogin[0]=3; }   
 	       }
 	       _activity.send.setPacket(_checkLogin).write();
+	       System.out.println("checklogin : "+_checkLogin[0]+"\t check count :"+_checkLogin[1]);
 	    }
 	    catch(SQLException e1)
 	    {
 	       e1.printStackTrace();
 	    }         
-
 	}
 }

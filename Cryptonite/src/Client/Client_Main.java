@@ -20,10 +20,10 @@ public class Client_Main
 		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
 		cfs.click();*/
 		
-		Client_FileShare_Receive cfr = new Client_FileShare_Receive();
-		cfr.receiveFiles();
+		/*Client_FileShare_Receive cfr = new Client_FileShare_Receive();
+		cfr.receiveFiles();*/
 		
-		//Client_Login cl = new Client_Login();
+		Client_Login cl = new Client_Login();
 
 		/*while(true)
 		{
