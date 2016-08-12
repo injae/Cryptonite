@@ -19,7 +19,7 @@ import Function.PacketProcessor;
 public class Server_FileShare_Receive extends Server_Funtion implements PacketRule
 {
 	// Address
-	private String _address = "/Cryptonite/Server_Folder/Share";
+	private String _address = "Server_Folder\\Share";
 	
 	// Instance
 	private int _count = 1;
@@ -108,7 +108,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	{
 		//System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
 		
-		PacketProcessor p = new PacketProcessor(_fileChannel, false);
+		/*PacketProcessor p = new PacketProcessor(_fileChannel, false);
 		_activity.receive.setAllocate(_fileSize);
 		
 		while(_activity.IsReadable())
@@ -116,16 +116,16 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 			_count++;
 			p.setPacket(_activity.receive.getByteBuf()).write();
 		}
-		
+		System.out.println("s");
 		if(_count == _packetMaxCount)
 		{
 			System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
 			p.close();
 			//_fileChannel.close();
 			_count = 1;
-		}
+		}*/
 		
-		/*try
+		try
 		{	
 			ByteBuffer buffer;
 			buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
@@ -133,7 +133,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 			{
 				_count++;
 				buffer.clear();
-				buffer.put(_activity.receive.getByte());
+				buffer.put(_activity.receive.getByteBuf());
 				
 				_fileSize -= FILE_BUFFER_SIZE;
 				buffer.flip();
@@ -169,6 +169,6 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		catch (InterruptedException e) 
 		{
 			e.printStackTrace();
-		}*/
+		}
 	}
 }

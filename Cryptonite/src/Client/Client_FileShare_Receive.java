@@ -1,14 +1,8 @@
 package Client;
 
-import java.util.*;
-import java.util.concurrent.SynchronousQueue;
-
 import Function.PacketProcessor;
 import Function.PacketRule;
 
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.net.*;
 import java.io.*;
 
 /*
@@ -23,7 +17,7 @@ import java.io.*;
 public class Client_FileShare_Receive implements PacketRule
 {
 	// OTP Instance
-	private String _OTP = "795208";
+	private String _OTP = "937012";
 	
 	// File Instance
 	private String _downloadFolder = null;
@@ -102,7 +96,7 @@ public class Client_FileShare_Receive implements PacketRule
 						
 						while(!_csc.receive.isAllocatorEmpty())
 						{
-							p.setPacket(_csc.receive.read().getByteBuf()).write();
+							p.setPacket(_csc.receive.read().getByte()).write();
 							//System.out.println(_csc.receive.allocatorCapacity());
 						}
 						System.out.println("¥Ÿ¿–¿Ω");
