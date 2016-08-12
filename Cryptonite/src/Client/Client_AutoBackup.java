@@ -73,7 +73,6 @@ public class Client_AutoBackup extends Thread implements PacketRule
 			
 			if(_checkProperty.isDirectory())
 			{
-				// �� ���丮��, ���丮��
 				byte[] temp = new byte[1024];
 				temp[0] = AUTOBACKUP;
 				temp[1] = DIRECTORY;
