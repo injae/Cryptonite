@@ -46,7 +46,7 @@ public class PacketProcessor
 	
 	public PacketProcessor setAllocate(long size)
 	{
-		if(size > 1024)
+		if(size > LIMIT_SIZE)
 		{
 			long remain = size % LIMIT_SIZE;
 			for(long i = size / LIMIT_SIZE; i > 0; i--)
@@ -57,6 +57,7 @@ public class PacketProcessor
 		}
 		else   
 		{
+			System.out.println(size);
 			_allocator.add((int)size);
 		}
 		
