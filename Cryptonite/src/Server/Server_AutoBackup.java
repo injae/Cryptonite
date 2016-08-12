@@ -115,7 +115,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		else if(_checkProperty.equals("FILE"))
 		{
 			PacketProcessor p = new PacketProcessor(_fileChannel, false);
-			_activity.receive.setAllocate(_fileSize);
 			
 			while(_activity.IsReadable())
 			{
