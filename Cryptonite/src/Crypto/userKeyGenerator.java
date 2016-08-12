@@ -7,6 +7,7 @@ import java.security.SecureRandom;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import Function.*;
 
 public class userKeyGenerator {
 	private byte[] _salt = null;
@@ -25,6 +26,7 @@ public class userKeyGenerator {
 	public byte[] getAesKeyBytes() { return _keyData.getEncoded(); }
 	public byte[] getSalt() { return _salt; }
 	public int getIterationCount() { return _iterationCount; }
+	public byte[] getIterationCountBytes() { return Function.intToByteArray(_iterationCount); }
 	
 	public void init(){
 		_random = new SecureRandom();
