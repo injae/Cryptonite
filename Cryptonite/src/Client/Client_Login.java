@@ -61,7 +61,7 @@ public class Client_Login extends JFrame implements PacketRule
 	private boolean _checkLogin =false;
     private boolean _firstTime = false;
     
-    JTextField _loginField;
+    JTextField _idField;
     JPasswordField _passwordField;
     
     private String _id = "id";
@@ -132,7 +132,7 @@ public class Client_Login extends JFrame implements PacketRule
         
         getContentPane().setLayout(null);
         JLayeredPane _layeredPane = new JLayeredPane();
-        _layeredPane.setBounds(0,0, 470, 645);
+        _layeredPane.setBounds(0,0, 470, 700);
         _layeredPane.setLayout(null);
 
       
@@ -144,32 +144,31 @@ public class Client_Login extends JFrame implements PacketRule
         }
          
         MyPanel _panel = new MyPanel();
-        _panel.setBounds(0, 0, 470, 645);
+        _panel.setBounds(0, 0, 470, 700);
         
-        _loginField = new JTextField(15);
-        _loginField.setBounds(140, 255, 190, 30);
-        _layeredPane.add(_loginField);
-        _loginField.setOpaque(false);
-        _loginField.setForeground(Color.BLACK);
-        _loginField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        _loginField.setHorizontalAlignment(JTextField.CENTER);
-        _loginField.addKeyListener(new KeyListener(){
+        _idField = new JTextField(15);
+        _idField.setBounds(140, 255, 200, 31);
+        _layeredPane.add( _idField);
+        _idField.setOpaque(false);
+        _idField.setForeground(Color.BLACK);
+        _idField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        _idField.setHorizontalAlignment(JTextField.CENTER);
+        _idField.addKeyListener(new KeyListener(){
      		@Override
      		public void keyPressed(KeyEvent e) {}
      		@Override
      		public void keyReleased(KeyEvent e) {
-     			_id = _loginField.getText();
+     			_id = _idField.getText();
      		}
      		@Override
-     		public void keyTyped(KeyEvent e) {
-     			_loginField.setText("");
-     		}
+     		public void keyTyped(KeyEvent e) {}
            });
-         _loginField.addMouseListener(new MouseAdapter(){
+        	_idField.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
-         		_loginField.setText("");
+         		 _idField.setText("");
          	}
          });
+         
         
          _passwordField = new JPasswordField(15);
          _passwordField.setBounds(140, 315, 200, 20);
@@ -219,12 +218,13 @@ public class Client_Login extends JFrame implements PacketRule
           		event[0]=LOGIN;
           		event[1]=size;
           		csc.send.setPacket(event).write();
-          		csc.send.setPacket(_id.getBytes()).write();
-          		csc.send.setPacket(_password.getBytes()).write();
+          		csc.send.setPacket(_id.getBytes(),500).write();//¼öÁ¤
+          		csc.send.setPacket(_password.getBytes(),500).write();
           		System.out.println(_id+"\t"+_password);
 
+          		
           		byte[] checkLogin = csc.receive.read().getByte();
-			
+          		 System.out.println("checklogin : "+checkLogin[0]+"\t check count :"+checkLogin[1]);
           		switch(checkLogin[0]){
           		case 1 :
           			showMessage("Error", "No id");

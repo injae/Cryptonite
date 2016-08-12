@@ -299,8 +299,9 @@ import Server.Server_DataBase;
 					
 					if(_checkID)
 					{ 
-						if(_id.length()<3){ showMessage("ERROR", "Please insert at least 3 characters"); }
-						else			  { showMessage("ID", "This ID can be used."); }
+						/*if(_id.length()<3){ showMessage("ERROR", "Please insert at least 3 characters"); }
+						else			  { showMessage("ID", "This ID can be used."); }*/
+						showMessage("ID", "This ID can be used."); 
 						
 					}
 					else
@@ -314,6 +315,7 @@ import Server.Server_DataBase;
 					showMessage("ERROR", "This ID is already in use. Please use another ID.");
 					break;
 				}
+				
 			}
 		});
 		_layeredpane.add(_same);
@@ -424,7 +426,7 @@ import Server.Server_DataBase;
 			_g.setColor(Color.BLACK);
 			_g.setFont(_precondition_font);
 			_g.drawString("->Please enter at least 5 characters.", 100, 355);
-			_g.drawString("->Please enter at least 3 characters.", 100, 300);
+			/*_g.drawString("->Please enter at least 3 characters.", 100, 300);*/
 		}
 	}
 }
