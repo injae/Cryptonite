@@ -393,7 +393,7 @@ import Crypto.userKeyGenerator;
 
 					userKeyGenerator _ukg = new userKeyGenerator();
 					_ukg.init();
-					_sha = new SHA_256(_name,_id,_password,_email,_ukg.getAesKeyToString(), _ukg.getSaltToByte(), _ukg.getIterationCountToString());
+					_sha = new SHA_256(_name,_id,_password,_email,_ukg.getAesKeyToString(), _ukg.getSaltToString(), _ukg.getIterationCountToString());
 
 					dispose();
 				}
