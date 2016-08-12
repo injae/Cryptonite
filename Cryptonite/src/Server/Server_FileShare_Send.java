@@ -42,7 +42,7 @@ public class Server_FileShare_Send extends Server_Funtion
 			
 			for(int i = 0; i < _fileList.length; i++)
 			{
-				_st = new StringTokenizer(_fileList[i], "¡Ú");
+				_st = new StringTokenizer(_fileList[i], ":");
 				if(_st.nextToken().equals(_OTP))
 				{
 					_searchedFile = _fileList[i];
@@ -89,7 +89,7 @@ public class Server_FileShare_Send extends Server_Funtion
 			try 
 			{
 				File sendingFile = new File("Server_Folder\\Share" + "\\" + _searchedFile);
-				StringTokenizer st_temp = new StringTokenizer(_searchedFile, "¡Ú");
+				StringTokenizer st_temp = new StringTokenizer(_searchedFile, ":");
 				while(st_temp.hasMoreTokens())
 				{
 					_fileName = st_temp.nextToken();
@@ -109,7 +109,6 @@ public class Server_FileShare_Send extends Server_Funtion
 				while(!p.isAllocatorEmpty())
 				{
 					_activity.send.setPacket(p.read().getByte()).write();
-					//System.out.println(p.allocatorCapacity());
 				}
 				_raf.close();
 				p.close();

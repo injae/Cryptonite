@@ -146,7 +146,7 @@ public class Client_FileShare_Send implements PacketRule
 		for(int i = 0; i < _fileNameArray.length; i++)
 		{
 			temp = _fileNameArray[i];
-			_fileNameArray[i] = _OTP + "¡Ú" + temp;
+			_fileNameArray[i] = _OTP + ":" + temp;
 		}
 	}
 }
