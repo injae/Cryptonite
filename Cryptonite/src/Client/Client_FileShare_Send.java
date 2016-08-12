@@ -113,7 +113,7 @@ public class Client_FileShare_Send implements PacketRule
 				Function.frontInsertByte(4, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
 				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, _fileNameArray[i].getBytes(), packet);
 				_csc.send.setPacket(packet).write();	// 1
-				//_csc.send.setAllocate(_fileSizeArray[i]);
+				
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
 				_fileChannel = _raf.getChannel();

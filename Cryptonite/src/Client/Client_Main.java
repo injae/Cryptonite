@@ -25,10 +25,10 @@ public class Client_Main
 		
 		Client_Login cl = new Client_Login();
 
-		while(true)
+/*		while(true)
 		{
 			Thread.sleep(10);
-		}
+		}*/
 		
 	}
 }
