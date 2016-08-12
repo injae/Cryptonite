@@ -17,7 +17,7 @@ import Function.*;
 public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
 	// protectedFolder
-	private String _address = "/Cryptonite/Server_Folder/Backup";
+	private String _address = "Server_Folder\\Backup";
 	private File _protectedFolder = new File(_address);
 	
 	// Instance
@@ -28,8 +28,9 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	private String _fileName = null;
 	private long _fileSize = 0;
 	
-	private RandomAccessFile _raf;
-	private FileChannel _fileChannel;
+	private RandomAccessFile _raf = null;
+	private FileChannel _fileChannel = null;
+	private PacketProcessor p = null;
 	
 	// Constructors
 	public Server_AutoBackup() { }
@@ -80,6 +81,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
 		_activity = activity;
+		_activity.receive.setAllocate(1024);
 		if(packet[1] == DIRECTORY)
 		{
 			_checkProperty = "DIRECTORY";
@@ -97,15 +99,15 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 				e.printStackTrace();
 			}
 
+			p = new PacketProcessor(_fileChannel, false);
+			_activity.receive.setAllocate(_fileSize);
 		}
-		System.out.println("packetMaxCount : " + _packetMaxCount);
-		_activity.receive.setAllocate(_fileSize);
 	}
 
 	@Override
 	public void running() 
 	{
-		System.out.println("NOW AUTOBACKUP RUNNING");
+		//System.out.println("NOW AUTOBACKUP RUNNING");
 		if(_checkProperty.equals("DIRECTORY"))
 		{
 			_fileName = new String(_activity.receive.getByte()).trim();
@@ -113,19 +115,16 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			newFolder.mkdir();
 		}
 		else if(_checkProperty.equals("FILE"))
-		{
-			PacketProcessor p = new PacketProcessor(_fileChannel, false);
-			_activity.receive.setAllocate(_fileSize);
-			
+		{	
 			while(_activity.IsReadable())
 			{
 				_count++;
-				p.setPacket(_activity.receive.getByteBuf()).write();
+				p.setPacket(_activity.receive.getByte()).write();
 			}
 			
 			if(_count == _packetMaxCount)
 			{
-				System.out.println("³¡");
+				System.out.println("AUTOBACKUP COMPLETE !!");
 				p.close();
 				_count = 1;
 			}
