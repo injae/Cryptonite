@@ -18,7 +18,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		_activity = activity;
 		_mode=packet[1];
 		if(_mode == DUPLICATION_CHECK_FUNCTION){ _activity.receive.setAllocate(500); }
-		else if(_mode == SIGN_UP_FUNCTION) { activity.receive.setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500);}
+		else if(_mode == SIGN_UP_FUNCTION) { activity.receive.setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500);}
 		_packetMaxCount = packet[2];	
 	}
 
@@ -67,11 +67,24 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		String id=new String(_activity.receive.getByte()).trim();
 		String password=new String(_activity.receive.getByte()).trim();
 		String email=new String(_activity.receive.getByte()).trim();
-		byte[] AES_key=_activity.receive.getByte();
+		String aeskey=new String(_activity.receive.getByte()).trim();
+		String salt=new String(_activity.receive.getByte()).trim();
+		String iteration=new String(_activity.receive.getByte()).trim();
+	
+		/*byte[] AES_key=_activity.receive.getByte();
 		byte[] _salt=_activity.receive.getByte();
-		byte[] _iteration=_activity.receive.getByte();
+		byte[] _iteration=_activity.receive.getByte();*/
 
-		db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"','"+count+"','"+AES_key+"','"+_salt+"','"+_iteration+"');");
+		/*String aeskey=new String(AES_key).trim();
+		String salt=new String(_salt).trim();
+		String iteration=new String(_iteration).trim();*/
+		/*System.out.println(name);
+		System.out.println(id);
+		System.out.println(aeskey);
+		System.out.println(salt);
+		System.out.println(iteration);
+*/		
+		db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"',"+count+",'"+aeskey+"','"+salt+"','"+iteration+"');");
 	}
 	
 }

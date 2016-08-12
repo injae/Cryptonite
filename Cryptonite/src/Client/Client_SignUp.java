@@ -392,7 +392,8 @@ import Crypto.userKeyGenerator;
 					showMessage("WELCOME!", "WELCOME TO CRYPTONITE!.");
 
 					userKeyGenerator _ukg = new userKeyGenerator();
-					_sha = new SHA_256(_name,_id,_password,_email,_ukg.getAesKeyBytes(), _ukg.getSalt(), _ukg.getIterationCountBytes());
+					_ukg.init();
+					_sha = new SHA_256(_name,_id,_password,_email,_ukg.getAesKeyToString(), _ukg.getSaltToByte(), _ukg.getIterationCountToString());
 
 					dispose();
 				}
@@ -442,9 +443,9 @@ class SHA_256 implements PacketRule
 		private String _password;
 		private String _email;
 
-		private byte[] _AES_Key;
-		private byte[] _salt;
-		private byte[] _iteration;
+		private String _AES_Key;
+		private String _salt;
+		private String _iteration;
 
 		private byte[] _temp_name;
 		private byte[] _temp_pwd;
@@ -453,7 +454,7 @@ class SHA_256 implements PacketRule
 		private byte[] _temp_data;
 		private byte _size;
 
-		public SHA_256(String _name, String _id, String _password, String _email, byte[] _AES_Key, byte[] _salt, byte[] _iteration)
+		public SHA_256(String _name, String _id, String _password, String _email, String _AES_Key, String _salt, String _iteration)
 		{	
 			try {
 				_css=Client_Server_Connector.getInstance();
@@ -474,7 +475,7 @@ class SHA_256 implements PacketRule
 		}
 		
 		public void sendPrivacy(){
-			_size=5;
+			_size=8;
 					
 			byte[] _buf = new byte[1024];
 			_buf[0] = SIGN_UP;
@@ -487,9 +488,9 @@ class SHA_256 implements PacketRule
 			_css.send.setPacket(_id.getBytes(),500).write();
 			_css.send.setPacket(_password.getBytes(),500).write();
 			_css.send.setPacket(_email.getBytes(),500).write();
-			_css.send.setPacket(_AES_Key, 500).write();
-			_css.send.setPacket(_salt, 500).write();
-			_css.send.setPacket(_iteration, 500).write();
+			_css.send.setPacket(_AES_Key.getBytes(), 500).write();
+			_css.send.setPacket(_salt.getBytes(), 500).write();
+			_css.send.setPacket(_iteration.getBytes(), 500).write();
 		}
 		public void SHA_Encryption(){
 			setPWD();
