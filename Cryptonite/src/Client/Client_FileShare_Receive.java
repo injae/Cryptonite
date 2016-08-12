@@ -26,6 +26,7 @@ public class Client_FileShare_Receive implements PacketRule
 	private String _downloadFlag = null;
 	private String _fileName = null;
 	private long _fileSize = 0;
+	private PacketProcessor p = null;
 	
 	// Another Class Instance
 	private Client_Server_Connector _csc = null;
@@ -91,7 +92,7 @@ public class Client_FileShare_Receive implements PacketRule
 						System.out.println(_csc.receive.allocatorCapacity());
 						_raf = new RandomAccessFile(_downloadFolder + "\\" + _fileName, "rw");
 						
-						PacketProcessor p = new PacketProcessor(_raf.getChannel(), false);
+						p = new PacketProcessor(_raf.getChannel(), false);
 						_csc.receive.setAllocate(_fileSize);
 						
 						while(!_csc.receive.isAllocatorEmpty())

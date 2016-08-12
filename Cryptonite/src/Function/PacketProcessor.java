@@ -117,7 +117,7 @@ public class PacketProcessor
 	}
 	
 	public byte[] getByte()
-	{
+	{	
 		return _queue.remove();
 	}
 	

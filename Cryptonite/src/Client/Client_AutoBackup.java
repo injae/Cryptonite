@@ -49,7 +49,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 	public synchronized void run()
 	{
 		_encryptedVector = new Vector<String>();
-		_encryptedVector.add("C:\\Server\\test.mp3");
+		_encryptedVector.add("C:\\Users\\Youn\\Desktop\\¸ðµç°Í\\Piano Original Sound tracks\\Steins;Gate OST\\Stein's;Gate - OST.mp3");
 
 		try 
 		{
@@ -90,10 +90,11 @@ public class Client_AutoBackup extends Thread implements PacketRule
 					Function.frontInsertByte(4, String.valueOf(_fileSize).getBytes(), temp);
 					Function.frontInsertByte(4 + String.valueOf(_fileSize).getBytes().length, _fileName.getBytes(), temp);
 					_csc.send.setPacket(temp).write();
+					
 					p.setAllocate(_fileSize);
 					while(!p.isAllocatorEmpty())
 					{
-						_csc.send.setPacket(p.read().getByteBuf()).write();
+						_csc.send.setPacket(p.read().getByte()).write();
 					}
 					p.close();
 				} 
