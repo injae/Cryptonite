@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 
+import Function.C_Toast;
 import Function.Client_Server_Connector;
 
 /**
@@ -292,6 +293,13 @@ public class RegisterActivity extends AppCompatActivity {
                     css.send.setPacket(mPassword.getBytes(),500).write();
                     css.send.setPacket(memail.getBytes(),500).write();
 
+                    byte[] result = css.receive.read().getByte();
+
+                    if(result[0] == 0)
+                    {
+                        return false;
+                    }
+
                 } else {
                     setErrorId();
                     return true;
@@ -309,12 +317,16 @@ public class RegisterActivity extends AppCompatActivity {
             mRegisterTask = null;
             showProgress(false);
 
+            C_Toast toast = new C_Toast(getApplicationContext());
+
             if (!sameId)
                 return;
             if (success) {
-                Toast t = Toast.makeText(getApplicationContext(),"Sign Up Success",Toast.LENGTH_LONG);
-                t.show();
+                toast.showToast("Sign Up Success!",Toast.LENGTH_LONG);
                 finish();
+            } else
+            {
+                toast.showToast("Sign Up Failed...",Toast.LENGTH_LONG);
             }
         }
 

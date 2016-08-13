@@ -94,7 +94,7 @@ public class Server_DataBase
 		return DB;
 	}
 
-	public void Update(String sql)
+	public boolean Update(String sql)
 	{
 		try 
 		{
@@ -103,7 +103,9 @@ public class Server_DataBase
 		catch (SQLException e) 
 		{
 			System.out.println("ERROR: Wrong Query");			//	e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 	public ResultSet Query(String sql)
 	{

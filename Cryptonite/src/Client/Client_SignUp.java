@@ -378,8 +378,6 @@ import Crypto.userKeyGenerator;
 				else{ showMessage("ERROR", "Please fill in all the blanks.");}
 
 				if(_goSignUP){
-					
-					showMessage("WELCOME!", "WELCOME TO CRYPTONITE!.");
 
 					userKeyGenerator _ukg = new userKeyGenerator();
 					_ukg.init();
@@ -527,6 +525,21 @@ class SHA_256 implements PacketRule
 			_css.send.setPacket(_AES_Key.getBytes(), 500).write();
 			_css.send.setPacket(_salt.getBytes(), 500).write();
 			_css.send.setPacket(_iteration.getBytes(), 500).write();
+			
+			
+			byte[] result = _css.receive.read().getByte();
+			
+			if(result[0] == 1)
+			{
+				System.out.println("signUp Success");
+				showMessage("WELCOME!", "WELCOME TO CRYPTONITE!.");
+			}
+			else
+			{
+				System.out.println("signUp Fail");
+				showMessage("Cryptonite", "Failed to SignUp.");
+			}
+		
 		}
 		public void SHA_Encryption(){
 			setPWD();
@@ -543,6 +556,11 @@ class SHA_256 implements PacketRule
 				e.printStackTrace();
 			}
 		}	
+		
+		private void showMessage(String _title, String _message) 
+		{
+			JOptionPane.showMessageDialog(null, _message, _title, JOptionPane.INFORMATION_MESSAGE);
+		}
 
 	
 	}	

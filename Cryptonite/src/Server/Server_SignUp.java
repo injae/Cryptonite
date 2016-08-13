@@ -18,7 +18,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		_activity = activity;
 		_mode=packet[1];
 		if(_mode == DUPLICATION_CHECK_FUNCTION){ _activity.receive.setAllocate(500); }
-		else if(_mode == SIGN_UP_FUNCTION) { activity.receive.setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500);}
+		else if(_mode == SIGN_UP_FUNCTION) { _activity.receive.setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500);}
 		_packetMaxCount = packet[2];	
 	}
 
@@ -57,6 +57,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	private void sign_up()
 	{
 		int count=1;
+		boolean result;
 		System.out.println("SignUp running");
 		
 		Charset cs =Charset.forName("UTF-8");
@@ -84,7 +85,25 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		System.out.println(salt);
 		System.out.println(iteration);
 */		
-		db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"',"+count+",'"+aeskey+"','"+salt+"','"+iteration+"');");
+		result = db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"',"+count+",'"+aeskey+"','"+salt+"','"+iteration+"');");
+	//	result = db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"',"+count+");");
+		
+		
+		//send result to client
+		byte[] resultPacket = new byte[1];
+		if(result == true)
+		{
+			
+			resultPacket[0] = 1;
+			_activity.send.setPacket(resultPacket).write();
+		}
+		else
+		{
+			resultPacket[0] = 0;
+			_activity.send.setPacket(resultPacket).write();
+		}
+		
+		
 	}
 	
 }
