@@ -153,7 +153,6 @@ public class PacketProcessor
 			{
 				_output.write(_buffer);
 			}
-			//System.out.println("write:"+buf.toString());
 		}
 		catch (IOException e) 
 		{

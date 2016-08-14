@@ -32,6 +32,7 @@ import javax.swing.JTextField;
 import Function.PacketProcessor;
 import Function.PacketRule;
 import Server.Server_DataBase;
+import Crypto.Crypto;
 import Crypto.userKeyGenerator;
 
 	public class Client_SignUp extends JFrame implements PacketRule //Create new account
@@ -67,9 +68,6 @@ import Crypto.userKeyGenerator;
 		{
 			JOptionPane.showMessageDialog(null, _message, _title, JOptionPane.INFORMATION_MESSAGE);
 		}
-
-		private String serverIP=null;
-		private SocketChannel socket=null;
 		
 		JTextField _nameField;
 		JTextField _idField;
@@ -382,7 +380,7 @@ import Crypto.userKeyGenerator;
 					userKeyGenerator _ukg = new userKeyGenerator();
 					_ukg.init();
 					_sha = new SHA_256(_name,_id,_password,_email,_ukg.getAesKeyToString(), _ukg.getSaltToString(), _ukg.getIterationCountToString());
-
+					
 					dispose();
 				}
 
