@@ -96,7 +96,7 @@ public class Server_MakeOTP extends Server_Funtion
 	{
 		makeOTP();
 		_activity.receive.getByte();	// garbage delete
-		_activity.send.setPacket(_OTP.getBytes()).write();
+		_activity.send.setPacket(_OTP.getBytes(),1024).write();
 		System.out.println("OTP Sending FINISH");
 	}
 }

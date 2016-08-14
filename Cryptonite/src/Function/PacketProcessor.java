@@ -123,7 +123,12 @@ public class PacketProcessor
 	public PacketProcessor read() throws IOException
 	{
 		allocate(LIMIT_SIZE);
-		_input.read(_buffer);
+		int size = _input.read(_buffer);
+		System.out.println(" "+size+" "+_buffer.hasRemaining());
+		while(_buffer.hasRemaining())
+		{
+			_input.read(_buffer);
+		}
 		_buffer.flip();
 		
 		byte[] array = new byte[_buffer.remaining()];
@@ -133,7 +138,7 @@ public class PacketProcessor
 
 		return this;
 	}
-	
+
 	public void write() throws IOException
 	{
 		byte[] array =_queue.remove();

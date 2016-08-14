@@ -75,7 +75,6 @@ public class Server_Client_Accepter extends Thread
 			{
 				Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
 				_manager.stopManaging(activity.getClientCode());
-				activity.close();
 				key.cancel();
 			}
         }        
