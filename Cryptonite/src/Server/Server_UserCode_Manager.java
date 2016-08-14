@@ -59,7 +59,7 @@ public class Server_UserCode_Manager
 	
 	public String getUsCode()
 	{
-		String usCode = "1";
+		String usCode = "@";
 		if(_usableUsCode.isEmpty()) { usCode = usCode + _lastuscode; }
 		else 						{ usCode = usCode + _usableUsCode.remove(); }
 		
@@ -68,7 +68,7 @@ public class Server_UserCode_Manager
 	
 	public String getAcCode()
 	{
-		String code = "0";
+		String code = "#";
 		if(_usableAcCode.isEmpty()) { code = code  + ++_lastAcCode; }
 		else 					    { code = code + _usableAcCode.remove(); }
 		
@@ -77,12 +77,12 @@ public class Server_UserCode_Manager
 	
 	public void removeUsCode(String uscode)
 	{
-		if(uscode.charAt(0) == '1')
+		if(uscode.charAt(0) == '@')
 		{
 			Integer code = Integer.parseInt(uscode.substring(1));
 			_usableUsCode.add(code);
 		}
-		else if(uscode.charAt(0) == '0')
+		else if(uscode.charAt(0) == '#')
 		{
 			Integer code = Integer.parseInt(uscode.substring(1));
 			_usableAcCode.add(code);
