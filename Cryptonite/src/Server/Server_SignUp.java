@@ -74,21 +74,8 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		String iteration=new String(_activity.receive.getByte()).trim();
 		
 		String usCode = Server_UserCode_Manager.getInstance().getUsCode();
-		
-		/*byte[] AES_key=_activity.receive.getByte();
-		byte[] _salt=_activity.receive.getByte();
-		byte[] _iteration=_activity.receive.getByte();*/
-
-		/*String aeskey=new String(AES_key).trim();
-		String salt=new String(_salt).trim();
-		String iteration=new String(_iteration).trim();*/
-		/*System.out.println(name);
-		System.out.println(id);
-		System.out.println(aeskey);
-		System.out.println(salt);
-		System.out.println(iteration);
-*/		System.out.println("uscode"+usCode);
-		result = db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"','"+count+"','"+usCode+"','"+aeskey+"','"+salt+"','"+iteration+"');");
+		int code = Integer.parseInt(usCode.substring(1));
+		result = db.Update("INSERT INTO TEST VALUES('"+name+"','"+id+"','"+password+"','"+email+"',"+count+","+code+",'"+aeskey+"','"+salt+"','"+iteration+"');");
 
 		//send result to client
 		byte[] resultPacket = new byte[1];

@@ -48,6 +48,9 @@ public class Client_AutoBackup extends Thread implements PacketRule
 				_fileName = _checkProperty.getName();
 				_fileSize = _checkProperty.length();
 				
+				System.out.println(_fileName);
+				System.out.println(_fileSize);
+				
 				if(_checkProperty.isDirectory())
 				{
 					byte[] temp = new byte[1024];
