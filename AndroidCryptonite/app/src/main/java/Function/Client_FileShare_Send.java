@@ -120,7 +120,7 @@ public class Client_FileShare_Send implements PacketRule
             }
 
             String temp = filename;
-            _fileNameArray[i] = _OTP + "★" + temp;
+            _fileNameArray[i] = _OTP + ":" + temp;
 
             _tempFile = new File(paths[i]);
             _fileSizeArray[i] = _tempFile.length();
