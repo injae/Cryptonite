@@ -14,7 +14,7 @@ import Function.*;
  * 
  * */
 
-public class Client_AutoBackup extends Thread implements PacketRule
+public class Client_AutoBackup implements PacketRule
 {
 	// File or Directory
 	private File _checkProperty = null;
@@ -37,7 +37,69 @@ public class Client_AutoBackup extends Thread implements PacketRule
 	}
 	
 	// Methods
-	public synchronized void run()
+	public void autoBackup(String absoluteDirectory)
+	{
+		_absoluteDirectory = absoluteDirectory;
+		_checkProperty = new File(_absoluteDirectory);
+		_fileName = _checkProperty.getName();
+		_fileSize = _checkProperty.length();
+		
+		System.out.println(_fileName);
+		System.out.println(_fileSize);
+		
+		if(_checkProperty.isDirectory())
+		{
+			byte[] temp = new byte[1024];
+			temp[0] = AUTOBACKUP;
+			temp[1] = DIRECTORY;
+			
+			try 
+			{
+				_csc.send.setPacket(temp).write();
+				_csc.send.setPacket(_fileName.getBytes()).write();
+			} 
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else if(_checkProperty.isFile())
+		{
+			try 
+			{
+				boolean checkExtension = extensionTokenizer();
+				
+				if(checkExtension)
+				{
+					_raf = new RandomAccessFile(_absoluteDirectory, "rw");
+					_fileChannel = _raf.getChannel();
+					PacketProcessor p = new PacketProcessor(_fileChannel, false);
+
+					byte[] temp = new byte[1024];
+					temp[0] = AUTOBACKUP;
+					temp[1] = FILE;
+					temp[2] = (byte)String.valueOf(_fileSize).getBytes().length;
+					temp[3] = (byte)_fileName.getBytes().length;
+					Function.frontInsertByte(4, String.valueOf(_fileSize).getBytes(), temp);
+					Function.frontInsertByte(4 + String.valueOf(_fileSize).getBytes().length, _fileName.getBytes(), temp);
+					_csc.send.setPacket(temp).write();
+					
+					p.setAllocate(_fileSize);
+					while(!p.isAllocatorEmpty())
+					{
+						_csc.send.setPacket(p.read().getByte()).write();
+					}
+					p.close();
+				}
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			} 
+		}
+	}
+	
+	/*public synchronized void run()
 	{
 		while(!_stopFlag)
 		{
@@ -103,7 +165,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 				}
 			}
 		}
-	}
+	}*/
 	
 	private boolean extensionTokenizer()
 	{
