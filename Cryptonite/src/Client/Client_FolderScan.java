@@ -32,11 +32,27 @@ public class Client_FolderScan extends Thread
 	// StopFlag
 	private boolean _stopFlag = false;
 	
+	// Another Class
+	private Client_FolderSelector _cfs = null;
+	
 	// Constructors
 	
 	// Methods
 	public synchronized void run()
 	{
+		/*_cfs = new Client_FolderSelector();
+		_cfs.folderSelectorON();
+		while(!_cfs.getSelectionEnd())
+		{
+			try {
+				sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		_address = _cfs.getSelectedPath();*/
+		
 		try {
 			_watchService = FileSystems.getDefault().newWatchService();
 			Path directory = Paths.get(_address);
