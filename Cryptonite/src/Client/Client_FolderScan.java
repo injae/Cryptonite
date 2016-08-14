@@ -21,7 +21,7 @@ public class Client_FolderScan extends Thread
 	// WatchService Instance
 	private WatchService _watchService = null;
 	private WatchKey _watchKey = null;
-	public final static Queue<String> _directoryQueue = null;
+	public final static Queue<String> _directoryQueue = new LinkedList<String>();
 	
 	// Filenames, to make absolute directory, check directory
 	private String _fileName = null;
@@ -36,6 +36,11 @@ public class Client_FolderScan extends Thread
 	private Client_FolderSelector _cfs = null;
 	
 	// Constructors
+	public Client_FolderScan(String address)
+	{
+		_address = address;
+	}
+	
 	
 	// Methods
 	public synchronized void run()

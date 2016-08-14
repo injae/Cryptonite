@@ -1,6 +1,10 @@
 package Server;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.SynchronousQueue;
+
+import org.omg.CORBA.ACTIVITY_COMPLETED;
 
 import Function.PacketRule;
 
@@ -35,18 +39,21 @@ public class Server_Client_Manager implements PacketRule
 	
 	public void login(String acCode ,String usCode)
 	{
-		_clientList.put(usCode, _clientList.remove(acCode)); 
+		_clientList.put(usCode, _clientList.remove(acCode));
+		System.out.println("Login: "+usCode);
 	}
 	
 	public void logOut(String usCode)
 	{
 		_clientList.put(_code_manager.getAcCode(),_clientList.remove(usCode));
+		System.out.println("Logout: "+usCode);
 	}
 	
-	public void register(String key, Server_Client_Activity server_client_activity)
+	public void register(String code, Server_Client_Activity server_client_activity)
 	{
-		_clientList.put(key, server_client_activity);
+		_clientList.put(code, server_client_activity);
 		System.out.println("How many Client " + _clientList.size());
+		System.out.println("New Client: "+code);
 	}
 	
 	public void requestManage(String clientCode)
@@ -65,18 +72,35 @@ public class Server_Client_Manager implements PacketRule
 	public void stopManaging(String clientCode)
 	{
 		if(_clientList.get(clientCode).receive.isEmpty()) 
-		_clientList.remove(clientCode);
-		_code_manager.removeUsCode(clientCode);
+		{
+			_clientList.remove(clientCode);
+			_code_manager.removeUsCode(clientCode);
+		}
+		else
+		{
+			_clientList.get(clientCode)._funtionList.addLast(Server_Function_Factory.create((byte)0));
+			_client_manager._runningQueue.offer(clientCode);
+		}
+		System.out.println("Exit Client: "+clientCode);
 	}
 	
 	public void run()
 	{	
-		while(!_runningQueue.isEmpty())
+		Server_Client_Activity activity = null;
+		try 
 		{
-			Server_Client_Activity activity = _clientList.get(_runningQueue.remove());	
-			activity.readableUpdate();
-			activity._funtionList.getFirst().running();
-			activity.finishCheck();
+			while(!_runningQueue.isEmpty())
+			{
+				activity = _clientList.get(_runningQueue.remove());	
+				activity.readableUpdate();
+				activity._funtionList.getFirst().running();
+				activity.finishCheck();
+			}
+		} 
+		catch (IOException e) 
+		{
+			stopManaging(activity.getClientCode());
+			e.printStackTrace();
 		}
 	}
 }

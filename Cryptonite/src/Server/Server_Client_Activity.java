@@ -130,6 +130,7 @@ public class Server_Client_Activity implements PacketRule
 	}
 	
 	public String getClientCode() { return _clientCode; }
+	public void setClientCode(String code) {_clientCode = code;}
 	
 	public void close() 
 	{

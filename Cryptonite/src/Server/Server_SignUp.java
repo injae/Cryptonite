@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.sql.ResultSet;
@@ -23,7 +24,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	}
 
 	@Override
-	public void running() 
+	public void running() throws IOException 
 	{		
 		switch(_mode)
 		{
@@ -34,7 +35,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		}
 	}
 	
-	private void duplicationCheck()
+	private void duplicationCheck() throws IOException
 	{
 		try
 	    {
@@ -54,7 +55,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	    }   
 	}
 	
-	private void sign_up()
+	private void sign_up() throws IOException
 	{
 		int count=1;
 		boolean result;

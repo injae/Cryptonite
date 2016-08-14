@@ -33,14 +33,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 	// Constructors
 	public Client_AutoBackup() 
 	{
-		try 
-		{
-			_csc = Client_Server_Connector.getInstance();
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}
+		_csc = Client_Server_Connector.getInstance();
 	}
 	
 	// Methods
@@ -61,8 +54,15 @@ public class Client_AutoBackup extends Thread implements PacketRule
 					temp[0] = AUTOBACKUP;
 					temp[1] = DIRECTORY;
 					
-					_csc.send.setPacket(temp).write();
-					_csc.send.setPacket(_fileName.getBytes()).write();
+					try 
+					{
+						_csc.send.setPacket(temp).write();
+						_csc.send.setPacket(_fileName.getBytes()).write();
+					} 
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
 				}
 				else if(_checkProperty.isFile())
 				{
@@ -93,7 +93,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 							p.close();
 						}
 					} 
-					catch (FileNotFoundException e) 
+					catch (IOException e) 
 					{
 						e.printStackTrace();
 					} 

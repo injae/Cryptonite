@@ -120,43 +120,29 @@ public class PacketProcessor
 		return _queue.remove();
 	}
 	
-	public PacketProcessor read()
+	public PacketProcessor read() throws IOException
 	{
-		try 
-		{
-			allocate(LIMIT_SIZE);
-			_input.read(_buffer);
-			_buffer.flip();
-			
-			byte[] array = new byte[_buffer.remaining()];
-			_buffer.get(array);
-			
-			_queue.add(array);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		allocate(LIMIT_SIZE);
+		_input.read(_buffer);
+		_buffer.flip();
 		
+		byte[] array = new byte[_buffer.remaining()];
+		_buffer.get(array);
+		
+		_queue.add(array);
+
 		return this;
 	}
 	
-	public void write()
+	public void write() throws IOException
 	{
-		try 
+		byte[] array =_queue.remove();
+		allocate(array.length);
+		_buffer.put(array);
+		_buffer.flip();
+		while(_buffer.hasRemaining())
 		{
-			byte[] array =_queue.remove();
-			allocate(array.length);
-			_buffer.put(array);
-			_buffer.flip();
-			while(_buffer.hasRemaining())
-			{
-				_output.write(_buffer);
-			}
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
+			_output.write(_buffer);
 		}
 	}
 	

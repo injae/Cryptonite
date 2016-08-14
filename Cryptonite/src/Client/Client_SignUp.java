@@ -95,12 +95,9 @@ import Crypto.userKeyGenerator;
 
 		public Client_SignUp(){
 			                                              
-			try {
-				_csc=Client_Server_Connector.getInstance();
-			} catch (InterruptedException e) {
-				// TODO 자동 생성된 catch 블록
-				e.printStackTrace();
-			}
+	
+			_csc=Client_Server_Connector.getInstance();
+	
 			setTitle("CRYPTONITE");
 			setBounds(710,200,456,700);
 			setResizable(false);
@@ -273,35 +270,42 @@ import Crypto.userKeyGenerator;
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				byte size=2;
-				byte[] event=new byte[1024];
-				event[0] =SIGN_UP;
-				event[1]=1;
-				event[2]=size;
-			
-				_csc.send.setPacket(event).write();
-				_csc.send.setPacket(_id.getBytes(),500).write();				
-
-			
-				byte[] Checkid = _csc.receive.read().getByte();
-				System.out.println(Checkid[0]);
-				if(_id.equals(""))
-				{ 
-					showMessage("ERROR", "Please insert ID");
-				}
-				else
+				try 
 				{
-					switch(Checkid[0])
+					byte size=2;
+					byte[] event=new byte[1024];
+					event[0] =SIGN_UP;
+					event[1]=1;
+					event[2]=size;
+					
+					_csc.send.setPacket(event).write();
+					_csc.send.setPacket(_id.getBytes(),500).write();	
+		
+					byte[] Checkid = _csc.receive.read().getByte();
+					System.out.println(Checkid[0]);
+					if(_id.equals(""))
+					{ 
+						showMessage("ERROR", "Please insert ID");
+					}
+					else
 					{
-					case 1 :
-						_checkSame=true;
-						showMessage("ID", "This ID can be used."); 
-						break;
-					case 2:
-						showMessage("ERROR", "This ID is already in use. Please use another ID.");
-						break;
+						switch(Checkid[0])
+						{
+						case 1 :
+							_checkSame=true;
+							showMessage("ID", "This ID can be used."); 
+							break;
+						case 2:
+							showMessage("ERROR", "This ID is already in use. Please use another ID.");
+							break;
+						}
 					}
 				}
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}
+			
 			}
 		});
 		_layeredpane.add(_same);
@@ -488,12 +492,9 @@ class SHA_256 implements PacketRule
 
 		public SHA_256(String _name, String _id, String _password, String _email, String _AES_Key, String _salt, String _iteration)
 		{	
-			try {
-				_css=Client_Server_Connector.getInstance();
-			} catch (InterruptedException e) {
-				
-				e.printStackTrace();
-			}
+
+			_css=Client_Server_Connector.getInstance();
+
 			this._name=_name;
 			this._id = _id;
 			this._password = _password;
@@ -507,35 +508,41 @@ class SHA_256 implements PacketRule
 		}
 		
 		public void sendPrivacy(){
-			_size=8;
-					
-			byte[] _buf = new byte[1024];
-			_buf[0] = SIGN_UP;
-			_buf[1]=2;
-			_buf[2] = _size;
-			Charset _charset = Charset.forName("UTF-8");
-			
-			_css.send.setPacket(_buf).write();
-			_css.send.setPacket(_charset.encode(_name).array(),500).write();
-			_css.send.setPacket(_id.getBytes(),500).write();
-			_css.send.setPacket(_password.getBytes(),500).write();
-			_css.send.setPacket(_email.getBytes(),500).write();
-			_css.send.setPacket(_AES_Key.getBytes(), 500).write();
-			_css.send.setPacket(_salt.getBytes(), 500).write();
-			_css.send.setPacket(_iteration.getBytes(), 500).write();
-			
-			
-			byte[] result = _css.receive.read().getByte();
-			
-			if(result[0] == 1)
+			try
 			{
-				System.out.println("signUp Success");
-				showMessage("WELCOME!", "WELCOME TO CRYPTONITE!.");
-			}
-			else
-			{
-				System.out.println("signUp Fail");
-				showMessage("Cryptonite", "Failed to SignUp.");
+				_size=8;
+						
+				byte[] _buf = new byte[1024];
+				_buf[0] = SIGN_UP;
+				_buf[1]=2;
+				_buf[2] = _size;
+				Charset _charset = Charset.forName("UTF-8");
+				
+				_css.send.setPacket(_buf).write();
+				_css.send.setPacket(_charset.encode(_name).array(),500).write();
+				_css.send.setPacket(_id.getBytes(),500).write();
+				_css.send.setPacket(_password.getBytes(),500).write();
+				_css.send.setPacket(_email.getBytes(),500).write();
+				_css.send.setPacket(_AES_Key.getBytes(), 500).write();
+				_css.send.setPacket(_salt.getBytes(), 500).write();
+				_css.send.setPacket(_iteration.getBytes(), 500).write();
+				
+				
+				byte[] result = _css.receive.read().getByte();
+				
+				if(result[0] == 1)
+				{
+					System.out.println("signUp Success");
+					showMessage("WELCOME!", "WELCOME TO CRYPTONITE!.");
+				}
+				else
+				{
+					System.out.println("signUp Fail");
+					showMessage("Cryptonite", "Failed to SignUp.");
+				}
+			} catch (IOException e) {
+				// TODO 자동 생성된 catch 블록
+				e.printStackTrace();
 			}
 		
 		}
