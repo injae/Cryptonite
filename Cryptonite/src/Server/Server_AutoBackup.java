@@ -91,7 +91,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
 		_activity = activity;
-		_activity.receive.setAllocate(1024);
+		//_activity.receive.setAllocate(1024);
 		
 		setFolder();
 		if(packet[1] == DIRECTORY)
