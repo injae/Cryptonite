@@ -2,6 +2,7 @@ package Server;
 
 import java.nio.*;
 import java.nio.channels.*;
+import java.nio.charset.Charset;
 import java.util.Vector;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
@@ -79,7 +80,13 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		{
 			nameTemp[i] = packet[i + end + 1];
 		}
-		_fileName = new String(nameTemp).trim();
+		
+		Charset cs = Charset.forName("UTF-8");
+		ByteBuffer bb = ByteBuffer.allocate(nameTemp.length);
+		bb.put(nameTemp);
+		bb.flip();
+		_fileName = cs.decode(bb).toString().trim();
+
 		System.out.println("파일 이름 : " + _fileName);
 		System.out.println("파일 용량 : " + _fileSize + " (Byte)");
 	}
@@ -91,6 +98,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		setFileInformation(packet);
 		_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		
+		System.out.println(_fileName);
 		try 
 		{
 			_raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
