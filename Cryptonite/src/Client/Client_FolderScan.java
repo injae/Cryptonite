@@ -34,18 +34,20 @@ public class Client_FolderScan extends Thread
 	
 	// Another Class
 	private Client_FolderSelector _cfs = null;
+	private Client_AutoBackup _cab = null;
 	
 	// Constructors
-	public Client_FolderScan(String address)
+	public Client_FolderScan()
 	{
-		_address = address;
+		//_address = address;
+		_cab = new Client_AutoBackup();
 	}
 	
 	
 	// Methods
 	public synchronized void run()
 	{
-		/*_cfs = new Client_FolderSelector();
+		_cfs = new Client_FolderSelector();
 		_cfs.folderSelectorON();
 		while(!_cfs.getSelectionEnd())
 		{
@@ -56,7 +58,7 @@ public class Client_FolderScan extends Thread
 				e.printStackTrace();
 			}
 		}
-		_address = _cfs.getSelectedPath();*/
+		_address = _cfs.getSelectedPath();
 		
 		try {
 			_watchService = FileSystems.getDefault().newWatchService();
@@ -79,15 +81,18 @@ public class Client_FolderScan extends Thread
 	        			_isDirectory = new File(_address + "\\" + path.getFileName().toString());
 	        			if(_isDirectory.isDirectory() == true) 
 	        			{
+	        				System.out.println("New Folder is Created >> " + _fileName);
 	        				_absoluteDirectory = _isDirectory.getPath();
-	        				_directoryQueue.offer(_absoluteDirectory);
+	        				//_directoryQueue.offer(_absoluteDirectory);
+	        				_cab.autoBackup(_absoluteDirectory);
 	        			}
 	        			else
 	        			{
 	        				_fileName = path.getFileName().toString();
 	        				System.out.println("New File is Created >> " + _fileName);
 	        				_absoluteDirectory = _isDirectory.getPath();
-	        				_directoryQueue.offer(_absoluteDirectory);
+	        				_cab.autoBackup(_absoluteDirectory);
+	        				//_directoryQueue.offer(_absoluteDirectory);
 	        			}
 	        		}
 	        		/*else if(_kind == StandardWatchEventKinds.ENTRY_DELETE)
