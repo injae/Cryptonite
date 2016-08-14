@@ -21,8 +21,7 @@ public class Client_FolderScan extends Thread
 	// WatchService Instance
 	private WatchService _watchService = null;
 	private WatchKey _watchKey = null;
-	private Vector<String> _directoryVector = null;
-	private Queue<String> _directoryQueue = null;
+	public final static Queue<String> _directoryQueue = new LinkedList<String>();
 	
 	// Filenames, to make absolute directory, check directory
 	private String _fileName = null;
@@ -33,11 +32,32 @@ public class Client_FolderScan extends Thread
 	// StopFlag
 	private boolean _stopFlag = false;
 	
+	// Another Class
+	private Client_FolderSelector _cfs = null;
+	
 	// Constructors
+	public Client_FolderScan(String address)
+	{
+		_address = address;
+	}
+	
 	
 	// Methods
 	public synchronized void run()
 	{
+		/*_cfs = new Client_FolderSelector();
+		_cfs.folderSelectorON();
+		while(!_cfs.getSelectionEnd())
+		{
+			try {
+				sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		_address = _cfs.getSelectedPath();*/
+		
 		try {
 			_watchService = FileSystems.getDefault().newWatchService();
 			Path directory = Paths.get(_address);
@@ -51,25 +71,26 @@ public class Client_FolderScan extends Thread
         
 	        	for(WatchEvent _watchEvent : _list) 
 	        	{
-	        		Kind _kind = _watchEvent.kind();
-	        		Path _path = (Path)_watchEvent.context();
+	        		Kind kind = _watchEvent.kind();
+	        		Path path = (Path)_watchEvent.context();
               
-	        		if(_kind == StandardWatchEventKinds.ENTRY_CREATE)
+	        		if(kind == StandardWatchEventKinds.ENTRY_CREATE)
 	        		{
-	        			_isDirectory = new File(_address + "\\" + _path.getFileName().toString());
+	        			_isDirectory = new File(_address + "\\" + path.getFileName().toString());
 	        			if(_isDirectory.isDirectory() == true) 
 	        			{
-	        				// This is folder, write new work.
+	        				_absoluteDirectory = _isDirectory.getPath();
+	        				_directoryQueue.offer(_absoluteDirectory);
 	        			}
 	        			else
 	        			{
-	        				_fileName = _path.getFileName().toString();
+	        				_fileName = path.getFileName().toString();
 	        				System.out.println("New File is Created >> " + _fileName);
 	        				_absoluteDirectory = _isDirectory.getPath();
-	        				_directoryVector.add(_absoluteDirectory);
+	        				_directoryQueue.offer(_absoluteDirectory);
 	        			}
 	        		}
-	        		else if(_kind == StandardWatchEventKinds.ENTRY_DELETE)
+	        		/*else if(_kind == StandardWatchEventKinds.ENTRY_DELETE)
 	        		{
 	        			for(int i = 0; i < _directoryVector.size(); i++) 
 	        			{
@@ -80,17 +101,17 @@ public class Client_FolderScan extends Thread
 	        					break;
 	        				}
 	        			}
-	        		}
-	        		else if(_kind == StandardWatchEventKinds.OVERFLOW) 
+	        		}*/
+	        		else if(kind == StandardWatchEventKinds.OVERFLOW) 
 	        		{
 	        			System.out.println("Directory is gone...");
 	        			break;
 	        		}
 	        	}
            
-	        	boolean _valid = _watchKey.reset();
+	        	boolean valid = _watchKey.reset();
 	        	
-	        	if(!_valid)
+	        	if(!valid)
 	        		break;
 	        }
 		} 
