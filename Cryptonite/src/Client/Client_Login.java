@@ -224,7 +224,6 @@ public class Client_Login extends JFrame implements PacketRule
 
           		
           		byte[] checkLogin = csc.receive.read().getByte();
-          		 System.out.println("checklogin : "+checkLogin[0]+"\t check count :"+checkLogin[1]);
           		switch(checkLogin[0]){
           		case 1 :
           			showMessage("Error", "No id");

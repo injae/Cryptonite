@@ -71,7 +71,9 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		String aeskey=new String(_activity.receive.getByte()).trim();
 		String salt=new String(_activity.receive.getByte()).trim();
 		String iteration=new String(_activity.receive.getByte()).trim();
-	
+		
+		String usCode = Server_UserCode_Manager.getInstance().getUsCode();
+		
 		/*byte[] AES_key=_activity.receive.getByte();
 		byte[] _salt=_activity.receive.getByte();
 		byte[] _iteration=_activity.receive.getByte();*/
@@ -84,16 +86,13 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		System.out.println(aeskey);
 		System.out.println(salt);
 		System.out.println(iteration);
-*/		
-		result = db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"',"+count+",'"+aeskey+"','"+salt+"','"+iteration+"');");
-	//	result = db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"',"+count+");");
-		
-		
+*/		System.out.println("uscode"+usCode);
+		result = db.Update("INSERT INTO TEST VALUES("+"'"+name+"','"+id+"','"+password+"','"+email+"','"+count+"','"+usCode+"','"+aeskey+"','"+salt+"','"+iteration+"');");
+
 		//send result to client
 		byte[] resultPacket = new byte[1];
 		if(result == true)
 		{
-			
 			resultPacket[0] = 1;
 			_activity.send.setPacket(resultPacket).write();
 		}

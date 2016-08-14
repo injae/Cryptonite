@@ -75,7 +75,7 @@ public class Server_UserCode_Manager
 		return code;		
 	}
 	
-	public void returnUsCode(String uscode)
+	public void removeUsCode(String uscode)
 	{
 		if(uscode.charAt(0) == '1')
 		{

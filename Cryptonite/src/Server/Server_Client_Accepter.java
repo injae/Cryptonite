@@ -54,7 +54,7 @@ public class Server_Client_Accepter extends Thread
 			        {
 				        if(key.isAcceptable())
 				        {	
-				        	int clientCode = _manager.getClientCode();
+				        	String clientCode = _manager._code_manager.getAcCode();
 				        	_manager.register(clientCode, new Server_Client_Activity(_selector, key, clientCode)); 	
 				        }
 				        else if(key.isReadable())

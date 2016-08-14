@@ -57,7 +57,6 @@ public class PacketProcessor
 		}
 		else   
 		{
-			System.out.println(size);
 			_allocator.add((int)size);
 		}
 		

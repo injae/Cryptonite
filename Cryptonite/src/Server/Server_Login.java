@@ -3,6 +3,8 @@ package Server;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.omg.CORBA.ACTIVITY_COMPLETED;
+
 public class Server_Login extends Server_Funtion
 {
 	Server_DataBase db = Server_DataBase.getInstance();
@@ -24,30 +26,31 @@ public class Server_Login extends Server_Funtion
 		try
 	    {
 		   byte[] _checkLogin=new byte[1024];
-	       ResultSet _rs  = db.Query("select * from test where id like '"+ id +"';");
+	       ResultSet rs  = db.Query("select * from test where id like '"+ id +"';");
 	       System.out.println("id Ã£À½");	    
-	       if(!_rs.next()) 
+	       if(!rs.next()) 
 	       {	 
 	    	   _checkLogin[0]=1; 
 	       }
 	       else
 	       { 	
-		       String _get_pwd = _rs.getString(3);
-		       int _get_count = _rs.getInt(5);
-		       
-		       if(_get_pwd.equals(password)) 
+		       String get_pwd = rs.getString(3);
+		       int get_count = rs.getInt(5);
+		       if(get_pwd.equals(password)) 
 		       { 
+			       String usCode = "1" + rs.getInt(6);
+	    		   Server_Client_Manager.getInstance().login(_activity.getClientCode(), usCode);
 		    	   _checkLogin[0]=2;
-		    	   if(_get_count==1)
+		    	   if(get_count==1)
 		    	   {
 		    		   _checkLogin[1]=1;
 		    		   db.Update("update test set count=2 where id='"+id+"';");
 		    	   }
+
 		    	}
 		       else 	{ _checkLogin[0]=3; }   
 	       }
 	       _activity.send.setPacket(_checkLogin).write();
-	       System.out.println("checklogin : "+_checkLogin[0]+"\t check count :"+_checkLogin[1]);
 	    }
 	    catch(SQLException e1)
 	    {

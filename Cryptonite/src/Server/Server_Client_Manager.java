@@ -12,18 +12,15 @@ import Function.PacketRule;
 public class Server_Client_Manager implements PacketRule
 {	
 	private static Server_Client_Manager _client_manager;
-	private Server_UserCode_Manager _code_manager;
+	public Server_UserCode_Manager _code_manager;
 	
-	private HashMap<Integer ,Server_Client_Activity> _clientList;	
-	private Queue<Integer> _usableActivityCode;
-	private Queue<Integer> _runningQueue;
-	private int _lastClientCode;
+	private HashMap<String ,Server_Client_Activity> _clientList;	
+	private Queue<String> _runningQueue;
 
 	private Server_Client_Manager() 
 	{
-		_clientList = new HashMap<Integer, Server_Client_Activity>();
-		_runningQueue = new LinkedList<Integer>();
-		_usableActivityCode = new LinkedList<Integer>();
+		_clientList = new HashMap<String, Server_Client_Activity>();
+		_runningQueue = new LinkedList<String>();
 		_code_manager = Server_UserCode_Manager.getInstance();
 	}
 	
@@ -36,19 +33,23 @@ public class Server_Client_Manager implements PacketRule
 		return _client_manager;		
 	}
 	
-	public int getClientCode()
+	public void login(String acCode ,String usCode)
 	{
-		if(_usableActivityCode.isEmpty()) { return ++_lastClientCode; }
-		else 							  { return _usableActivityCode.remove(); }
+		_clientList.put(usCode, _clientList.remove(acCode)); 
 	}
 	
-	public void register(int key, Server_Client_Activity server_client_activity)
+	public void logOut(String usCode)
+	{
+		_clientList.put(_code_manager.getAcCode(),_clientList.remove(usCode));
+	}
+	
+	public void register(String key, Server_Client_Activity server_client_activity)
 	{
 		_clientList.put(key, server_client_activity);
 		System.out.println("How many Client " + _clientList.size());
 	}
 	
-	public void requestManage(int clientCode)
+	public void requestManage(String clientCode)
 	{
 		_runningQueue.offer(clientCode);		
 	}
@@ -61,11 +62,11 @@ public class Server_Client_Manager implements PacketRule
 		activity._funtionList.getLast().Checker(packet,activity);
 	}
 	
-	public void stopManaging(int clientCode)
+	public void stopManaging(String clientCode)
 	{
 		if(_clientList.get(clientCode).receive.isEmpty()) 
 		_clientList.remove(clientCode);
-		_usableActivityCode.offer(clientCode);
+		_code_manager.removeUsCode(clientCode);
 	}
 	
 	public void run()
