@@ -24,7 +24,7 @@ public class Server_Client_Activity implements PacketRule
 	
 	private SocketChannel _channel;
 	private Server_Client_Manager _manager;
-	private int _clientCode;
+	private String _clientCode;
 	
 	private Queue<Integer> _readableQueue;
 	
@@ -39,9 +39,8 @@ public class Server_Client_Activity implements PacketRule
 	public Integer _readableCount = 0;
 	public int _readingCount = 0;
 
-	public Server_User_Info _loginInfo;	
 
-	public Server_Client_Activity(Selector selector, SelectionKey key, int clientCode)
+	public Server_Client_Activity(Selector selector, SelectionKey key, String clientCode)
 	{
 		try 
 		{
@@ -58,7 +57,6 @@ public class Server_Client_Activity implements PacketRule
             _readableQueue = new LinkedList<Integer>();
             _funtionList = new LinkedList<Server_Funtion>();
             
-            _loginInfo = new Server_User_Info();
             _manager = Server_Client_Manager.getInstance();
 
             System.out.println(_channel.toString() + "connect");
@@ -87,7 +85,6 @@ public class Server_Client_Activity implements PacketRule
 		}
 		else
 		{
-
 			if(_funtionList.getLast()._packetMaxCount == _packetCount)
 			{
 				_readableQueue.offer(_readableCount);
@@ -132,8 +129,7 @@ public class Server_Client_Activity implements PacketRule
 		}
 	}
 	
-	public int getClientCode() { return _clientCode; }
-	public Server_User_Info getUserInfo() { return _loginInfo; }
+	public String getClientCode() { return _clientCode; }
 	
 	public void close() 
 	{
