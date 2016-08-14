@@ -10,16 +10,16 @@ public class Client_Main
 	{		
 		Client_Server_Connector csc = Client_Server_Connector.getInstance();
 			
-		/*new Client_FolderScan("C:\\Server").start();
+		new Client_FolderScan().start();
 		
-		new Client_AutoBackup().start();*/
+		//new Client_AutoBackup().start();
 		
-	/*	Client_FileShare_Send cfs = new Client_FileShare_Send();
+		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
 		cfs.click();*/
 		
 		/*Client_FileShare_Receive cfr = new Client_FileShare_Receive();
 		cfr.receiveFiles("682519");*/
 		
-		Client_Login cl = new Client_Login();
+		//Client_Login cl = new Client_Login();
 	}
 }
