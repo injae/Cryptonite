@@ -2,9 +2,6 @@ package Server;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.SynchronousQueue;
-
-import org.omg.CORBA.ACTIVITY_COMPLETED;
 
 import Function.PacketRule;
 
@@ -73,8 +70,11 @@ public class Server_Client_Manager implements PacketRule
 	{
 		if(_clientList.get(clientCode).receive.isEmpty()) 
 		{
-			_clientList.remove(clientCode);
+			
+			Server_Client_Activity activity = _clientList.remove(clientCode);
+			activity.close();
 			_code_manager.removeUsCode(clientCode);
+			
 		}
 		else
 		{

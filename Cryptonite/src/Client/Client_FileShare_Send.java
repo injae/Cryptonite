@@ -85,7 +85,7 @@ public class Client_FileShare_Send implements PacketRule
 		{
 			byte[] garbage = new byte[1024];
 	
-			byte[] OTP_Packet = new byte[100];
+			byte[] OTP_Packet = new byte[1024];
 			OTP_Packet[0] = MAKE_OTP;
 			_csc.send.setPacket(OTP_Packet).write();
 			_csc.send.setPacket(garbage).write();			
