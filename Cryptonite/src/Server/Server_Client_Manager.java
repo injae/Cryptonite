@@ -12,6 +12,7 @@ import Function.PacketRule;
 public class Server_Client_Manager implements PacketRule
 {	
 	private static Server_Client_Manager _client_manager;
+	private Server_UserCode_Manager _code_manager;
 	
 	private HashMap<Integer ,Server_Client_Activity> _clientList;	
 	private Queue<Integer> _usableActivityCode;
@@ -23,6 +24,7 @@ public class Server_Client_Manager implements PacketRule
 		_clientList = new HashMap<Integer, Server_Client_Activity>();
 		_runningQueue = new LinkedList<Integer>();
 		_usableActivityCode = new LinkedList<Integer>();
+		_code_manager = Server_UserCode_Manager.getInstance();
 	}
 	
 	public static Server_Client_Manager getInstance()
