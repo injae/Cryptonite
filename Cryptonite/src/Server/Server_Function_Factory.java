@@ -22,7 +22,7 @@ public class Server_Function_Factory implements PacketRule
 			return new Server_MakeOTP();
 		default:
 			System.out.println("Server Funtion Factory: Error code");
-			return	null;
+			return	new Server_ImDie();
 		}
 	}
 }

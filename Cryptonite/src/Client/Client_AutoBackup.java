@@ -35,30 +35,17 @@ public class Client_AutoBackup extends Thread implements PacketRule
 	// Constructors
 	public Client_AutoBackup() 
 	{
-		try 
-		{
-			_csc = Client_Server_Connector.getInstance();
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}
+
+		_csc = Client_Server_Connector.getInstance();
+	
 	}
 	
 	// Methods
 	public synchronized void run()
 	{
 		_encryptedVector = new Vector<String>();
-		_encryptedVector.add("C:\\Users\\Youn\\Desktop\\모든것\\Piano Original Sound tracks\\Steins;Gate OST\\Stein's;Gate - OST.mp3");
+		_encryptedVector.add("C:\\Server\\test.mp3");
 
-		try 
-		{
-			sleep(1);
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}
 		if(!_encryptedVector.isEmpty())
 		{
 			_checkProperty = new File(_encryptedVector.get(0));
@@ -71,8 +58,16 @@ public class Client_AutoBackup extends Thread implements PacketRule
 				temp[0] = AUTOBACKUP;
 				temp[1] = DIRECTORY;
 				
-				_csc.send.setPacket(temp).write();
-				_csc.send.setPacket(_fileName.getBytes()).write();
+				try 
+				{
+					_csc.send.setPacket(temp).write();
+					_csc.send.setPacket(_fileName.getBytes()).write();
+				} 
+				catch (IOException e) 
+				{
+					// TODO 자동 생성된 catch 블록
+					e.printStackTrace();
+				}
 			}
 			else if(_checkProperty.isFile())
 			{
@@ -98,7 +93,7 @@ public class Client_AutoBackup extends Thread implements PacketRule
 					}
 					p.close();
 				} 
-				catch (FileNotFoundException e) 
+				catch (IOException e) 
 				{
 					e.printStackTrace();
 				} 

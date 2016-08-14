@@ -17,8 +17,8 @@ import Function.*;
 public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
 	// protectedFolder
-	private String _address = "Server_Folder\\Backup";
-	private File _protectedFolder = new File(_address);
+	private String _address = "Server_Folder\\";
+	private File _protectedFolder;
 	
 	// Instance
 	private int _count = 1;
@@ -34,6 +34,16 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	
 	// Constructors
 	public Server_AutoBackup() { }
+	
+	private void setFolder()
+	{
+		_address = _address + _activity.getClientCode();
+		_protectedFolder = new File(_address);
+		if(!_protectedFolder.exists())
+		{
+			_protectedFolder.mkdirs();
+		}
+	}
 	
 	// Methods
 	private int sendPacketSize(long fileSize)
@@ -82,6 +92,8 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	{
 		_activity = activity;
 		_activity.receive.setAllocate(1024);
+		
+		setFolder();
 		if(packet[1] == DIRECTORY)
 		{
 			_checkProperty = "DIRECTORY";
@@ -105,7 +117,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	}
 
 	@Override
-	public void running() 
+	public void running() throws IOException 
 	{
 		//System.out.println("NOW AUTOBACKUP RUNNING");
 		if(_checkProperty.equals("DIRECTORY"))

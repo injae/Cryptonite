@@ -42,9 +42,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	private RandomAccessFile _raf = null;
 	private FileChannel _fileChannel = null;
 	PacketProcessor p = null;
-	// Constructors
-	public Server_FileShare_Receive() { }
-	
+
 	// Methods
 	private int sendPacketSize(long fileSize)
 	{
@@ -109,10 +107,8 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	}
 
 	@Override
-	public void running()
+	public void running() throws IOException
 	{
-		//System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
-
 		while(_activity.IsReadable())
 		{
 			_count++;

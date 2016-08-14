@@ -17,7 +17,7 @@ import java.io.*;
 public class Client_FileShare_Receive implements PacketRule
 {
 	// OTP Instance
-	private String _OTP = "937012";
+	private String _OTP;
 	
 	// File Instance
 	private String _downloadFolder = null;
@@ -35,19 +35,13 @@ public class Client_FileShare_Receive implements PacketRule
 	// Constructors
 	public Client_FileShare_Receive() 
 	{
-		try 
-		{
-			_csc = Client_Server_Connector.getInstance();
-			_cfs = new Client_FolderSelector();
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}
+		_csc = Client_Server_Connector.getInstance();
+		_cfs = new Client_FolderSelector();
 	}
 	
-	public void receiveFiles()
+	public void receiveFiles(String OTP)
 	{
+		_OTP = OTP;
 		if(_OTP.length() != 6)
 		{
 			System.out.println("OTP length must be 6 letters.");
@@ -98,7 +92,6 @@ public class Client_FileShare_Receive implements PacketRule
 						while(!_csc.receive.isAllocatorEmpty())
 						{
 							p.setPacket(_csc.receive.read().getByte()).write();
-							//System.out.println(_csc.receive.allocatorCapacity());
 						}
 						System.out.println("¥Ÿ¿–¿Ω");
 						_raf.close();

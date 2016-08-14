@@ -1,5 +1,7 @@
 package Server;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -18,7 +20,7 @@ public class Server_Login extends Server_Funtion
 	}
 
 	@Override
-	public void running()
+	public void running() throws IOException
 	{
 		String id = new String( _activity.receive.getByte()).trim();
 		String password= new String( _activity.receive.getByte()).trim();
@@ -26,8 +28,7 @@ public class Server_Login extends Server_Funtion
 		try
 	    {
 		   byte[] _checkLogin=new byte[1024];
-	       ResultSet rs  = db.Query("select * from test where id like '"+ id +"';");
-	       System.out.println("id Ã£À½");	    
+	       ResultSet rs  = db.Query("select * from test where id like '"+ id +"';");   
 	       if(!rs.next()) 
 	       {	 
 	    	   _checkLogin[0]=1; 
@@ -40,6 +41,7 @@ public class Server_Login extends Server_Funtion
 		       { 
 			       String usCode = "1" + rs.getInt(6);
 	    		   Server_Client_Manager.getInstance().login(_activity.getClientCode(), usCode);
+	    		   _activity.setClientCode(usCode);
 		    	   _checkLogin[0]=2;
 		    	   if(get_count==1)
 		    	   {

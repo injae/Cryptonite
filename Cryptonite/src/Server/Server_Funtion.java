@@ -3,6 +3,8 @@
  */
 package Server;
 
+import java.io.IOException;
+
 /**
  * @author In Jae Lee
  *
@@ -16,5 +18,5 @@ public abstract class Server_Funtion
 	public int getLimitSize() { return _packetCutSize; }
 	
 	public abstract void Checker(byte[] packet, Server_Client_Activity activity);
-	public abstract void running();
+	public abstract void running() throws IOException;
 }

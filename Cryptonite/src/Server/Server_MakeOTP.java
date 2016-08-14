@@ -92,7 +92,7 @@ public class Server_MakeOTP extends Server_Funtion
 	}
 
 	@Override
-	public void running() 
+	public void running() throws IOException 
 	{
 		makeOTP();
 		_activity.receive.getByte();	// garbage delete

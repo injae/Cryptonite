@@ -20,7 +20,7 @@ public class Client_Server_Connector extends Thread
 	public PacketProcessor receive;
 	public PacketProcessor send;
 
-	private Client_Server_Connector() throws InterruptedException
+	private Client_Server_Connector()
 	{
 		try 
 		{		
@@ -28,11 +28,11 @@ public class Client_Server_Connector extends Thread
 			_channel.configureBlocking(true);
 			_channel.connect(new InetSocketAddress("localhost", 4444));
 
-			while (!_channel.finishConnect()) 
+		/*	while (!_channel.finishConnect()) 
 			{
 				Thread.sleep(1);
 				System.out.println("still connecting");
-			}
+			}*/
 			
 			receive = new PacketProcessor(_channel, false);
 			send = new PacketProcessor(_channel, false);			
@@ -44,7 +44,7 @@ public class Client_Server_Connector extends Thread
 	}
 	
 
-	public static Client_Server_Connector getInstance() throws InterruptedException
+	public static Client_Server_Connector getInstance() 
 	{
 		if(_singleton == null)
 		{
