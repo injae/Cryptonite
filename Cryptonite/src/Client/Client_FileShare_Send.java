@@ -118,6 +118,7 @@ public class Client_FileShare_Send implements PacketRule
 				p.close();
 				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");			
 			}
+			_cfs.dispose();
 		}
 		catch (FileNotFoundException e) 
 		{
