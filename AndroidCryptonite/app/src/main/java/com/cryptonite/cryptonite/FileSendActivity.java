@@ -20,11 +20,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import Function.Client_FileShare_Send;
+import Function.PathPicker;
 
 public class FileSendActivity extends AppCompatActivity {
-
-    FilePickerDialog dialog;
-    String[] filepaths;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,32 +36,24 @@ public class FileSendActivity extends AppCompatActivity {
                 fileChoose();
             }
         });
+
     }
 
     private void fileChoose(){
-
-        DialogProperties properties=new DialogProperties();
-
-        properties.selection_mode= DialogConfigs.MULTI_MODE;
-        properties.selection_type=DialogConfigs.FILE_SELECT;
-        properties.root=new File(DialogConfigs.DEFAULT_DIR);
-        properties.extensions=null;
-
-        dialog = new FilePickerDialog(FileSendActivity.this,properties);
-        dialog.setDialogSelectionListener(new DialogSelectionListener() {
+        PathPicker picker = new PathPicker(this,PathPicker.Select_Files);
+        picker.setDialogSelectionListener(new DialogSelectionListener() {
             @Override
             public void onSelectedFilePaths(String[] files) {
-                //files is the array of the paths of files selected by the Application User.
-                filepaths = files;
-                fileSendTask fst = new fileSendTask();
-                fst.execute((Void)null);
+
+                fileSendTask fs = new fileSendTask();
+                fs.execute(files);
+
             }
         });
-
-        dialog.show();
+        picker.show();
     }
 
-    class fileSendTask extends AsyncTask<Void,Integer,Boolean>
+    class fileSendTask extends AsyncTask<String,Integer,Boolean>
     {
         Client_FileShare_Send cfs;
         fileSendTask()
@@ -71,8 +61,9 @@ public class FileSendActivity extends AppCompatActivity {
             cfs = new Client_FileShare_Send();
         }
         @Override
-        protected Boolean doInBackground(Void... params) {
-            cfs.sendFile(filepaths);
+        protected Boolean doInBackground(String... params) {
+            Log.d("File",params[0]);
+            cfs.sendFile(params);
             return null;
         }
     }
