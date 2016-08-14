@@ -111,12 +111,13 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	@Override
 	public void running()
 	{
-		System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
+		//System.out.println("NOW FILE_SHARE_RECEIVE RUNNING");
 
-		_count++;
-
-		p.setPacket(_activity.receive.getByte()).write();
-		
+		while(_activity.IsReadable())
+		{
+			_count++;
+			p.setPacket(_activity.receive.getByte()).write();
+		}
 		if(_count == _packetMaxCount)
 		{
 			System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
