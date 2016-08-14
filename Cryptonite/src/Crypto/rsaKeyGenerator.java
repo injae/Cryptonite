@@ -5,7 +5,8 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
-public class rsaKeyGenerator {
+public class rsaKeyGenerator
+{
 	private Key _pubKey = null;
 	private Key _priKey = null;
 	

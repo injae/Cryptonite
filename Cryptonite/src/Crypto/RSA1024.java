@@ -11,14 +11,14 @@ public class RSA1024 extends Crypto{
 	public RSA1024() {
 		super();
 	}
-	public RSA1024(SecretKey _key) {
-		super(_key);
+	public RSA1024(SecretKey key) {
+		super(key);
 	}
-	public RSA1024(int _mode) {
-		super(_mode);
+	public RSA1024(int mode) {
+		super(mode);
 	}
-	public RSA1024(SecretKey _key, int _mode) {
-		super(_key, _mode);
+	public RSA1024(SecretKey key, int mode) {
+		super(key, mode);
 	}
 	
 	public boolean push (byte[] target){

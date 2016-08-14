@@ -2,6 +2,10 @@ package Client;
 
 import java.io.IOException;
 
+import javax.crypto.Cipher;
+
+import Crypto.Crypto_Factory;
+
 /**
  * @author user
  *
@@ -23,6 +27,8 @@ public class Client_Main
 		
 		Client_Login cl = new Client_Login();
 
+		C c = Crypto_Factory.create("AES256",mode, key)
+		
 		while(true)
 		{
 			Thread.sleep(10);
