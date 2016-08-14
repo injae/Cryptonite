@@ -12,7 +12,10 @@ public class Client_Main
 	{		
 		/*Client_Server_Connector csc = Client_Server_Connector.getInstance();*/
 			
-	/*	Client_AutoBackup cab = new Client_AutoBackup();
+		/*Client_FolderScan cfs = new Client_FolderScan();
+		cfs.start();
+		
+		Client_AutoBackup cab = new Client_AutoBackup();
 		cab.start();*/
 		
 		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
@@ -21,7 +24,7 @@ public class Client_Main
 		/*Client_FileShare_Receive cfr = new Client_FileShare_Receive();
 		cfr.receiveFiles();*/
 		
-		Client_Login cl = new Client_Login();
+		/*Client_Login cl = new Client_Login();*/
 
 		while(true)
 		{
