@@ -351,7 +351,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     default:
                         return false;
                 }
-            } catch (InterruptedException e) {
+            } catch (IOException e) {
                 return false;
             }
         }

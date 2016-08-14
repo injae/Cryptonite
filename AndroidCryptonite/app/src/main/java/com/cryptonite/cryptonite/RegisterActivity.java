@@ -304,8 +304,7 @@ public class RegisterActivity extends AppCompatActivity {
                     setErrorId();
                     return true;
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (IOException e){
                 return false;
             }
             return true;

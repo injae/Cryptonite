@@ -3,6 +3,7 @@ package Client;
 import Function.*;
 import java.net.*;
 import java.nio.channels.*;
+import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.nio.*;
 import java.util.*;
@@ -81,6 +82,8 @@ public class Client_FileShare_Send implements PacketRule
 	
 	public void sendFile()	// when you click send button
 	{
+		Charset cs = Charset.forName("UTF-8");
+		ByteBuffer[] fileNameArray = new ByteBuffer[_fileNameArray.length];
 		try 
 		{
 			byte[] garbage = new byte[1024];
@@ -97,13 +100,16 @@ public class Client_FileShare_Send implements PacketRule
 			
 			for(int i = 0; i < _fileNameArray.length; i++)
 			{
+				fileNameArray[i] = cs.encode(_fileNameArray[i]);
+				
 				byte[] packet = new byte[1024];
 				packet[0] = FILE_SHARE_RECEIVE;
 				packet[1] = (byte)_fileNameArray.length;
 				packet[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
-				packet[3] = (byte)_fileNameArray[i].getBytes().length;
+				packet[3] = (byte)fileNameArray[i].limit();
+				System.out.println(fileNameArray[i].limit());
 				Function.frontInsertByte(4, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
-				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, _fileNameArray[i].getBytes(), packet);
+				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, fileNameArray[i].array(), packet);
 				_csc.send.setPacket(packet).write();	// 1
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
@@ -133,6 +139,8 @@ public class Client_FileShare_Send implements PacketRule
 	
 	private void changeFilesName()
 	{
+		Charset cs = Charset.forName("UTF-8");
+		
 		String temp = "";
 		for(int i = 0; i < _fileNameArray.length; i++)
 		{
