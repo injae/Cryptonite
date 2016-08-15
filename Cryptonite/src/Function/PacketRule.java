@@ -11,6 +11,7 @@ public interface PacketRule
 	byte FILE_SHARE_SEND = 4;
 	byte SIGN_UP = 5;
 	byte MAKE_OTP = 6;
+	byte LOGOUT	= 7;
 	//---------------------------------------
 	
 	// AUTOBACKUP(1) AUTOBACKUP EVENT
