@@ -28,7 +28,7 @@ public class Client_FolderScan extends Thread
 	private String _absoluteDirectory = null;
 	private File _isDirectory = null;
 	
-	// StopFlag
+	// StopFlag //
 	private boolean _stopFlag = false;
 	
 	// Another Class
