@@ -17,7 +17,7 @@ import Function.*;
 public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
 	// protectedFolder
-	private String _address = "Server_Folder\\";
+	private String _address = "Server_Folder\\Backup\\";
 	private File _protectedFolder;
 	
 	// Instance
