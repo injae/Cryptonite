@@ -21,7 +21,6 @@ public class Client_FolderScan extends Thread
 	// WatchService Instance
 	private WatchService _watchService = null;
 	private WatchKey _watchKey = null;
-	public final static Queue<String> _directoryQueue = new LinkedList<String>();
 	
 	// Filenames, to make absolute directory, check directory
 	private String _fileName = null;
@@ -29,7 +28,7 @@ public class Client_FolderScan extends Thread
 	private String _absoluteDirectory = null;
 	private File _isDirectory = null;
 	
-	// StopFlag //
+	// StopFlag
 	private boolean _stopFlag = false;
 	
 	// Another Class
@@ -39,7 +38,6 @@ public class Client_FolderScan extends Thread
 	// Constructors
 	public Client_FolderScan()
 	{
-		//_address = address;
 		_cab = new Client_AutoBackup();
 	}
 	
@@ -58,6 +56,12 @@ public class Client_FolderScan extends Thread
 			}
 		}
 		_address = _cfs.getSelectedPath();
+		File firstScan = new File(_address);
+		String[] fileList = firstScan.list();
+		for(int i = 0; i < fileList.length; i++)
+		{
+			_cab.autoBackup(_address + "\\" + fileList[i]);
+		}
 		
 		try {
 			_watchService = FileSystems.getDefault().newWatchService();
@@ -80,9 +84,9 @@ public class Client_FolderScan extends Thread
 	        			_isDirectory = new File(_address + "\\" + path.getFileName().toString());
 	        			if(_isDirectory.isDirectory() == true) 
 	        			{
+	        				_fileName = path.getFileName().toString();
 	        				System.out.println("New Folder is Created >> " + _fileName);
 	        				_absoluteDirectory = _isDirectory.getPath();
-	        				//_directoryQueue.offer(_absoluteDirectory);
 	        				_cab.autoBackup(_absoluteDirectory);
 	        			}
 	        			else
@@ -91,21 +95,8 @@ public class Client_FolderScan extends Thread
 	        				System.out.println("New File is Created >> " + _fileName);
 	        				_absoluteDirectory = _isDirectory.getPath();
 	        				_cab.autoBackup(_absoluteDirectory);
-	        				//_directoryQueue.offer(_absoluteDirectory);
 	        			}
 	        		}
-	        		/*else if(_kind == StandardWatchEventKinds.ENTRY_DELETE)
-	        		{
-	        			for(int i = 0; i < _directoryVector.size(); i++) 
-	        			{
-	        				if(_path.getFileName().toString().equals(_directoryVector.get(i)))
-	        				{
-	        					System.out.println("File is Deleted >> " + _directoryVector.get(i));
-	        					_directoryVector.remove(i);
-	        					break;
-	        				}
-	        			}
-	        		}*/
 	        		else if(kind == StandardWatchEventKinds.OVERFLOW) 
 	        		{
 	        			System.out.println("Directory is gone...");
