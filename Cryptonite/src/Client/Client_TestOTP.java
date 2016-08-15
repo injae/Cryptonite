@@ -97,12 +97,12 @@ public class Client_TestOTP extends JFrame{
          });
         _layeredPane.add( _OTPField);
         
-        _OK = new JButton(new ImageIcon("gui/login_bt.png"));//input buttonimage
+        _OK = new JButton(new ImageIcon("img/test_okbt.png"));//input buttonimage
         _OK.setBounds(100, 150, 400, 50);
         _OK.setBorderPainted(false);
         _OK.setFocusPainted(false);
         _OK.setContentAreaFilled(false);
-        _OK.setPressedIcon(new ImageIcon("img/login_bt_hv.png"));
+        _OK.setPressedIcon(new ImageIcon("img/test_okbt_hv.png"));
         _OK.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
          		System.out.println("OTP : "+OTP);
