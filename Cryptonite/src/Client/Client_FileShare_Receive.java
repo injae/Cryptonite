@@ -66,6 +66,7 @@ public class Client_FileShare_Receive implements PacketRule
 					
 					_csc.send.setPacket(_OTP.getBytes(), 30).write();	// OTP Sending	
 					
+					_csc.receive.setAllocate(10);
 					_downloadFlag = new String(_csc.receive.read().getByte()).trim();
 					
 					if(_downloadFlag.equals("FALSE"))
@@ -83,7 +84,6 @@ public class Client_FileShare_Receive implements PacketRule
 						_fileSize = Long.parseLong(new String(_csc.receive.read().getByte()).trim());
 						System.out.println("파일 사이즈 : " + _fileSize);
 						
-						System.out.println(_csc.receive.allocatorCapacity());
 						_raf = new RandomAccessFile(_downloadFolder + "\\" + _fileName, "rw");
 						
 						p = new PacketProcessor(_raf.getChannel(), false);

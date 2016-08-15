@@ -73,16 +73,16 @@ public class Server_FileShare_Send extends Server_Funtion
 		_activity = activity;
 		_packetMaxCount = 1 + 1;
 		_packetCutSize = 1;
-		_activity.receive.setAllocate(30);
 	}
 
 	@Override
 	public void running() throws IOException 
 	{
+		_activity.receive.setAllocate(30);
 		_OTP = new String(_activity.receive.getByte()).trim();
 		System.out.println("Receiving OTP : " + _OTP);
 		OTP_Check();
-		_activity.send.setPacket(_downloadFlag.getBytes()).write();
+		_activity.send.setPacket(_downloadFlag.getBytes(),10).write();
 		
 		if(_temporaryFlag)
 		{

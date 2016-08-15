@@ -12,11 +12,11 @@ public class Client_Main
 			
 		//new Client_FolderScan().start();
 		
-		Client_FileShare_Send cfs = new Client_FileShare_Send();
-		cfs.click();
+		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
+		cfs.click();*/
 		
-		/*Client_FileShare_Receive cfr = new Client_FileShare_Receive();
-		cfr.receiveFiles("682519");*/
+		Client_FileShare_Receive cfr = new Client_FileShare_Receive();
+		cfr.receiveFiles("980044");
 		
 		//Client_Login cl = new Client_Login();
 	}

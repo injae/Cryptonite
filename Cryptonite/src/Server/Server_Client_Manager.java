@@ -74,14 +74,13 @@ public class Server_Client_Manager implements PacketRule
 			Server_Client_Activity activity = _clientList.remove(clientCode);
 			activity.close();
 			_code_manager.removeUsCode(clientCode);
-			
+			System.out.println("Exit Client: "+clientCode);
 		}
 		else
 		{
 			_clientList.get(clientCode)._funtionList.addLast(Server_Function_Factory.create((byte)0));
-			_client_manager._runningQueue.offer(clientCode);
 		}
-		System.out.println("Exit Client: "+clientCode);
+
 	}
 	
 	public void run()

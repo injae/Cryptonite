@@ -10,7 +10,7 @@ public class Server_ImDie extends Server_Funtion
 	{
 		_packetCutSize = 1;
 		_packetMaxCount = 1;
-		
+		Server_Client_Manager.getInstance().requestManage(activity.getClientCode());
 	}
 
 	@Override
