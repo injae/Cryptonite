@@ -230,7 +230,11 @@ public class Client_Login extends JFrame implements PacketRule
 	          			showMessage("LOGIN", "Welcome,\t"+_id);
 	          			dispose();
 	          			Client_Testmain Main = new Client_Testmain();
-	          			if(checkLogin[1]==1){ showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!"); }
+	          			if(checkLogin[1]==1)
+	          			{
+	          				showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!"); 
+	          				new Client_FolderScan().start();
+	          			}
 	          			break;
 	          		case 3 : 
 	          			showMessage("Error", "Wrong password"); 
