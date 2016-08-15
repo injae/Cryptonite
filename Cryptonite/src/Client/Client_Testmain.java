@@ -93,7 +93,7 @@ public class Client_Testmain extends JFrame{
         _FileReceive.setPressedIcon(new ImageIcon("img/test_receivebt_hv.png"));
         _FileReceive.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		//button event
+        		new Client_TestOTP();
         	}
         });
         
