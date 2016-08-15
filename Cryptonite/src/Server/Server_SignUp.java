@@ -47,7 +47,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	       if(!_rs.next()) { _checkid[0]=1; }
 	       else 		   { _checkid[0]=2; }
 	       
-	       _activity.send.setPacket(_checkid).write();
+	       _activity.send.setPacket(_checkid,2).write();
 	    }
 	    catch(SQLException e1)
 	    {
