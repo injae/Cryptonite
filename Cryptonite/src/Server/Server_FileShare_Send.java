@@ -7,7 +7,6 @@ import Function.PacketProcessor;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 
 /*
  * Developer : Youn Hee Seung
@@ -65,24 +64,23 @@ public class Server_FileShare_Send extends Server_Funtion
 			System.out.println("There is no file.");
 		}
 	}
-	
-	
-	
+
 	@Override
 	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
 		_activity = activity;
 		_packetMaxCount = 1 + 1;
 		_packetCutSize = 1;
-		_activity.receive.setAllocate(30);
 	}
 
 	@Override
 	public void running() throws IOException 
 	{
+		_activity.receive.setAllocate(30);
 		_OTP = new String(_activity.receive.getByte()).trim();
 		System.out.println("Receiving OTP : " + _OTP);
 		OTP_Check();
+		_activity.send.setPacket(_downloadFlag.getBytes(),10).write();
 		_activity.send.setPacket(_downloadFlag.getBytes(),500).write();
 		
 		if(_temporaryFlag)
@@ -97,10 +95,7 @@ public class Server_FileShare_Send extends Server_Funtion
 				}
 				_fileSize = sendingFile.length();
 				
-				Charset cs = Charset.forName("UTF-8");
-				
-				
-				_activity.send.setPacket(cs.encode(_fileName).array(), 500).write();
+				_activity.send.setPacket(_fileName.getBytes(), 500).write();
 				System.out.println("파일 이름(서버) : " + _fileName);
 				
 				_activity.send.setPacket(String.valueOf(_fileSize).getBytes(), 500).write();

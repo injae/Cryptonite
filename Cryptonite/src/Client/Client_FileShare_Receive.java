@@ -69,6 +69,7 @@ public class Client_FileShare_Receive implements PacketRule
 					_csc.send.setPacket(_OTP.getBytes(), 30).write();	// OTP Sending	
 					
 					_csc.receive.setAllocate(500);
+
 					_downloadFlag = new String(_csc.receive.read().getByte()).trim();
 					
 					if(_downloadFlag.equals("FALSE"))
