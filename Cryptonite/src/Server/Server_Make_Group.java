@@ -94,8 +94,7 @@ public class Server_Make_Group extends Server_Funtion
 			{
 				e.printStackTrace();
 			}
-			System.out.println("groupList : " + groupList);
-			_db.Update("update test set mygrouplist = '" + groupList.trim() + "' where uscode = " + _members.get(i) + ";");
+			_db.Update("update test set mygrouplist = '" + groupList + "' where uscode = " + Integer.parseInt(_members.get(i).substring(1)) + ";");
 		}
 		File newFolder = new File("Server_Folder/Backup/" + gpCode);
 		if(!newFolder.exists())
