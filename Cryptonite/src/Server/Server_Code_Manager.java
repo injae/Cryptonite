@@ -107,7 +107,7 @@ public class Server_Code_Manager
 	public String getGpCode()
 	{
 		String code = "$";
-		if(_usableAcCode.isEmpty()) { code = code  + ++_lastGpCode; }
+		if(_usableGpCode.isEmpty()) { code = code  + ++_lastGpCode; }
 		else 					    { code = code + _usableGpCode.remove(); }
 		
 		return code;		
