@@ -28,7 +28,7 @@ public class Client_FolderScan extends Thread
 	private String _absoluteDirectory = null;
 	private File _isDirectory = null;
 	
-	// StopFlag //
+	// StopFlag
 	private boolean _stopFlag = false;
 	
 	// Another Class
@@ -84,17 +84,17 @@ public class Client_FolderScan extends Thread
 	        			_isDirectory = new File(_address + "\\" + path.getFileName().toString());
 	        			if(_isDirectory.isDirectory() == true) 
 	        			{
-	        				_fileName = path.getFileName().toString();//
-	        				System.out.println("New Folder is Created >> " + _fileName);//
-	        				_absoluteDirectory = _isDirectory.getPath();//
-	        				_cab.autoBackup(_absoluteDirectory);//
+	        				_fileName = path.getFileName().toString();
+	        				System.out.println("New Folder is Created >> " + _fileName);
+	        				_absoluteDirectory = _isDirectory.getPath();
+	        				_cab.autoBackup(_absoluteDirectory);
 	        			}
 	        			else
 	        			{
 	        				_fileName = path.getFileName().toString();
-	        				System.out.println("New File is Created >> " + _fileName);//
-	        				_absoluteDirectory = _isDirectory.getPath();//
-	        				_cab.autoBackup(_absoluteDirectory);//
+	        				System.out.println("New File is Created >> " + _fileName);
+	        				_absoluteDirectory = _isDirectory.getPath();
+	        				_cab.autoBackup(_absoluteDirectory);
 	        			}
 	        		}
 	        		else if(kind == StandardWatchEventKinds.OVERFLOW) 

@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import Client.Client_Login.MyPanel;
+import Client.Client_Testmain;
 
 public class Client_TestOTP extends JFrame{
 	public static void main(String[] args){
@@ -37,8 +38,10 @@ public class Client_TestOTP extends JFrame{
 	JButton _OK;   
 	
 	JTextField _OTPField;
+		
+/*	Client_Testmain test=new Client_Testmain();*/
 	
-	int OTP;
+	String OTP;
 	
 	public Client_TestOTP(){
 		try{
@@ -74,7 +77,7 @@ public class Client_TestOTP extends JFrame{
         _OTPField = new JTextField(15);
         _OTPField.setBounds(190, 70, 200, 31);
         _OTPField.setOpaque(true);
-        _OTPField.setForeground(Color.WHITE);
+        _OTPField.setForeground(Color.BLACK);
         _OTPField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         _OTPField.setHorizontalAlignment(JTextField.CENTER);
         _OTPField.addKeyListener(new KeyListener(){
@@ -82,7 +85,7 @@ public class Client_TestOTP extends JFrame{
      		public void keyPressed(KeyEvent e) {}
      		@Override
      		public void keyReleased(KeyEvent e) {
-     			OTP = Integer.parseInt(_OTPField.getText());
+     			OTP = _OTPField.getText();
      		}
      		@Override
      		public void keyTyped(KeyEvent e) {}
@@ -102,7 +105,9 @@ public class Client_TestOTP extends JFrame{
         _OK.setPressedIcon(new ImageIcon("img/login_bt_hv.png"));
         _OK.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
-         		//button event
+         		System.out.println("OTP : "+OTP);
+         		new Client_FileShare_Receive().receiveFiles(OTP);
+         		dispose();
          	}
         });
         
@@ -112,5 +117,4 @@ public class Client_TestOTP extends JFrame{
         getContentPane().add(_layeredPane);          
         setVisible(true);
 	}
-	
 }

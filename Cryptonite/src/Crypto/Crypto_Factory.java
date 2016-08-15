@@ -9,6 +9,9 @@ import javax.crypto.SecretKey;
 
 public class Crypto_Factory 
 {
+	public final static String AES256 = "AES256";
+	public final static String RSA1024 = "RSA1024";
+	
 	public static Cipher create(String type, int mode, SecretKey key)
 	{			
 		Cipher cipher = null;
