@@ -20,6 +20,8 @@ public class Server_Function_Factory implements PacketRule
 			return new Server_SignUp();
 		case MAKE_OTP:
 			return new Server_MakeOTP();
+		case LOGOUT:
+			return new Server_Logout();
 		default:
 			System.out.println("Server Funtion Factory: "+ mode);
 			return	new Server_ImDie();

@@ -117,7 +117,7 @@ public class Client_Login extends JFrame implements PacketRule
 			csc=Client_Server_Connector.getInstance();
 
     	setTitle("Cryptonite");
-        setBounds(710,200,456,700);
+        setBounds(710,200,456,665);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
  

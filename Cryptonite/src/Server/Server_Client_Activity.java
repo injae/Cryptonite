@@ -103,8 +103,11 @@ public class Server_Client_Activity implements PacketRule
 	
 	public void readableUpdate()
 	{
-		_readingCount = _readableQueue.remove();
-		_usedCount +=  _readingCount;
+		if(!_readableQueue.isEmpty())
+		{
+			_readingCount = _readableQueue.remove();
+			_usedCount +=  _readingCount;
+		}
 	}
 	
 	public void finishCheck()
