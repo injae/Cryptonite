@@ -56,7 +56,6 @@ public class Client_FolderScan extends Thread
 			}
 		}
 		_address = _cfs.getSelectedPath();
-		
 		File firstScan = new File(_address);
 		String[] fileList = firstScan.list();
 		for(int i = 0; i < fileList.length; i++)
@@ -85,32 +84,19 @@ public class Client_FolderScan extends Thread
 	        			_isDirectory = new File(_address + "\\" + path.getFileName().toString());
 	        			if(_isDirectory.isDirectory() == true) 
 	        			{
-	        				_fileName = path.getFileName().toString();
-	        				System.out.println("New Folder is Created >> " + _fileName);
-	        				_absoluteDirectory = _isDirectory.getPath();
-	        				System.out.println(_absoluteDirectory);
-	        				_cab.autoBackup(_absoluteDirectory);
+	        				_fileName = path.getFileName().toString();//
+	        				System.out.println("New Folder is Created >> " + _fileName);//
+	        				_absoluteDirectory = _isDirectory.getPath();//
+	        				_cab.autoBackup(_absoluteDirectory);//
 	        			}
 	        			else
 	        			{
 	        				_fileName = path.getFileName().toString();
-	        				System.out.println("New File is Created >> " + _fileName);
-	        				_absoluteDirectory = _isDirectory.getPath();
-	        				_cab.autoBackup(_absoluteDirectory);
+	        				System.out.println("New File is Created >> " + _fileName);//
+	        				_absoluteDirectory = _isDirectory.getPath();//
+	        				_cab.autoBackup(_absoluteDirectory);//
 	        			}
 	        		}
-	        		/*else if(_kind == StandardWatchEventKinds.ENTRY_DELETE)
-	        		{
-	        			for(int i = 0; i < _directoryVector.size(); i++) 
-	        			{
-	        				if(_path.getFileName().toString().equals(_directoryVector.get(i)))
-	        				{
-	        					System.out.println("File is Deleted >> " + _directoryVector.get(i));
-	        					_directoryVector.remove(i);
-	        					break;
-	        				}
-	        			}
-	        		}*/
 	        		else if(kind == StandardWatchEventKinds.OVERFLOW) 
 	        		{
 	        			System.out.println("Directory is gone...");
