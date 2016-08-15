@@ -10,7 +10,7 @@ public class Client_Main
 	{		
 		Client_Server_Connector csc = Client_Server_Connector.getInstance();
 			
-		//new Client_FolderScan().start();
+		new Client_FolderScan().start();
 		
 		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
 		cfs.click();*/

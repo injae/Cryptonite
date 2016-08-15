@@ -44,9 +44,6 @@ public class Client_AutoBackup implements PacketRule
 		_fileName = _checkProperty.getName();
 		_fileSize = _checkProperty.length();
 		
-		System.out.println(_fileName);
-		System.out.println(_fileSize);
-		
 		if(_checkProperty.isDirectory())
 		{
 			byte[] temp = new byte[1024];
@@ -56,7 +53,8 @@ public class Client_AutoBackup implements PacketRule
 			try 
 			{
 				_csc.send.setPacket(temp).write();
-				_csc.send.setPacket(_fileName.getBytes()).write();
+				_csc.send.setPacket(_fileName.getBytes(), 1024).write();
+				System.out.println("¿©±â±îÁö¿È !!");
 			} 
 			catch (IOException e)
 			{
@@ -68,74 +66,13 @@ public class Client_AutoBackup implements PacketRule
 			try 
 			{
 				boolean checkExtension = extensionTokenizer();
+				boolean fileCopyEnd = false;
 				
 				if(checkExtension)
 				{
-					_raf = new RandomAccessFile(_absoluteDirectory, "rw");
-					_fileChannel = _raf.getChannel();
-					PacketProcessor p = new PacketProcessor(_fileChannel, false);
-
-					byte[] temp = new byte[1024];
-					temp[0] = AUTOBACKUP;
-					temp[1] = FILE;
-					temp[2] = (byte)String.valueOf(_fileSize).getBytes().length;
-					temp[3] = (byte)_fileName.getBytes().length;
-					Function.frontInsertByte(4, String.valueOf(_fileSize).getBytes(), temp);
-					Function.frontInsertByte(4 + String.valueOf(_fileSize).getBytes().length, _fileName.getBytes(), temp);
-					_csc.send.setPacket(temp).write();
-					
-					p.setAllocate(_fileSize);
-					while(!p.isAllocatorEmpty())
+					do
 					{
-						_csc.send.setPacket(p.read().getByte()).write();
-					}
-					p.close();
-				}
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			} 
-		}
-	}
-	
-	/*public synchronized void run()
-	{
-		while(!_stopFlag)
-		{
-			if(!Client_FolderScan._directoryQueue.isEmpty())
-			{
-				_absoluteDirectory = Client_FolderScan._directoryQueue.remove();
-				_checkProperty = new File(_absoluteDirectory);
-				_fileName = _checkProperty.getName();
-				_fileSize = _checkProperty.length();
-				
-				System.out.println(_fileName);
-				System.out.println(_fileSize);
-				
-				if(_checkProperty.isDirectory())
-				{
-					byte[] temp = new byte[1024];
-					temp[0] = AUTOBACKUP;
-					temp[1] = DIRECTORY;
-					
-					try 
-					{
-						_csc.send.setPacket(temp).write();
-						_csc.send.setPacket(_fileName.getBytes()).write();
-					} 
-					catch (IOException e)
-					{
-						e.printStackTrace();
-					}
-				}
-				else if(_checkProperty.isFile())
-				{
-					try 
-					{
-						boolean checkExtension = extensionTokenizer();
-						
-						if(checkExtension)
+						try
 						{
 							_raf = new RandomAccessFile(_absoluteDirectory, "rw");
 							_fileChannel = _raf.getChannel();
@@ -156,16 +93,21 @@ public class Client_AutoBackup implements PacketRule
 								_csc.send.setPacket(p.read().getByte()).write();
 							}
 							p.close();
+							fileCopyEnd = true;
 						}
-					} 
-					catch (IOException e) 
-					{
-						e.printStackTrace();
-					} 
+						catch (FileNotFoundException e) 
+						{
+							fileCopyEnd = false;
+						}
+					} while(!fileCopyEnd);
 				}
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
 			}
 		}
-	}*/
+	}
 	
 	private boolean extensionTokenizer()
 	{
