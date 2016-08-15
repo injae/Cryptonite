@@ -99,10 +99,6 @@ public class Client_Login extends JFrame implements PacketRule
     JButton _Login;      
     JButton _Resistor;
     
-    JRadioButton _individual = new JRadioButton();
-    JRadioButton _group = new JRadioButton();
-    public ButtonGroup _buttonGroup = new ButtonGroup();
-    
     private void showMessage(String title, String message) {
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
