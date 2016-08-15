@@ -144,7 +144,11 @@ public class Client_Testmain extends JFrame{
         _Cloud.setPressedIcon(new ImageIcon("img/tset_cloudbt_hv.png"));
         _Cloud.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		//button event
+        		String[] test = new String[3];
+        		test[0] = "a";
+        		test[1] = "b";
+        		test[2] = "c";
+        		new Client_Make_Group().make(test);
         	}
         });
         

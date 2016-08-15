@@ -1,8 +1,9 @@
 package Client;
 
 import java.io.IOException;
+import Function.PacketRule;
 
-public class Client_Make_Group 
+public class Client_Make_Group implements PacketRule
 {
 	Client_Server_Connector _csc;
 	
@@ -11,15 +12,22 @@ public class Client_Make_Group
 		_csc = Client_Server_Connector.getInstance();
 	}
 	
-	public void make(String groupmember)
+	public void make(String[] groupmember)
 	{
 		try 
 		{
+			byte[] event = new byte[1024];
+			event[0] = MAKE_GROUP;
+			event[1] = (byte)(1 + groupmember.length);
+			_csc.send.setPacket(event).write();
 			
-			
-			_csc.send.setPacket(groupmember.getBytes(),1024).write();
-		} catch (IOException e) {
-			// TODO 자동 생성된 catch 블록
+			for(int i = 0; i < groupmember.length; i++)
+			{
+				_csc.send.setPacket(groupmember[i].getBytes(), 500).write();
+			}
+		} 
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
 	}

@@ -20,7 +20,7 @@ import Function.PacketRule;
 
 public class Server_Client_Activity implements PacketRule 
 {
-	private final static int LIMIT_PACKET = 10;
+	public final static int LIMIT_PACKET = 10;
 	
 	private SocketChannel _channel;
 	private Server_Client_Manager _manager;
@@ -91,7 +91,6 @@ public class Server_Client_Activity implements PacketRule
 				_packetCount = 0;
 				_readableCount = 0;
 				_manager.requestManage(_clientCode);
-				System.out.println("eµé¿È");
 			}
 			else if(_readableCount >= _funtionList.getLast().getLimitSize())
 			{			
