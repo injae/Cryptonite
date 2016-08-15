@@ -4,6 +4,7 @@ import Function.PacketProcessor;
 import Function.PacketRule;
 
 import java.io.*;
+import java.nio.charset.Charset;
 
 /*
  * Developer : Youn Hee Seung
@@ -41,6 +42,7 @@ public class Client_FileShare_Receive implements PacketRule
 	
 	public void receiveFiles(String OTP)
 	{
+		Charset cs = Charset.forName("UTF-8");
 		_OTP = OTP;
 		if(_OTP.length() != 6)
 		{
@@ -66,7 +68,8 @@ public class Client_FileShare_Receive implements PacketRule
 					
 					_csc.send.setPacket(_OTP.getBytes(), 30).write();	// OTP Sending	
 					
-					_csc.receive.setAllocate(10);
+					_csc.receive.setAllocate(500);
+
 					_downloadFlag = new String(_csc.receive.read().getByte()).trim();
 					
 					if(_downloadFlag.equals("FALSE"))
@@ -76,8 +79,9 @@ public class Client_FileShare_Receive implements PacketRule
 					}
 					else if(_downloadFlag.equals("TRUE"))
 					{		
+						
 						_csc.receive.setAllocate(500);
-						_fileName = new String(_csc.receive.read().getByte()).trim();
+						_fileName = cs.decode(_csc.receive.read().getByteBuf()).toString().trim();
 						System.out.println("파일 이름 : " + _fileName);
 						
 						_csc.receive.setAllocate(500);

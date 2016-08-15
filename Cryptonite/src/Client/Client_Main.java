@@ -16,7 +16,7 @@ public class Client_Main
 		cfs.click();*/
 		
 		Client_FileShare_Receive cfr = new Client_FileShare_Receive();
-		cfr.receiveFiles("980044");
+		cfr.receiveFiles("498379");
 		
 		//Client_Login cl = new Client_Login();
 	}

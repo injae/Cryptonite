@@ -64,9 +64,7 @@ public class Server_FileShare_Send extends Server_Funtion
 			System.out.println("There is no file.");
 		}
 	}
-	
-	
-	
+
 	@Override
 	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
@@ -83,6 +81,7 @@ public class Server_FileShare_Send extends Server_Funtion
 		System.out.println("Receiving OTP : " + _OTP);
 		OTP_Check();
 		_activity.send.setPacket(_downloadFlag.getBytes(),10).write();
+		_activity.send.setPacket(_downloadFlag.getBytes(),500).write();
 		
 		if(_temporaryFlag)
 		{
