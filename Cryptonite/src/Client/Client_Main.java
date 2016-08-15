@@ -12,6 +12,8 @@ public class Client_Main
 			
 		new Client_FolderScan().start();
 		
+		//new Client_FolderScan().start();
+		
 		/*Client_FileShare_Send cfs = new Client_FileShare_Send();
 		cfs.click();*/
 		

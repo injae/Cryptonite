@@ -24,15 +24,17 @@ import Client.Client_Login.MyPanel;
 
 public class Client_Testmain extends JFrame{
 
-	public static void main(String[] args){
-		
+	public static void main(String[] args)
+	{
 		new Client_Testmain();
 	}
 	
 	BufferedImage _img = null;
 	
-	class MyPanel extends JPanel {
-        public void paint(Graphics g) {
+	class MyPanel extends JPanel 
+	{
+        public void paint(Graphics g) 
+        {
             g.drawImage(_img, 0, 0, null);
         }
     }
@@ -83,7 +85,6 @@ public class Client_Testmain extends JFrame{
         	}
         });
         
-        
         _FileReceive = new JButton(new ImageIcon("img/test_receivedbt.png"));
         _FileReceive.setBounds(30, 200, 400, 50);
         _FileReceive.setBorderPainted(false);
@@ -92,7 +93,7 @@ public class Client_Testmain extends JFrame{
         _FileReceive.setPressedIcon(new ImageIcon("img/test_receivebt_hv.png"));
         _FileReceive.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		//button event
+        		new Client_TestOTP();
         	}
         });
         

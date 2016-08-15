@@ -39,7 +39,7 @@ public class Server_Login extends Server_Funtion
 		       int get_count = rs.getInt(5);
 		       if(get_pwd.equals(password)) 
 		       { 
-			       String usCode = "1" + rs.getInt(6);
+			       String usCode = "#" + rs.getInt(6);
 	    		   Server_Client_Manager.getInstance().login(_activity.getClientCode(), usCode);
 	    		   _activity.setClientCode(usCode);
 		    	   _checkLogin[0]=2;

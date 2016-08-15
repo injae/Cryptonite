@@ -215,7 +215,7 @@ public class Client_Login extends JFrame implements PacketRule
 	          		csc.send.setPacket(event).write();
 	          		csc.send.setPacket(_id.getBytes(),500).write();//¼öÁ¤
 	          	
-						csc.send.setPacket(_password.getBytes(),500).write();
+					csc.send.setPacket(_password.getBytes(),500).write();
 					
 	          		System.out.println(_id+"\t"+_password);
 	
@@ -228,6 +228,8 @@ public class Client_Login extends JFrame implements PacketRule
 	          			break;
 	          		case 2 : 
 	          			showMessage("LOGIN", "Welcome,\t"+_id);
+	          			dispose();
+	          			Client_Testmain Main = new Client_Testmain();
 	          			if(checkLogin[1]==1){ showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!"); }
 	          			break;
 	          		case 3 : 
