@@ -6,8 +6,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,25 +15,19 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import Client.Client_Login.MyPanel;
-import Client.Client_TestOTP;
 
 public class Client_Testmain extends JFrame{
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args){
+		
 		new Client_Testmain();
 	}
 	
 	BufferedImage _img = null;
 	
-	class MyPanel extends JPanel 
-	{
-        public void paint(Graphics g) 
-        {
+	class MyPanel extends JPanel {
+        public void paint(Graphics g) {
             g.drawImage(_img, 0, 0, null);
         }
     }
@@ -43,8 +35,6 @@ public class Client_Testmain extends JFrame{
 	JButton _FileReceive;
 	JButton _Cloud;//Is it right?
 	JButton _ProtectedFile;
-	
-	static int OTP;
 	
 	public Client_Testmain(){
 		try{
@@ -59,7 +49,7 @@ public class Client_Testmain extends JFrame{
 		setTitle("Cryptonite");
         setBounds(710,200,456,700);
         setResizable(false);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
         getContentPane().setLayout(null);
         JLayeredPane _layeredPane = new JLayeredPane();
@@ -84,9 +74,10 @@ public class Client_Testmain extends JFrame{
         _FileSend.setPressedIcon(new ImageIcon("img/tset_sendbt_hv.png"));
         _FileSend.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		//button event
+        		new Client_FileShare_Send().click();
         	}
         });
+        
         
         _FileReceive = new JButton(new ImageIcon("img/test_receivedbt.png"));
         _FileReceive.setBounds(30, 200, 400, 50);
@@ -98,7 +89,7 @@ public class Client_Testmain extends JFrame{
         	public void actionPerformed(ActionEvent arg0) {
         		new Client_TestOTP();
         	}
-        });        
+        });
         
         _ProtectedFile = new JButton(new ImageIcon("img/test_protectbt.png"));
         _ProtectedFile.setBounds(30, 300, 400, 50);
@@ -108,7 +99,7 @@ public class Client_Testmain extends JFrame{
         _ProtectedFile.setPressedIcon(new ImageIcon("img/tset_protectbt_hv.png"));
         _ProtectedFile.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		//button event
+        		new Client_FolderScan().start();
         	}
         });
         
@@ -133,5 +124,4 @@ public class Client_Testmain extends JFrame{
         getContentPane().add(_layeredPane);          
         setVisible(true);
 	}
-	
 }

@@ -20,13 +20,10 @@ public  class C
 		try
 		{
 			_resultData = _cipher.doFinal(target);
-		}
-		catch (IllegalBlockSizeException e)
-		{
+			
+		}catch (IllegalBlockSizeException e){
 			e.printStackTrace();
-		}
-		catch (BadPaddingException e) 
-		{
+		}catch (BadPaddingException e) {
 			e.printStackTrace();
 		}
 	}
