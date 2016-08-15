@@ -103,6 +103,8 @@ public class Client_TestOTP extends JFrame{
         _OK.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
          		//button event
+         		
+         		dispose();
          	}
         });
         
