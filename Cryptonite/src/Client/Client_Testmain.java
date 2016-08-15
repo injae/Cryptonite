@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Client.Client_Login.MyPanel;
+import Client.Client_TestOTP;
 
 public class Client_Testmain extends JFrame{
 
@@ -42,6 +43,8 @@ public class Client_Testmain extends JFrame{
 	JButton _FileReceive;
 	JButton _Cloud;//Is it right?
 	JButton _ProtectedFile;
+	
+	static int OTP;
 	
 	public Client_Testmain(){
 		try{
@@ -95,7 +98,7 @@ public class Client_Testmain extends JFrame{
         	public void actionPerformed(ActionEvent arg0) {
         		new Client_TestOTP();
         	}
-        });
+        });        
         
         _ProtectedFile = new JButton(new ImageIcon("img/test_protectbt.png"));
         _ProtectedFile.setBounds(30, 300, 400, 50);
@@ -130,4 +133,5 @@ public class Client_Testmain extends JFrame{
         getContentPane().add(_layeredPane);          
         setVisible(true);
 	}
+	
 }
