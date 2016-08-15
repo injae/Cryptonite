@@ -1,11 +1,15 @@
 package Client;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +20,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+
+import Client.Client_Login;
 
 public class Client_Testmain extends JFrame{
 
@@ -31,26 +37,52 @@ public class Client_Testmain extends JFrame{
             g.drawImage(_img, 0, 0, null);
         }
     }
+	
+	private static JFrame frame=new JFrame("CRYPTONITE");
+	
 	JButton _FileSend;
 	JButton _FileReceive;
 	JButton _Cloud;//Is it right?
 	JButton _ProtectedFile;
-	
+
+	Client_Testmain thisJFrame;
 	public Client_Testmain(){
+		
+	/*	WindowListener exitListener = new WindowAdapter() {
+	        	
+			@Override
+			public void windowClosing(WindowEvent e) {
+				frame.dispose();
+				new Client_Login();
+			}
+		};*/
+		
+		WindowListener exitLitsener = new WindowAdapter() {
+			
+			@Override
+			public void windowClosing(WindowEvent e){
+				thisJFrame.dispose();
+				new Client_Login();
+			}
+		};
+		
 		try{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
 			 Image image = tk.getImage("gui/logo.png");
 			 this.setIconImage(image);
+			 thisJFrame=this;
 		}
 		catch(Exception e)
 		{
 			System.out.println("Appilcation icon not found");
 		}
-		setTitle("Cryptonite");
-        setBounds(710,200,456,700);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
+		thisJFrame.setTitle("Cryptonite");
+		thisJFrame.addWindowListener(exitLitsener);
+        thisJFrame.setBounds(710,200,456,700);
+        thisJFrame.setResizable(false);
+        thisJFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+       // setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
         getContentPane().setLayout(null);
         JLayeredPane _layeredPane = new JLayeredPane();
         _layeredPane.setBounds(0,0, 470, 700);
@@ -122,6 +154,7 @@ public class Client_Testmain extends JFrame{
         _layeredPane.add(_panel);
              
         getContentPane().add(_layeredPane);          
-        setVisible(true);
+        thisJFrame.setVisible(true);
 	}
 }
+
