@@ -128,6 +128,7 @@ public class PacketProcessor
 		{
 			_input.read(_buffer);
 		}
+		System.out.println(_buffer);
 		_buffer.flip();
 		
 		byte[] array = new byte[_buffer.remaining()];

@@ -280,7 +280,7 @@ import Crypto.userKeyGenerator;
 					
 					_csc.send.setPacket(event).write();
 					_csc.send.setPacket(_id.getBytes(),500).write();	
-		
+					_csc.receive.setAllocate(2);
 					byte[] Checkid = _csc.receive.read().getByte();
 					System.out.println(Checkid[0]);
 					if(_id.equals(""))
@@ -527,7 +527,7 @@ class SHA_256 implements PacketRule
 				_css.send.setPacket(_salt.getBytes(), 500).write();
 				_css.send.setPacket(_iteration.getBytes(), 500).write();
 				
-				
+				_css.receive.setAllocate(1);
 				byte[] result = _css.receive.read().getByte();
 				
 				if(result[0] == 1)

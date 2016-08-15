@@ -24,15 +24,17 @@ import Client.Client_Login.MyPanel;
 
 public class Client_Testmain extends JFrame{
 
-	public static void main(String[] args){
-		
+	public static void main(String[] args)
+	{
 		new Client_Testmain();
 	}
 	
 	BufferedImage _img = null;
 	
-	class MyPanel extends JPanel {
-        public void paint(Graphics g) {
+	class MyPanel extends JPanel 
+	{
+        public void paint(Graphics g) 
+        {
             g.drawImage(_img, 0, 0, null);
         }
     }
@@ -82,7 +84,6 @@ public class Client_Testmain extends JFrame{
         		//button event
         	}
         });
-        
         
         _FileReceive = new JButton(new ImageIcon("img/test_receivedbt.png"));
         _FileReceive.setBounds(30, 200, 400, 50);
