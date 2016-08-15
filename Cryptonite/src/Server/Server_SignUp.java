@@ -89,8 +89,6 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 			resultPacket[0] = 0;
 			_activity.send.setPacket(resultPacket).write();
 		}
-		
-		
 	}
 	
 }

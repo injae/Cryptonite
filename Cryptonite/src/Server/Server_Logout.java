@@ -12,6 +12,7 @@ public class Server_Logout extends Server_Funtion{
 	public void Checker(byte[] packet, Server_Client_Activity activity) {
 		// TODO 자동 생성된 메소드 스텁
 		_activity=activity;
+		_packetMaxCount = 1;
 		_manager=Server_Client_Manager.getInstance();
 		_manager.requestManage(activity.getClientCode());
 	}
@@ -20,7 +21,7 @@ public class Server_Logout extends Server_Funtion{
 	public void running() throws IOException {
 		// TODO 자동 생성된 메소드 스텁
 		Server_Client_Manager.getInstance().logOut(_activity.getClientCode());
-		_activity.setClientCode(_manager._code_manager.getAcCode());
+		System.out.println("로그아웃");
 	}
 	
 

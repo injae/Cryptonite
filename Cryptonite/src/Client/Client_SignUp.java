@@ -99,7 +99,7 @@ import Crypto.userKeyGenerator;
 			_csc=Client_Server_Connector.getInstance();
 	
 			setTitle("CRYPTONITE");
-			setBounds(710,200,456,700);
+			setBounds(710,200,456,665);
 			setResizable(false);
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);

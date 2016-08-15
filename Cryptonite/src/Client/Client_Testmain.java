@@ -62,6 +62,7 @@ public class Client_Testmain extends JFrame{
 			@Override
 			public void windowClosing(WindowEvent e){
 				thisJFrame.dispose();
+				new Client_Logout().logout();
 				new Client_Login();
 			}
 		};
