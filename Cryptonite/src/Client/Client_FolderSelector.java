@@ -29,8 +29,16 @@ public class Client_FolderSelector
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.showOpenDialog(chooser);
 	  	File dir = chooser.getSelectedFile();
-	  	selectedPath = dir.getPath();
-	  	selectionEnd = true;
+	  	if(dir.length() == 0)
+	  	{
+	  		selectedPath = "DEFAULT";
+	  		selectionEnd = true;
+	  	}
+	  	else
+	  	{
+	  		selectedPath = dir.getPath();
+		  	selectionEnd = true;
+	  	}
 	}
 	
 	public String getSelectedPath()

@@ -62,22 +62,29 @@ public class Client_FileShare_Send implements PacketRule
 			}
 		}
 		
-		_fileNameArray = _cfs.getFileNames();
-		_fileNameSize = new int[_fileNameArray.length];
-		for(int i = 0; i < _fileNameSize.length; i++)
+		try
 		{
-			_fileNameSize[i] = _fileNameArray[i].length();
+			_fileNameArray = _cfs.getFileNames();
+			_fileNameSize = new int[_fileNameArray.length];
+			for(int i = 0; i < _fileNameSize.length; i++)
+			{
+				_fileNameSize[i] = _fileNameArray[i].length();
+			}
+			
+			_filePathArray = _cfs.getFilePaths();
+			
+			_fileSizeArray = new long[_filePathArray.length];
+			for(int i = 0; i < _filePathArray.length; i++)
+			{
+				_tempFile = new File(_filePathArray[i]);
+				_fileSizeArray[i] = _tempFile.length();
+			}
+			sendFile();	// Temporary
 		}
-		
-		_filePathArray = _cfs.getFilePaths();
-		
-		_fileSizeArray = new long[_filePathArray.length];
-		for(int i = 0; i < _filePathArray.length; i++)
+		catch(NullPointerException e)
 		{
-			_tempFile = new File(_filePathArray[i]);
-			_fileSizeArray[i] = _tempFile.length();
+			_cfs.dispose();
 		}
-		sendFile();	// Temporary
 	}
 	
 	public void sendFile()	// when you click send button
