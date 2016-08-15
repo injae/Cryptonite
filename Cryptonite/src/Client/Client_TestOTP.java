@@ -41,7 +41,7 @@ public class Client_TestOTP extends JFrame{
 		
 /*	Client_Testmain test=new Client_Testmain();*/
 	
-	int OTP;
+	String OTP;
 	
 	public Client_TestOTP(){
 		try{
@@ -85,7 +85,7 @@ public class Client_TestOTP extends JFrame{
      		public void keyPressed(KeyEvent e) {}
      		@Override
      		public void keyReleased(KeyEvent e) {
-     			OTP = Integer.parseInt(_OTPField.getText());
+     			OTP = _OTPField.getText();
      		}
      		@Override
      		public void keyTyped(KeyEvent e) {}
@@ -105,9 +105,8 @@ public class Client_TestOTP extends JFrame{
         _OK.setPressedIcon(new ImageIcon("img/login_bt_hv.png"));
         _OK.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
-         		//button event
-         		Client_Testmain.OTP=OTP;
-         		System.out.println("MAINOTP : "+Client_Testmain.OTP);
+         		System.out.println("OTP : "+OTP);
+         		new Client_FileShare_Receive().receiveFiles(OTP);
          		dispose();
          	}
         });
