@@ -4,34 +4,30 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 
-public  class C 
+public  class New_Crypto 
 {
-	protected Cipher _cipher;
-	protected byte[] _resultData = null;
+	private Cipher _cipher;
 
-	public C(Cipher cipher)
+	public New_Crypto(Cipher cipher)
 	{
 		_cipher = cipher;
 	}
 	
 	//Execute Function
-	public void push (byte[] target)
+	public byte[] endecription (byte[] target)
 	{
 		try
 		{
-			_resultData = _cipher.doFinal(target);
+			return _cipher.doFinal(target);
 			
 		}catch (IllegalBlockSizeException e){
 			e.printStackTrace();
 		}catch (BadPaddingException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
-	
-	public byte[] pop()
-	{
-		return _resultData;
-	}
+
 	
 	//Calculate capacity of file after encrypting
 	public static int calc(int capacity)
