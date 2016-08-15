@@ -8,7 +8,7 @@ public class Server_Main
 	{
 		Server_DataBase _db;
 	    _db=Server_DataBase.getInstance();
-	    _db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "0000");
+	    _db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", "root", "15481548");
 	    _db.connect();
 	    
 	    Server_UserCode_Manager m = Server_UserCode_Manager.getInstance();

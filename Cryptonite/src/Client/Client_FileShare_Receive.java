@@ -65,21 +65,18 @@ public class Client_FileShare_Receive implements PacketRule
 					byte[] event = new byte[1024];
 					event[0] = FILE_SHARE_SEND;
 					_csc.send.setPacket(event).write();
-					
-					_csc.send.setPacket(_OTP.getBytes(), 30).write();	// OTP Sending	
-					
+					_csc.send.setPacket(_OTP.getBytes(), 30).write();	// OTP Sending
 					_csc.receive.setAllocate(500);
 
 					_downloadFlag = new String(_csc.receive.read().getByte()).trim();
-					
 					if(_downloadFlag.equals("FALSE"))
 					{
-						System.out.println("폴스 되었습니다.");
+						System.out.println("FALSE has occured !!");
 						break;
 					}
 					else if(_downloadFlag.equals("TRUE"))
 					{		
-						
+						System.out.println("엘스이프");
 						_csc.receive.setAllocate(500);
 						_fileName = cs.decode(_csc.receive.read().getByteBuf()).toString().trim();
 						System.out.println("파일 이름 : " + _fileName);
@@ -97,7 +94,6 @@ public class Client_FileShare_Receive implements PacketRule
 						{
 							p.setPacket(_csc.receive.read().getByte()).write();
 						}
-						System.out.println("다읽음");
 						_raf.close();
 						p.close();
 					}
@@ -114,7 +110,6 @@ public class Client_FileShare_Receive implements PacketRule
 			catch (NullPointerException e)
 			{
 				System.out.println("You does not select the folder.");
-				System.exit(1);
 			}
 			
 		}

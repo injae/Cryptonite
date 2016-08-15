@@ -37,20 +37,26 @@ public class Client_FileSelector extends Frame
 		  fd.setVisible(true);
 		  _selectedFiles = fd.getFiles();					// 파일객체 받아오는것
 		  
-		  _fileNames = new String[_selectedFiles.length];		// 파일이름 스트링배열 생성
-		  _filePaths = new String[_selectedFiles.length];
-		  
-		  for(int i = 0; i < _selectedFiles.length; i++)
-		  {
-			  _filePaths[i] = _selectedFiles[i].getPath();
-			  _fileNames[i] = _selectedFiles[i].getName();
-		  }
-		  
-		  if(_selectedFiles.length != 0)
+		  if(_selectedFiles.length == 0)
 		  {
 			  this._selectionFinish = true;
 		  }
-	}
+		  else
+		  {
+			  _fileNames = new String[_selectedFiles.length];		// 파일이름 스트링배열 생성
+			  _filePaths = new String[_selectedFiles.length];
+			  
+			  for(int i = 0; i < _selectedFiles.length; i++)
+			  {
+				  _filePaths[i] = _selectedFiles[i].getPath();
+				  _fileNames[i] = _selectedFiles[i].getName();
+			  }
+			  
+			  if(_selectedFiles.length != 0)
+			  {
+				  this._selectionFinish = true;
+			  }  
+		  }	}
 	 
 	public String[] getFileNames()
 	{
