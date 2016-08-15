@@ -91,13 +91,13 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	public void Checker(byte[] packet, Server_Client_Activity activity) 
 	{
 		_activity = activity;
-		//_activity.receive.setAllocate(1024);
 		
 		setFolder();
 		if(packet[1] == DIRECTORY)
 		{
 			_checkProperty = "DIRECTORY";
 			_packetMaxCount = 2;
+			_packetCutSize = 1;
 		}
 		else if(packet[1] == FILE)
 		{
@@ -119,12 +119,12 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	@Override
 	public void running() throws IOException 
 	{
-		//System.out.println("NOW AUTOBACKUP RUNNING");
 		if(_checkProperty.equals("DIRECTORY"))
 		{
 			_fileName = new String(_activity.receive.getByte()).trim();
 			File newFolder = new File(_address + "\\" + _fileName);
 			newFolder.mkdir();
+			System.out.println("AUTOBACKUP COMPLETE !!");
 		}
 		else if(_checkProperty.equals("FILE"))
 		{	
@@ -140,50 +140,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 				p.close();
 				_count = 1;
 			}
-			
-			/*try 
-			{
-				ByteBuffer buffer;
-				buffer = ByteBuffer.allocateDirect(FILE_BUFFER_SIZE);
-				while(_activity.IsReadable())
-				{
-					_count++;
-					buffer.clear();
-					buffer.put(_activity.receive.getByte());
-					
-					_fileSize -= FILE_BUFFER_SIZE;
-					buffer.flip();
-					while(!_fileChannel.isOpen())
-					{
-						Thread.sleep(1);
-					}
-					_fileChannel.write(buffer);
-					
-					if(_fileSize <= 0)
-					{
-						break;
-					}
-				}
-				
-				if(_count == _packetMaxCount)
-				{
-					System.out.println("³¡");
-					_fileChannel.close();
-					_count = 1;
-				}
-			} 
-			catch (FileNotFoundException e) 
-			{
-				e.printStackTrace();
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			} 
-			catch (InterruptedException e) 
-			{
-				e.printStackTrace();
-			}*/
 		}
 	}
 }
