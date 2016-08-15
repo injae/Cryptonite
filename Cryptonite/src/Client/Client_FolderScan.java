@@ -56,6 +56,7 @@ public class Client_FolderScan extends Thread
 			}
 		}
 		_address = _cfs.getSelectedPath();
+		
 		File firstScan = new File(_address);
 		String[] fileList = firstScan.list();
 		for(int i = 0; i < fileList.length; i++)
