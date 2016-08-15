@@ -54,7 +54,6 @@ public class Client_AutoBackup implements PacketRule
 			{
 				_csc.send.setPacket(temp).write();
 				_csc.send.setPacket(_fileName.getBytes(), 1024).write();
-				System.out.println("여기까지옴 !!");
 			} 
 			catch (IOException e)
 			{

@@ -1,6 +1,9 @@
 package Client;
 
 import java.util.*;
+
+import javax.swing.JOptionPane;
+
 import java.io.*;
 import java.lang.*;
 import java.nio.file.*;
@@ -44,7 +47,7 @@ public class Client_FolderScan extends Thread
 	// Methods
 	public synchronized void run()
 	{
-		_cfs = new Client_FolderSelector();
+		/*_cfs = new Client_FolderSelector();
 		_cfs.folderSelectorON();
 		while(!_cfs.getSelectionEnd())
 		{
@@ -55,7 +58,23 @@ public class Client_FolderScan extends Thread
 				e.printStackTrace();
 			}
 		}
-		_address = _cfs.getSelectedPath();
+		_address = _cfs.getSelectedPath();*/
+		try 
+		{
+			FileReader fr = new FileReader(new File("Cryptonite_Client/log/protectedlog.ser"));
+			BufferedReader br = new BufferedReader(fr);
+			_address = br.readLine();
+			br.close();
+			fr.close();
+		} 
+		catch (FileNotFoundException e1) 
+		{
+			e1.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 		
 		File firstScan = new File(_address);
 		String[] fileList = firstScan.list();
@@ -100,7 +119,8 @@ public class Client_FolderScan extends Thread
 	        		}
 	        		else if(kind == StandardWatchEventKinds.OVERFLOW) 
 	        		{
-	        			System.out.println("Directory is gone...");
+	        			showMessage("Directory Existance Error", "Protected Folder is gone ...");
+	        			_stopFlag = true;
 	        			break;
 	        		}
 	        	}
@@ -137,5 +157,10 @@ public class Client_FolderScan extends Thread
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	private void showMessage(String title, String message) 
+	{
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }

@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
@@ -67,8 +68,10 @@ public class Client_Login extends JFrame implements PacketRule
     private String _id = "id";
     private String _password = "password";
     private String _tempPassword = "init";
-
+    private String _address = null;
+    
     private Client_Server_Connector csc;
+    private Client_FolderSelector cfs = null;
     /*//private Client_FolderChooser_UI fc = null;
     
     // 로그인 카운터 읽어주기 위한 것
@@ -232,7 +235,26 @@ public class Client_Login extends JFrame implements PacketRule
 	          			Client_Testmain Main = new Client_Testmain();
 	          			if(checkLogin[1]==1)
 	          			{
-	          				showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!"); 
+	          				showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
+	          				cfs = new Client_FolderSelector();
+	          				cfs.folderSelectorON();
+	          				while(!cfs.getSelectionEnd())
+	          				{
+	          					try 
+	          					{
+	          						Thread.sleep(1);
+	          					} 
+	          					catch (InterruptedException e1) 
+	          					{
+	          						e1.printStackTrace();
+	          					}
+	          				}
+	          				_address = cfs.getSelectedPath();
+	          				File save = new File("Cryptonite_Client/log/protectedlog.ser");
+	          				FileWriter fw = new FileWriter(save);
+	          				fw.write(_address);
+	          				fw.close();
+	          				
 	          				new Client_FolderScan().start();
 	          			}
 	          			break;
