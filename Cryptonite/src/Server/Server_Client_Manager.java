@@ -13,7 +13,7 @@ import Function.PacketRule;
 public class Server_Client_Manager implements PacketRule
 {	
 	private static Server_Client_Manager _client_manager;
-	public Server_UserCode_Manager _code_manager;
+	public Server_Code_Manager _code_manager;
 	
 	private HashMap<String ,Server_Client_Activity> _clientList;	
 	private Queue<String> _runningQueue;
@@ -22,7 +22,7 @@ public class Server_Client_Manager implements PacketRule
 	{
 		_clientList = new HashMap<String, Server_Client_Activity>();
 		_runningQueue = new LinkedList<String>();
-		_code_manager = Server_UserCode_Manager.getInstance();
+		_code_manager = Server_Code_Manager.getInstance();
 	}
 	
 	public static Server_Client_Manager getInstance()
@@ -73,14 +73,13 @@ public class Server_Client_Manager implements PacketRule
 			
 			Server_Client_Activity activity = _clientList.remove(clientCode);
 			activity.close();
-			_code_manager.removeUsCode(clientCode);
+			_code_manager.removeCode(clientCode);
 			System.out.println("Exit Client: "+clientCode);
 		}
 		else
 		{
-			_clientList.get(clientCode)._funtionList.addLast(Server_Function_Factory.create((byte)0));
+			_clientList.get(clientCode)._funtionList.addLast(Server_Function_Factory.create((byte)-1));
 		}
-
 	}
 	
 	public void run()

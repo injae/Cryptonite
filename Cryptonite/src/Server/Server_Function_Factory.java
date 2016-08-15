@@ -21,7 +21,7 @@ public class Server_Function_Factory implements PacketRule
 		case MAKE_OTP:
 			return new Server_MakeOTP();
 		default:
-			System.out.println("Server Funtion Factory: Error code");
+			System.out.println("Server Funtion Factory: "+ mode);
 			return	new Server_ImDie();
 		}
 	}
