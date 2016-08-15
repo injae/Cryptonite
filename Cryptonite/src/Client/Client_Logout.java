@@ -19,6 +19,8 @@ public class Client_Logout implements PacketRule{
 		try 
 		{
 			_csc.send.setPacket(event).write();
+			byte[] garbage = new byte[2];
+			_csc.send.setPacket(garbage).write();
 		} catch (IOException e) {
 			// TODO 자동 생성된 catch 블록
 			e.printStackTrace();
