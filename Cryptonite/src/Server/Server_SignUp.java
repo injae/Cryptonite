@@ -10,28 +10,36 @@ import Function.PacketRule;
 
 public class Server_SignUp extends Server_Funtion  implements PacketRule
 {
+	public Server_SignUp(Server_Client_Activity activity) {
+		super(activity);
+		// TODO 磊悼 积己等 积己磊 胶庞
+	}
+
 	Server_DataBase db=Server_DataBase.getInstance();
 	byte _mode = 0;
 	
 	@Override
-	public void Checker(byte[] packet, Server_Client_Activity activity) 
+	public void Checker(byte[] packet) 
 	{
-		_activity = activity;
 		_mode=packet[1];
-		if(_mode == DUPLICATION_CHECK_FUNCTION){ _activity.receive.setAllocate(500); }
-		else if(_mode == SIGN_UP_FUNCTION) { _activity.receive.setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500);}
+		if(_mode == DUPLICATION_CHECK_FUNCTION) { _activity.receive.setAllocate(500); }
+		else if(_mode == SIGN_UP_FUNCTION) 		{ _activity.receive.setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500);}
 		_packetMaxCount = packet[2];	
 	}
 
 	@Override
-	public void running() throws IOException 
+	public void running(int count) throws IOException 
 	{		
-		switch(_mode)
+		if(count == 1) { Checker(_activity.getReceiveEvent()); }
+		else
 		{
-		case  DUPLICATION_CHECK_FUNCTION:
-			duplicationCheck(); break;
-		case SIGN_UP_FUNCTION:
-			sign_up(); 			break;
+			switch(_mode)
+			{
+			case  DUPLICATION_CHECK_FUNCTION:
+				duplicationCheck(); break;
+			case SIGN_UP_FUNCTION:
+				sign_up(); 			break;
+			}
 		}
 	}
 	

@@ -61,14 +61,6 @@ public class Server_Client_Manager implements PacketRule
 		_runningQueue.offer(clientCode);		
 	}
 	
-	public void packetChecker(Server_Client_Activity activity)
-	{			
-		byte[] packet = activity.receive.getByte();
-		
-		activity._funtionList.add(Server_Function_Factory.create(packet[0]));
-		activity._funtionList.getLast().Checker(packet,activity);
-	}
-	
 	public void stopManaging(String clientCode)
 	{
 		if(_clientList.get(clientCode).receive.isEmpty()) 
@@ -81,7 +73,7 @@ public class Server_Client_Manager implements PacketRule
 		}
 		else
 		{
-			_clientList.get(clientCode)._funtionList.addLast(Server_Function_Factory.create((byte)-1));
+			_clientList.get(clientCode)._funtionList.addLast(Server_Function_Factory.create((byte)-1,_clientList.get(clientCode)));
 		}
 	}
 	
@@ -93,8 +85,7 @@ public class Server_Client_Manager implements PacketRule
 			while(!_runningQueue.isEmpty())
 			{
 				activity = _clientList.get(_runningQueue.remove());	
-				activity.readableUpdate();
-				activity._funtionList.getFirst().running();
+				activity._funtionList.getFirst().running(activity.getPakcetCount());
 				activity.finishCheck();
 			}
 		} 

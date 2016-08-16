@@ -22,6 +22,11 @@ import Function.PacketProcessor;
 
 public class Server_FileShare_Receive extends Server_Funtion implements PacketRule
 {
+	public Server_FileShare_Receive(Server_Client_Activity activity) {
+		super(activity);
+		// TODO 자동 생성된 생성자 스텁
+	}
+
 	// Address
 	private String _address = "Server_Folder\\Share";
 	
@@ -92,9 +97,8 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	}
 	
 	@Override
-	public void Checker(byte[] packet, Server_Client_Activity activity) 
+	public void Checker(byte[] packet) 
 	{
-		_activity = activity;
 		setFileInformation(packet);
 		_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		
@@ -115,18 +119,20 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	}
 
 	@Override
-	public void running() throws IOException
+	public void running(int count) throws IOException
 	{
-		while(_activity.IsReadable())
+		if(count == 1) { Checker(_activity.getReceiveEvent()); }
+		else
 		{
 			_count++;
 			p.setPacket(_activity.receive.getByte()).write();
-		}
-		if(_count == _packetMaxCount)
-		{
-			System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
-			p.close();
-			_count = 1;
+			
+			if(_count == _packetMaxCount)
+			{
+				System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
+				p.close();
+				_count = 1;
+			}
 		}
 	}
 }

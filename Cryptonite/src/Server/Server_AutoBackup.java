@@ -16,6 +16,11 @@ import Function.*;
 
 public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
+	public Server_AutoBackup(Server_Client_Activity activity) {
+		super(activity);
+		// TODO 磊悼 积己等 积己磊 胶庞
+	}
+
 	// protectedFolder
 	private String _address = "Server_Folder\\Backup\\";
 	private File _protectedFolder;
@@ -32,9 +37,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	private FileChannel _fileChannel = null;
 	private PacketProcessor p = null;
 	
-	// Constructors
-	public Server_AutoBackup() { }
-	
+
 	private void setFolder()
 	{
 		_address = _address + _activity.getClientCode();
@@ -88,16 +91,13 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	}
 	
 	@Override
-	public void Checker(byte[] packet, Server_Client_Activity activity) 
+	public void Checker(byte[] packet) 
 	{
-		_activity = activity;
-		
 		setFolder();
 		if(packet[1] == DIRECTORY)
 		{
 			_checkProperty = "DIRECTORY";
 			_packetMaxCount = 2;
-			_packetCutSize = 1;
 		}
 		else if(packet[1] == FILE)
 		{
@@ -117,28 +117,30 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	}
 
 	@Override
-	public void running() throws IOException 
+	public void running(int count) throws IOException 
 	{
-		if(_checkProperty.equals("DIRECTORY"))
+		if(count == 1) { Checker(_activity.getReceiveEvent()); }
+		else
 		{
-			_fileName = new String(_activity.receive.getByte()).trim();
-			File newFolder = new File(_address + "\\" + _fileName);
-			newFolder.mkdir();
-			System.out.println("AUTOBACKUP COMPLETE !!");
-		}
-		else if(_checkProperty.equals("FILE"))
-		{	
-			while(_activity.IsReadable())
+			if(_checkProperty.equals("DIRECTORY"))
 			{
+				_fileName = new String(_activity.receive.getByte()).trim();
+				File newFolder = new File(_address + "\\" + _fileName);
+				newFolder.mkdir();
+				System.out.println("AUTOBACKUP COMPLETE !!");
+			}
+			else if(_checkProperty.equals("FILE"))
+			{	
+
 				_count++;
 				p.setPacket(_activity.receive.getByte()).write();
-			}
-			
-			if(_count == _packetMaxCount)
-			{
-				System.out.println("AUTOBACKUP COMPLETE !!");
-				p.close();
-				_count = 1;
+				
+				if(_count == _packetMaxCount)
+				{
+					System.out.println("AUTOBACKUP COMPLETE !!");
+					p.close();
+					_count = 1;
+				}
 			}
 		}
 	}

@@ -28,6 +28,7 @@ public class Server_Client_Activity implements PacketRule
 	
 	private Queue<Integer> _readableQueue;
 	private Queue<byte[]> _eventQueue;
+	private byte[] _receiveEvent;
 	
 	private int _packetCount = 0;
 	private int _usedCount = 1;
@@ -73,64 +74,48 @@ public class Server_Client_Activity implements PacketRule
 		}
 	}
 
+	public byte[] getReceiveEvent()
+	{
+		return _receiveEvent;
+	}
+	
+	public int getPakcetCount()
+	{
+		return _packetCount;
+	}
+	
 	public void Receiver() throws IOException 
 	{	
 		receive.read();
 		
 		_packetCount++;
-		_readableCount++;
 		
 		if(_packetCount == 1)
 		{
-			_readableCount--;
-			_manager.packetChecker(this);		
+			_receiveEvent = receive.getByte();
+			_funtionList.add(Server_Function_Factory.create(_receiveEvent[0],this));
+			_manager.requestManage(_clientCode);
 		}
 		else
 		{
 			if(_funtionList.getLast()._packetMaxCount == _packetCount)
 			{
-				_readableQueue.offer(_readableCount);
-				_packetCount = 0;
-				_readableCount = 0;
 				_manager.requestManage(_clientCode);
 			}
-			else if(_readableCount >= _funtionList.getLast().getLimitSize())
-			{			
-				_readableQueue.offer(_readableCount);
-				_readableCount = 0;
+			else if(_funtionList.getLast()._packetMaxCount > LIMIT_PACKET)
+			{		
 				_manager.requestManage(_clientCode);
 			}
 		}
-	}
-	
-	public void readableUpdate()
-	{
-		if(!_readableQueue.isEmpty())
-		{
-			_readingCount = _readableQueue.remove();
-			_usedCount +=  _readingCount;
-		}
+
 	}
 	
 	public void finishCheck()
 	{
-		if(_usedCount == _funtionList.getFirst()._packetMaxCount)
+		if(_packetCount == _funtionList.getFirst()._packetMaxCount)
 		{
 			_funtionList.removeFirst();
-			_usedCount = 1;
-		}
-	}
-	
-	public boolean IsReadable()
-	{
-		if(_readingCount > 0)
-		{
-			_readingCount--;
-			return true;
-		}
-		else
-		{
-			return false;	
+			_packetCount = 0;
 		}
 	}
 	

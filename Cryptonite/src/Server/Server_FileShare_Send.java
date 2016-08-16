@@ -20,6 +20,11 @@ import java.nio.charset.Charset;
 
 public class Server_FileShare_Send extends Server_Funtion
 {
+	public Server_FileShare_Send(Server_Client_Activity activity) {
+		super(activity);
+		// TODO 자동 생성된 생성자 스텁
+	}
+
 	// OTP Instance
 	private String _OTP = null;
 	private File _shareFolder = null;
@@ -67,62 +72,64 @@ public class Server_FileShare_Send extends Server_Funtion
 	}
 
 	@Override
-	public void Checker(byte[] packet, Server_Client_Activity activity) 
+	public void Checker(byte[] packet) 
 	{
-		_activity = activity;
 		_packetMaxCount = 1 + 1;
-		_packetCutSize = 1;
 		_activity.receive.setAllocate(30);
 	}
 
 	@Override
-	public void running() throws IOException 
+	public void running(int count) throws IOException 
 	{
-		Charset cs = Charset.forName("UTF-8");
-		_OTP = new String(_activity.receive.getByte()).trim();
-		System.out.println("Receiving OTP : " + _OTP);
-		OTP_Check();
-		_activity.send.setPacket(_downloadFlag.getBytes(),500).write();
-		
-		if(_temporaryFlag)
+		if(count == 1) { Checker(_activity.getReceiveEvent()); }
+		else
 		{
-			try 
+			Charset cs = Charset.forName("UTF-8");
+			_OTP = new String(_activity.receive.getByte()).trim();
+			System.out.println("Receiving OTP : " + _OTP);
+			OTP_Check();
+			_activity.send.setPacket(_downloadFlag.getBytes(),500).write();
+			
+			if(_temporaryFlag)
 			{
-				File sendingFile = new File("Server_Folder\\Share" + "\\" + _searchedFile);
-				StringTokenizer st_temp = new StringTokenizer(_searchedFile, "@");
-				while(st_temp.hasMoreTokens())
+				try 
 				{
-					_fileName = st_temp.nextToken();
+					File sendingFile = new File("Server_Folder\\Share\\" + _searchedFile);
+					StringTokenizer st_temp = new StringTokenizer(_searchedFile, "@");
+					while(st_temp.hasMoreTokens())
+					{
+						_fileName = st_temp.nextToken();
+					}
+					_fileSize = sendingFile.length();
+					
+					_activity.send.setPacket(cs.encode(_fileName).array(), 500).write();
+					//_activity.send.setPacket(_fileName.getBytes(), 500).write();
+					System.out.println("파일 이름(서버) : " + _fileName);
+					
+					_activity.send.setPacket(String.valueOf(_fileSize).getBytes(), 500).write();
+					System.out.println("파일 용량(서버) : " + _fileSize);
+					
+					_raf = new RandomAccessFile("Server_Folder\\Share" + "\\" + _searchedFile, "rw");
+					PacketProcessor p = new PacketProcessor(_raf.getChannel(), false);
+					p.setAllocate(_fileSize);
+					
+					while(!p.isAllocatorEmpty())
+					{
+						_activity.send.setPacket(p.read().getByte()).write();
+					}
+					_raf.close();
+					p.close();
+					
+					sendingFile.delete();
 				}
-				_fileSize = sendingFile.length();
-				
-				_activity.send.setPacket(cs.encode(_fileName).array(), 500).write();
-				//_activity.send.setPacket(_fileName.getBytes(), 500).write();
-				System.out.println("파일 이름(서버) : " + _fileName);
-				
-				_activity.send.setPacket(String.valueOf(_fileSize).getBytes(), 500).write();
-				System.out.println("파일 용량(서버) : " + _fileSize);
-				
-				_raf = new RandomAccessFile("Server_Folder\\Share" + "\\" + _searchedFile, "rw");
-				PacketProcessor p = new PacketProcessor(_raf.getChannel(), false);
-				p.setAllocate(_fileSize);
-				
-				while(!p.isAllocatorEmpty())
+				catch (FileNotFoundException e) 
 				{
-					_activity.send.setPacket(p.read().getByte()).write();
+					e.printStackTrace();
+				} 
+				catch (IOException e) 
+				{
+					e.printStackTrace();
 				}
-				_raf.close();
-				p.close();
-				
-				sendingFile.delete();
-			}
-			catch (FileNotFoundException e) 
-			{
-				e.printStackTrace();
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
 			}
 		}
 	}
