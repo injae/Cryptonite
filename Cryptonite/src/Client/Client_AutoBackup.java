@@ -86,14 +86,22 @@ public class Client_AutoBackup implements PacketRule
 							temp[0] = AUTOBACKUP;
 							temp[1] = FILE;
 							temp[2] = (byte)String.valueOf(_fileSize).getBytes().length;
-							temp[3] = (byte)_fileName.getBytes().length;
-							Function.frontInsertByte(4, String.valueOf(_fileSize).getBytes(), temp);
-							Function.frontInsertByte(4 + String.valueOf(_fileSize).getBytes().length, _fileName.getBytes(), temp);
+							System.out.println(String.valueOf(_fileSize).getBytes().length);
+							System.out.println(_absoluteDirectory.getBytes().length);
+							System.out.println(_absoluteDirectory);
+							temp[3] = (byte)_absoluteDirectory.getBytes().length;
+							temp[4] = (byte)_protectedFolderName.getBytes().length;
+							//temp[3] = (byte)_fileName.getBytes().length;
+							Function.frontInsertByte(5, String.valueOf(_fileSize).getBytes(), temp);
+							Function.frontInsertByte(5 + String.valueOf(_fileSize).getBytes().length, _absoluteDirectory.getBytes(), temp);
+							Function.frontInsertByte(900, _protectedFolderName.getBytes(), temp);
+							//Function.frontInsertByte(4 + String.valueOf(_fileSize).getBytes().length + _absoluteDirectory.getBytes().length, _protectedFolderName.getBytes(), temp);
+							//Function.frontInsertByte(4 + String.valueOf(_fileSize).getBytes().length, _fileName.getBytes(), temp);
 							_csc.send.setPacket(temp).write();
 							
 							_serverFolder = new String(_csc.receive.setAllocate(500).read().getByte()).trim();
 							treeTokenizer();
-							_csc.send.setPacket(_serverFolder.getBytes(), 1024).write();
+							//_csc.send.setPacket(_serverFolder.getBytes(), 1024).write();
 							
 							p.setAllocate(_fileSize);
 							while(!p.isAllocatorEmpty())
