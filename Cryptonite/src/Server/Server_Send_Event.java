@@ -19,6 +19,14 @@ public class Server_Send_Event extends Server_Funtion
 	@Override
 	public void running(int count) throws IOException 
 	{
-		_activity.send.setPacket(_activity._eventQueue.remove());
+		if(count == 1)
+		{
+			Checker(_activity.getReceiveEvent());
+			_activity.send.setPacket(_activity._eventQueue.remove()).write();
+		}
+		else
+		{
+
+		}
 	}
 }

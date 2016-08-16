@@ -155,7 +155,7 @@ public class Client_Testmain extends JFrame{
     			{
     				buffer[i] = event[i+3];
     			}
-    			System.out.println(new String(buffer).trim());
+    			System.out.println("GroupCode: "+new String(buffer).trim());
     					
         	}
         });
