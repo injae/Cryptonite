@@ -220,15 +220,6 @@ import Crypto.userKeyGenerator;
 			{
 				_passwordCorrect = new String( _passwdCorrectField.getPassword());
 
-				if(_passwordCorrect.equals(_password))
-				{
-					_checkPassword = true;
-				}
-				else if( _passwdCorrectField.equals(_password) == false ||  _passwdCorrectField.equals(null) == false)
-				{
-					_checkPassword = false;
-				}
-
 			}
 
 			@Override
@@ -251,7 +242,6 @@ import Crypto.userKeyGenerator;
 			public void keyReleased(KeyEvent _e)
 			{
 				_email = _emailField.getText();
-				if(_email.contains("@")){ _checkemail=true; }
 			}
 
 			@Override
@@ -344,11 +334,22 @@ import Crypto.userKeyGenerator;
 		{
 			public void actionPerformed(ActionEvent _arg0)
 			{
+				if(_email.contains("@")){ _checkemail=true; }
+				
 				if(_password.length()<5||_passwordCorrect.length()<5){
 					_checklength=false;
 				}
 				else if(_password.length()>=5&&_passwordCorrect.length()>=5){
 					_checklength=true;
+				}
+				
+				if(_passwordCorrect.equals(_password))
+				{
+					_checkPassword = true;
+				}
+				else /*if( _passwdCorrectField.equals(_password) == false ||  _passwdCorrectField.equals(null) == false)*/
+				{
+					_checkPassword = false;
 				}
 				
 				if(!_name.equals("") && !_id.equals("")&& !_password.equals("") &&!_passwordCorrect.equals("") 
@@ -369,7 +370,7 @@ import Crypto.userKeyGenerator;
 								if(_checkemail){
 									_goSignUP=true;
 								}
-								else{ showMessage("ERROR", "이메일 조건이 맞지 않습니다."); }
+								else{ showMessage("ERROR", "Email does not meet the conditions."); }
 							}
 							else { showMessage("ERROR", "Passcodes did not match."); }
 						}
@@ -385,68 +386,15 @@ import Crypto.userKeyGenerator;
 					_ukg.init();
 					_sha = new SHA_256(_name,_id,_password,_email,_ukg.getAesKeyToString(), _ukg.getSaltToString(), _ukg.getIterationCountToString());
 					
-					dispose();
-				}
-
-			}
-				
-				/*
-				if(_checkBlank&&!_name.equals("name") && !_id.equals("")&& !_password.equals("password") &&!_passwordCorrect.equals("passwordCorrect") 
-						&& !_email.equals("email") &&_checkSame&&_checkID)
-				{
-					if(_checkPassword&&_checklength)
-					{
-						 _goSignUP=true;
-						
-					}
-					else if(_checkPassword&&!_checklength)
-					{
-						showMessage("ERROR", "Please check the requirements of the password.");
-					}
-					else if(!_checkPassword&&_checklength)
-					{
-						showMessage("ERROR", "Passcodes did not match.");
-					}
-					else if (!_checkPassword&&!_checklength){
-						showMessage("ERROR","Please check the requirements of the password. and Passcodes did not match.");
-					}
-				}
-				else
-				{
-					if(!_checkBlank)
-					{
-					showMessage("ERROR", "Please fill in all the blanks.");
-					}
-					if(!_checkSame&&_checkID)
-					{
-						showMessage("ERROR", "Check whether the duplicates ID");
-					}
-				}
-				
-				if(_goSignUP){
+					int result=_sha.result[0];
 					
-					showMessage("WELCOME!", "WELCOME TO CRYPTONITE!.");
-
-					userKeyGenerator _ukg = new userKeyGenerator();
-					_ukg.init();
-					_sha = new SHA_256(_name,_id,_password,_email,_ukg.getAesKeyToString(), _ukg.getSaltToString(), _ukg.getIterationCountToString());
-
-					dispose();
-				}
-				else if(!_goSignUP)
-				{
-					if(!_checkSame&&_checkID)
+					if(result==1)
 					{
-						showMessage("ERROR", "Check whether the duplicates ID");
+						dispose();
+						_goSignUP=false;
 					}
-					else if(_checkSame&&!_checkID)
-					{
-						showMessage("ERROR", "Check ID's precondition(?)");
-					}
-					else if(!_checkSame&&!_checkID){showMessage("ERROR", "Check whether the duplicates ID and ID's precondition");}
-		
 				}
-			}*/
+			}
 		});
 
 		_layeredpane.add(_ok);
@@ -489,6 +437,7 @@ class SHA_256 implements PacketRule
 		
 		private byte[] _temp_data;
 		private byte _size;
+		byte[] result;
 
 		public SHA_256(String _name, String _id, String _password, String _email, String _AES_Key, String _salt, String _iteration)
 		{	
@@ -528,7 +477,7 @@ class SHA_256 implements PacketRule
 				_css.send.setPacket(_iteration.getBytes(), 500).write();
 				
 				_css.receive.setAllocate(1);
-				byte[] result = _css.receive.read().getByte();
+				result = _css.receive.read().getByte();
 				
 				if(result[0] == 1)
 				{
