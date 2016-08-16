@@ -17,13 +17,10 @@ public class Server_Make_Group extends Server_Funtion
 	}
 
 	private int _groupMemberSize = 0;
-	private Server_Client_Activity _activity;
 	private Server_Client_Manager _manager = null;
 	private Server_DataBase _db = null;
 	private ArrayList<String> _members = null;
 
-
-	
 	@Override
 	public void Checker(byte[] packet) 
 	{

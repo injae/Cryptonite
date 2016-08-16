@@ -78,8 +78,12 @@ public class Server_Client_Manager implements PacketRule
 	
 	public void setEvent(String target, byte[] event)
 	{
-		_clientList.get(target)._eventQueue.offer(event);
+		if(_clientList.get(target) != null)
+		{
+			_clientList.get(target)._eventQueue.offer(event);
+		}
 		System.out.println("event -> "+target);
+
 	}
 	
 	public void run()

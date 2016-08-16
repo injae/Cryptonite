@@ -13,20 +13,24 @@ public class Client_Receive_Event implements PacketRule
 		_csc = Client_Server_Connector.getInstance();
 	}
 	
-	public void getEvent()
+	public byte[] getEvent()
 	{
+		byte[] revent = null;
 		try 
 		{
 			byte[] sevent = new byte[1024];
 			sevent[0] = EVENT;
 			_csc.send.setPacket(sevent).write();			
 			
-			byte[] revent = _csc.receive.read().getByte();
-			System.out.println(revent[0]);
+			revent = _csc.receive.read().getByte();
+			System.out.println("event code: "+revent[0] + revent[1] + revent[2]);
+
+			System.out.println();
 		} 
 		catch (IOException e)
 		{		
 			e.printStackTrace();
 		}
+		return revent;
 	}
 }
