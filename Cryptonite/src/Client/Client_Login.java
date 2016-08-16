@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
@@ -107,6 +108,8 @@ public class Client_Login extends JFrame implements PacketRule
 	}
     
     public Client_Login(){
+    	
+    	//Mymouse mymouse=new Mymouse(_Login, _Resistor);
     	try{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
 			 Image image = tk.getImage("gui/logo.png");
@@ -174,7 +177,7 @@ public class Client_Login extends JFrame implements PacketRule
          _passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
          _passwordField.setHorizontalAlignment(JTextField.CENTER);
          _passwordField.setEchoChar((char)0);
-         //_passwordField.setText("PASSWORD");
+        // _passwordField.setText("PASSWORD");
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
         		 _passwordField.setText("");
@@ -205,7 +208,7 @@ public class Client_Login extends JFrame implements PacketRule
          _Login.setBorderPainted(false);
          _Login.setFocusPainted(false);
          _Login.setContentAreaFilled(false);
-         //_Login.setRolloverIcon(new ImageIcon("img/login_bt_hv"));//input buttonimage
+         //_Login.setRolloverIcon(new ImageIcon("img/login_bt_hv.png"));//input buttonimage
          _Login.setPressedIcon(new ImageIcon("img/login_bt_hv.png"));
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
@@ -275,7 +278,7 @@ public class Client_Login extends JFrame implements PacketRule
          _Resistor.setFocusPainted(false);
          _Resistor.setContentAreaFilled(false);
          //_Resistor.setRolloverIcon(new ImageIcon("img/_joinbtover"));
-         _Resistor.setPressedIcon(new ImageIcon("gui/register_bt_hv.png"));
+         //_Resistor.setPressedIcon(new ImageIcon("gui/register_bt_hv.png"));
          _Resistor.addActionListener(new ActionListener() {
          	public void actionPerformed(ActionEvent arg0) {
          		new Client_SignUp();
@@ -306,3 +309,51 @@ public class Client_Login extends JFrame implements PacketRule
     	return _password;
     }
 }
+
+/*class Mymouse implements MouseListener{
+	JButton Login;
+	JButton Resistor;
+	public Mymouse(JButton _Login, JButton _Resistor){
+		this.Login=_Login;
+		this.Resistor=_Resistor;
+	}
+    public void mouseEntered(MouseEvent e){
+       if(e.getSource() ==Login ){            
+          Login.setIcon(new ImageIcon("img/login_bt_hv.png"));}
+       if(e.getSource() == Resistor){           
+          Resistor.setIcon(new ImageIcon("img/register_bt_hv.png"));}
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent arg0) {
+       // TODO Auto-generated method stub
+       
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+       // TODO Auto-generated method stub
+       if(e.getSource() == Login)
+          {
+    	   Login.setIcon(new ImageIcon("img/chatting server.png"));
+          }
+       if(e.getSource() == Resistor)
+          {
+    	   Resistor.setIcon(new ImageIcon("img/chatting.png"));
+          }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+       // TODO Auto-generated method stub
+       
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+       // TODO Auto-generated method stub
+       
+    }
+
+}
+*/
