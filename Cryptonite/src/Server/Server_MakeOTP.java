@@ -5,6 +5,11 @@ import java.io.*;
 
 public class Server_MakeOTP extends Server_Funtion
 {
+	public Server_MakeOTP(Server_Client_Activity activity) {
+		super(activity);
+		// TODO 磊悼 积己等 积己磊 胶庞
+	}
+
 	// OTP Instance
 	private String _OTP = "";
 	private boolean _checkOTP = false;
@@ -15,8 +20,7 @@ public class Server_MakeOTP extends Server_Funtion
 	
 	private int _oneTime = 1;
 	
-	// Constructors
-	public Server_MakeOTP() { }
+
 	
 	private void makeOTP()
 	{
@@ -84,19 +88,21 @@ public class Server_MakeOTP extends Server_Funtion
 	}
 
 	@Override
-	public void Checker(byte[] packet, Server_Client_Activity activity) 
+	public void Checker(byte[] packet) 
 	{
-		_activity = activity;
 		_packetMaxCount = 1 + 1;
-		_packetCutSize = 1;
 	}
 
 	@Override
-	public void running() throws IOException 
+	public void running(int count) throws IOException 
 	{
-		makeOTP();
-		_activity.receive.getByte();	// garbage delete
-		_activity.send.setPacket(_OTP.getBytes(),1024).write();
-		System.out.println("OTP Sending FINISH");
+		if(count == 1) { Checker(_activity.getReceiveEvent()); }
+		else
+		{
+			makeOTP();
+			_activity.receive.getByte();	// garbage delete
+			_activity.send.setPacket(_OTP.getBytes(),1024).write();
+			System.out.println("OTP Sending FINISH");
+		}
 	}
 }

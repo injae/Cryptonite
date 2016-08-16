@@ -15,8 +15,13 @@ public abstract class Server_Funtion
 	protected int _packetCutSize = 10;
 	protected Server_Client_Activity _activity;
 	
+	public Server_Funtion(Server_Client_Activity activity)
+	{
+		_activity = activity;
+	}
+	
 	public int getLimitSize() { return _packetCutSize; }
 	
-	public abstract void Checker(byte[] packet, Server_Client_Activity activity);
-	public abstract void running() throws IOException;
+	public abstract void Checker(byte[] packet);
+	public abstract void running(int count) throws IOException;
 }
