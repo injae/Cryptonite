@@ -39,26 +39,11 @@ public class Client_FolderScan extends Thread
 	private Client_AutoBackup _cab = null;
 	
 	// Constructors
-	public Client_FolderScan()
-	{
-		_cab = new Client_AutoBackup();
-	}
+	public Client_FolderScan() { }
 	
 	// Methods
 	public synchronized void run()
 	{
-		/*_cfs = new Client_FolderSelector();
-		_cfs.folderSelectorON();
-		while(!_cfs.getSelectionEnd())
-		{
-			try {
-				sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		_address = _cfs.getSelectedPath();*/
 		try 
 		{
 			FileReader fr = new FileReader(new File("Cryptonite_Client/log/protectedlog.ser"));
@@ -66,6 +51,7 @@ public class Client_FolderScan extends Thread
 			_address = br.readLine();
 			br.close();
 			fr.close();
+			_cab = new Client_AutoBackup(_address);
 		} 
 		catch (FileNotFoundException e1) 
 		{

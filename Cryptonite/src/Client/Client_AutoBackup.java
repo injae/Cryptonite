@@ -20,17 +20,23 @@ public class Client_AutoBackup implements PacketRule
 	private File _checkProperty = null;
 	private String _fileName = null;
 	private long _fileSize = 0;
+	
 	private RandomAccessFile _raf = null;
 	private FileChannel _fileChannel = null;
+	
 	private String _absoluteDirectory = null;
+	private String _protectedFolderName = null;
+	private String _serverFolder = null;
 	
 	// Sending Module
 	private Client_Server_Connector _csc = null;
 	
 	// Constructors
-	public Client_AutoBackup() 
+	public Client_AutoBackup(String address) 
 	{
 		_csc = Client_Server_Connector.getInstance();
+		_protectedFolderName = nameTokenizer(address);
+		System.out.println(_protectedFolderName);
 	}
 	
 	// Methods
@@ -50,7 +56,9 @@ public class Client_AutoBackup implements PacketRule
 			try 
 			{
 				_csc.send.setPacket(temp).write();
-				_csc.send.setPacket(_fileName.getBytes(), 1024).write();
+				_serverFolder = new String(_csc.receive.setAllocate(500).read().getByte()).trim();
+				treeTokenizer();
+				_csc.send.setPacket(_serverFolder.getBytes(), 1024).write();
 			} 
 			catch (IOException e)
 			{
@@ -82,6 +90,10 @@ public class Client_AutoBackup implements PacketRule
 							Function.frontInsertByte(4, String.valueOf(_fileSize).getBytes(), temp);
 							Function.frontInsertByte(4 + String.valueOf(_fileSize).getBytes().length, _fileName.getBytes(), temp);
 							_csc.send.setPacket(temp).write();
+							
+							_serverFolder = new String(_csc.receive.setAllocate(500).read().getByte()).trim();
+							treeTokenizer();
+							_csc.send.setPacket(_serverFolder.getBytes(), 1024).write();
 							
 							p.setAllocate(_fileSize);
 							while(!p.isAllocatorEmpty())
@@ -122,6 +134,45 @@ public class Client_AutoBackup implements PacketRule
 		else
 		{
 			return true;
+		}
+	}
+	
+	private String nameTokenizer(String address)
+	{
+		StringTokenizer st = new StringTokenizer(address, "\\");
+		String temp = null;
+		
+		while(st.hasMoreTokens())
+		{
+			temp = st.nextToken();
+		}
+		
+		return temp;
+	}
+	
+	private void treeTokenizer()
+	{
+		StringTokenizer st = new StringTokenizer(_absoluteDirectory, "\\");
+		String[] temp = new String[st.countTokens()];
+		int i = 0;
+		boolean check = false;
+		
+		while(st.hasMoreTokens())
+		{
+			temp[i] = st.nextToken();
+			i++;
+		}
+		
+		for(int j = 0; j < temp.length; j++)
+		{
+			if(check)
+			{
+				_serverFolder += ("\\" + temp[j]);
+			}
+			if(temp[j].equals(_protectedFolderName))
+			{
+				check = true;
+			}
 		}
 	}
 }
