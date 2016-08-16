@@ -22,10 +22,8 @@ public class Client_Receive_Event implements PacketRule
 			sevent[0] = EVENT;
 			_csc.send.setPacket(sevent).write();			
 			
-			revent = _csc.receive.read().getByte();
-			System.out.println("event code: "+revent[0] + revent[1] + revent[2]);
-
-			System.out.println();
+			revent = _csc.receive.setAllocate(1024).read().getByte();
+			System.out.print("event code: "+revent[0] + revent[1] + revent[2]+" ");
 		} 
 		catch (IOException e)
 		{		

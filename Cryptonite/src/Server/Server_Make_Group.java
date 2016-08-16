@@ -74,18 +74,22 @@ public class Server_Make_Group extends Server_Funtion
 			
 			for(int i = 0; i < _members.size(); i++)
 			{
-				ResultSet rs = _db.Query("select *from test where uscode = '" + _members.get(i) + "';");
+				ResultSet rs = _db.Query("select *from test where uscode = '" +  Integer.parseInt(_members.get(i).substring(1)) + "';");
 				String groupList = null;
 				try 
 				{
-					if(rs.next())
+					rs.next();
+
+					String buf = rs.getString(10);
+					if(!buf.isEmpty())
 					{
-						groupList =  rs.getString(10) + groupList + ":" + gpCode;
+						groupList =  buf + ":" + gpCode;
 					}
 					else
 					{
 						groupList = gpCode;
 					}
+
 				} 
 				catch (SQLException e) 
 				{
