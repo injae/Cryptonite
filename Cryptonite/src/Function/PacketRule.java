@@ -35,4 +35,12 @@ public interface PacketRule
 	 * 4. FileSize
 	 * 
 	 * */
+	
+	/*
+	 * Server -> Client event rule
+	 * event size = 1024;
+	 * event[0] ~ event[2] is event code
+	 * event kind
+	 * 001 = new group code
+	 */
 }

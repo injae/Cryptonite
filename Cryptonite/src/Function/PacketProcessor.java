@@ -78,14 +78,21 @@ public class PacketProcessor
 	
 	public PacketProcessor setPacket(byte[] packet, int size)
 	{
-		byte[] temp = new byte[size];
-		
-		for(int i =0; i < packet.length; i++)
+		byte[] temp;
+		if(size != packet.length)
 		{
-			temp[i] = packet[i];
+			temp = new byte[size];
+			
+			for(int i =0; i < packet.length; i++)
+			{
+				temp[i] = packet[i];
+			}
+		}
+		else
+		{
+			temp = packet;
 		}
 		_queue.add(temp);
-		
 		return this;
 	}
 	
