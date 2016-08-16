@@ -3,6 +3,8 @@ package Server;
 import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
+import java.util.StringTokenizer;
+
 import Function.*;
 
 /*
@@ -31,8 +33,10 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	// About File
 	private String _checkProperty = null;
 	private File _downloadFile = null;
-	private String _fileName = null;
+	
+	private String _absoluteDirectory = null;
 	private long _fileSize = 0;
+	private String _protectedFolderName = null;
 	
 	private RandomAccessFile _raf = null;
 	private FileChannel _fileChannel = null;
@@ -61,6 +65,34 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		return remainder;
 	}
 	
+	private void treeTokenizer()
+	{
+		StringTokenizer st = new StringTokenizer(_absoluteDirectory, "\\");
+		String[] temp = new String[st.countTokens()];
+		boolean check = false;
+		int i = 0;
+		
+		while(st.hasMoreTokens())
+		{
+			temp[i] = st.nextToken();
+			i++;
+		}
+		
+		for(int j = 0; j < temp.length; j++)
+		{
+			System.out.println("템프 : " + temp[j]);
+			if(check)
+			{
+				_address += ("\\" + temp[j]);
+			}
+			if(temp[j].equals(_protectedFolderName))
+			{
+				check = true;
+			}
+		}
+		
+	}
+	
 	private void setFileInformation(byte[] packet)
 	{
 		_checkProperty = "FILE";
@@ -70,8 +102,8 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		byte[] sizeTemp = new byte[packet[2]];
 		for(int i = 0; i < sizeTemp.length; i++)
 		{
-			sizeTemp[i] = packet[i + 4];
-			end = i+4;
+			sizeTemp[i] = packet[i + 5];
+			end = i+5;
 		}
 		_fileSize = Long.parseLong(new String(sizeTemp).trim());
 		
@@ -81,14 +113,23 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			max++;
 		}
 		
-		byte[] nameTemp = new byte[packet[3]];
-		for(int i = 0; i < nameTemp.length; i++)
+		byte[] addressTemp = new byte[packet[3]];
+		for(int i = 0; i < addressTemp.length; i++)
 		{
-			nameTemp[i] = packet[i + end + 1];
+			addressTemp[i] = packet[i + end + 1];
 		}
-		_fileName = new String(nameTemp).trim();
+		_absoluteDirectory = new String(addressTemp).trim();
+		System.out.println("절대경로 : " + _absoluteDirectory);
 		
-		System.out.println("파일 이름 : " + _fileName);
+		byte[] protectedTemp = new byte[packet[4]];
+		for(int i = 0; i < protectedTemp.length; i++)
+		{
+			protectedTemp[i] = packet[i + 900];
+		}
+		_protectedFolderName = new String(protectedTemp).trim();
+		
+		treeTokenizer();
+		System.out.println("어드레스 : " + _address);
 		System.out.println("파일 용량 : " + _fileSize + " (Byte)");
 	}
 	
@@ -104,20 +145,33 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		else if(packet[1] == FILE)
 		{
 			setFileInformation(packet);
-			_packetMaxCount = 1 + 1 + sendPacketSize(_fileSize);
+			_packetMaxCount = 1 + sendPacketSize(_fileSize);
+			
+			try 
+			{
+				_raf = new RandomAccessFile(_address, "rw");
+				_fileChannel = _raf.getChannel();
+			} 
+			catch (FileNotFoundException e) 
+			{
+				e.printStackTrace();
+			}
+
+			p = new PacketProcessor(_fileChannel, false);
+			_activity.receive.setAllocate(_fileSize);
 		}
 	}
 
 	@Override
 	public void running(int count) throws IOException 
 	{
+		System.out.println(count);
 		if(count == 1) 
 		{ 
 			Checker(_activity.getReceiveEvent());
 			_activity.send.setPacket(_address.getBytes(), 500).write();
-			_activity.receive.setAllocate(1024);
 		}
-		else if(count == 2)
+		else
 		{
 			if(_checkProperty.equals("DIRECTORY"))
 			{
@@ -129,27 +183,11 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			}
 			else if(_checkProperty.equals("FILE"))
 			{	
+				/*System.out.println("파일까지 들어옴");
 				_address = new String(_activity.receive.getByte()).trim();
-				System.out.println("어드레스 : " + _address);
+				System.out.println(_address);
+				System.out.println("어드레스 : " + _address);*/
 				
-				try 
-				{
-					_raf = new RandomAccessFile(_address, "rw");
-					_fileChannel = _raf.getChannel();
-				} 
-				catch (FileNotFoundException e) 
-				{
-					e.printStackTrace();
-				}
-
-				p = new PacketProcessor(_fileChannel, false);
-				_activity.receive.setAllocate(_fileSize);
-			}
-		}
-		else
-		{
-			if(_checkProperty.equals("FILE"))
-			{
 				p.setPacket(_activity.receive.getByte()).write();
 				
 				if(count == _packetMaxCount)
