@@ -13,6 +13,7 @@ public interface PacketRule
 	byte MAKE_OTP = 6;
 	byte LOGOUT	= 7;
 	byte MAKE_GROUP = 8;
+	byte EVENT = 9;
 	//---------------------------------------
 	
 	// AUTOBACKUP(1) AUTOBACKUP EVENT

@@ -27,6 +27,7 @@ public class Server_Client_Activity implements PacketRule
 	private String _clientCode;
 	
 	private Queue<Integer> _readableQueue;
+	private Queue<byte[]> _eventQueue;
 	
 	private int _packetCount = 0;
 	private int _usedCount = 1;
@@ -55,6 +56,7 @@ public class Server_Client_Activity implements PacketRule
             _clientCode = clientCode;
             
             _readableQueue = new LinkedList<Integer>();
+            _eventQueue = new LinkedList<byte[]>();
             _funtionList = new LinkedList<Server_Funtion>();
             
             _manager = Server_Client_Manager.getInstance();
