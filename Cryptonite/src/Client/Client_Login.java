@@ -254,9 +254,8 @@ public class Client_Login extends JFrame implements PacketRule
 	          				FileWriter fw = new FileWriter(save);
 	          				fw.write(_address);
 	          				fw.close();
-	          				
-	          				new Client_FolderScan().start();
 	          			}
+	          			new Client_FolderScan().start();
 	          			break;
 	          		case 3 : 
 	          			showMessage("Error", "Wrong password"); 
