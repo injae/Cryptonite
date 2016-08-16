@@ -105,19 +105,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		{
 			setFileInformation(packet);
 			_packetMaxCount = 1 + 1 + sendPacketSize(_fileSize);
-			
-			/*try 
-			{
-				_raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
-				_fileChannel = _raf.getChannel();
-			} 
-			catch (FileNotFoundException e) 
-			{
-				e.printStackTrace();
-			}
-
-			p = new PacketProcessor(_fileChannel, false);
-			_activity.receive.setAllocate(_fileSize);*/
 		}
 	}
 
@@ -144,9 +131,10 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			{	
 				_address = new String(_activity.receive.getByte()).trim();
 				System.out.println("어드레스 : " + _address);
+				
 				try 
 				{
-					_raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
+					_raf = new RandomAccessFile(_address, "rw");
 					_fileChannel = _raf.getChannel();
 				} 
 				catch (FileNotFoundException e) 
@@ -168,7 +156,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 				{
 					System.out.println("AUTOBACKUP COMPLETE !!");
 					p.close();
-					count = 1;
 				}
 			}
 		}

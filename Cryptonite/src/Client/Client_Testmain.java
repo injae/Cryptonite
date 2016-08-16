@@ -149,6 +149,14 @@ public class Client_Testmain extends JFrame{
         		test[1] = "b";
         		test[2] = "c";
         		new Client_Make_Group().make(test);
+        		byte[] event = new Client_Receive_Event().getEvent();
+    			byte[] buffer = new byte[1021]; 
+    			for(int i = 0; i < buffer.length; i++)
+    			{
+    				buffer[i] = event[i+3];
+    			}
+    			System.out.println(new String(buffer).trim());
+    					
         	}
         });
         
