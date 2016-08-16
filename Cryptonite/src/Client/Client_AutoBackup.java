@@ -24,9 +24,6 @@ public class Client_AutoBackup implements PacketRule
 	private FileChannel _fileChannel = null;
 	private String _absoluteDirectory = null;
 	
-	// stopFlag
-	private boolean _stopFlag = false;
-	
 	// Sending Module
 	private Client_Server_Connector _csc = null;
 	
@@ -126,10 +123,5 @@ public class Client_AutoBackup implements PacketRule
 		{
 			return true;
 		}
-	}
-	
-	public void stopThread()
-	{
-		_stopFlag = true;
 	}
 }
