@@ -107,7 +107,6 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		{
 			_raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
 			_fileChannel = _raf.getChannel();
-			_packetCutSize = 1;
 		} 
 		catch (FileNotFoundException e)
 		{

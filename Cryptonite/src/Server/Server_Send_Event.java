@@ -5,9 +5,9 @@ import java.io.IOException;
 public class Server_Send_Event extends Server_Funtion
 {
 
-	public Server_Send_Event(Server_Client_Activity activity) {
+	public Server_Send_Event(Server_Client_Activity activity)
+	{
 		super(activity);
-		// TODO 磊悼 积己等 积己磊 胶庞
 	}
 
 	@Override
@@ -19,6 +19,6 @@ public class Server_Send_Event extends Server_Funtion
 	@Override
 	public void running(int count) throws IOException 
 	{
-		
+		_activity.send.setPacket(_activity._eventQueue.remove());
 	}
 }

@@ -101,6 +101,20 @@ public class Server_Make_Group extends Server_Funtion
 			{
 				newFolder.mkdir();
 			}
+			
+			byte[] event = new byte[1024];
+			event[0] = 0;
+			event[1] = 0;
+			event[2] = 1;
+			byte[] bgpcode = gpCode.getBytes();
+			for(int i =0; i < bgpcode.length; i++)
+			{
+				event[i+3] = bgpcode[i];
+			}
+			for(int i =0; i < _members.size(); i++)
+			{
+				_manager.setEvent(_members.get(i), event);
+			}
 		}
 	}
 }

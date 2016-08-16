@@ -65,7 +65,6 @@ public class Server_Client_Manager implements PacketRule
 	{
 		if(_clientList.get(clientCode).receive.isEmpty()) 
 		{
-			
 			Server_Client_Activity activity = _clientList.remove(clientCode);
 			activity.close();
 			_code_manager.removeCode(clientCode);
@@ -75,6 +74,12 @@ public class Server_Client_Manager implements PacketRule
 		{
 			_clientList.get(clientCode)._funtionList.addLast(Server_Function_Factory.create((byte)-1,_clientList.get(clientCode)));
 		}
+	}
+	
+	public void setEvent(String target, byte[] event)
+	{
+		_clientList.get(target)._eventQueue.offer(event);
+		System.out.println("event -> "+target);
 	}
 	
 	public void run()

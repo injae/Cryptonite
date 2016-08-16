@@ -22,9 +22,7 @@ public class Client_Receive_Event implements PacketRule
 			_csc.send.setPacket(sevent).write();			
 			
 			byte[] revent = _csc.receive.read().getByte();
-			
-			
-			
+			System.out.println(revent[0]);
 		} 
 		catch (IOException e)
 		{		

@@ -26,21 +26,15 @@ public class Server_Client_Activity implements PacketRule
 	private Server_Client_Manager _manager;
 	private String _clientCode;
 	
-	private Queue<Integer> _readableQueue;
-	private Queue<byte[]> _eventQueue;
+	public Queue<byte[]> _eventQueue;
 	private byte[] _receiveEvent;
 	
 	private int _packetCount = 0;
-	private int _usedCount = 1;
 
 	public LinkedList<Server_Funtion> _funtionList;
 	
 	public PacketProcessor receive;
 	public PacketProcessor send;
-	
-	public Integer _readableCount = 0;
-	public int _readingCount = 0;
-
 
 	public Server_Client_Activity(Selector selector, SelectionKey key, String clientCode)
 	{
@@ -55,8 +49,7 @@ public class Server_Client_Activity implements PacketRule
             clientKey.attach(this);
             
             _clientCode = clientCode;
-            
-            _readableQueue = new LinkedList<Integer>();
+
             _eventQueue = new LinkedList<byte[]>();
             _funtionList = new LinkedList<Server_Funtion>();
             
