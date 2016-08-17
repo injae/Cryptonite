@@ -76,6 +76,7 @@ public class Server_FileShare_Send extends Server_Funtion
 	{
 		_packetMaxCount = 1 + 1;
 		_activity.receive.setAllocate(30);
+		_cutSize = 1;
 	}
 
 	@Override

@@ -115,6 +115,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		_activity.receive.setAllocate(_fileSize);
 		
 		p = new PacketProcessor(_fileChannel, false);
+		_cutSize = 1;
 	}
 
 	@Override

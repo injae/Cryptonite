@@ -154,6 +154,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			}
 
 			p = new PacketProcessor(_fileChannel, false);
+			_cutSize = 1;
 		}
 	}
 
