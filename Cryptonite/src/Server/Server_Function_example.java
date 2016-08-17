@@ -2,6 +2,11 @@ package Server;
 
 import java.io.IOException;
 
+/*
+ * @author In Jae Lee
+ * 
+ */
+
 public class Server_Function_example extends Server_Funtion
 {
 	public Server_Function_example(Server_Client_Activity activity) 

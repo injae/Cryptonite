@@ -13,7 +13,7 @@ public class Server_MakeOTP extends Server_Funtion
 	// OTP Instance
 	private String _OTP = "";
 	private boolean _checkOTP = false;
-	private Vector<String> _OTP_List = null;
+	private ArrayList<String> _OTP_List = null;
 	
 	private FileOutputStream _fos = null;
 	private ObjectOutputStream _oos = null;
@@ -30,7 +30,7 @@ public class Server_MakeOTP extends Server_Funtion
 		{
 			if(_oneTime == 1)
 			{
-				_OTP_List = new Vector<String>();
+				_OTP_List = new ArrayList<String>();
 				_fos = new FileOutputStream("Server_Folder\\OTP\\OTP_List.ser");
 				_oos = new ObjectOutputStream(_fos);
 				_oos.writeObject(_OTP_List);
@@ -39,7 +39,7 @@ public class Server_MakeOTP extends Server_Funtion
 			
 			FileInputStream fis = new FileInputStream("Server_Folder\\OTP\\OTP_List.ser");
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			_OTP_List = (Vector<String>) ois.readObject();
+			_OTP_List = (ArrayList<String>) ois.readObject();
 			ois.close();
 			fis.close();
 			

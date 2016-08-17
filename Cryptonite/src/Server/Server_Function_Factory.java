@@ -2,6 +2,11 @@ package Server;
 
 import Function.PacketRule;
 
+/*
+ * @author In Jae Lee
+ * 
+ */
+
 public class Server_Function_Factory implements PacketRule 
 {
 	public static Server_Funtion create(byte mode, Server_Client_Activity activity) 

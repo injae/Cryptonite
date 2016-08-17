@@ -5,6 +5,11 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/*
+ * @author In Jae Lee
+ * 
+ */
+
 public class Server_Code_Manager 
 {
 	private static Server_Code_Manager _manager;

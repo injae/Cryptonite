@@ -5,10 +5,11 @@ package Server;
 
 import java.io.IOException;
 
-/**
+/*
  * @author In Jae Lee
  *
  */
+
 public abstract class Server_Funtion
 {		
 	protected Server_Client_Activity _activity;
