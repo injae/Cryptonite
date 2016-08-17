@@ -153,7 +153,7 @@ public class PacketProcessor
 		byte[] array =_queue.remove();
 		allocate(array.length);
 		_buffer.put(array);
-		System.out.println(_buffer.toString());
+		//System.out.println(_buffer.toString());
 		_buffer.flip();
 		while(_buffer.hasRemaining())
 		{

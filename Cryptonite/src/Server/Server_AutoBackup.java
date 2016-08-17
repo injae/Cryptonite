@@ -161,7 +161,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	@Override
 	public void running(int count) throws IOException 
 	{
-		System.out.println("Count : " + count);
 		if(count == 1) 
 		{ 
 			Checker(_activity.getReceiveEvent());
@@ -177,10 +176,10 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		}
 		else
 		{
-			System.out.println("프로퍼티 : " + _checkProperty);
 			if(_checkProperty.equals("DIRECTORY"))
 			{
 				_address = new String(_activity.receive.getByte()).trim();
+				System.out.println("저장 경로 : " + _address);
 				File newFolder = new File(_address);
 				newFolder.mkdir();
 				System.out.println("AUTOBACKUP COMPLETE !!");
