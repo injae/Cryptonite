@@ -24,6 +24,8 @@ public class Client_FolderScan extends Thread
 	// WatchService Instance
 	private WatchService _watchService = null;
 	private WatchKey _watchKey = null;
+	private boolean _firstTime = false;
+	private String _protectedFolderName = null;
 	
 	// Filenames, to make absolute directory, check directory
 	private String _fileName = null;
@@ -39,41 +41,61 @@ public class Client_FolderScan extends Thread
 	private Client_AutoBackup _cab = null;
 	
 	// Constructors
-	public Client_FolderScan() { }
+	public Client_FolderScan() 
+	{
+		_firstTime = true;
+	}
+	
+	public Client_FolderScan(String address)
+	{
+		this._firstTime = false;
+		this._address = address;
+		_cab = new Client_AutoBackup();
+		this.start();
+	}
 	
 	// Methods
 	public synchronized void run()
 	{
-		try 
+		if(_firstTime)
 		{
-			FileReader fr = new FileReader(new File("Cryptonite_Client/log/protectedlog.ser"));
-			BufferedReader br = new BufferedReader(fr);
-			_address = br.readLine();
-			br.close();
-			fr.close();
-			_cab = new Client_AutoBackup(_address);
-		} 
-		catch (FileNotFoundException e1) 
-		{
-			e1.printStackTrace();
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
+			try 
+			{
+				FileReader fr = new FileReader(new File("Cryptonite_Client/log/protectedlog.ser"));
+				BufferedReader br = new BufferedReader(fr);
+				_address = br.readLine();
+				br.close();
+				fr.close();
+				_cab = new Client_AutoBackup(_address);
+				_protectedFolderName = _cab.getProtectedName();
+				_firstTime = false;
+			} 
+			catch (FileNotFoundException e1) 
+			{
+				e1.printStackTrace();
+			}
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		File firstScan = new File(_address);
 		String[] fileList = firstScan.list();
 		for(int i = 0; i < fileList.length; i++)
 		{
+			File temp = new File(_address + "\\" + fileList[i]);
+			if(temp.isDirectory())
+			{
+				new Client_FolderScan(_address + "\\" + fileList[i]);
+			}
 			_cab.autoBackup(_address + "\\" + fileList[i]);
 		}
 		
 		try {
 			_watchService = FileSystems.getDefault().newWatchService();
 			Path directory = Paths.get(_address);
-		    directory.register(_watchService, StandardWatchEventKinds.ENTRY_CREATE,
-		                                  StandardWatchEventKinds.ENTRY_DELETE);
+		    directory.register(_watchService, StandardWatchEventKinds.ENTRY_CREATE);
 		    
 		    while(_stopFlag == false)
 		    {
@@ -93,6 +115,8 @@ public class Client_FolderScan extends Thread
 	        				_fileName = path.getFileName().toString();
 	        				System.out.println("New Folder is Created >> " + _fileName);
 	        				_absoluteDirectory = _isDirectory.getPath();
+	        				System.out.println(_absoluteDirectory);
+	        				new Client_FolderScan(_absoluteDirectory);
 	        				_cab.autoBackup(_absoluteDirectory);
 	        			}
 	        			else

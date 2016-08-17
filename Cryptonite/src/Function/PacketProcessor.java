@@ -10,6 +10,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
+import com.mysql.jdbc.Buffer;
+
 public class PacketProcessor 
 {
 	private Queue<byte[]> _queue;
@@ -151,6 +153,7 @@ public class PacketProcessor
 		byte[] array =_queue.remove();
 		allocate(array.length);
 		_buffer.put(array);
+		System.out.println(_buffer.toString());
 		_buffer.flip();
 		while(_buffer.hasRemaining())
 		{
