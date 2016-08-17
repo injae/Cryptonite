@@ -123,14 +123,12 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		if(count == 1) { Checker(_activity.getReceiveEvent()); }
 		else
 		{
-			_count++;
 			p.setPacket(_activity.receive.getByte()).write();
 			
-			if(_count == _packetMaxCount)
+			if(count == _packetMaxCount)
 			{
 				System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
 				p.close();
-				_count = 1;
 			}
 		}
 	}

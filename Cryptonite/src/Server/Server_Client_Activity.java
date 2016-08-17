@@ -78,7 +78,7 @@ public class Server_Client_Activity implements PacketRule
 	}
 	
 	public void Receiver() throws IOException 
-	{	
+	{
 		receive.read();
 		
 		_packetCount++;

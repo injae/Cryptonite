@@ -32,11 +32,16 @@ public class Client_AutoBackup implements PacketRule
 	private Client_Server_Connector _csc = null;
 	
 	// Constructors
+	public Client_AutoBackup()
+	{
+		_csc = Client_Server_Connector.getInstance();
+		_protectedFolderName = nameTokenizer();
+	}
+	
 	public Client_AutoBackup(String address) 
 	{
 		_csc = Client_Server_Connector.getInstance();
 		_protectedFolderName = nameTokenizer(address);
-		System.out.println(_protectedFolderName);
 	}
 	
 	// Methods
@@ -86,9 +91,6 @@ public class Client_AutoBackup implements PacketRule
 							temp[0] = AUTOBACKUP;
 							temp[1] = FILE;
 							temp[2] = (byte)String.valueOf(_fileSize).getBytes().length;
-							System.out.println(String.valueOf(_fileSize).getBytes().length);
-							System.out.println(_absoluteDirectory.getBytes().length);
-							System.out.println(_absoluteDirectory);
 							temp[3] = (byte)_absoluteDirectory.getBytes().length;
 							temp[4] = (byte)_protectedFolderName.getBytes().length;
 							Function.frontInsertByte(5, String.valueOf(_fileSize).getBytes(), temp);
@@ -97,6 +99,7 @@ public class Client_AutoBackup implements PacketRule
 							_csc.send.setPacket(temp).write();
 							
 							p.setAllocate(_fileSize);
+							_csc.send.setAllocate(_fileSize); // 
 							while(!p.isAllocatorEmpty())
 							{
 								_csc.send.setPacket(p.read().getByte()).write();
@@ -151,6 +154,36 @@ public class Client_AutoBackup implements PacketRule
 		return temp;
 	}
 	
+	private String nameTokenizer()
+	{
+		File tempFile = new File("Cryptonite_Client/log/protectedlog.ser");
+		FileReader fr;
+		BufferedReader br;
+		StringTokenizer st;
+		String temp = null;
+		try 
+		{
+			fr = new FileReader(tempFile);
+			br = new BufferedReader(fr);
+			st = new StringTokenizer(br.readLine(), "\\");
+			
+			while(st.hasMoreTokens())
+			{
+				temp = st.nextToken();
+			}
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return temp;
+	}
+	
 	private void treeTokenizer()
 	{
 		StringTokenizer st = new StringTokenizer(_absoluteDirectory, "\\");
@@ -175,5 +208,10 @@ public class Client_AutoBackup implements PacketRule
 				check = true;
 			}
 		}
+	}
+	
+	public String getProtectedName()
+	{
+		return _protectedFolderName;
 	}
 }

@@ -104,7 +104,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			end = i+5;
 		}
 		_fileSize = Long.parseLong(new String(sizeTemp).trim());
-		System.out.println("파일 용량 : " + _fileSize + " (Byte)");
+		//System.out.println("파일 용량 : " + _fileSize + " (Byte)");
 		
 		int max = end;
 		while(packet[max] != 0)
@@ -118,7 +118,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			addressTemp[i] = packet[i + end + 1];
 		}
 		_absoluteDirectory = new String(addressTemp).trim();
-		System.out.println("절대 경로 : " + _absoluteDirectory);
 		
 		byte[] protectedTemp = new byte[packet[4]];
 		for(int i = 0; i < protectedTemp.length; i++)
@@ -127,7 +126,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		}
 		_protectedFolderName = new String(protectedTemp).trim();
 		treeTokenizer();
-		System.out.println("보호 폴더 이름 : " + _protectedFolderName);
 		System.out.println("저장 경로 : " + _address);
 	}
 	
@@ -162,6 +160,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	@Override
 	public void running(int count) throws IOException 
 	{
+		System.out.println("Count : " + count);
 		if(count == 1) 
 		{ 
 			Checker(_activity.getReceiveEvent());
@@ -171,15 +170,16 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			}
 			else if(_checkProperty.equals("FILE"))
 			{
+				System.out.println("파일 용량 : " + _fileSize + " (Byte)");
 				_activity.receive.setAllocate(_fileSize);
 			}
 		}
 		else
 		{
+			System.out.println("프로퍼티 : " + _checkProperty);
 			if(_checkProperty.equals("DIRECTORY"))
 			{
 				_address = new String(_activity.receive.getByte()).trim();
-				System.out.println("어드레스 : " + _address);
 				File newFolder = new File(_address);
 				newFolder.mkdir();
 				System.out.println("AUTOBACKUP COMPLETE !!");
