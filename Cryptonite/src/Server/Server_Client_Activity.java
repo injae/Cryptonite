@@ -95,7 +95,7 @@ public class Server_Client_Activity implements PacketRule
 			{
 				_manager.requestManage(_clientCode);
 			}
-			else if(_funtionList.getLast()._packetMaxCount > LIMIT_PACKET)
+			else if(_funtionList.getLast().isCut(_packetCount))
 			{		
 				_manager.requestManage(_clientCode);
 			}
