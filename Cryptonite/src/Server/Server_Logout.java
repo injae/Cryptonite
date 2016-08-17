@@ -4,6 +4,11 @@ import java.io.IOException;
 
 import org.omg.CORBA.ACTIVITY_COMPLETED;
 
+/*
+ * @author In Jae Lee
+ * 
+ */
+
 public class Server_Logout extends Server_Funtion
 {
 	Server_Client_Manager _manager;

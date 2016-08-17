@@ -2,6 +2,11 @@ package Server;
 
 import java.io.IOException;
 
+/*
+ * @author In Jae Lee
+ * 
+ */
+
 public class Server_Send_Event extends Server_Funtion
 {
 

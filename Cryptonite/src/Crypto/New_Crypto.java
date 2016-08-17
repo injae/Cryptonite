@@ -8,10 +8,7 @@ public  class New_Crypto
 {
 	private Cipher _cipher;
 
-	public New_Crypto(Cipher cipher)
-	{
-		_cipher = cipher;
-	}
+	public New_Crypto(Cipher cipher) { _cipher = cipher; }
 	
 	//Execute Function
 	public byte[] endecription (byte[] target)
