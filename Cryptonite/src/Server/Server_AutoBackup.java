@@ -41,7 +41,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 	private RandomAccessFile _raf = null;
 	private FileChannel _fileChannel = null;
 	private PacketProcessor p = null;
-	
 
 	private void setFolder()
 	{
@@ -80,7 +79,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		
 		for(int j = 0; j < temp.length; j++)
 		{
-			System.out.println("템프 : " + temp[j]);
 			if(check)
 			{
 				_address += ("\\" + temp[j]);
@@ -106,6 +104,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			end = i+5;
 		}
 		_fileSize = Long.parseLong(new String(sizeTemp).trim());
+		System.out.println("파일 용량 : " + _fileSize + " (Byte)");
 		
 		int max = end;
 		while(packet[max] != 0)
@@ -119,7 +118,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			addressTemp[i] = packet[i + end + 1];
 		}
 		_absoluteDirectory = new String(addressTemp).trim();
-		System.out.println("절대경로 : " + _absoluteDirectory);
+		System.out.println("절대 경로 : " + _absoluteDirectory);
 		
 		byte[] protectedTemp = new byte[packet[4]];
 		for(int i = 0; i < protectedTemp.length; i++)
@@ -127,10 +126,9 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			protectedTemp[i] = packet[i + 900];
 		}
 		_protectedFolderName = new String(protectedTemp).trim();
-		
 		treeTokenizer();
-		System.out.println("어드레스 : " + _address);
-		System.out.println("파일 용량 : " + _fileSize + " (Byte)");
+		System.out.println("보호 폴더 이름 : " + _protectedFolderName);
+		System.out.println("저장 경로 : " + _address);
 	}
 	
 	@Override
@@ -158,18 +156,23 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			}
 
 			p = new PacketProcessor(_fileChannel, false);
-			_activity.receive.setAllocate(_fileSize);
 		}
 	}
 
 	@Override
 	public void running(int count) throws IOException 
 	{
-		System.out.println(count);
 		if(count == 1) 
 		{ 
 			Checker(_activity.getReceiveEvent());
-			_activity.send.setPacket(_address.getBytes(), 500).write();
+			if(_checkProperty.equals("DIRECTORY"))
+			{
+				_activity.send.setPacket(_address.getBytes(), 500).write();
+			}
+			else if(_checkProperty.equals("FILE"))
+			{
+				_activity.receive.setAllocate(_fileSize);
+			}
 		}
 		else
 		{
@@ -183,11 +186,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			}
 			else if(_checkProperty.equals("FILE"))
 			{	
-				/*System.out.println("파일까지 들어옴");
-				_address = new String(_activity.receive.getByte()).trim();
-				System.out.println(_address);
-				System.out.println("어드레스 : " + _address);*/
-				
 				p.setPacket(_activity.receive.getByte()).write();
 				
 				if(count == _packetMaxCount)
