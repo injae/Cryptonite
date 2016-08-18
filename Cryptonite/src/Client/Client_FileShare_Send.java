@@ -7,6 +7,11 @@ import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.nio.*;
 import java.util.*;
+
+import Crypto.Crypto_Factory;
+import Crypto.New_Crypto;
+import Crypto.userKeyGenerator;
+
 import java.io.*;
 
 /*
@@ -117,7 +122,7 @@ public class Client_FileShare_Send implements PacketRule
 				System.out.println(fileNameArray[i].limit());
 				Function.frontInsertByte(4, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
 				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, fileNameArray[i].array(), packet);
-				_csc.send.setPacket(packet).write();	// 1
+				_csc.send.setPacket(packet).write();	// event
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
 				_fileChannel = _raf.getChannel();

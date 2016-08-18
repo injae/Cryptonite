@@ -12,19 +12,20 @@ public class Client_Make_Group implements PacketRule
 		_csc = Client_Server_Connector.getInstance();
 	}
 	
-	public void make(String[] groupmember)
+	public void make(String[] groupmember, String gpname)
 	{
 		try 
 		{
 			byte[] event = new byte[1024];
 			event[0] = MAKE_GROUP;
-			event[1] = (byte)(1 + groupmember.length);
+			event[1] = (byte)(1 + groupmember.length + 1);
 			_csc.send.setPacket(event).write();
 			
 			for(int i = 0; i < groupmember.length; i++)
 			{
 				_csc.send.setPacket(groupmember[i].getBytes(), 500).write();
 			}
+			_csc.send.setPacket(gpname.getBytes(),500).write();
 		} 
 		catch (IOException e) 
 		{

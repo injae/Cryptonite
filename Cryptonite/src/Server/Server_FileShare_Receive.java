@@ -24,9 +24,8 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 {
 	public Server_FileShare_Receive(Server_Client_Activity activity) {
 		super(activity);
-		// TODO 磊悼 积己等 积己磊 胶庞
 	}
-
+	
 	// Address
 	private String _address = "Server_Folder\\Share";
 	
@@ -48,7 +47,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	private RandomAccessFile _raf = null;
 	private FileChannel _fileChannel = null;
 	PacketProcessor p = null;
-
+	
 	// Methods
 	private int sendPacketSize(long fileSize)
 	{
