@@ -48,14 +48,12 @@ public class Server_Login extends Server_Funtion
 			       { 
 				       String usCode = "@" + rs.getInt(6);
 		    		   Server_Client_Manager.getInstance().login(_activity.getClientCode(), usCode);
-		    		   _activity.setClientCode(usCode);
 			    	   _checkLogin[0]=2;
 			    	   if(get_count==1)
 			    	   {
 			    		   _checkLogin[1]=1;
 			    		   db.Update("update test set count=2 where id='"+id+"';");
 			    	   }
-	
 			    	}
 			       else 	{ _checkLogin[0]=3; }   
 		       }
