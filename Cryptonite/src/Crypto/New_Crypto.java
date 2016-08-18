@@ -6,6 +6,9 @@ import javax.crypto.IllegalBlockSizeException;
 
 public  class New_Crypto 
 {
+	public static final int ENCRYPT = Cipher.ENCRYPT_MODE;
+	public static final int DECRYPT = Cipher.DECRYPT_MODE;
+	
 	private Cipher _cipher;
 
 	public New_Crypto(Cipher cipher) { _cipher = cipher; }
@@ -16,7 +19,6 @@ public  class New_Crypto
 		try
 		{
 			return _cipher.doFinal(target);
-			
 		}catch (IllegalBlockSizeException e){
 			e.printStackTrace();
 		}catch (BadPaddingException e) {
@@ -25,12 +27,11 @@ public  class New_Crypto
 		return null;
 	}
 
-	
 	//Calculate capacity of file after encrypting
-	public static int calc(int capacity)
+	public long calc(long capacity)
 	{
-		int reminder = capacity%32;		
-		if (reminder != 0) { return capacity - reminder + 32; }
+		long remainder = capacity%32;		
+		if (remainder != 0) { return capacity - remainder + 32; }
 		else 			   { return capacity; }
 	}
 }

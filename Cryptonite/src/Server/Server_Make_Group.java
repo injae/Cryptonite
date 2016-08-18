@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import org.omg.stub.java.rmi._Remote_Stub;
+
 import Function.PacketProcessor;
 
 public class Server_Make_Group extends Server_Funtion
@@ -32,6 +35,7 @@ public class Server_Make_Group extends Server_Funtion
 		{
 			_activity.receive.setAllocate(500);
 		}
+		_activity.receive.setAllocate(500);
 	}
 
 	@Override
@@ -70,7 +74,9 @@ public class Server_Make_Group extends Server_Funtion
 					e.printStackTrace();
 				}
 			}
-			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "');");
+			String gpName = new String(_activity.receive.getByte()).trim();
+			
+			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"');");
 			
 			for(int i = 0; i < _members.size(); i++)
 			{
