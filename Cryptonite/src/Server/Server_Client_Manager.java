@@ -37,6 +37,7 @@ public class Server_Client_Manager implements PacketRule
 	public void login(String acCode ,String usCode)
 	{
 		_clientList.put(usCode, _clientList.remove(acCode));
+		_clientList.get(usCode).setClientCode(usCode);
 		_code_manager.removeCode(acCode);
 		System.out.println("Login: "+usCode);
 	}

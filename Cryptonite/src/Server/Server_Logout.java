@@ -27,14 +27,7 @@ public class Server_Logout extends Server_Funtion
 	@Override
 	public void running(int count) throws IOException 
 	{
-		if(count == 1) 
-		{
-			Checker(_activity.getReceiveEvent()); 
-			_manager.logOut(_activity.getClientCode());
-		}
-		else
-		{
-			
-		}
+		Checker(_activity.getReceiveEvent()); 
+		_manager.logOut(_activity.getClientCode());
 	}
 }

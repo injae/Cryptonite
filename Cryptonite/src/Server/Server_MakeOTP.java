@@ -62,7 +62,7 @@ public class Server_MakeOTP extends Server_Funtion
 					}
 				}
 				
-			} while(_checkOTP == false);
+			} while(!_checkOTP);
 			
 			_OTP_List.add(_OTP);
 			/*fos = new FileOutputStream("C:\\Server\\OTP\\OTP_List.ser");

@@ -41,7 +41,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import Function.Base64Coder;
+import Crypto.Base64Coder;
 import Function.PacketRule;
 import Server.Server_DataBase;
 

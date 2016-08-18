@@ -88,7 +88,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 
 		//send result to client
 		byte[] resultPacket = new byte[1];
-		if(result == true)
+		if(result)
 		{
 			resultPacket[0] = 1;
 			_activity.send.setPacket(resultPacket).write();

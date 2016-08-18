@@ -1,4 +1,4 @@
-package Function;
+package Crypto;
 
 public class Base64Coder
 {

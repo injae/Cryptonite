@@ -32,6 +32,7 @@ import javax.swing.JTextField;
 import Function.PacketProcessor;
 import Function.PacketRule;
 import Server.Server_DataBase;
+import Crypto.Base64Coder;
 import Crypto.Crypto;
 import Crypto.userKeyGenerator;
 
@@ -505,7 +506,7 @@ class SHA_256 implements PacketRule
 				_messageDigest = MessageDigest.getInstance("SHA-256");
 				_temp_pwd = _password.getBytes();
 				_messageDigest.update(_temp_pwd);
-				_password = new String(Function.Base64Coder.encode(_messageDigest.digest()));
+				_password = new String(Base64Coder.encode(_messageDigest.digest()));
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
