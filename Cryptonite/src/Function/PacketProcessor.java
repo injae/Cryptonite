@@ -154,6 +154,7 @@ public class PacketProcessor
 		allocate(array.length);
 		_buffer.put(array);
 		//System.out.println(_buffer.toString());	//socket test line
+
 		_buffer.flip();
 		while(_buffer.hasRemaining())
 		{

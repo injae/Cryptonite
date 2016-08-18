@@ -82,12 +82,18 @@ public class Client_FolderScan extends Thread
 		
 		File firstScan = new File(_address);
 		String[] fileList = firstScan.list();
+		System.out.println("파일의 개수 : " + fileList.length);
 		for(int i = 0; i < fileList.length; i++)
 		{
 			File temp = new File(_address + "\\" + fileList[i]);
 			if(temp.isDirectory())
 			{
+				System.out.println("New Folder is Created >> " + _address + "\\" + fileList[i]);
 				new Client_FolderScan(_address + "\\" + fileList[i]);
+			}
+			else if(temp.isFile())
+			{
+				System.out.println("New File is Created >> " + _address + "\\" + fileList[i]);
 			}
 			_cab.autoBackup(_address + "\\" + fileList[i]);
 		}
@@ -115,7 +121,6 @@ public class Client_FolderScan extends Thread
 	        				_fileName = path.getFileName().toString();
 	        				System.out.println("New Folder is Created >> " + _fileName);
 	        				_absoluteDirectory = _isDirectory.getPath();
-	        				System.out.println(_absoluteDirectory);
 	        				new Client_FolderScan(_absoluteDirectory);
 	        				_cab.autoBackup(_absoluteDirectory);
 	        			}
