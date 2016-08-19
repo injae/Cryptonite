@@ -112,7 +112,6 @@ public class Client_Testmain extends JFrame{
         	}
         });
        
-        
         _FileReceive = new JButton(new ImageIcon("img/test_receivedbt.png"));
         _FileReceive.setBounds(30, 200, 400, 50);
         _FileReceive.setBorderPainted(false);

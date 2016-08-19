@@ -22,7 +22,5 @@ public class Client_Logout implements PacketRule{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 }
