@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Crypto.SHAEncrypt;
 import Function.Client_Server_Connector;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -334,7 +335,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 css.send.setPacket(op).write();
                 css.send.setPacket(mid.getBytes(),500).write();
-                css.send.setPacket(mPassword.getBytes(),500).write();
+                css.send.setPacket(SHAEncrypt.SHAEncrypt(mPassword).getBytes(),500).write();
 
                 receiveData = css.receive.read().getByte();
 
@@ -376,6 +377,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                finish();
             }
         }
 

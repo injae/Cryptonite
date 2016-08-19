@@ -122,7 +122,6 @@ public class PacketProcessor
     {
         allocate(LIMIT_SIZE);
         int size = _input.read(_buffer);
-        System.out.println(" "+size+" "+_buffer.hasRemaining());
         while(_buffer.hasRemaining())
         {
             _input.read(_buffer);

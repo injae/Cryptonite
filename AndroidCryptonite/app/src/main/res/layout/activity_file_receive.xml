@@ -18,6 +18,14 @@
         android:id="@+id/OTP"
         android:hint="OTP" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="눌러서 경로선택.."
+        android:id="@+id/path"
+        android:layout_gravity="center_horizontal"
+        android:textSize="32dp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
