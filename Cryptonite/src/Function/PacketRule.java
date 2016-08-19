@@ -15,6 +15,7 @@ public interface PacketRule
 	byte MAKE_GROUP = 8;
 	byte EVENT = 9;
 	byte FILE_LIST_REQUEST = 10;
+	byte FILE_DOWNLOAD = 11;
 	//---------------------------------------
 	
 	// AUTOBACKUP(1) AUTOBACKUP EVENT

@@ -94,7 +94,6 @@ public class Client_FileShare_Receive implements PacketRule
 						{
 							p.setPacket(_csc.receive.read().getByte()).write();
 						}
-						_raf.close();
 						p.close();
 					}
 				}

@@ -31,6 +31,8 @@ public class Server_Function_Factory implements PacketRule
 			return new Server_Make_Group(activity);
 		case FILE_LIST_REQUEST:
 			return new Server_File_ListSender(activity);
+		case FILE_DOWNLOAD:
+			return new Server_File_Download(activity);
 		case EVENT:
 			return new Server_Send_Event(activity);
 		default:
