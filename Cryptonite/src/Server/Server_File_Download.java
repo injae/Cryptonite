@@ -29,9 +29,9 @@ public class Server_File_Download extends Server_Funtion
 		if(count == 1) { Checker(_activity.getReceiveEvent()); }
 		else
 		{
-			
 			File file = new File(new String(_activity.receive.getByte()).trim());
 			_fileSize = file.length();
+			_activity.send.setPacket(String.valueOf(_fileSize).getBytes(),500);
 			RandomAccessFile raf = new RandomAccessFile(file, "rw");
 			_ps = new PacketProcessor(raf.getChannel(), false);
 			_ps.setAllocate(_fileSize);
