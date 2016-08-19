@@ -66,14 +66,18 @@ public class Server_Client_Manager implements PacketRule
 	{
 		if(_clientList.get(clientCode).receive.isEmpty()) 
 		{
-			Server_Client_Activity activity = _clientList.remove(clientCode);
+			Server_Client_Activity activity = _clientList.get(clientCode);
 			if(_code_manager.isAcCode(clientCode))
 			{
+				_clientList.remove(clientCode);
 				_code_manager.removeCode(clientCode);
 			}
 			else
 			{
 				logOut(clientCode);
+				String code = activity.getClientCode();
+				_clientList.remove(code);
+				_code_manager.removeCode(code);
 			}
 			activity.close();
 			

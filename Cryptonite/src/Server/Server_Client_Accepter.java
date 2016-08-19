@@ -71,7 +71,7 @@ public class Server_Client_Accepter extends Thread
 			    }	
 			    _manager.run();			 
 			}
-			catch (IOException e) 
+			catch (Exception e) 
 			{
 				Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
 				_manager.stopManaging(activity.getClientCode());
