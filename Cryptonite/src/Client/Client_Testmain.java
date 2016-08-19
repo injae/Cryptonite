@@ -13,6 +13,7 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -148,7 +149,9 @@ public class Client_Testmain extends JFrame{
         		test[0] = "a";
         		test[1] = "b";
         		test[2] = "c";
-        		new Client_Make_Group().make(test);
+        		Scanner scanner = new Scanner(System.in);
+        		String temp = scanner.nextLine();
+        		new Client_Make_Group().make(test, temp);
         		byte[] event = new Client_Receive_Event().getEvent();
     			byte[] buffer = new byte[1021]; 
     			for(int i = 0; i < buffer.length; i++)
