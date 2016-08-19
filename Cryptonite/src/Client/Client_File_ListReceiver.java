@@ -23,7 +23,7 @@ public class Client_File_ListReceiver implements PacketRule
 	}
 	
 	// Methods
-	public void click(byte mod, String name)
+	public void click(byte mod, String gpCode)
 	{
 		try 
 		{
@@ -32,8 +32,8 @@ public class Client_File_ListReceiver implements PacketRule
 			event[1] = mod;
 			if(mod == 1)	// Group
 			{
-				byte[] temp = name.getBytes();
-				for(int i = 0; i < name.getBytes().length; i++)
+				byte[] temp = gpCode.getBytes();
+				for(int i = 0; i < gpCode.getBytes().length; i++)
 				{
 					event[i + 2] = temp[i];
 				}
