@@ -137,7 +137,7 @@ public class PacketProcessor
 		{
 			_input.read(_buffer);
 		}
-		//System.out.println(_buffer);	//socket test line
+		System.out.println(_buffer);	//socket test line
 		_buffer.flip();
 		
 		byte[] array = new byte[_buffer.remaining()];

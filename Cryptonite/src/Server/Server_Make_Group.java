@@ -29,7 +29,7 @@ public class Server_Make_Group extends Server_Funtion
 	{
 		System.out.println("packet[1] : " + packet[1]);
 		_packetMaxCount = packet[1];
-		_groupMemberSize = packet[1] - 1;
+		_groupMemberSize = packet[1] - 2;
 		
 		for(int i = 0; i < _groupMemberSize; i++)
 		{
