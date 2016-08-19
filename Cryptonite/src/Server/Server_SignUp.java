@@ -24,7 +24,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	{
 		_mode=packet[1];
 		if(_mode == DUPLICATION_CHECK_FUNCTION) { _activity.receive.setAllocate(500); }
-		else if(_mode == SIGN_UP_FUNCTION) 		{ _activity.receive.setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500);}
+		else if(_mode == SIGN_UP_FUNCTION) 		{ _activity.receive.setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500);}
 		_packetMaxCount = packet[2];	
 	}
 
@@ -78,6 +78,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		String id=new String(_activity.receive.getByte()).trim();
 		String password=new String(_activity.receive.getByte()).trim();
 		String email=new String(_activity.receive.getByte()).trim();
+		
 		userKeyGenerator ukg = new userKeyGenerator();
 		ukg.init();
 		String aeskey= ukg.getAesKeyToString();
