@@ -145,21 +145,8 @@ public class Client_Testmain extends JFrame{
         _Cloud.setPressedIcon(new ImageIcon("img/tset_cloudbt_hv.png"));
         _Cloud.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		String[] test = new String[3];
-        		test[0] = "a";
-        		test[1] = "b";
-        		test[2] = "c";
-        		Scanner scanner = new Scanner(System.in);
-        		String temp = scanner.nextLine();
-        		new Client_Make_Group().make(test, temp);
-        		byte[] event = new Client_Receive_Event().getEvent();
-    			byte[] buffer = new byte[1021]; 
-    			for(int i = 0; i < buffer.length; i++)
-    			{
-    				buffer[i] = event[i+3];
-    			}
-    			System.out.println("GroupCode: "+new String(buffer).trim());
-    					
+        		new Client_Testmain_group();
+        		dispose();
         	}
         });
         
