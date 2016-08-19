@@ -14,6 +14,7 @@ public interface PacketRule
 	byte LOGOUT	= 7;
 	byte MAKE_GROUP = 8;
 	byte EVENT = 9;
+	byte FILE_LIST_REQUEST = 10;
 	//---------------------------------------
 	
 	// AUTOBACKUP(1) AUTOBACKUP EVENT
