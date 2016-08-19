@@ -25,6 +25,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
@@ -73,6 +74,16 @@ public class Client_Login extends JFrame implements PacketRule
     
     private Client_Server_Connector csc;
     private Client_FolderSelector cfs = null;
+    
+
+    private byte[] gpcount=null;
+    
+    private String name=null;
+    private String uscode=null;
+    private String aeskey=null;
+		
+    private ArrayList<String> gpcode = new ArrayList<String>();
+    private ArrayList<String> gpname = new ArrayList<String>();
     /*//private Client_FolderChooser_UI fc = null;
     
     // 로그인 카운터 읽어주기 위한 것
@@ -235,8 +246,38 @@ public class Client_Login extends JFrame implements PacketRule
 	          		case 2 : 
 	          			showMessage("LOGIN", "Welcome,\t"+_id);
 	          			dispose();
+	          			
 	          			Client_Testmain Main = new Client_Testmain();
-	          			if(checkLogin[1]==1)
+	          			
+	          			gpcount=csc.receive.setAllocate(100).read().getByte();
+	          			
+	          			name=csc.receive.setAllocate(500).read().getByte().toString().trim();
+	          			uscode=csc.receive.setAllocate(100).read().getByte().toString().trim();
+	          			aeskey=csc.receive.setAllocate(500).read().getByte().toString().trim();
+	          			
+	          			System.out.println(gpcount[0]);
+	          			System.out.println(name);
+	          			System.out.println(uscode);
+	          			System.out.println(aeskey);
+	          			
+	          		/*	String test = "01234";
+	          			char[] t1 = new char[5];
+	          			for(int i = 0; i < t1.length; i++)
+	          			{
+	          				t1[i] = test.charAt(i//groupname length);
+	          			}
+	          		*/
+	          			System.out.println(gpcount[0]);
+	          			
+	          			for(int i =0; i < gpcount[0]; i++)
+	          			{
+	          				gpcode.add(new String(csc.receive.setAllocate(100).read().getByte()).trim());
+	          				gpname.add(new String(csc.receive.setAllocate(500).read().getByte()).trim());
+	          			}
+	   
+	         
+	          			
+	          			if(checkLogin[1]==1)//count 1일때
 	          			{
 	          				showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
 	          				cfs = new Client_FolderSelector();
