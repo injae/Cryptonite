@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 
 import Client.Client_Testmain.MyPanel;
 
-public class Client_Testmain_group extends JFrame {
+public class Client_Testmain_group extends JFrame{
 	
 public static void main(String[] args){
 		
@@ -44,7 +44,9 @@ public static void main(String[] args){
 	//JButton _ProtectedFile;
 	JButton _Ok;//Is it right?
 	
+	Client_TestGroupName tgn;
 	Client_Testmain_group thisJFrame;
+	
 	public Client_Testmain_group(){
 		
 	/*	WindowListener exitListener = new WindowAdapter() {
@@ -106,7 +108,8 @@ public static void main(String[] args){
         _Create.setPressedIcon(new ImageIcon("img/test_create_hv.png"));
         _Create.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		new Client_TestGroupName();
+        		tgn=new Client_TestGroupName();
+        		Creategroup();
         	}
         });
        
@@ -146,7 +149,6 @@ public static void main(String[] args){
     					
         	}
         });*/
-        
         _layeredPane.add(_Create);
         _layeredPane.add(_Participate);
        // _layeredPane.add(_ProtectedFile);
@@ -156,4 +158,21 @@ public static void main(String[] args){
         getContentPane().add(_layeredPane);          
         thisJFrame.setVisible(true);
 	}
+	public void Creategroup(){
+		String[] test = new String[3];
+		test[0] = "a";
+		test[1] = "b";
+		test[2] = "c";
+		String temp = tgn.Name;
+		new Client_Make_Group().make(test, temp);
+		byte[] event = new Client_Receive_Event().getEvent();
+		byte[] buffer = new byte[1021]; 
+		for(int i = 0; i < buffer.length; i++)
+		{
+			buffer[i] = event[i+3];
+		}
+		System.out.println("GroupCode : "+new String(buffer).trim());
+		System.out.println("GroupName : "+temp);	 
+	}
+
 }
