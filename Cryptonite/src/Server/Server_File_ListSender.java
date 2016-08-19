@@ -25,12 +25,15 @@ public class Server_File_ListSender extends Server_Funtion
 		_packetMaxCount = 1;
 		_cutSize = 1;
 	 	_mod = packet[1];
-	 	byte[] temp = new byte[packet.length - 2];
-	 	for(int i = 0; i < packet.length - 2; i++)
+	 	if(_mod == 1)
 	 	{
-	 		temp[i] = packet[i + 2];
+	 		byte[] temp = new byte[packet.length - 2];
+		 	for(int i = 0; i < packet.length - 2; i++)
+		 	{
+		 		temp[i] = packet[i + 2];
+		 	}
+		 	_name = new String(temp).trim();
 	 	}
-	 	_name = new String(temp).trim();
 	}
 
 	@Override
@@ -54,7 +57,7 @@ public class Server_File_ListSender extends Server_Funtion
 			switch(_mod)
 			{
 			case 1:
-				ResultSet rs = Server_DataBase.getInstance().Query("select *from grouplist where gpname = '"+_name+"');");
+				ResultSet rs = Server_DataBase.getInstance().Query("select *from grouplist where gpname = '" + _name + "');");
 				rs.next();
 				_folderName = "Server_Folder//Backup//$" + rs.getInt(1);
 				break;
@@ -70,7 +73,7 @@ public class Server_File_ListSender extends Server_Funtion
 	
 	class ListSender extends Thread
 	{
-		private long _fileCount = 0;
+		private int _fileCount = 0;
 
 		
 		public void run()
