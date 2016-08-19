@@ -118,7 +118,6 @@ public class Server_FileShare_Send extends Server_Funtion
 					{
 						_activity.send.setPacket(p.read().getByte()).write();
 					}
-					_raf.close();
 					p.close();
 					
 					sendingFile.delete();
