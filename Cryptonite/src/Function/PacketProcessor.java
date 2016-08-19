@@ -136,6 +136,10 @@ public class PacketProcessor
 		while(_buffer.hasRemaining())
 		{
 			_input.read(_buffer);
+			if(_buffer.remaining() == _buffer.limit())
+			{
+				System.out.println("This packet is wrong packet"); break;
+			}
 		}
 		//System.out.println("read : " + _buffer);	//socket test line
 		_buffer.flip();

@@ -36,16 +36,16 @@ public class Server_Login extends Server_Funtion
 		
 			byte[] groupcount=new byte[1];
 			
-			String myname=null;
-			String mygrouplist=null;
-			String aeskey=null;
+			String myname = null;
+			String mygrouplist = null;
+			String aeskey = null;
 			String uscode = null;
 			String id = new String( _activity.receive.getByte()).trim();
 			String password= new String( _activity.receive.getByte()).trim();
 			
 			try
 		    {
-			   byte[] _checkLogin=new byte[1024];
+			   byte[] _checkLogin = new byte[1024];
 		       ResultSet rs  = db.Query("select * from test where id like '"+ id +"';");  
 		       if(!rs.next()) 
 		       {	 
@@ -63,24 +63,25 @@ public class Server_Login extends Server_Funtion
 				       mygrouplist=rs.getString(10);
 				       uscode = "@" + rs.getInt(6);
 				       
-				       StringTokenizer st=new StringTokenizer(mygrouplist, ":");
-				       String[] grouplist = new String[5];
-				      
-				       int county = 0;
-				       while(st.hasMoreTokens())
+				       if(mygrouplist == null && mygrouplist.length() == 0)
 				       {
-				    	  gpcode.add(st.nextToken().trim());
-				    	  
-				    	   ResultSet rsgp=db.Query("select * from grouplist where gpcode like "+Integer.parseInt(gpcode.get(county).substring(1))+";");
-				    	   rsgp.next();
-				    	   
-				    	   county++;				    	 
-				    	   gpname.add(rsgp.getString(3));
+					       StringTokenizer st = new StringTokenizer(mygrouplist, ":");
+	
+					       int county = 0;
+					       while(st.hasMoreTokens())
+					       {
+					    	  gpcode.add(st.nextToken().trim());
+					    	  
+					    	   ResultSet rsgp=db.Query("select * from grouplist where gpcode like "+Integer.parseInt(gpcode.get(county).substring(1))+";");
+					    	   rsgp.next();
+					    	   
+					    	   county++;				    	 
+					    	   gpname.add(rsgp.getString(3));
+					       }
+					       System.out.println("county"+county);
+					       groupcount[0] = (byte)(gpcode.size());
+					       System.out.println(groupcount[0]);
 				       }
-				       System.out.println("county"+county);
-				       groupcount[0] = (byte)(gpcode.size());
-				       System.out.println(groupcount[0]);
-		    		   
 				       Server_Client_Manager.getInstance().login(_activity.getClientCode(), uscode);
 			    	   
 				       _checkLogin[0]=2;
@@ -104,7 +105,6 @@ public class Server_Login extends Server_Funtion
 		       System.out.println(gpcode.size());
 		     for(int i =0; i < gpcode.size(); i++)
 		     {
-		    	 
 		    	 _activity.send.setPacket(gpcode.get(i).getBytes(), 100).write();
 		    	 _activity.send.setPacket(gpname.get(i).getBytes(), 500).write();
 		     }

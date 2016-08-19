@@ -31,7 +31,8 @@ public class Server_File_Download extends Server_Funtion
 		{
 			File file = new File(new String(_activity.receive.getByte()).trim());
 			_fileSize = file.length();
-			_activity.send.setPacket(String.valueOf(_fileSize).getBytes(),500);
+			
+			_activity.send.setPacket(String.valueOf(_fileSize).getBytes(),500).write();
 			RandomAccessFile raf = new RandomAccessFile(file, "rw");
 			_ps = new PacketProcessor(raf.getChannel(), false);
 			_ps.setAllocate(_fileSize);
