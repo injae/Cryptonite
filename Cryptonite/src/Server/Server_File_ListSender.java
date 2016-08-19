@@ -65,7 +65,9 @@ public class Server_File_ListSender extends Server_Funtion
 				_folderName = "Server_Folder//Backup//"+_activity.getClientCode();
 				break;
 			}
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 		
@@ -74,35 +76,36 @@ public class Server_File_ListSender extends Server_Funtion
 	class ListSender extends Thread
 	{
 		private int _fileCount = 0;
-
 		
 		public void run()
 		{
+			searchFolder();
 			readFolder(_folderName);
 			_fileCount = _fileList.size();
+			System.out.println("");
 			
 			try 
 			{
-				_activity.send.setPacket(String.valueOf(_fileCount).getBytes(), 100);
+				_activity.send.setPacket(String.valueOf(_fileCount).getBytes(), 100).write();
 				while(!_fileList.isEmpty())
 				{
 					_activity.send.setPacket(_fileList.remove().getBytes(), 1024).write();
 				}
-			} catch (IOException e) {
-				// TODO 자동 생성된 catch 블록
+			} 
+			catch (IOException e) 
+			{
 				e.printStackTrace();
 			}
 		}
 	
 		private void readFolder(String path)
 		{
-			searchFolder();
 			File _myFolder = new File(path);
 			
 			File[] fileList = _myFolder.listFiles();
 			
 			for(int i =0; i < fileList.length; i++)
-			{			
+			{
 				if(fileList[i].isFile())
 				{
 					_fileList.add(fileList[i].getPath());
