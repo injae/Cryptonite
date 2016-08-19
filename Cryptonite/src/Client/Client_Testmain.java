@@ -111,7 +111,7 @@ public class Client_Testmain extends JFrame{
         		new Client_FileShare_Send().click();
         	}
         });
-        
+       
         
         _FileReceive = new JButton(new ImageIcon("img/test_receivedbt.png"));
         _FileReceive.setBounds(30, 200, 400, 50);
