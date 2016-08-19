@@ -383,9 +383,9 @@ import Crypto.userKeyGenerator;
 
 				if(_goSignUP){
 
-					userKeyGenerator _ukg = new userKeyGenerator();
-					_ukg.init();
-					_sha = new SHA_256(_name,_id,_password,_email,_ukg.getAesKeyToString(), _ukg.getSaltToString(), _ukg.getIterationCountToString());
+					/*userKeyGenerator _ukg = new userKeyGenerator();
+					_ukg.init();*/
+					_sha = new SHA_256(_name,_id,_password,_email);
 					
 					int result=_sha.result[0];
 					
@@ -440,7 +440,7 @@ class SHA_256 implements PacketRule
 		private byte _size;
 		byte[] result;
 
-		public SHA_256(String _name, String _id, String _password, String _email, String _AES_Key, String _salt, String _iteration)
+		public SHA_256(String _name, String _id, String _password, String _email)
 		{	
 
 			_css=Client_Server_Connector.getInstance();
@@ -449,9 +449,9 @@ class SHA_256 implements PacketRule
 			this._id = _id;
 			this._password = _password;
 			this._email = _email;
-			this._AES_Key = _AES_Key;
+/*			this._AES_Key = _AES_Key;
 		 	this._salt = _salt;
-		 	this._iteration = _iteration;
+		 	this._iteration = _iteration;*/
 
 			SHA_Encryption();
 			sendPrivacy();
@@ -460,7 +460,7 @@ class SHA_256 implements PacketRule
 		public void sendPrivacy(){
 			try
 			{
-				_size=8;
+				_size=5;
 						
 				byte[] _buf = new byte[1024];
 				_buf[0] = SIGN_UP;
@@ -473,9 +473,9 @@ class SHA_256 implements PacketRule
 				_css.send.setPacket(_id.getBytes(),500).write();
 				_css.send.setPacket(_password.getBytes(),500).write();
 				_css.send.setPacket(_email.getBytes(),500).write();
-				_css.send.setPacket(_AES_Key.getBytes(), 500).write();
+/*				_css.send.setPacket(_AES_Key.getBytes(), 500).write();
 				_css.send.setPacket(_salt.getBytes(), 500).write();
-				_css.send.setPacket(_iteration.getBytes(), 500).write();
+				_css.send.setPacket(_iteration.getBytes(), 500).write();*/
 				
 				_css.receive.setAllocate(1);
 				result = _css.receive.read().getByte();

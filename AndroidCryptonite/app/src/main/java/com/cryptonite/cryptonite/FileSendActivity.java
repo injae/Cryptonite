@@ -19,8 +19,12 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import java.io.File;
 import java.util.ArrayList;
 
+import Function.C_Toast;
 import Function.Client_FileShare_Send;
+import Function.Client_Logout;
 import Function.PathPicker;
+
+import static Function.isApplicationSentToBackground.isApplicationSentToBackground;
 
 public class FileSendActivity extends AppCompatActivity {
 
@@ -44,10 +48,12 @@ public class FileSendActivity extends AppCompatActivity {
         picker.setDialogSelectionListener(new DialogSelectionListener() {
             @Override
             public void onSelectedFilePaths(String[] files) {
-
-                fileSendTask fs = new fileSendTask();
-                fs.execute(files);
-
+                if(files.length!=0) {
+                    fileSendTask fs = new fileSendTask();
+                    fs.execute(files);
+                } else {
+                    new C_Toast(getApplicationContext()).showToast("File doesn't selected",Toast.LENGTH_LONG);
+                }
             }
         });
         picker.show();
@@ -68,6 +74,15 @@ public class FileSendActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if(isApplicationSentToBackground(this)) {
+            new Client_Logout();
+            super.onDestroy();
+        } else {
+            super.onDestroy();
+        }
+    }
 
 }
 

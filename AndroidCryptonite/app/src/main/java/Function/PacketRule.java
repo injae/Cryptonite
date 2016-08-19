@@ -11,6 +11,10 @@ public interface PacketRule
     byte FILE_SHARE_SEND = 4;
     byte SIGN_UP = 5;
     byte MAKE_OTP = 6;
+    byte LOGOUT	= 7;
+    byte MAKE_GROUP = 8;
+    byte EVENT = 9;
+    byte FILE_LIST_REQUEST = 10;
     //---------------------------------------
 
     // AUTOBACKUP(1) AUTOBACKUP EVENT
@@ -32,4 +36,12 @@ public interface PacketRule
 	 * 4. FileSize
 	 *
 	 * */
+
+	/*
+	 * Server -> Client event rule
+	 * event size = 1024;
+	 * event[0] ~ event[2] is event code
+	 * event kind
+	 * 001 = new group code
+	 */
 }

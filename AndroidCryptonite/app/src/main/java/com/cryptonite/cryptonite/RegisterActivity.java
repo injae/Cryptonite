@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 
+import Crypto.SHAEncrypt;
 import Function.C_Toast;
 import Function.Client_Server_Connector;
 
@@ -290,7 +291,7 @@ public class RegisterActivity extends AppCompatActivity {
                     css.send.setPacket(op).write();
                     css.send.setPacket(name.array(),500).write();
                     css.send.setPacket(mid.getBytes(),500).write();
-                    css.send.setPacket(mPassword.getBytes(),500).write();
+                    css.send.setPacket(SHAEncrypt.SHAEncrypt(mPassword).getBytes(),500).write();
                     css.send.setPacket(memail.getBytes(),500).write();
 
                     byte[] result = css.receive.read().getByte();

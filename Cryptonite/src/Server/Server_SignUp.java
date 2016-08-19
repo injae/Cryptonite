@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import Crypto.userKeyGenerator;
 import Function.PacketRule;
 
 public class Server_SignUp extends Server_Funtion  implements PacketRule
@@ -23,7 +24,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	{
 		_mode=packet[1];
 		if(_mode == DUPLICATION_CHECK_FUNCTION) { _activity.receive.setAllocate(500); }
-		else if(_mode == SIGN_UP_FUNCTION) 		{ _activity.receive.setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500);}
+		else if(_mode == SIGN_UP_FUNCTION) 		{ _activity.receive.setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500).setAllocate(500);}
 		_packetMaxCount = packet[2];	
 	}
 
@@ -77,9 +78,11 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		String id=new String(_activity.receive.getByte()).trim();
 		String password=new String(_activity.receive.getByte()).trim();
 		String email=new String(_activity.receive.getByte()).trim();
-		String aeskey=new String(_activity.receive.getByte()).trim();
-		String salt=new String(_activity.receive.getByte()).trim();
-		String iteration=new String(_activity.receive.getByte()).trim();
+		userKeyGenerator ukg = new userKeyGenerator();
+		ukg.init();
+		String aeskey= ukg.getAesKeyToString();
+		String salt= ukg.getSaltToString();
+		String iteration= ukg.getIterationCountToString();
 		
 		String usCode = Server_Code_Manager.getInstance().getUsCode();
 		int code = Integer.parseInt(usCode.substring(1));

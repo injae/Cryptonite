@@ -18,7 +18,7 @@ import java.nio.charset.Charset;
 public class Client_FileShare_Receive implements PacketRule
 {
     // OTP Instance
-    private String _OTP = "937012";
+    private String _OTP;
 
     // File Instance
     private String _downloadFolder = null;
@@ -38,8 +38,9 @@ public class Client_FileShare_Receive implements PacketRule
         _csc = Client_Server_Connector.getInstance();
     }
 
-    public void receiveFiles(String path)
+    public void receiveFiles(String path, String otp)
     {
+        this._OTP = otp;
         Charset cs = Charset.forName("UTF-8");
         if(_OTP.length() != 6)
         {
@@ -61,6 +62,7 @@ public class Client_FileShare_Receive implements PacketRule
 
                     _csc.send.setPacket(_OTP.getBytes(), 30).write();	// OTP Sending
 
+                    _csc.receive.setAllocate(500);
                     _downloadFlag = new String(_csc.receive.read().getByte()).trim();
 
                     if(_downloadFlag.equals("FALSE"))
@@ -79,7 +81,7 @@ public class Client_FileShare_Receive implements PacketRule
                         System.out.println("파일 사이즈 : " + _fileSize);
 
                         System.out.println(_csc.receive.allocatorCapacity());
-                        _raf = new RandomAccessFile(_downloadFolder + "\\" + _fileName, "rw");
+                        _raf = new RandomAccessFile(_downloadFolder + "/" + _fileName, "rw");
 
                         p = new PacketProcessor(_raf.getChannel(), false);
                         _csc.receive.setAllocate(_fileSize);
