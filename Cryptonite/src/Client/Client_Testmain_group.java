@@ -98,12 +98,12 @@ public static void main(String[] args){
         MyPanel _panel = new MyPanel();
         _panel.setBounds(0, 0, 470, 700);
         
-        _Create = new JButton(new ImageIcon("img/teset_sendbt.png"));
+        _Create = new JButton(new ImageIcon("img/test_create.png"));
         _Create.setBounds(30, 100, 400, 50);
         _Create.setBorderPainted(false);
         _Create.setFocusPainted(false);
         _Create.setContentAreaFilled(false);
-        _Create.setPressedIcon(new ImageIcon("img/tset_sendbt_hv.png"));
+        _Create.setPressedIcon(new ImageIcon("img/test_create_hv.png"));
         _Create.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		new Client_TestGroupName();
@@ -111,12 +111,12 @@ public static void main(String[] args){
         });
        
         
-        _Participate = new JButton(new ImageIcon("img/test_receivedbt.png"));
+        _Participate = new JButton(new ImageIcon("img/test_participate.png"));
         _Participate.setBounds(30, 200, 400, 50);
         _Participate.setBorderPainted(false);
         _Participate.setFocusPainted(false);
         _Participate.setContentAreaFilled(false);
-        _Participate.setPressedIcon(new ImageIcon("img/test_receivebt_hv.png"));
+        _Participate.setPressedIcon(new ImageIcon("img/test_participate_hv.png"));
         _Participate.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		
