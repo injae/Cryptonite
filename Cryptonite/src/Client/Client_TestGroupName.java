@@ -20,7 +20,6 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Client.Client_TestOTP.MyPanel;
 
 public class Client_TestGroupName extends JFrame{
 	public static void main(String[] args){
@@ -115,5 +114,8 @@ public class Client_TestGroupName extends JFrame{
         
         getContentPane().add(_layeredPane);          
         setVisible(true);
+	}
+	public String GiveName(){
+		return Name;
 	}
 }
