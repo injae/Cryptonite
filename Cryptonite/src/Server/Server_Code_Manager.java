@@ -136,4 +136,10 @@ public class Server_Code_Manager
 			_usableGpCode.add(gpCode);
 		}
 	}
+	
+	public boolean isAcCode(String code)
+	{
+		if(code.charAt(0) == '#')	{ return true; }
+		else 						{ return false; }
+	}
 }
