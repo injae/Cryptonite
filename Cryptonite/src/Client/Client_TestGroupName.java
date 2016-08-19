@@ -104,7 +104,7 @@ public class Client_TestGroupName extends JFrame{
         _OK.setPressedIcon(new ImageIcon("img/test_ok_hv.png"));
         _OK.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
-         		System.out.println("OTP : "+Name);
+         		System.out.println("Group : "+Name);
          		new Client_FileShare_Receive().receiveFiles(Name);
          		dispose();
          	}
