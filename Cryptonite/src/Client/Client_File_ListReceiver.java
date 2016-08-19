@@ -44,6 +44,7 @@ public class Client_File_ListReceiver implements PacketRule
 			for(int i = 0; i < _fileCount; i++)
 			{
 				_fileList.add(new String(_csc.receive.setAllocate(1024).read().getByte()).trim());
+				System.out.println(_fileList.get(i));
 			}
 		} 
 		catch (IOException e) 
