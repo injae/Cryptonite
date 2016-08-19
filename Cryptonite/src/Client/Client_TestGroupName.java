@@ -103,9 +103,23 @@ public class Client_TestGroupName extends JFrame{
         _OK.setPressedIcon(new ImageIcon("img/test_ok_hv.png"));
         _OK.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
-         		System.out.println("Group : "+Name);
-         		new Client_FileShare_Receive().receiveFiles(Name);
-         		dispose();
+         		String[] test = new String[3];
+        		test[0] = "a";
+        		test[1] = "b";
+        		test[2] = "c";
+        		String temp = Name;
+        		new Client_Make_Group().make(test, temp);
+        		byte[] event = new Client_Receive_Event().getEvent();
+        		byte[] buffer = new byte[1021]; 
+        		for(int i = 0; i < buffer.length; i++)
+        		{
+        			buffer[i] = event[i+3];
+        		}
+        		System.out.println("Name ="+Name);
+        		System.out.println("GroupCode : "+new String(buffer).trim());
+        		System.out.println("GroupName : "+temp);
+         		
+        		dispose();
          	}
         });
         
