@@ -2,6 +2,7 @@ package Client;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import Function.PacketRule;
 
@@ -61,7 +62,7 @@ public class Client_File_ListReceiver implements PacketRule
 			
 			for(int i = 0 ; i < _fileCount; i++)
 			{
-				_cfd.requestFile(_fileList.get(i), _downloadFolder);
+				_cfd.requestFile(_fileList.get(i), _downloadFolder + "\\" + nameTokenizer(_fileList.get(i)));
 			}
 		} 
 		catch (IOException e) 
@@ -72,5 +73,18 @@ public class Client_File_ListReceiver implements PacketRule
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	private String nameTokenizer(String target)
+	{
+		StringTokenizer st = new StringTokenizer(target, "\\");
+		String temp = null;;
+		
+		while(st.hasMoreTokens())
+		{
+			temp = st.nextToken();
+		}
+		
+		return temp;
 	}
 }
