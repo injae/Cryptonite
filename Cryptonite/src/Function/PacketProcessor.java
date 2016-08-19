@@ -141,7 +141,7 @@ public class PacketProcessor
 				System.out.println("This packet is wrong packet"); break;
 			}
 		}
-		//System.out.println("read : " + _buffer);	//socket test line
+		System.out.println("read : " + _buffer);	//socket test line
 		_buffer.flip();
 		
 		byte[] array = new byte[_buffer.remaining()];
@@ -157,7 +157,7 @@ public class PacketProcessor
 		byte[] array =_queue.remove();
 		allocate(array.length);
 		_buffer.put(array);
-		//System.out.println("write : " + _buffer.toString());	//socket test line
+		System.out.println("write : " + _buffer.toString());	//socket test line
 
 		_buffer.flip();
 		while(_buffer.hasRemaining())

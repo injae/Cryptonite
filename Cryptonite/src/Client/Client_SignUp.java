@@ -271,8 +271,7 @@ import Crypto.userKeyGenerator;
 					
 					_csc.send.setPacket(event).write();
 					_csc.send.setPacket(_id.getBytes(),500).write();	
-					_csc.receive.setAllocate(2);
-					byte[] Checkid = _csc.receive.read().getByte();
+					byte[] Checkid = _csc.receive.setAllocate(2).read().getByte();
 					System.out.println(Checkid[0]);
 					if(_id.equals(""))
 					{ 
@@ -460,25 +459,23 @@ class SHA_256 implements PacketRule
 		public void sendPrivacy(){
 			try
 			{
-				_size=5;
+				Charset _charset = Charset.forName("UTF-8");
+
 						
 				byte[] _buf = new byte[1024];
 				_buf[0] = SIGN_UP;
 				_buf[1]=2;
-				_buf[2] = _size;
-				Charset _charset = Charset.forName("UTF-8");
-				
+				_buf[2] = 5;
+			
 				_css.send.setPacket(_buf).write();
+				
 				_css.send.setPacket(_charset.encode(_name).array(),500).write();
 				_css.send.setPacket(_id.getBytes(),500).write();
 				_css.send.setPacket(_password.getBytes(),500).write();
 				_css.send.setPacket(_email.getBytes(),500).write();
-/*				_css.send.setPacket(_AES_Key.getBytes(), 500).write();
-				_css.send.setPacket(_salt.getBytes(), 500).write();
-				_css.send.setPacket(_iteration.getBytes(), 500).write();*/
+
 				
-				_css.receive.setAllocate(1);
-				result = _css.receive.read().getByte();
+				result = _css.receive.setAllocate(1).read().getByte();
 				
 				if(result[0] == 1)
 				{
