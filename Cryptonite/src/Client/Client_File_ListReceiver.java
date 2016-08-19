@@ -11,15 +11,20 @@ public class Client_File_ListReceiver implements PacketRule
 	private byte _mod;
 	private int _fileCount;
 	private ArrayList<String> _fileList = null;
+	private String _downloadFolder = null;
 	
 	// Another Class
 	private Client_Server_Connector _csc = null;
+	private Client_FolderSelector _cfs = null;
+	private Client_File_Download _cfd = null;
 	
 	// Constructors
 	public Client_File_ListReceiver()
 	{
 		_fileList = new ArrayList<String>();
 		_csc = Client_Server_Connector.getInstance();
+		_cfs = new Client_FolderSelector();
+		_cfd = new Client_File_Download();
 	}
 	
 	// Methods
@@ -46,8 +51,24 @@ public class Client_File_ListReceiver implements PacketRule
 				_fileList.add(new String(_csc.receive.setAllocate(1024).read().getByte()).trim());
 				System.out.println(_fileList.get(i));
 			}
+			
+			_cfs.folderSelectorON();
+			while(!_cfs.getSelectionEnd())
+			{
+				Thread.sleep(1);
+			}
+			_downloadFolder = _cfs.getSelectedPath();
+			
+			for(int i = 0 ; i < _fileCount; i++)
+			{
+				_cfd.requestFile(_fileList.get(i), _downloadFolder);
+			}
 		} 
 		catch (IOException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (InterruptedException e) 
 		{
 			e.printStackTrace();
 		}
