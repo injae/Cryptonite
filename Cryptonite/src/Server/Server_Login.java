@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import org.omg.CORBA.ACTIVITY_COMPLETED;
 
@@ -15,7 +17,8 @@ public class Server_Login extends Server_Funtion
 	}
 
 	Server_DataBase db = Server_DataBase.getInstance();
-	
+	 ArrayList<String> gpcode = new ArrayList<String>();
+     ArrayList<String> gpname = new ArrayList<String>();
 	@Override
 	public void Checker(byte[] packet) 
 	{
@@ -28,14 +31,22 @@ public class Server_Login extends Server_Funtion
 	{
 		if(count == 1) { Checker(_activity.getReceiveEvent()); }
 		else
-		{
+		{	
+			int get_count=0;
+		
+			byte[] groupcount=new byte[1];
+			
+			String myname=null;
+			String mygrouplist=null;
+			String aeskey=null;
+			String uscode = null;
 			String id = new String( _activity.receive.getByte()).trim();
 			String password= new String( _activity.receive.getByte()).trim();
 			
 			try
 		    {
 			   byte[] _checkLogin=new byte[1024];
-		       ResultSet rs  = db.Query("select * from test where id like '"+ id +"';");   
+		       ResultSet rs  = db.Query("select * from test where id like '"+ id +"';");  
 		       if(!rs.next()) 
 		       {	 
 		    	   _checkLogin[0]=1; 
@@ -43,21 +54,60 @@ public class Server_Login extends Server_Funtion
 		       else
 		       { 	
 			       String get_pwd = rs.getString(3);
-			       int get_count = rs.getInt(5);
+			       
 			       if(get_pwd.equals(password)) 
 			       { 
-				       String usCode = "@" + rs.getInt(6);
-		    		   Server_Client_Manager.getInstance().login(_activity.getClientCode(), usCode);
-			    	   _checkLogin[0]=2;
+			    	   myname=rs.getString(1);
+			    	   get_count = rs.getInt(5);
+				       aeskey=rs.getString(7);
+				       mygrouplist=rs.getString(10);
+				       uscode = "@" + rs.getInt(6);
+				       
+				       StringTokenizer st=new StringTokenizer(mygrouplist, ":");
+				       String[] grouplist = new String[5];
+				      
+				       int county = 0;
+				       while(st.hasMoreTokens())
+				       {
+				    	  gpcode.add(st.nextToken().trim());
+				    	  
+				    	   ResultSet rsgp=db.Query("select * from grouplist where gpcode like "+Integer.parseInt(gpcode.get(county).substring(1))+";");
+				    	   rsgp.next();
+				    	   
+				    	   county++;				    	 
+				    	   gpname.add(rsgp.getString(3));
+				       }
+				       System.out.println("county"+county);
+				       groupcount[0] = (byte)(gpcode.size());
+				       System.out.println(groupcount[0]);
+		    		   
+				       Server_Client_Manager.getInstance().login(_activity.getClientCode(), uscode);
+			    	   
+				       _checkLogin[0]=2;
 			    	   if(get_count==1)
 			    	   {
 			    		   _checkLogin[1]=1;
 			    		   db.Update("update test set count=2 where id='"+id+"';");
 			    	   }
-			    	}
-			       else 	{ _checkLogin[0]=3; }   
+			       }
+			       else 	
+			       {
+			    	   _checkLogin[0]=3; 
+			       }   
 		       }
 		       _activity.send.setPacket(_checkLogin).write();
+		       _activity.send.setPacket(groupcount,100).write();
+		       _activity.send.setPacket(myname.getBytes(),500).write();
+		       _activity.send.setPacket(uscode.getBytes(), 100).write();
+		       _activity.send.setPacket(aeskey.getBytes(), 500).write();
+		       System.out.println("=========================================");
+		       System.out.println(gpcode.size());
+		     for(int i =0; i < gpcode.size(); i++)
+		     {
+		    	 
+		    	 _activity.send.setPacket(gpcode.get(i).getBytes(), 100).write();
+		    	 _activity.send.setPacket(gpname.get(i).getBytes(), 500).write();
+		     }
 		    }
 		    catch(SQLException e1)
 		    {
