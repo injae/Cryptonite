@@ -33,6 +33,8 @@ public class Server_Function_Factory implements PacketRule
 			return new Server_File_ListSender(activity);
 		case FILE_DOWNLOAD:
 			return new Server_File_Download(activity);
+		case FILE_UPLOAD:
+			return new Server_File_Upload(activity);
 		case EVENT:
 			return new Server_Send_Event(activity);
 		default:

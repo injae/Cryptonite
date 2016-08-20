@@ -31,7 +31,7 @@ public class Client_File_Upload implements PacketRule
 	}
 	
 	// Methods
-	public void click()
+	public void click(String gpCode)
 	{
 		try 
 		{	
@@ -45,6 +45,7 @@ public class Client_File_Upload implements PacketRule
 				event[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
 				Function.frontInsertByte(3, _fileNameArray[i].getBytes(), event);
 				Function.frontInsertByte(3 + _fileNameArray[i].getBytes().length, String.valueOf(_fileSizeArray[i]).getBytes(), event);
+				Function.frontInsertByte(800, gpCode.getBytes(), event);
 				_csc.send.setPacket(event).write();
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
@@ -57,7 +58,8 @@ public class Client_File_Upload implements PacketRule
 					_csc.send.setPacket(p.read().getByte()).write();
 				}
 				p.close();
-				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");	
+				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
+				_cfs.dispose();
 			}
 		} 
 		catch (IOException e) 
@@ -89,6 +91,5 @@ public class Client_File_Upload implements PacketRule
 			File temp = new File(_filePathArray[i]);
 			_fileSizeArray[i] = temp.length();
 		}
-		_cfs.dispose();
 	}
 }
