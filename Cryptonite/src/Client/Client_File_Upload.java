@@ -1,6 +1,94 @@
 package Client;
 
-public class Client_File_Upload 
-{
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
 
+import Function.PacketRule;
+import Function.Function;
+import Function.PacketProcessor;
+
+public class Client_File_Upload implements PacketRule
+{
+	// Instance
+	private String[] _fileNameArray;
+	private String[] _filePathArray;
+	private long[] _fileSizeArray;
+	
+	private RandomAccessFile _raf = null;
+	private FileChannel _fileChannel = null;
+	
+	// Another Class
+	private Client_Server_Connector _csc = null;
+	private Client_FileSelector _cfs = null;
+	
+	// Constructors
+	public Client_File_Upload()
+	{
+		_csc = Client_Server_Connector.getInstance();
+		_cfs = new Client_FileSelector();
+	}
+	
+	// Methods
+	public void click()
+	{
+		try 
+		{	
+			fileSelection();
+			
+			for(int i = 0; i < _fileNameArray.length; i++)
+			{
+				byte[] event = new byte[1024];
+				event[0] = FILE_UPLOAD;
+				event[1] = (byte)_fileNameArray[i].getBytes().length;
+				event[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
+				Function.frontInsertByte(3, _fileNameArray[i].getBytes(), event);
+				Function.frontInsertByte(3 + _fileNameArray[i].getBytes().length, String.valueOf(_fileSizeArray[i]).getBytes(), event);
+				_csc.send.setPacket(event).write();
+				
+				_raf = new RandomAccessFile(_filePathArray[i], "rw");
+				_fileChannel = _raf.getChannel();
+				PacketProcessor p = new PacketProcessor(_fileChannel, false);
+				p.setAllocate(_fileSizeArray[i]);
+				
+				while(!p.isAllocatorEmpty())
+				{
+					_csc.send.setPacket(p.read().getByte()).write();
+				}
+				p.close();
+				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");	
+			}
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	private void fileSelection()
+	{
+		_cfs.fileFinderON();
+		while(!_cfs.getSelectionFinish())
+		{
+			try 
+			{
+				Thread.sleep(1);
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		_fileNameArray = _cfs.getFileNames();
+		_filePathArray = _cfs.getFilePaths();
+		
+		_fileSizeArray = new long[_filePathArray.length];
+		for(int i = 0; i < _filePathArray.length; i++)
+		{
+			File temp = new File(_filePathArray[i]);
+			_fileSizeArray[i] = temp.length();
+		}
+		_cfs.dispose();
+	}
 }
