@@ -87,8 +87,7 @@ public class Server_Make_Group extends Server_Funtion
 					rs.next();
 
 					String buf = rs.getString(10);
-					String Null = null;
-					if((buf != null && buf.length() != 0) && !buf.equals(Null))
+					if(!buf.equals("NULL"))
 					{
 						groupList =  buf + ":" + gpCode;
 					}
