@@ -66,8 +66,13 @@ public class Server_Delete_Group extends Server_Funtion
 							}
 						}
 					}
+					if(save.length() == 0)
+					{
+						save = "NULL";
+					}
 					
-					db.Query("update test set mygrouplist = '" + save + "' where uscode = " + uscode + ";");
+					System.out.println(save);
+					db.Update("update test set mygrouplist = '" + save + "' where uscode = " + uscode + ";");
 				}
 			} 
 			catch (SQLException e) 
