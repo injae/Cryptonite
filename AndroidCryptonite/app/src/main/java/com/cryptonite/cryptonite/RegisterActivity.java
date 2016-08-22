@@ -28,11 +28,12 @@ import java.nio.charset.CharsetEncoder;
 import Crypto.SHAEncrypt;
 import Function.C_Toast;
 import Function.Client_Server_Connector;
+import Function.PacketRule;
 
 /**
  * Created by olleh on 2016-07-22.
  */
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements PacketRule{
 
     private UserRegisterTask mRegisterTask = null;
 
@@ -251,8 +252,8 @@ public class RegisterActivity extends AppCompatActivity {
                 if (!sameId)
                 {
                     size = 2;
-                    op[0] = 5;
-                    op[1] = 1; // id check mode
+                    op[0] = SIGN_UP;
+                    op[1] = DUPLICATION_CHECK_FUNCTION; // id check mode
                     op[2] = size;
 
                     css.send.setPacket(op).write();
@@ -260,6 +261,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                     byte[] receiveData;
+                    css.receive.setAllocate(2);
                     receiveData = css.receive.read().getByte();
 
                     switch (receiveData[0])
@@ -280,7 +282,7 @@ public class RegisterActivity extends AppCompatActivity {
                 //no duplicated Id > registeration
                 if (sameId) {
                     size = 5;
-                    op[1] = 2; // registration mode
+                    op[1] = SIGN_UP_FUNCTION; // registration mode
                     op[2] = size;
 
                     Charset cs = Charset.forName("UTF-8");
@@ -294,6 +296,7 @@ public class RegisterActivity extends AppCompatActivity {
                     css.send.setPacket(SHAEncrypt.SHAEncrypt(mPassword).getBytes(),500).write();
                     css.send.setPacket(memail.getBytes(),500).write();
 
+                    css.receive.setAllocate(1);
                     byte[] result = css.receive.read().getByte();
 
                     if(result[0] == 0)

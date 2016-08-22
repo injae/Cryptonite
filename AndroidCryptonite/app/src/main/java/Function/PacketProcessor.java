@@ -1,5 +1,7 @@
 package Function;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.GatheringByteChannel;
@@ -76,14 +78,21 @@ public class PacketProcessor
 
     public PacketProcessor setPacket(byte[] packet, int size)
     {
-        byte[] temp = new byte[size];
-
-        for(int i =0; i < packet.length; i++)
+        byte[] temp;
+        if(size != packet.length)
         {
-            temp[i] = packet[i];
+            temp = new byte[size];
+
+            for(int i =0; i < packet.length; i++)
+            {
+                temp[i] = packet[i];
+            }
+        }
+        else
+        {
+            temp = packet;
         }
         _queue.add(temp);
-
         return this;
     }
 
@@ -126,6 +135,7 @@ public class PacketProcessor
         {
             _input.read(_buffer);
         }
+        //System.out.println("read : " + _buffer);	//socket test line
         _buffer.flip();
 
         byte[] array = new byte[_buffer.remaining()];
@@ -141,6 +151,8 @@ public class PacketProcessor
         byte[] array =_queue.remove();
         allocate(array.length);
         _buffer.put(array);
+        Log.d("write:", "write : " + _buffer.toString());	//socket test line
+
         _buffer.flip();
         while(_buffer.hasRemaining())
         {

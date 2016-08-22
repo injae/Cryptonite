@@ -37,13 +37,14 @@ import java.util.List;
 
 import Crypto.SHAEncrypt;
 import Function.Client_Server_Connector;
+import Function.PacketRule;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via id/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, PacketRule {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -330,13 +331,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Client_Server_Connector css = Client_Server_Connector.getInstance();
 
                 byte[] op = new byte[1024];
-                op[0] = 2;
+                op[0] = LOGIN;
                 op[1] = 3;
 
                 css.send.setPacket(op).write();
                 css.send.setPacket(mid.getBytes(),500).write();
                 css.send.setPacket(SHAEncrypt.SHAEncrypt(mPassword).getBytes(),500).write();
 
+                css.receive.setAllocate(1024);
                 receiveData = css.receive.read().getByte();
 
                 switch(receiveData[0])
