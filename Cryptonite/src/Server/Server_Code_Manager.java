@@ -137,7 +137,7 @@ public class Server_Code_Manager
 		}
 	}
 	
-	public int codeCutter(String code)
+	public static int codeCutter(String code)
 	{
 		return Integer.parseInt(code.substring(1));
 	}
