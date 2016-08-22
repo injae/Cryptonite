@@ -42,7 +42,6 @@ public class Server_Login extends Server_Funtion
 			String uscode = null;
 			String id = new String( _activity.receive.getByte()).trim();
 			String password= new String( _activity.receive.getByte()).trim();
-			
 			try
 		    {
 			   byte[] _checkLogin = new byte[1024];
@@ -63,7 +62,7 @@ public class Server_Login extends Server_Funtion
 				       mygrouplist=rs.getString(10);
 				       uscode = "@" + rs.getInt(6);
 				       
-				       if(mygrouplist.equals("NULL"))
+				       if(!mygrouplist.equals("NULL"))
 				       {
 					       StringTokenizer st = new StringTokenizer(mygrouplist, ":");
 	

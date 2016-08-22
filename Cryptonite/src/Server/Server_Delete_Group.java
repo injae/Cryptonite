@@ -44,7 +44,7 @@ public class Server_Delete_Group extends Server_Funtion
 			try 
 			{
 				Server_DataBase db = Server_DataBase.getInstance();
-				ResultSet rs = db.Query("select *from grouplist where gpcode = " + Integer.parseInt(gpCode.substring(1)) + ";");
+				ResultSet rs = db.Query("select *from grouplist where gpcode = " + Server_Code_Manager.codeCutter(gpCode) + ";");
 				rs.next();
 				StringTokenizer st = new StringTokenizer(rs.getString(2), ":");
 				while(st.hasMoreTokens())
@@ -66,14 +66,11 @@ public class Server_Delete_Group extends Server_Funtion
 							}
 						}
 					}
-					if(save.length() == 0)
-					{
-						save = "NULL";
-					}
-					
-					System.out.println(save);
+					if(save.length() == 0) { save = "NULL"; }
 					db.Update("update test set mygrouplist = '" + save + "' where uscode = " + uscode + ";");
 				}
+				System.out.println(Server_Code_Manager.codeCutter(gpCode));
+				db.Update("delete from grouplist where gpcode = "+Server_Code_Manager.codeCutter(gpCode)+";");
 			} 
 			catch (SQLException e) 
 			{
