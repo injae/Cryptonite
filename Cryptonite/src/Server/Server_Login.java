@@ -77,9 +77,7 @@ public class Server_Login extends Server_Funtion
 					    	   county++;				    	 
 					    	   gpname.add(rsgp.getString(3));
 					       }
-					       System.out.println("county"+county);
 					       groupcount[0] = (byte)(gpcode.size());
-					       System.out.println(groupcount[0]);
 				       }
 				       Server_Client_Manager.getInstance().login(_activity.getClientCode(), uscode);
 			    	   
@@ -100,8 +98,7 @@ public class Server_Login extends Server_Funtion
 		       _activity.send.setPacket(myname.getBytes(),500).write();
 		       _activity.send.setPacket(uscode.getBytes(), 100).write();
 		       _activity.send.setPacket(aeskey.getBytes(), 500).write();
-		       System.out.println("=========================================");
-		       System.out.println(gpcode.size());
+		       
 		     for(int i =0; i < gpcode.size(); i++)
 		     {
 		    	 _activity.send.setPacket(gpcode.get(i).getBytes(), 100).write();

@@ -67,9 +67,8 @@ public class Client_Login extends JFrame implements PacketRule
     JTextField _idField;
     JPasswordField _passwordField;
     
-    private String _id = "id";
-    private String _password = "password";
-    private String _tempPassword = "init";
+    private String _id=null;
+    private String _password=null;
     private String _address = null;
     
     private Client_Server_Connector csc;
@@ -223,6 +222,11 @@ public class Client_Login extends JFrame implements PacketRule
          _Login.setPressedIcon(new ImageIcon("img/login_bt_hv.png"));
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
+          		if(_id==null||_password==null){
+          			showMessage("Login", "Please insert id or password");
+          		}
+          		else{	_checkLogin=true;	}
+          		if(_checkLogin==true){
           		try 
           		{
 	          		byte size=3;
@@ -307,9 +311,10 @@ public class Client_Login extends JFrame implements PacketRule
           		}
           		catch (IOException e1) 
           		{
-					e1.printStackTrace();
-				}
+          			e1.printStackTrace();
+          		}
           	}
+          }
          });
          _Resistor = new JButton(new ImageIcon("gui/register_bt.png"));
          _Resistor.setFont(_fontjoin);
