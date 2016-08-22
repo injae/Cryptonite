@@ -137,6 +137,11 @@ public class Server_Code_Manager
 		}
 	}
 	
+	public int codeCutter(String code)
+	{
+		return Integer.parseInt(code.substring(1));
+	}
+	
 	public boolean isAcCode(String code)
 	{
 		if(code.charAt(0) == '#')	{ return true; }

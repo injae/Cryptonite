@@ -144,9 +144,9 @@ public class Client_Testmain extends JFrame{
         _Cloud.setPressedIcon(new ImageIcon("img/tset_cloudbt_hv.png"));
         _Cloud.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		/*new Client_Testmain_group();
-        		dispose();*/
-        		new Client_File_Upload().click("GPCODE TEST");
+        		new Client_Testmain_group();
+        		dispose();
+        		//new Client_File_Upload().click("GPCODE TEST");
         	}
         });
         
