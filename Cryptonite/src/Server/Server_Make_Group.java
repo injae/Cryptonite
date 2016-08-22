@@ -80,7 +80,7 @@ public class Server_Make_Group extends Server_Funtion
 			
 			for(int i = 0; i < _members.size(); i++)
 			{
-				ResultSet rs = _db.Query("select *from test where uscode = '" +  Integer.parseInt(_members.get(i).substring(1)) + "';");
+				ResultSet rs = _db.Query("select *from test where uscode = '" +  Server_Code_Manager.codeCutter(_members.get(i)) + "';");
 				String groupList = null;
 				try 
 				{
@@ -101,7 +101,7 @@ public class Server_Make_Group extends Server_Funtion
 				{
 					e.printStackTrace();
 				}
-				_db.Update("update test set mygrouplist = '" + groupList + "' where uscode = " + Integer.parseInt(_members.get(i).substring(1)) + ";");
+				_db.Update("update test set mygrouplist = '" + groupList + "' where uscode = " + Server_Code_Manager.codeCutter(_members.get(i)) + ";");
 			}
 			File newFolder = new File("Server_Folder/Backup/" + gpCode);
 			if(!newFolder.exists())
