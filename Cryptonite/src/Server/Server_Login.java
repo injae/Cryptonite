@@ -33,7 +33,7 @@ public class Server_Login extends Server_Funtion
 		else
 		{	
 			int get_count=0;
-		
+			
 			byte[] groupcount=new byte[1];
 			
 			String myname = null;
@@ -63,7 +63,7 @@ public class Server_Login extends Server_Funtion
 				       mygrouplist=rs.getString(10);
 				       uscode = "@" + rs.getInt(6);
 				       
-				       if(mygrouplist == null && mygrouplist.length() == 0)
+				       if(mygrouplist.equals("NULL"))
 				       {
 					       StringTokenizer st = new StringTokenizer(mygrouplist, ":");
 	
