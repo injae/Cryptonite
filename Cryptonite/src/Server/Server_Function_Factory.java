@@ -37,6 +37,8 @@ public class Server_Function_Factory implements PacketRule
 			return new Server_File_Upload(activity);
 		case EVENT:
 			return new Server_Send_Event(activity);
+		case DELETE_GROUP:
+			return new Server_Delete_Group(activity);
 		default:
 			System.out.println("Server Funtion Factory: "+ mode);
 			return	new Server_ImDie(activity);

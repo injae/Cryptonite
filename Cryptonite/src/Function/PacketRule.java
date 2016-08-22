@@ -17,6 +17,7 @@ public interface PacketRule
 	byte FILE_LIST_REQUEST = 10;
 	byte FILE_DOWNLOAD = 11;
 	byte FILE_UPLOAD = 12;
+	byte DELETE_GROUP = 13;
 	//---------------------------------------
 	
 	// AUTOBACKUP(1) AUTOBACKUP EVENT
