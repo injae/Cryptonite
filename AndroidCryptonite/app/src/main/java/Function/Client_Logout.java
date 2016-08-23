@@ -20,9 +20,12 @@ public class Client_Logout extends Thread implements PacketRule{
 
     public void logout(){
         if(Client_Server_Connector.isConnected()) {
-            Client_Server_Connector.getInstance().receive.close();
-            Client_Server_Connector.getInstance().send.close();
             try {
+                byte[] event = new byte[1024];
+                event[0] = LOGOUT;
+                Client_Server_Connector.getInstance().send.setPacket(event).write();
+                Client_Server_Connector.getInstance().receive.close();
+                Client_Server_Connector.getInstance().send.close();
                 Client_Server_Connector.getInstance()._channel.close();
             } catch (IOException e) {
                 e.printStackTrace();

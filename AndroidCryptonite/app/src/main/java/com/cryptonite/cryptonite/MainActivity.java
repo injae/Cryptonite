@@ -9,6 +9,8 @@ import android.widget.Button;
 import Function.Client_Logout;
 import Function.Client_Server_Connector;
 
+import static Function.isApplicationSentToBackground.isApplicationSentToBackground;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -37,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        new Client_Logout();
-        finishAffinity();
-        android.os.Process.killProcess(android.os.Process.myPid());
+        if(isApplicationSentToBackground(this)) {
+            new Client_Logout();
+            finishAffinity();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
     }
 }

@@ -266,10 +266,10 @@ public class RegisterActivity extends AppCompatActivity implements PacketRule{
 
                     switch (receiveData[0])
                     {
-                        case 1:
+                        case EMPTY_ID:
                             sameId = true;
                             break;
-                        case 2:
+                        case EXIST_ID:
                             sameId = false;
                             break;
                         default:
