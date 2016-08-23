@@ -20,10 +20,11 @@ public class Server_Group_Invite extends Server_Funtion
 		byte[] idTemp = new byte[packet[1]];
 		for(int i = 0; i < idTemp.length; i++)
 		{
-			idTemp[i] = packet[i + 2];
-			end = i + 2;
+			idTemp[i] = packet[i + 3];
+			end = i + 3;
 		}
 		_id = new String(idTemp).trim();
+		System.out.println("아이디 : " + _id);
 		
 		byte[] gpCodeTemp = new byte[packet[2]];
 		for(int i = 0; i < gpCodeTemp.length; i++)
@@ -31,6 +32,7 @@ public class Server_Group_Invite extends Server_Funtion
 			gpCodeTemp[i] = packet[i + end + 1];
 		}
 		_gpCode = new String(gpCodeTemp).trim();
+		System.out.println("그룹코드 : " + _gpCode);
 	}
 	
 	@Override
