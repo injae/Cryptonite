@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -71,6 +72,10 @@ public class Server_Delete_Group extends Server_Funtion
 				}
 				System.out.println(Server_Code_Manager.codeCutter(gpCode));
 				db.Update("delete from grouplist where gpcode = "+Server_Code_Manager.codeCutter(gpCode)+";");
+				
+				File forDelete = new File("Server_Folder/Backup/" + gpCode);
+				forDelete.delete();
+				Server_Client_Manager.getInstance()._code_manager.removeCode(gpCode);
 			} 
 			catch (SQLException e) 
 			{
