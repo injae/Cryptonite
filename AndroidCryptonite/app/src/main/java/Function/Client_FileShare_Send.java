@@ -1,7 +1,18 @@
 package Function;
 
+import android.app.Application;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+
+import com.cryptonite.cryptonite.FileSendActivity;
+
+import org.w3c.dom.Text;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
@@ -18,7 +29,7 @@ import java.io.*;
  *
  * */
 
-public class Client_FileShare_Send implements PacketRule
+public class Client_FileShare_Send extends AsyncTask<String,Integer,Boolean> implements PacketRule
 {
     // Instance
     private String _OTP = null;
@@ -32,20 +43,27 @@ public class Client_FileShare_Send implements PacketRule
 
     private File _tempFile = null;
     private long[] _fileSizeArray = null;
-
+    private long _upSize =0;
     // Another Class Instance
     private Client_Server_Connector _csc = null;
 
+    private final int INIT_PROGRESS = 1;
+    private final int RETURN_PROGRESS = 2;
+
+    private ProgressBar progressBar;
+    private TextView step2,step3,OTP;
     // Constructors
-    public Client_FileShare_Send()
+    public Client_FileShare_Send(ProgressBar progressBar, TextView step2, TextView step3, TextView OTP)
     {
+        this.progressBar = progressBar;
+        this.step2 = step2;
+        this.step3 = step3;
+        this.OTP = OTP;
         _csc = Client_Server_Connector.getInstance();
     }
 
-
-
-    public void sendFile(String[] paths)	// when you click send button
-    {
+    @Override
+    protected Boolean doInBackground(String... paths) {
 
         Charset cs = Charset.forName("UTF-8");
         ByteBuffer[] fileNameArray = new ByteBuffer[paths.length];
@@ -83,9 +101,12 @@ public class Client_FileShare_Send implements PacketRule
                 PacketProcessor p = new PacketProcessor(_fileChannel, false);
                 p.setAllocate(_fileSizeArray[i]);
 
+                publishProgress(INIT_PROGRESS);
                 while(!p.isAllocatorEmpty())
                 {
                     _csc.send.setPacket(p.read().getByte()).write();
+
+                    publishProgress(RETURN_PROGRESS,i);
                 }
                 p.close();
                 System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
@@ -94,11 +115,39 @@ public class Client_FileShare_Send implements PacketRule
         catch (FileNotFoundException e)
         {
             e.printStackTrace();
+            return false;
         }
         catch (IOException e)
         {
-            System.exit(1);
             e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        if (values[0] == INIT_PROGRESS){
+            _upSize =0;
+            progressBar.setProgress(0);
+        } else if (values[0] == RETURN_PROGRESS){
+            _upSize += 1024;
+            progressBar.setProgress((int) (((double)_upSize / (double) _fileSizeArray[values[1]]) * 100));
+        }
+    }
+
+    @Override
+    protected void onPostExecute(Boolean result) {
+        if(result)
+        {
+            step2.setText("Upload Finish!!");
+            step3.setVisibility(View.VISIBLE);
+            OTP.setVisibility(View.VISIBLE);
+            OTP.setText(_OTP);
+        } else {
+            OTP.setVisibility(View.VISIBLE);
+            OTP.setText("File Upload Fail...");
+            OTP.setTextColor(Color.RED);
         }
     }
 
@@ -120,7 +169,9 @@ public class Client_FileShare_Send implements PacketRule
 
             _tempFile = new File(paths[i]);
             _fileSizeArray[i] = _tempFile.length();
-            Log.d("send",String.valueOf(_fileNameArray[i]));
         }
+
     }
+
+
 }
