@@ -4,11 +4,13 @@ import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 public class rsaKeyGenerator
 {
-	private Key _pubKey = null;
-	private Key _priKey = null;
+	private PublicKey _pubKey = null;
+	private PrivateKey _priKey = null;
 	
 	public rsaKeyGenerator(){
 		init();
