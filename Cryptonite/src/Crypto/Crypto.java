@@ -1,55 +1,34 @@
 package Crypto;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
+import javax.crypto.IllegalBlockSizeException;
 
-public abstract class Crypto {
-	public static final int ENCRYPT = Cipher.ENCRYPT_MODE;
-	public static final int DECRYPT = Cipher.DECRYPT_MODE;
-	
-	protected byte[] _resultData = null;
-	
-	protected SecretKey _key = null;
-	protected int _mode = 0;
+public  class Crypto 
+{	
+	private Cipher _cipher;
 
-	// Constructor
-	public Crypto() {
-	}
-
-	public Crypto(SecretKey _key) {
-		this._key = _key;
-	}
-
-	public Crypto(int _mode) {
-		this._mode = _mode;
-	}
-
-	public Crypto(SecretKey _key, int _mode) {
-		this._key = _key;
-		this._mode = _mode;
-	}
-	
-	//Setter
-	public void set_key(SecretKey _key) {
-		this._key = _key;
-	}
-	public void set_mode(int _mode){
-		this._mode = _mode;
-	}
-	
-	//Calculate capacity of file after encrypting
-	public static int calc(int capacity){
-		int reminder = capacity%32;
-		if (reminder != 0){
-			return capacity-reminder+32;
-		} else return capacity;
-	}
+	public Crypto(Cipher cipher) { _cipher = cipher; }
 	
 	//Execute Function
-	public boolean push (byte[] target){
-		return false;
-	}
-	public byte[] pop (){
+	public byte[] endecription (byte[] target)
+	{
+		try
+		{
+			return _cipher.doFinal(target);
+		}catch (IllegalBlockSizeException e){
+			e.printStackTrace();
+		}catch (BadPaddingException e) {
+			e.printStackTrace();
+		}
 		return null;
+	}
+
+	//Calculate capacity of file after encrypting
+	public long calc(long capacity)
+	{
+		long remainder = capacity%32;		
+		if (remainder != 0) { return capacity - remainder + 32; }
+		else 			   { return capacity; }
 	}
 }
