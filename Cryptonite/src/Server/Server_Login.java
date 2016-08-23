@@ -94,16 +94,19 @@ public class Server_Login extends Server_Funtion
 			       }   
 		       }
 		       _activity.send.setPacket(_checkLogin).write();
+		       if(_checkLogin[0]==2)
+		       {
 		       _activity.send.setPacket(groupcount,100).write();
 		       _activity.send.setPacket(myname.getBytes(),500).write();
 		       _activity.send.setPacket(uscode.getBytes(), 100).write();
 		       _activity.send.setPacket(aeskey.getBytes(), 500).write();
 		       
-		     for(int i =0; i < gpcode.size(); i++)
-		     {
-		    	 _activity.send.setPacket(gpcode.get(i).getBytes(), 100).write();
-		    	 _activity.send.setPacket(gpname.get(i).getBytes(), 500).write();
-		     }
+			     for(int i =0; i < gpcode.size(); i++)
+			     {
+			    	 _activity.send.setPacket(gpcode.get(i).getBytes(), 100).write();
+			    	 _activity.send.setPacket(gpname.get(i).getBytes(), 500).write();
+			     }
+		       }
 		    }
 		    catch(SQLException e1)
 		    {
