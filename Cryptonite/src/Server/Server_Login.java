@@ -24,7 +24,7 @@ public class Server_Login extends Server_Funtion
 	public void Checker(byte[] packet) 
 	{
 		_activity.receive.setAllocate(500).setAllocate(500);
-		_packetMaxCount=packet[1];	
+		_packetMaxCount=packet[1];
 	}
 
 	@Override

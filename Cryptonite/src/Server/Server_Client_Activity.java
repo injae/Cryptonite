@@ -30,7 +30,7 @@ public class Server_Client_Activity implements PacketRule
 	private byte[] _receiveEvent;
 	
 	private int _packetCount = 0;
-
+	
 	public LinkedList<Server_Funtion> _funtionList;
 	
 	public PacketProcessor receive;
