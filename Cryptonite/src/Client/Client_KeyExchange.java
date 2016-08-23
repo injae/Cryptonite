@@ -4,6 +4,7 @@ package Client;
 import java.io.IOException;
 import java.security.Key;
 import java.security.PrivateKey;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -38,9 +39,9 @@ public class Client_KeyExchange implements PacketRule
 			event[1]  = 2;
 			csc.send.setPacket(event).write();
 			
-			csc.send.setPacket(_pubKey.getEncoded()).write();
+			csc.send.setPacket(_pubKey.getEncoded(),128).write();
 
-			byte[] encryptData = csc.receive.setAllocate(256).read().getByte();
+			byte[] encryptData = csc.receive.setAllocate(32).read().getByte();
 			
 			// Decrypt recieved secret Key from server
 			this._secretKey = new SecretKeySpec(crypto.endecription(encryptData), "AES");
