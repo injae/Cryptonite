@@ -101,7 +101,7 @@ public class Server_FileShare_Send extends Server_Funtion
 					{
 						_fileName = st_temp.nextToken();
 					}
-					_fileSize = sendingFile.length();
+					_fileSize =  sendingFile.length();
 					
 					_activity.send.setPacket(cs.encode(_fileName).array(), 500).write();
 					//_activity.send.setPacket(_fileName.getBytes(), 500).write();

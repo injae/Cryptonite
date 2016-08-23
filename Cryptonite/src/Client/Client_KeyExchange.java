@@ -12,8 +12,10 @@ import javax.crypto.spec.SecretKeySpec;
 import Crypto.Crypto;
 import Crypto.Crypto_Factory;
 import Crypto.rsaKeyGenerator;
+import Function.PacketRule;
 
-public class Client_KeyExchange {
+public class Client_KeyExchange implements PacketRule
+{
 	private Client_Server_Connector csc = null;
 	private Crypto crypto = null;
 
@@ -23,8 +25,6 @@ public class Client_KeyExchange {
 	private SecretKey _secretKey = null;
 
 	public Client_KeyExchange() {
-		byte[] encryptData = null;
-
 		// Server Connect
 		csc = Client_Server_Connector.getInstance();
 
@@ -33,11 +33,15 @@ public class Client_KeyExchange {
 
 		// Send public key to server
 		try {
+			byte[] event = new byte[1024];
+			event[0] = KEY_EXCHANGE;
+			event[1]  = 2;
+			csc.send.setPacket(event).write();
+			
 			csc.send.setPacket(_pubKey.getEncoded()).write();
 
-			// Recieve encrypted secret Key from server
-			encryptData = csc.receive.read().getByte();
-
+			byte[] encryptData = csc.receive.setAllocate(256).read().getByte();
+			
 			// Decrypt recieved secret Key from server
 			this._secretKey = new SecretKeySpec(crypto.endecription(encryptData), "AES");
 		}

@@ -44,6 +44,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import Crypto.Base64Coder;
+import Crypto.KeyReposit;
 import Function.PacketRule;
 import Server.Server_DataBase;
 
@@ -234,6 +235,9 @@ public class Client_Login extends JFrame implements PacketRule
 	          		byte[] event =new byte[1024];
 	          		event[0]=LOGIN;
 	          		event[1]=size;
+	          		
+	          		KeyReposit.getInstance().new Client_KeyExchange();
+	          		
 	          		csc.send.setPacket(event).write();
 	          		csc.send.setPacket(_id.getBytes(),500).write();//¼öÁ¤
 	          	

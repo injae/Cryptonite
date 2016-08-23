@@ -76,7 +76,6 @@ public class Client_FileShare_Receive implements PacketRule
 					}
 					else if(_downloadFlag.equals("TRUE"))
 					{		
-						System.out.println("엘스이프");
 						_csc.receive.setAllocate(500);
 						_fileName = cs.decode(_csc.receive.read().getByteBuf()).toString().trim();
 						System.out.println("파일 이름 : " + _fileName);
