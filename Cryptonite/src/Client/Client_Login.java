@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -252,10 +253,11 @@ public class Client_Login extends JFrame implements PacketRule
 	          			dispose();
 	          			
 	          			Client_Testmain Main = new Client_Testmain();
+	          			Charset cs = Charset.forName("UTF-8");
 	          			
 	          			gpcount=csc.receive.setAllocate(100).read().getByte();
 	          			
-	          			name=csc.receive.setAllocate(500).read().getByte().toString().trim();
+	          			name= cs.decode(csc.receive.setAllocate(500).read().getByteBuf()).toString().trim();
 	          			uscode=csc.receive.setAllocate(100).read().getByte().toString().trim();
 	          			aeskey=csc.receive.setAllocate(500).read().getByte().toString().trim();
 	          			

@@ -32,10 +32,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 import Crypto.SHAEncrypt;
+import Function.Client_Info;
 import Function.Client_Server_Connector;
 import Function.PacketRule;
 
@@ -338,8 +340,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 css.send.setPacket(mid.getBytes(),500).write();
                 css.send.setPacket(SHAEncrypt.SHAEncrypt(mPassword).getBytes(),500).write();
 
-                css.receive.setAllocate(1024);
-                receiveData = css.receive.read().getByte();
+
+                receiveData = css.receive.setAllocate(1024).read().getByte();
+
+
 
                 switch(receiveData[0])
                 {
@@ -347,6 +351,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         publishProgress(receiveData[0]);
                         return false;
                     case 2:
+
+                        Charset cs = Charset.forName("UTF-8");
+
+
+                        ArrayList<String> gpcode = new ArrayList<String>();
+                        ArrayList<String> gpname = new ArrayList<String>();
+
+                        byte[] gpcount = css.receive.setAllocate(100).read().getByte();
+                        String name = cs.decode(css.receive.setAllocate(500).read().getByteBuf()).toString().trim();
+                        String uscode = css.receive.setAllocate(100).read().getByte().toString().trim();
+                        String aeskey = css.receive.setAllocate(500).read().getByte().toString().trim();
+
+                        for(int i=0;i<gpcount[0];i++)
+                        {
+                            gpcode.add(new String(css.receive.setAllocate(100).read().getByte()).trim());
+                            gpname.add(new String(css.receive.setAllocate(500).read().getByte()).trim());
+                        }
+
+
+                        Client_Info.getInstance().init(name,uscode,aeskey,gpcode,gpname);
+
+                        System.out.println(name.toString()+gpcount[0]);
+
+
                         return true;
                     case 3:
                         publishProgress(receiveData[0]);
