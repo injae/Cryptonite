@@ -10,29 +10,106 @@
     android:orientation="vertical"
     tools:context="com.cryptonite.cryptonite.FileReceiveActivity">
 
-    <EditText
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView4"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/_logo"
+        android:layout_marginBottom="30dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/OTP"
-        android:hint="OTP" />
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type Your OTP : "
+            android:id="@+id/textView"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:textColor="#02aeef"
+            android:layout_marginRight="10dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/OTP"
+            android:hint="OTP"
+            android:maxLines="1"
+            android:maxLength="6" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Download Folder >>"
+            android:id="@+id/textView2"
+            android:textSize="18dp"
+            android:textColor="#02aeef"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="30dp" />
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Path_Select_Button"
+            android:src="@drawable/select_selector"
+            android:background="#00000000" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="눌러서 경로선택.."
-        android:id="@+id/path"
+        android:text="New Text"
+        android:id="@+id/Path_View"
+        android:textColor="#02aeef"
+        android:textSize="24dp"
+        android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        android:textSize="32dp" />
+        android:visibility="gone" />
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="receive"
         android:id="@+id/receive"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:visibility="gone"
+        android:src="@drawable/filereceive_selector"
+        android:background="#00000000"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Downloading...."
+        android:id="@+id/Downloading_TextView"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#02aeef"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        android:visibility="gone" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Download_progressBar"
+        android:layout_gravity="center_horizontal"
+        android:indeterminate="false"
+        android:max="100"
+        android:visibility="gone" />
 
 </LinearLayout>

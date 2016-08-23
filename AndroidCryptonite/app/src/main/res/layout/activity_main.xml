@@ -10,15 +10,63 @@
     android:orientation="vertical"
     tools:context="com.cryptonite.cryptonite.MainActivity">
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="FileReceive"
-        android:id="@+id/file_receive_button" />
+        android:gravity="center">
 
-    <Button
-        android:layout_width="wrap_content"
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/filesend_selector"
+            android:background="#00000000"
+            android:id="@+id/file_send_button"
+            android:layout_marginRight="30dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/filereceive_selector"
+            android:background="#00000000"
+            android:id="@+id/file_receive_button" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="fileSend"
-        android:id="@+id/file_send_button" />
+        android:gravity="center">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/create_selector"
+            android:background="#00000000"
+            android:id="@+id/make_group_button"
+            android:layout_marginRight="30dp"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/participate_button"
+            android:src="@drawable/participate_selector"
+            android:background="#00000000" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/setting_selector"
+            android:background="#00000000"
+            android:id="@+id/setting_button" />
+    </LinearLayout>
+
 </LinearLayout>

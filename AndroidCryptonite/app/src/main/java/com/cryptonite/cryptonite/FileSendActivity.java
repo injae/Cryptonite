@@ -1,5 +1,6 @@
 package com.cryptonite.cryptonite;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -9,12 +10,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.angads25.filepicker.controller.DialogSelectionListener;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,12 +34,23 @@ import static Function.isApplicationSentToBackground.isApplicationSentToBackgrou
 
 public class FileSendActivity extends AppCompatActivity {
 
+    ImageButton choose;
+    ProgressBar progressBar;
+    TextView step2,step3,OTP;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_send);
 
-        Button choose = (Button) findViewById(R.id.send);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        step2 = (TextView) findViewById(R.id.Step2_TextView);
+        step3 = (TextView) findViewById(R.id.Step3_TextView);
+        OTP = (TextView) findViewById(R.id.OTP_View);
+
+
+        choose = (ImageButton) findViewById(R.id.send);
         choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,39 +66,19 @@ public class FileSendActivity extends AppCompatActivity {
             @Override
             public void onSelectedFilePaths(String[] files) {
                 if(files.length!=0) {
-                    fileSendTask fs = new fileSendTask();
-                    fs.execute(files);
+
+                    new Client_FileShare_Send(progressBar,step2, step3,OTP).execute(files); // send Files
+
+                    choose.setClickable(false);
+                    step2.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
+
                 } else {
                     new C_Toast(getApplicationContext()).showToast("File doesn't selected",Toast.LENGTH_LONG);
                 }
             }
         });
         picker.show();
-    }
-
-    class fileSendTask extends AsyncTask<String,Integer,Boolean>
-    {
-        Client_FileShare_Send cfs;
-        fileSendTask()
-        {
-            cfs = new Client_FileShare_Send();
-        }
-        @Override
-        protected Boolean doInBackground(String... params) {
-            Log.d("File",params[0]);
-            cfs.sendFile(params);
-            return null;
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        if(isApplicationSentToBackground(this)) {
-            new Client_Logout();
-            super.onDestroy();
-        } else {
-            super.onDestroy();
-        }
     }
 
 }

@@ -151,7 +151,7 @@ public class PacketProcessor
         byte[] array =_queue.remove();
         allocate(array.length);
         _buffer.put(array);
-        Log.d("write:", "write : " + _buffer.toString());	//socket test line
+      //  Log.d("write:", "write : " + _buffer.toString());	//socket test line
 
         _buffer.flip();
         while(_buffer.hasRemaining())
