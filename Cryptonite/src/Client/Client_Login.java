@@ -236,8 +236,6 @@ public class Client_Login extends JFrame implements PacketRule
 	          		event[0]=LOGIN;
 	          		event[1]=size;
 	          		
-	          		KeyReposit.getInstance().new Client_KeyExchange();
-	          		
 	          		csc.send.setPacket(event).write();
 	          		csc.send.setPacket(_id.getBytes(),500).write();//¼öÁ¤
 	          	
