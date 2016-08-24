@@ -4,6 +4,7 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -26,8 +27,9 @@ public class Crypto_Factory
 				cipher.init(mode, (SecretKey)key);
 				break;
 			case "RSA1024":
-				cipher = Cipher.getInstance("RSA/None/PKCS1Padding"); 
-				cipher.init(mode, (PrivateKey)key);
+				cipher = Cipher.getInstance("RSA"); 
+				if(mode == Cipher.ENCRYPT_MODE)	cipher.init(mode, (PublicKey)key);
+				else cipher.init(mode, (PrivateKey) key);
 				break;
 			}
 			

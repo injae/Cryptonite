@@ -28,7 +28,7 @@ public class Server_KeyExchange extends Server_Funtion {
 
 	@Override
 	public void Checker(byte[] packet) {
-		_activity.receive.setAllocate(128);
+		_activity.receive.setAllocate(162);
 		_packetMaxCount = packet[1];
 	}
 
@@ -37,11 +37,6 @@ public class Server_KeyExchange extends Server_Funtion {
 		if (count == 1) {
 			Checker(_activity.getReceiveEvent());
 		} else {
-			
-			
-			
-			
-			// exchange done
 			makeSecretKey();
 			KeyFactory keyFactory = null;
 			try {
@@ -55,7 +50,7 @@ public class Server_KeyExchange extends Server_Funtion {
 				byte[] aesKey = crypto.endecription(_secretKey.getEncoded());
 				
 				// Send encrypted secret key to client
-				_activity.send.setPacket(aesKey);
+				_activity.send.setPacket(aesKey, 128);
 
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
