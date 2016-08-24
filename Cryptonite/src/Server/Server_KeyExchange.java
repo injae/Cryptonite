@@ -37,10 +37,7 @@ public class Server_KeyExchange extends Server_Funtion {
 		if (count == 1) {
 			Checker(_activity.getReceiveEvent());
 		} else {
-			
-			
-			
-			
+
 			// exchange done
 			makeSecretKey();
 			KeyFactory keyFactory = null;

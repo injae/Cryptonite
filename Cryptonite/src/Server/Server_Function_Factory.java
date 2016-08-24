@@ -43,6 +43,8 @@ public class Server_Function_Factory implements PacketRule
 			return new Server_Group_Invite(activity);
 		case KEY_EXCHANGE:
 			return new Server_KeyExchange(activity);
+		case GROUP_WITHDRAWAL:
+			return new Server_Group_Withdrawal(activity);
 		default:
 			System.out.println("Server Funtion Factory: "+ mode);
 			return	new Server_ImDie(activity);

@@ -120,7 +120,7 @@ public static void main(String[] args){
         _Participate.setPressedIcon(new ImageIcon("img/test_participate_hv.png"));
         _Participate.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		new Client_Delete_Group().deleteGroup("$1");
+        		new Client_Group_Withdrawal().running("$1");
         	}
         });
         

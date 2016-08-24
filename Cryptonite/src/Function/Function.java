@@ -13,6 +13,17 @@ public class Function
 		}
 	}
 	
+	public static byte[] cuttingByte(int start, byte[] array)
+	{
+		byte[] temp = new byte[array.length - start];
+		for(int i = 0; i < temp.length; i++)
+		{
+			temp[i] = array[i+start];
+		}
+		
+		return temp;
+	}
+	
 	public static void backInsertByte(int start, byte[] from, byte[] to)
 	{
 		for(int i = 0 ; i < to.length; i++)
@@ -45,4 +56,5 @@ public class Function
 		buff.order(ByteOrder.BIG_ENDIAN); // Set matching Endian
 		return buff.getInt();
 	}
+	
 }

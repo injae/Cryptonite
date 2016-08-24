@@ -20,6 +20,7 @@ public interface PacketRule
 	byte DELETE_GROUP = 13;
 	byte GROUP_INVITE = 14;
 	byte KEY_EXCHANGE = 15;
+	byte GROUP_WITHDRAWAL = 16;
 	//---------------------------------------
 	
 	// AUTOBACKUP(1) AUTOBACKUP EVENT
