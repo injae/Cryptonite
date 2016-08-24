@@ -104,7 +104,6 @@ import Crypto.userKeyGenerator;
 			setResizable(false);
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
-			setBackground(Color.BLACK);
 			setLocationRelativeTo(null);
 			try{
 				 Toolkit tk = Toolkit.getDefaultToolkit(); 

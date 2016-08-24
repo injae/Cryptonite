@@ -67,9 +67,9 @@ public class Client_Login extends JFrame implements PacketRule
     JTextField _idField;
     JPasswordField _passwordField;
     
-    private String _id=null;
-    private String _password=null;
-    private String _address = null;
+    private String _id="";
+    private String _password="";
+    private String _address ="";
     
     private Client_Server_Connector csc;
     private Client_FolderSelector cfs = null;
@@ -174,7 +174,6 @@ public class Client_Login extends JFrame implements PacketRule
            });
         	_idField.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
-         		 _idField.setText("");
          	}
          });
          
@@ -190,7 +189,6 @@ public class Client_Login extends JFrame implements PacketRule
         // _passwordField.setText("PASSWORD");
          _passwordField.addFocusListener(new FocusAdapter(){
         	 public void focusGained(FocusEvent fe){
-        		 _passwordField.setText("");
         		 _passwordField.setEchoChar('●');
         	 }
          });
@@ -199,20 +197,13 @@ public class Client_Login extends JFrame implements PacketRule
      		public void keyPressed(KeyEvent e) {}
      		@Override
      		public void keyReleased(KeyEvent e) {
-     			_password = Encode_password(new String(_passwordField.getPassword()));
+     			_password = new String(_passwordField.getPassword());
      		}
      		@Override
      		public void keyTyped(KeyEvent e) {}
            });
          _layeredPane.add(_passwordField);
-         
-         _passwordField.addMouseListener(new MouseAdapter(){
-         	public void mouseClicked(MouseEvent e){
-         		_passwordField.setText("");
-         		_passwordField.setEchoChar('●');
-         	}
-         });
-         
+
          _Login = new JButton(new ImageIcon("gui/login_bt.png"));//input buttonimage
          _Login.setBounds(30, 400, 400, 50);
          _Login.setBorderPainted(false);
@@ -222,99 +213,91 @@ public class Client_Login extends JFrame implements PacketRule
          _Login.setPressedIcon(new ImageIcon("img/login_bt_hv.png"));
          _Login.addMouseListener(new MouseAdapter(){
           	public void mouseClicked(MouseEvent e){
-          		if(_id==null||_password==null){
-          			showMessage("Login", "Please insert id or password");
-          		}
-          		else{	_checkLogin=true;	}
-          		if(_checkLogin==true){
-          		try 
-          		{
-	          		byte size=3;
-	          		byte[] event =new byte[1024];
-	          		event[0]=LOGIN;
-	          		event[1]=size;
-	          		csc.send.setPacket(event).write();
-	          		csc.send.setPacket(_id.getBytes(),500).write();//수정
-	          	
-					csc.send.setPacket(_password.getBytes(),500).write();
+          	
+          		if(!_id.equals("")&&!_password.equals("")){
+          			try 
+          			{
+          				byte size=3;
+          				byte[] event =new byte[1024];
+          				event[0]=LOGIN;
+          				event[1]=size;
+          				csc.send.setPacket(event).write();
+          				csc.send.setPacket(_id.getBytes(),500).write();//수정
+          				_password=Encode_password(_password);
+          				csc.send.setPacket(_password.getBytes(),500).write();
 					
-	          		System.out.println(_id+"\t"+_password);
+          				System.out.println(_id+"\t"+_password);
 	
 	          		
-	          		byte[] checkLogin = csc.receive.read().getByte();
-	          		switch(checkLogin[0])
-	          		{
-	          		case 1 :
-	          			showMessage("Error", "No id");
-	          			break;
-	          		case 2 : 
-	          			showMessage("LOGIN", "Welcome,\t"+_id);
-	          			dispose();
+          				byte[] checkLogin = csc.receive.read().getByte();
+          				switch(checkLogin[0])
+          				{
+          					case 1 :
+          						showMessage("Error", "No id");
+          						_checkLogin=false;
+          						break;
+          					case 2 : 
+          						showMessage("LOGIN", "Welcome,\t"+_id);
+          						dispose();
 	          			
-	          			Client_Testmain Main = new Client_Testmain();
+          						Client_Testmain Main = new Client_Testmain();
 	          			
-	          			gpcount=csc.receive.setAllocate(100).read().getByte();
-	          			
-	          			name=csc.receive.setAllocate(500).read().getByte().toString().trim();
-	          			uscode=csc.receive.setAllocate(100).read().getByte().toString().trim();
-	          			aeskey=csc.receive.setAllocate(500).read().getByte().toString().trim();
-	          			
-	          			System.out.println(gpcount[0]);
-	          			System.out.println(name);
-	          			System.out.println(uscode);
-	          			System.out.println(aeskey);
-	          			
-	          		/*	String test = "01234";
-	          			char[] t1 = new char[5];
-	          			for(int i = 0; i < t1.length; i++)
-	          			{
-	          				t1[i] = test.charAt(i//groupname length);
-	          			}
-	          		*/
-	          			System.out.println(gpcount[0]);
-	          			
-	          			for(int i =0; i < gpcount[0]; i++)
-	          			{
-	          				gpcode.add(new String(csc.receive.setAllocate(100).read().getByte()).trim());
-	          				gpname.add(new String(csc.receive.setAllocate(500).read().getByte()).trim());
-	          			}
-	   
-	         
-	          			
-	          			if(checkLogin[1]==1)//count 1일때
-	          			{
-	          				showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
-	          				cfs = new Client_FolderSelector();
-	          				cfs.folderSelectorON();
-	          				while(!cfs.getSelectionEnd())
-	          				{
-	          					try 
-	          					{
-	          						Thread.sleep(1);
-	          					} 
-	          					catch (InterruptedException e1) 
-	          					{
-	          						e1.printStackTrace();
-	          					}
-	          				}
-	          				_address = cfs.getSelectedPath();
-	          				File save = new File("Cryptonite_Client/log/protectedlog.ser");
-	          				FileWriter fw = new FileWriter(save);
-	          				fw.write(_address);
-	          				fw.close();
-	          			}
-	          			new Client_FolderScan().start();
-	          			break;
-	          		case 3 : 
-	          			showMessage("Error", "Wrong password"); 
+          						gpcount=csc.receive.setAllocate(100).read().getByte();
+          						
+          						name=csc.receive.setAllocate(500).read().getByte().toString().trim();
+          						uscode=csc.receive.setAllocate(100).read().getByte().toString().trim();
+          						aeskey=csc.receive.setAllocate(500).read().getByte().toString().trim();
+	          	
+          						for(int i =0; i < gpcount[0]; i++)
+          						{
+          							gpcode.add(new String(csc.receive.setAllocate(100).read().getByte()).trim());
+          							gpname.add(new String(csc.receive.setAllocate(500).read().getByte()).trim());
+          						}
+          						
+          						if(checkLogin[1]==1)//count 1일때
+          						{
+          							showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
+          							cfs	 = new Client_FolderSelector();
+          							cfs.folderSelectorON();
+          							while(!cfs.getSelectionEnd())
+          							{
+          								try 
+          								{
+          									Thread.sleep(1);
+          								} 
+          								catch (InterruptedException e1) 
+          								{
+          									e1.printStackTrace();
+          								}
+          							}	
+          							_address = cfs.getSelectedPath();
+          							File save = new File("Cryptonite_Client/log/protectedlog.ser");
+          							FileWriter fw = new FileWriter(save);
+          							fw.write(_address);
+          							fw.close();
+          						}
+          						new Client_FolderScan().start();
+          						break;
+          					case 3 : 
+          						showMessage("Error", "Wrong password");
+          						_checkLogin=false;
+          						break;
 	          		}
           		}
           		catch (IOException e1) 
           		{
           			e1.printStackTrace();
           		}
+          		}
+          		else
+          		{	
+          			showMessage("Login", "Please insert id or password");	
+          			
+          		}
+  
+          		
           	}
-          }
+          
          });
          _Resistor = new JButton(new ImageIcon("gui/register_bt.png"));
          _Resistor.setFont(_fontjoin);

@@ -42,7 +42,7 @@ public class Client_Test_tabmenu extends JFrame
         tabbedPane.add("personal", panel1);
         tabbedPane.add("group", panel2);
         tabbedPane.add("director", panel3);
-        tabbedPane.setTabPlacement(JTabbedPane.HEIGHT);
+        tabbedPane.setTabPlacement(JTabbedPane.NORTH);
         
         //탭이름 재지정 메소드
         //tabbedPane.setTitleAt(0, "첫째");
