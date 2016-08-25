@@ -38,22 +38,20 @@ public class Server_KeyExchange extends Server_Funtion {
             Checker(_activity.getReceiveEvent());
         } else {
             makeSecretKey();
-            KeyFactory keyFactory = null;
             try {
-                keyFactory = KeyFactory.getInstance("RSA");
+            	KeyFactory keyFactory = KeyFactory.getInstance("RSA");
                 // Recieve public key from client
                 byte[] pubKeyBytes = _activity.receive.getByte();
                 PublicKey pubKey = keyFactory.generatePublic(new X509EncodedKeySpec(pubKeyBytes));
-
+                
                 // Encrypt secret key by public key
                 crypto = new Crypto(Crypto_Factory.create("RSA1024", Cipher.ENCRYPT_MODE, pubKey));
+                
                 byte[] aesKey = crypto.endecription(_secretKey.getEncoded());
-
+             
                 // Send encrypted secret key to client
-                _activity.send.setPacket(aesKey, 128);
-                
-                
-
+                _activity.send.setPacket(aesKey, 128).write();
+             
             } catch (Exception e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
