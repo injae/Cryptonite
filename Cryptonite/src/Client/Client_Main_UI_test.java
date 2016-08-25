@@ -210,7 +210,7 @@ public class Client_Main_UI_test extends JFrame{
 
 	class MyPanel extends JPanel {
         public void paint(Graphics g) {
-        	if(_checkUI==true){
+        	if(_checkUI){
         		g.drawImage(img2, 0, 0, null);
         	}
         	else

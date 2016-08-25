@@ -127,6 +127,11 @@ public class Client_Main_UI extends JFrame{
         Sendbt.setBorderPainted(false);
         Sendbt.setFocusPainted(false);
         Sendbt.setContentAreaFilled(false);
+        Sendbt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Client_Send_OTP();		
+			}
+		});
         layeredPane.add(Sendbt);
         
         Receivebt = new JButton(new ImageIcon("img/Filereceive.png"));
@@ -135,6 +140,11 @@ public class Client_Main_UI extends JFrame{
         Receivebt.setContentAreaFilled(false);
         Receivebt.setBorderPainted(false);
         Receivebt.setBounds(403, 82, 390, 160);
+        Receivebt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Client_Receive_OTP();		
+			}
+		});
         layeredPane.add(Receivebt);
         
         Encryptbt = new JButton(new ImageIcon("img/protectedfolder.png"));
@@ -152,6 +162,11 @@ public class Client_Main_UI extends JFrame{
         Cloudbt.setFocusPainted(false);
         Cloudbt.setBorderPainted(false);
         Cloudbt.setContentAreaFilled(false);
+        Cloudbt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Client_File_ListReceiver().click((byte)2, null);
+			}
+		});
         layeredPane.add(Cloudbt);
  
         
@@ -160,6 +175,7 @@ public class Client_Main_UI extends JFrame{
         setVisible(true);
         
 	}
+	
 	public void group(){
 		_checkUI=true;
  		layeredPane.removeAll();
@@ -208,6 +224,11 @@ public class Client_Main_UI extends JFrame{
  		Create.setBorderPainted(false);
  		Create.setFocusPainted(false);
  		Create.setContentAreaFilled(false);
+ 		Create.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		new Client_TestGroupName();
+        	}
+        });
  	    layeredPane.add(Create);
  	     
  	    Participate = new JButton(new ImageIcon("img/Participate.png"));
@@ -216,6 +237,11 @@ public class Client_Main_UI extends JFrame{
  	    Participate.setBorderPainted(false);
  	    Participate.setFocusPainted(false);
  	    Participate.setContentAreaFilled(false);
+ 	    Participate.addActionListener(new ActionListener() {
+       	public void actionPerformed(ActionEvent arg0) {
+       		new Client_Group_Withdrawal().running("$1");
+       	}
+       });
  	    layeredPane.add(Participate);
  	    
  	    layeredPane.add(panel);
@@ -273,6 +299,11 @@ public class Client_Main_UI extends JFrame{
 		 Sendbt.setBorderPainted(false);
 		 Sendbt.setFocusPainted(false);
 		 Sendbt.setContentAreaFilled(false);
+		 Sendbt.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new Client_Send_OTP();		
+				}
+			});
 		 layeredPane.add(Sendbt);
 	        
 		 Receivebt = new JButton(new ImageIcon("img/Filereceive.png"));
@@ -281,6 +312,11 @@ public class Client_Main_UI extends JFrame{
 		 Receivebt.setContentAreaFilled(false);
 		 Receivebt.setBorderPainted(false);
 		 Receivebt.setBounds(403, 82, 390, 160);
+		 Receivebt.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new Client_Receive_OTP();		
+				}
+			});
 		 layeredPane.add(Receivebt);
 		 
 		 Encryptbt = new JButton(new ImageIcon("img/protectedfolder.png"));
@@ -297,6 +333,11 @@ public class Client_Main_UI extends JFrame{
 		 Cloudbt.setFocusPainted(false);
 		 Cloudbt.setBorderPainted(false);
 		 Cloudbt.setContentAreaFilled(false);
+		 Cloudbt.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new Client_File_ListReceiver().click((byte)2, null);
+				}
+			});
 		 layeredPane.add(Cloudbt);
 		 
 		 layeredPane.add(panel);
@@ -306,7 +347,7 @@ public class Client_Main_UI extends JFrame{
 	}	
 	class MyPanel extends JPanel {
         public void paint(Graphics g) {
-        	if(_checkUI==true){
+        	if(_checkUI){
         		g.drawImage(img2, 0, 0, null);
         	}
         	else
