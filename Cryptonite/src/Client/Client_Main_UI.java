@@ -1,30 +1,32 @@
 package Client;
 
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.UIManager;
 
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
-import javax.swing.Icon;
-
-
-
-public class Client_Main_UI extends JFrame{
-
+public class Client_Main_UI extends JFrame
+{
+	private ArrayList<String> _gpCode;
+	private ArrayList<String> _gpName;
+	private String _name;
+	private String _usCode;
+	
 	private BufferedImage img = null;
 	private BufferedImage img2=null;
 	
@@ -50,15 +52,16 @@ public class Client_Main_UI extends JFrame{
 	
 	Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	
-	
-
-	
 	public static void main(String args[]){
-		new Client_Main_UI();
+		new Client_Main_UI(new ArrayList<String>(),new ArrayList<String>(),null,null);
 	}
 
-	
-	public Client_Main_UI(){
+	public Client_Main_UI(ArrayList<String> gpCode, ArrayList<String> gpname, String name, String usCode)
+	{
+		_gpCode = gpCode;
+		_gpName = gpname;
+		_name = name;
+		_usCode = usCode;
 		
 		container=getContentPane();
 		container.setBackground(Color.WHITE);
@@ -80,38 +83,85 @@ public class Client_Main_UI extends JFrame{
             System.out.println("이미지 불러오기 실패");
             System.exit(0);
         }
-        
         panel.setBounds(0, 0, 900, 500);
        
+        allocator();
+
+        individual();
+	    
+        setVisible(true);
+	}
+	public void group(){
+		_checkUI=true;
+ 		layeredPane.removeAll();
+
+        layeredPane.add(Indivbt);
+ 		layeredPane.add(Groupbt);
+        layeredPane.add(Developerbt);
+        layeredPane.add(Settingbt);
         
-        Indivbt = new JButton(new ImageIcon("img/Indivbt.png"));		
-        Indivbt.setRolloverIcon(new ImageIcon("img/Indivhbt.png"));
-        Indivbt.setBounds(259, 35, 80, 30);
-        Indivbt.setBorderPainted(false);
-        Indivbt.setFocusPainted(false);
-        Indivbt.setContentAreaFilled(false);
-        layeredPane.add(Indivbt); 
-        
+ 	    layeredPane.add(Create);
+ 	    layeredPane.add(Participate);
+ 	    
+ 	    layeredPane.add(panel);
+ 	    container.add(layeredPane);
+	}
+	
+	public void individual(){
+		_checkUI=false;
+ 		 layeredPane.removeAll();
+
+		 layeredPane.add(Indivbt);
+		 layeredPane.add(Groupbt);
+		 layeredPane.add(Developerbt);
+		 layeredPane.add(Settingbt);
+		 
+		 layeredPane.add(Sendbt);
+		 layeredPane.add(Receivebt);
+		 layeredPane.add(Encryptbt); 
+		 layeredPane.add(Cloudbt);
+		 
+		 layeredPane.add(panel);
+		 container.add(layeredPane);
+	}	
+	
+	public void allocator()
+	{
+
         Groupbt = new JButton(new ImageIcon("img/Groupbt.png"));		
         Groupbt.setRolloverIcon(new ImageIcon("img/Grouphbt.png"));
         Groupbt.setBounds(353, 34, 80, 30);
         Groupbt.setBorderPainted(false);
         Groupbt.setFocusPainted(false);
         Groupbt.setContentAreaFilled(false);
-        Groupbt.addActionListener(new ActionListener() {
+        Groupbt.addActionListener(new ActionListener() {     
          	public void actionPerformed(ActionEvent arg0) {
          		group();
+         		repaint();
          	}
          });
-        layeredPane.add(Groupbt);
-
+        
+		Indivbt = new JButton(new ImageIcon("img/Indivbt.png"));		
+        Indivbt.setRolloverIcon(new ImageIcon("img/Indivhbt.png"));
+        Indivbt.setBounds(259, 35, 80, 30);
+        Indivbt.setBorderPainted(false);
+        Indivbt.setFocusPainted(false);
+        Indivbt.setContentAreaFilled(false);
+        Indivbt.addActionListener(new ActionListener() {
+         	public void actionPerformed(ActionEvent arg0) {
+         		individual();
+         		repaint();
+         	}
+         });
+        
+		
         Developerbt = new JButton(new ImageIcon("img/Developerbt.png"));
         Developerbt.setRolloverIcon(new ImageIcon("img/Developerhbt.png"));
         Developerbt.setBounds(447, 34, 80, 30);
         Developerbt.setBorderPainted(false);
         Developerbt.setFocusPainted(false);
         Developerbt.setContentAreaFilled(false);
-        layeredPane.add(Developerbt);
+        
         
         Settingbt = new JButton(new ImageIcon("img/Settingbt.png"));
         Settingbt.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
@@ -119,7 +169,9 @@ public class Client_Main_UI extends JFrame{
         Settingbt.setFocusPainted(false);
         Settingbt.setContentAreaFilled(false);
         Settingbt.setBorderPainted(false);
-        layeredPane.add(Settingbt);
+        
+        //--------------------
+        
         
         Sendbt = new JButton(new ImageIcon("img/Filesend.png"));		
         Sendbt.setPressedIcon(new ImageIcon("img/Filesendh.png"));
@@ -128,11 +180,10 @@ public class Client_Main_UI extends JFrame{
         Sendbt.setFocusPainted(false);
         Sendbt.setContentAreaFilled(false);
         Sendbt.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new Client_Send_OTP();		
-			}
-		});
-        layeredPane.add(Sendbt);
+   			public void actionPerformed(ActionEvent e) {
+   				new Client_Send_OTP();		
+   			}
+   		});
         
         Receivebt = new JButton(new ImageIcon("img/Filereceive.png"));
         Receivebt.setPressedIcon(new ImageIcon("img/Filereceiveh.png"));
@@ -145,7 +196,6 @@ public class Client_Main_UI extends JFrame{
 				new Client_Receive_OTP();		
 			}
 		});
-        layeredPane.add(Receivebt);
         
         Encryptbt = new JButton(new ImageIcon("img/protectedfolder.png"));
         Encryptbt.setPressedIcon(new ImageIcon("img/protectedfolderh.png"));
@@ -153,8 +203,6 @@ public class Client_Main_UI extends JFrame{
         Encryptbt.setContentAreaFilled(false);
         Encryptbt.setBorderPainted(false);
         Encryptbt.setBounds(1, 245, 470, 190);
-        layeredPane.add(Encryptbt); 
- 
         
         Cloudbt = new JButton(new ImageIcon("img/Cloud.png"));
         Cloudbt.setRolloverIcon(new ImageIcon("img/Cloudh.png"));
@@ -164,61 +212,12 @@ public class Client_Main_UI extends JFrame{
         Cloudbt.setContentAreaFilled(false);
         Cloudbt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Client_File_ListReceiver().click((byte)2, null);
+				new Client_File_ListReceiver().click((byte)1, null);
 			}
 		});
-        layeredPane.add(Cloudbt);
- 
-        
-        layeredPane.add(panel);
-        container.add(layeredPane);
-        setVisible(true);
-        
-	}
-	
-	public void group(){
-		_checkUI=true;
- 		layeredPane.removeAll();
- 		
- 		Indivbt = new JButton(new ImageIcon("img/Indivbt.png"));		
-        Indivbt.setRolloverIcon(new ImageIcon("img/Indivhbt.png"));
-        Indivbt.setBounds(259, 35, 80, 30);
-        Indivbt.setBorderPainted(false);
-        Indivbt.setFocusPainted(false);
-        Indivbt.setContentAreaFilled(false);
-        Indivbt.addActionListener(new ActionListener() {
-         	public void actionPerformed(ActionEvent arg0) {
-         		individual();
-         		repaint();
-         	}
-         });
-        layeredPane.add(Indivbt);
-        
-        Groupbt = new JButton(new ImageIcon("img/Groupbt.png"));		
-        Groupbt.setRolloverIcon(new ImageIcon("img/Grouphbt.png"));
-        Groupbt.setBounds(353, 34, 80, 30);
-        Groupbt.setBorderPainted(false);
-        Groupbt.setFocusPainted(false);
-        Groupbt.setContentAreaFilled(false);
- 		layeredPane.add(Groupbt);
-        
-        Developerbt = new JButton(new ImageIcon("img/Developerbt.png"));
-        Developerbt.setRolloverIcon(new ImageIcon("img/Developerhbt.png"));
-        Developerbt.setBounds(447, 34, 80, 30);
-        Developerbt.setBorderPainted(false);
-        Developerbt.setFocusPainted(false);
-        Developerbt.setContentAreaFilled(false);
-        layeredPane.add(Developerbt);
-        
-        Settingbt = new JButton(new ImageIcon("img/Settingbt.png"));
-        Settingbt.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
-        Settingbt.setBounds(707, 4, 60, 60);
-        Settingbt.setFocusPainted(false);
-        Settingbt.setContentAreaFilled(false);
-        Settingbt.setBorderPainted(false);
-        layeredPane.add(Settingbt);
-        
- 		Create = new JButton(new ImageIcon("img/Create.png"));
+		//--------------------------------------------------
+		
+		Create = new JButton(new ImageIcon("img/Create.png"));
  		Create.setRolloverIcon(new ImageIcon("img/Createh.png"));
  		Create.setBounds(10, 97, 390, 280);
  		Create.setBorderPainted(false);
@@ -229,8 +228,6 @@ public class Client_Main_UI extends JFrame{
         		new Client_TestGroupName();
         	}
         });
- 	    layeredPane.add(Create);
- 	     
  	    Participate = new JButton(new ImageIcon("img/Participate.png"));
  	    Participate.setRolloverIcon(new ImageIcon("img/Participateh.png"));
  	    Participate.setBounds(434, 90, 370, 280);
@@ -238,120 +235,22 @@ public class Client_Main_UI extends JFrame{
  	    Participate.setFocusPainted(false);
  	    Participate.setContentAreaFilled(false);
  	    Participate.addActionListener(new ActionListener() {
-       	public void actionPerformed(ActionEvent arg0) {
-       		new Client_Group_Withdrawal().running("$1");
-       	}
-       });
- 	    layeredPane.add(Participate);
- 	    
- 	    layeredPane.add(panel);
- 	    container.add(layeredPane);
- 	    setVisible(true);
- 	    layeredPane.updateUI();
+ 	       	public void actionPerformed(ActionEvent arg0) {
+ 	       		Scanner sc = new Scanner(System.in);
+ 	       		String code = sc.nextLine();
+ 	       		new Client_Group_Withdrawal().running(code);
+ 	       	}
+ 	    });
+		//----------------------------------------------------------------------indivial
 	}
 	
-	public void individual(){
-		
-		_checkUI=false;
- 		layeredPane.removeAll();
-
-		 Indivbt = new JButton(new ImageIcon("img/Indivbt.png"));		
-		 Indivbt.setRolloverIcon(new ImageIcon("img/Indivhbt.png"));
-		 Indivbt.setBounds(259, 35, 80, 30);
-		 Indivbt.setBorderPainted(false);
-		 Indivbt.setFocusPainted(false);
-		 Indivbt.setContentAreaFilled(false);
-		 layeredPane.add(Indivbt);
-	        
-		 Groupbt = new JButton(new ImageIcon("img/Groupbt.png"));		
-		 Groupbt.setRolloverIcon(new ImageIcon("img/Grouphbt.png"));
-		 Groupbt.setBounds(353, 34, 80, 30);
-		 Groupbt.setBorderPainted(false);
-		 Groupbt.setFocusPainted(false);
-		 Groupbt.setContentAreaFilled(false);
-		 Groupbt.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent arg0) {
-				 group();
-				 repaint();
-			 }
-		 });
-		 layeredPane.add(Groupbt);
-		 
-		 Developerbt = new JButton(new ImageIcon("img/Developerbt.png"));
-		 Developerbt.setRolloverIcon(new ImageIcon("img/Developerhbt.png"));
-		 Developerbt.setBounds(447, 34, 80, 30);
-		 Developerbt.setBorderPainted(false);
-		 Developerbt.setFocusPainted(false);
-		 Developerbt.setContentAreaFilled(false);
-		 layeredPane.add(Developerbt);
-		 
-		 Settingbt = new JButton(new ImageIcon("img/Settingbt.png"));
-		 Settingbt.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
-		 Settingbt.setBounds(707, 4, 60, 60);
-		 Settingbt.setFocusPainted(false);
-		 Settingbt.setContentAreaFilled(false);
-		 Settingbt.setBorderPainted(false);
-		 layeredPane.add(Settingbt);
-		 
-		 Sendbt = new JButton(new ImageIcon("img/Filesend.png"));		
-		 Sendbt.setPressedIcon(new ImageIcon("img/Filesendh.png"));
-		 Sendbt.setBounds(1, 82, 396, 160);
-		 Sendbt.setBorderPainted(false);
-		 Sendbt.setFocusPainted(false);
-		 Sendbt.setContentAreaFilled(false);
-		 Sendbt.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					new Client_Send_OTP();		
-				}
-			});
-		 layeredPane.add(Sendbt);
-	        
-		 Receivebt = new JButton(new ImageIcon("img/Filereceive.png"));
-		 Receivebt.setPressedIcon(new ImageIcon("img/Filereceiveh.png"));
-		 Receivebt.setFocusPainted(false);
-		 Receivebt.setContentAreaFilled(false);
-		 Receivebt.setBorderPainted(false);
-		 Receivebt.setBounds(403, 82, 390, 160);
-		 Receivebt.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					new Client_Receive_OTP();		
-				}
-			});
-		 layeredPane.add(Receivebt);
-		 
-		 Encryptbt = new JButton(new ImageIcon("img/protectedfolder.png"));
-		 Encryptbt.setPressedIcon(new ImageIcon("img/protectedfolderh.png"));
-		 Encryptbt.setFocusPainted(false);
-		 Encryptbt.setContentAreaFilled(false);
-		 Encryptbt.setBorderPainted(false);
-		 Encryptbt.setBounds(1, 245, 470, 190);
-		 layeredPane.add(Encryptbt); 
-
-		 Cloudbt = new JButton(new ImageIcon("img/Cloud.png"));
-		 Cloudbt.setRolloverIcon(new ImageIcon("img/Cloudh.png"));
-		 Cloudbt.setBounds(478, 250, 315, 181);
-		 Cloudbt.setFocusPainted(false);
-		 Cloudbt.setBorderPainted(false);
-		 Cloudbt.setContentAreaFilled(false);
-		 Cloudbt.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					new Client_File_ListReceiver().click((byte)2, null);
-				}
-			});
-		 layeredPane.add(Cloudbt);
-		 
-		 layeredPane.add(panel);
-		 container.add(layeredPane);
-		 setVisible(true);
-		 layeredPane.updateUI();
-	}	
 	class MyPanel extends JPanel {
-        public void paint(Graphics g) {
+        public void paint(Graphics g) 
+        {
         	if(_checkUI){
         		g.drawImage(img2, 0, 0, null);
         	}
-        	else
-        	{
+        	else{
         		g.drawImage(img, 0, 0, null);
         	}
        }
