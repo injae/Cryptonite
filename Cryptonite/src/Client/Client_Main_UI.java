@@ -90,7 +90,7 @@ public class Client_Main_UI extends JFrame{
         Indivbt.setBorderPainted(false);
         Indivbt.setFocusPainted(false);
         Indivbt.setContentAreaFilled(false);
-        layeredPane.add(Indivbt);
+        layeredPane.add(Indivbt); 
         
         Groupbt = new JButton(new ImageIcon("img/Groupbt.png"));		
         Groupbt.setRolloverIcon(new ImageIcon("img/Grouphbt.png"));
@@ -227,8 +227,7 @@ public class Client_Main_UI extends JFrame{
 		
 		_checkUI=false;
  		layeredPane.removeAll();
- 		
-		
+
 		 Indivbt = new JButton(new ImageIcon("img/Indivbt.png"));		
 		 Indivbt.setRolloverIcon(new ImageIcon("img/Indivhbt.png"));
 		 Indivbt.setBounds(259, 35, 80, 30);
