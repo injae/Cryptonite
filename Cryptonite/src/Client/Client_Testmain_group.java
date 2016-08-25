@@ -120,7 +120,40 @@ public static void main(String[] args){
         _Participate.setPressedIcon(new ImageIcon("img/test_participate_hv.png"));
         _Participate.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		new Client_Group_Withdrawal().running("$1");
+        		//
+        		while(true)
+        		{
+        			System.out.println("하고싶은 모드를 입력하세요 (1. 사람검색, 2. 사람초대, 3. 그룹삭제, 4. 그룹탈퇴) ");
+        			System.out.print("입력 : ");
+        			Scanner scanner = new Scanner(System.in);
+        			int choice = scanner.nextInt();
+        			
+        			switch(choice)
+        			{
+        			case 1:
+        				System.out.print("아이디를 입력하세요 : ");
+        				new Client_Group_Search().search();
+        				break;
+        			case 2:
+        				System.out.print("그룹코드를 작성하세요 : ");
+        				String gpCode = scanner.nextLine();
+        				new Client_Group_Invite().running(gpCode);
+        				break;
+        			case 3:
+        				System.out.print("그룹코드를 작성하세요 : ");
+        				String gpCode2 = scanner.nextLine();
+        				new Client_Delete_Group().deleteGroup(gpCode2);
+        				break;
+        			case 4:
+        				System.out.print("그룹코드를 작성하세요 : ");
+        				String gpCode3 = scanner.nextLine();
+        				new Client_Group_Withdrawal().running(gpCode3);
+        				break;
+        				default:
+        					break;
+        			}
+        		}	//
+        		///new Client_Group_Withdrawal().running("$1");
         	}
         });
         
