@@ -74,58 +74,56 @@ public class test_ui extends JFrame
         panel.setBounds(0, 0, 900, 500);
        
         allocator();
-       
+
         individual();
 	    
-        
         setVisible(true);
 	}
 	public void group(){
 		_checkUI=true;
  		layeredPane.removeAll();
+
         layeredPane.add(Indivbt);
  		layeredPane.add(Groupbt);
         layeredPane.add(Developerbt);
         layeredPane.add(Settingbt);
+        
  	    layeredPane.add(Create);
  	    layeredPane.add(Participate);
+ 	    
  	    layeredPane.add(panel);
  	    container.add(layeredPane);
- 	    layeredPane.updateUI();
 	}
 	
 	public void individual(){
 		_checkUI=false;
  		 layeredPane.removeAll();
+
+		 
 		 layeredPane.add(Indivbt);
 		 layeredPane.add(Groupbt);
 		 layeredPane.add(Developerbt);
 		 layeredPane.add(Settingbt);
+		 
 		 layeredPane.add(Sendbt);
 		 layeredPane.add(Receivebt);
 		 layeredPane.add(Encryptbt); 
 		 layeredPane.add(Cloudbt);
+		 
 		 layeredPane.add(panel);
 		 container.add(layeredPane);
-		 layeredPane.updateUI();
 	}	
 	
 	public void allocator()
 	{
-		Indivbt = new JButton(new ImageIcon("img/Indivbt.png"));		
-        Indivbt.setRolloverIcon(new ImageIcon("img/Indivhbt.png"));
-        Indivbt.setBounds(259, 35, 80, 30);
-        Indivbt.setBorderPainted(false);
-        Indivbt.setFocusPainted(false);
-        Indivbt.setContentAreaFilled(false);
-	
+
         Groupbt = new JButton(new ImageIcon("img/Groupbt.png"));		
         Groupbt.setRolloverIcon(new ImageIcon("img/Grouphbt.png"));
         Groupbt.setBounds(353, 34, 80, 30);
         Groupbt.setBorderPainted(false);
         Groupbt.setFocusPainted(false);
         Groupbt.setContentAreaFilled(false);
-        Groupbt.addActionListener(new ActionListener() {
+        Groupbt.addActionListener(new ActionListener() {     
          	public void actionPerformed(ActionEvent arg0) {
          		group();
          		repaint();
@@ -145,6 +143,7 @@ public class test_ui extends JFrame
          	}
          });
         
+		
         Developerbt = new JButton(new ImageIcon("img/Developerbt.png"));
         Developerbt.setRolloverIcon(new ImageIcon("img/Developerhbt.png"));
         Developerbt.setBounds(447, 34, 80, 30);
@@ -152,12 +151,16 @@ public class test_ui extends JFrame
         Developerbt.setFocusPainted(false);
         Developerbt.setContentAreaFilled(false);
         
+        
         Settingbt = new JButton(new ImageIcon("img/Settingbt.png"));
         Settingbt.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
         Settingbt.setBounds(707, 4, 60, 60);
         Settingbt.setFocusPainted(false);
         Settingbt.setContentAreaFilled(false);
         Settingbt.setBorderPainted(false);
+        
+        //--------------------
+        
         
         Sendbt = new JButton(new ImageIcon("img/Filesend.png"));		
         Sendbt.setPressedIcon(new ImageIcon("img/Filesendh.png"));
@@ -188,28 +191,6 @@ public class test_ui extends JFrame
         Cloudbt.setContentAreaFilled(false);
         
 		//--------------------------------------------------
-
-		
-        Groupbt = new JButton(new ImageIcon("img/Groupbt.png"));		
-        Groupbt.setRolloverIcon(new ImageIcon("img/Grouphbt.png"));
-        Groupbt.setBounds(353, 34, 80, 30);
-        Groupbt.setBorderPainted(false);
-        Groupbt.setFocusPainted(false);
-        Groupbt.setContentAreaFilled(false);
-		
-        Developerbt = new JButton(new ImageIcon("img/Developerbt.png"));
-        Developerbt.setRolloverIcon(new ImageIcon("img/Developerhbt.png"));
-        Developerbt.setBounds(447, 34, 80, 30);
-        Developerbt.setBorderPainted(false);
-        Developerbt.setFocusPainted(false);
-        Developerbt.setContentAreaFilled(false);
-		
-        Settingbt = new JButton(new ImageIcon("img/Settingbt.png"));
-        Settingbt.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
-        Settingbt.setBounds(707, 4, 60, 60);
-        Settingbt.setFocusPainted(false);
-        Settingbt.setContentAreaFilled(false);
-        Settingbt.setBorderPainted(false);
 		
 		Create = new JButton(new ImageIcon("img/Create.png"));
  		Create.setRolloverIcon(new ImageIcon("img/Createh.png"));
@@ -223,70 +204,8 @@ public class test_ui extends JFrame
  	    Participate.setBounds(434, 90, 370, 280);
  	    Participate.setBorderPainted(false);
  	    Participate.setFocusPainted(false);
- 	    Participate.setContentAreaFilled(false);
-		
+ 	    Participate.setContentAreaFilled(false);	
 		//----------------------------------------------------------------------indivial
-		 Indivbt = new JButton(new ImageIcon("img/Indivbt.png"));		
-		 Indivbt.setRolloverIcon(new ImageIcon("img/Indivhbt.png"));
-		 Indivbt.setBounds(259, 35, 80, 30);
-		 Indivbt.setBorderPainted(false);
-		 Indivbt.setFocusPainted(false);
-		 Indivbt.setContentAreaFilled(false);
-		
-		 Groupbt = new JButton(new ImageIcon("img/Groupbt.png"));		
-		 Groupbt.setRolloverIcon(new ImageIcon("img/Grouphbt.png"));
-		 Groupbt.setBounds(353, 34, 80, 30);
-		 Groupbt.setBorderPainted(false);
-		 Groupbt.setFocusPainted(false);
-		 Groupbt.setContentAreaFilled(false);
-		 Groupbt.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent arg0) {
-				 group();
-				 repaint();
-			 }
-		 });
-		
-		 Developerbt = new JButton(new ImageIcon("img/Developerbt.png"));
-		 Developerbt.setRolloverIcon(new ImageIcon("img/Developerhbt.png"));
-		 Developerbt.setBounds(447, 34, 80, 30);
-		 Developerbt.setBorderPainted(false);
-		 Developerbt.setFocusPainted(false);
-		 Developerbt.setContentAreaFilled(false);
-		
-		 Settingbt = new JButton(new ImageIcon("img/Settingbt.png"));
-		 Settingbt.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
-		 Settingbt.setBounds(707, 4, 60, 60);
-		 Settingbt.setFocusPainted(false);
-		 Settingbt.setContentAreaFilled(false);
-		 Settingbt.setBorderPainted(false);
-		
-		 Sendbt = new JButton(new ImageIcon("img/Filesend.png"));		
-		 Sendbt.setPressedIcon(new ImageIcon("img/Filesendh.png"));
-		 Sendbt.setBounds(1, 82, 396, 160);
-		 Sendbt.setBorderPainted(false);
-		 Sendbt.setFocusPainted(false);
-		 Sendbt.setContentAreaFilled(false);
-        
-		 Receivebt = new JButton(new ImageIcon("img/Filereceive.png"));
-		 Receivebt.setPressedIcon(new ImageIcon("img/Filereceiveh.png"));
-		 Receivebt.setFocusPainted(false);
-		 Receivebt.setContentAreaFilled(false);
-		 Receivebt.setBorderPainted(false);
-		 Receivebt.setBounds(403, 82, 390, 160);
-		
-		 Encryptbt = new JButton(new ImageIcon("img/protectedfolder.png"));
-		 Encryptbt.setPressedIcon(new ImageIcon("img/protectedfolderh.png"));
-		 Encryptbt.setFocusPainted(false);
-		 Encryptbt.setContentAreaFilled(false);
-		 Encryptbt.setBorderPainted(false);
-		 Encryptbt.setBounds(1, 245, 470, 190);
-		
-		 Cloudbt = new JButton(new ImageIcon("img/Cloud.png"));
-		 Cloudbt.setRolloverIcon(new ImageIcon("img/Cloudh.png"));
-		 Cloudbt.setBounds(478, 250, 315, 181);
-		 Cloudbt.setFocusPainted(false);
-		 Cloudbt.setBorderPainted(false);
-		 Cloudbt.setContentAreaFilled(false);
 	}
 	
 	class MyPanel extends JPanel {
