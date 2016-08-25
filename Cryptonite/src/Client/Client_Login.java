@@ -237,9 +237,6 @@ public class Client_Login extends JFrame implements PacketRule
           						break;
           					case 2 : 
           						showMessage("LOGIN", "Welcome,\t"+_id);
-          						dispose();
-	          			
-          						Client_Testmain Main = new Client_Testmain();
 	          			
           						gpcount=csc.receive.setAllocate(100).read().getByte();
           						
@@ -276,6 +273,9 @@ public class Client_Login extends JFrame implements PacketRule
           							fw.close();
           						}
           						new Client_FolderScan().start();
+          						dispose();
+          						new Client_Main_UI(gpcode, gpname, name, uscode);
+          						
           						break;
           					case 3 : 
           						showMessage("Error", "Wrong password");
