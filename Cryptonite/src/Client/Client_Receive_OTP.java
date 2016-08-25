@@ -37,13 +37,16 @@ public class Client_Receive_OTP extends JFrame{
 	Font font = new Font ("SansSerif", Font.BOLD,20);
 
 	String OTP;
+	private Client_FileShare_Receive _cfr = null;
 	
-	public static void main(String args[]){
+	public static void main(String args[])
+	{
 		new  Client_Receive_OTP();
 	}
 
 	
 	public  Client_Receive_OTP(){
+		_cfr = new Client_FileShare_Receive();
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(500,300,460,550);
@@ -57,7 +60,8 @@ public class Client_Receive_OTP extends JFrame{
         
         try {
             img = ImageIO.read(new File("img/Filereceivebg.png"));
-        } catch (IOException e) {
+        } catch (IOException e) 
+        {
             System.out.println("이미지 불러오기 실패");
             System.exit(0);
         }
@@ -77,7 +81,8 @@ public class Client_Receive_OTP extends JFrame{
      		@Override
      		public void keyPressed(KeyEvent e) {}
      		@Override
-     		public void keyReleased(KeyEvent e) {
+     		public void keyReleased(KeyEvent e) 
+     		{
      			OTP = OTPField.getText();
      		}
      		@Override
@@ -98,8 +103,9 @@ public class Client_Receive_OTP extends JFrame{
         Select.setFocusPainted(false);
         Select.setContentAreaFilled(false);
         Select.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent arg0) {
-				
+			 public void actionPerformed(ActionEvent arg0) 
+			 {
+				_cfr.folderSelect();
 			 }
 		 });
         layeredPane.add(Select);
@@ -112,8 +118,7 @@ public class Client_Receive_OTP extends JFrame{
         Check.setContentAreaFilled(false);
         Check.addActionListener(new ActionListener() {
 			 public void actionPerformed(ActionEvent arg0) {
-				 new Client_FileShare_Receive().receiveFiles(OTP);
-	         		dispose();
+				 _cfr.receiveFiles(OTP);
 			 }
 		 });
         layeredPane.add(Check);

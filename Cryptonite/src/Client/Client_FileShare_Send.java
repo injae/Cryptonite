@@ -25,7 +25,7 @@ import java.io.*;
 public class Client_FileShare_Send implements PacketRule
 {
 	// Instance
-	private String _OTP = null;
+	private String _OTP = "";
 	
 	// About Files
 	private FileChannel _fileChannel = null;
@@ -51,7 +51,12 @@ public class Client_FileShare_Send implements PacketRule
 	}
 	
 	// Methods
-	public void click()	// when you click the button which turn on 1:1 file share system.
+	public String getOTP()
+	{
+		return _OTP;
+	}
+	
+	public void fileSelect()	// when you click the button which turn on 1:1 file share system.
 	{
 		_cfs.fileFinderON();
 		while(!_cfs.getSelectionFinish())
@@ -83,7 +88,8 @@ public class Client_FileShare_Send implements PacketRule
 				_tempFile = new File(_filePathArray[i]);
 				_fileSizeArray[i] = _tempFile.length();
 			}
-			sendFile();	// Temporary
+			//sendFile();	// Temporary
+			_cfs.dispose();
 		}
 		catch(NullPointerException e)
 		{
@@ -135,7 +141,7 @@ public class Client_FileShare_Send implements PacketRule
 				p.close();
 				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");			
 			}
-			_cfs.dispose();
+			//_cfs.dispose();
 		}
 		catch (FileNotFoundException e) 
 		{

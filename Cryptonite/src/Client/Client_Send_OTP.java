@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -27,12 +28,17 @@ import javax.swing.border.BevelBorder;
 
 
 public class Client_Send_OTP extends JFrame{
-	BufferedImage img = null;JTextField Otpfield;
+	BufferedImage img = null;
+	JLabel Otpfield;
 	
 	String Otp;
 	
+	JButton Select;
 	JButton Send;
 	JButton Cancel;
+	
+	private Client_FileShare_Send _cfs = null;
+	
 	Font font = new Font ("SansSerif", Font.BOLD,20);
 
 	public static void main(String args[]){
@@ -41,6 +47,7 @@ public class Client_Send_OTP extends JFrame{
 
 	
 	public Client_Send_OTP(){
+		_cfs = new Client_FileShare_Send();
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(500,300,460,550);
@@ -62,47 +69,45 @@ public class Client_Send_OTP extends JFrame{
         MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 460, 500);
         
-        Otpfield = new JTextField();
-        Otpfield.setText("Set otp number");
+        Otpfield = new JLabel();
+        Otpfield.setText(_cfs.getOTP());
         Otpfield.setBounds(158, 247, 254, 50);
         Otpfield.setForeground(Color.black);        
         Otpfield.setFont(font);
         Otpfield.setOpaque(false);
         Otpfield.setBorder(BorderFactory.createEmptyBorder());
         Otpfield.setHorizontalAlignment(JTextField.CENTER);
-        Otpfield.addKeyListener(new KeyListener(){
-     		@Override
-     		public void keyPressed(KeyEvent e) {}
-     		@Override
-     		public void keyReleased(KeyEvent e) {
-     			
-     		}
-     		@Override
-     		public void keyTyped(KeyEvent e) {}
-           });
-        	Otpfield.addMouseListener(new MouseAdapter(){
-         	public void mouseClicked(MouseEvent e){
-         		Otpfield.setText("");
-         	}
-         });
         layeredPane.add(Otpfield);
+        
+        Select = new JButton(new ImageIcon("img/select.png"));		
+        Select.setPressedIcon(new ImageIcon("img/selectp.png"));
+        Select.setBounds(185, 330, 80, 40);
+        Select.setBorderPainted(false);
+        Select.setFocusPainted(false);
+        Select.setContentAreaFilled(false);
+        Select.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_cfs.fileSelect();		
+			}
+		});
+        layeredPane.add(Select);
         
         Send = new JButton(new ImageIcon("img/Send.png"));		
         Send.setPressedIcon(new ImageIcon("img/Sendp.png"));
-        Send.setBounds(121, 359, 80, 40);
+        Send.setBounds(121, 400, 80, 40);
         Send.setBorderPainted(false);
         Send.setFocusPainted(false);
         Send.setContentAreaFilled(false);
         Send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Client_FileShare_Send().click();		
+				_cfs.sendFile();	
 			}
 		});
         layeredPane.add(Send);
         
         Cancel = new JButton(new ImageIcon("img/Cancel.png"));		
         Cancel.setPressedIcon(new ImageIcon("img/Cancelp.png"));
-        Cancel.setBounds(251, 359, 80,40);
+        Cancel.setBounds(251, 400, 80,40);
         Cancel.setBorderPainted(false);
         Cancel.setFocusPainted(false);
         Cancel.setContentAreaFilled(false);

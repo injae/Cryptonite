@@ -108,7 +108,7 @@ public class Client_Testmain extends JFrame{
         _FileSend.setPressedIcon(new ImageIcon("img/tset_sendbt_hv.png"));
         _FileSend.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		new Client_FileShare_Send().click();
+        		
         	}
         });
        

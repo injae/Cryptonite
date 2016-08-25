@@ -40,6 +40,23 @@ public class Client_FileShare_Receive implements PacketRule
 		_cfs = new Client_FolderSelector();
 	}
 	
+	public void folderSelect()
+	{
+		_cfs.folderSelectorON();
+		while(!_cfs.getSelectionEnd())
+		{
+			try 
+			{
+				Thread.sleep(1);
+			}
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		_downloadFolder = _cfs.getSelectedPath();
+	}
+	
 	public void receiveFiles(String OTP)
 	{
 		Charset cs = Charset.forName("UTF-8");
@@ -47,21 +64,13 @@ public class Client_FileShare_Receive implements PacketRule
 		if(_OTP.length() != 6)
 		{
 			System.out.println("OTP length must be 6 letters.");
-			System.exit(1);		// temporary
 		}
 		else if(_OTP.length() == 6)
 		{	
 			try 
-			{
-				_cfs.folderSelectorON();
-				while(!_cfs.getSelectionEnd())
-				{
-					Thread.sleep(1);
-				}
-				_downloadFolder = _cfs.getSelectedPath();
-				
+			{	
 				while(true)
-				{					
+				{			
 					byte[] event = new byte[1024];
 					event[0] = FILE_SHARE_SEND;
 					_csc.send.setPacket(event).write();
@@ -71,7 +80,6 @@ public class Client_FileShare_Receive implements PacketRule
 					_downloadFlag = new String(_csc.receive.read().getByte()).trim();
 					if(_downloadFlag.equals("FALSE"))
 					{
-						System.out.println("FALSE has occured !!");
 						break;
 					}
 					else if(_downloadFlag.equals("TRUE"))
@@ -98,10 +106,6 @@ public class Client_FileShare_Receive implements PacketRule
 				}
 			} 
 			catch (IOException e) 
-			{
-				e.printStackTrace();
-			} 
-			catch (InterruptedException e) 
 			{
 				e.printStackTrace();
 			}
