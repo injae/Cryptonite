@@ -173,6 +173,7 @@ public class Client_Main_UI extends JFrame{
         Indivbt.addActionListener(new ActionListener() {
          	public void actionPerformed(ActionEvent arg0) {
          		individual();
+         		repaint();
          	}
          });
         layeredPane.add(Indivbt);
@@ -246,6 +247,7 @@ public class Client_Main_UI extends JFrame{
 		 Groupbt.addActionListener(new ActionListener() {
 			 public void actionPerformed(ActionEvent arg0) {
 				 group();
+				 repaint();
 			 }
 		 });
 		 layeredPane.add(Groupbt);
