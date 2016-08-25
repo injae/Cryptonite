@@ -12,55 +12,57 @@ import javax.crypto.spec.SecretKeySpec;
 
 import Crypto.Crypto;
 import Crypto.Crypto_Factory;
+import Crypto.KeyReposit;
 import Crypto.rsaKeyGenerator;
 import Function.PacketRule;
 
-public class Client_KeyExchange implements PacketRule
-{
-	private Client_Server_Connector csc = null;
-	private Crypto crypto = null;
+public class Client_KeyExchange implements PacketRule {
 
-	private Key _priKey = null;
-	private Key _pubKey = null;
 
-	private SecretKey _secretKey = null;
 
-	public Client_KeyExchange() {
-		// Server Connect
-		csc = Client_Server_Connector.getInstance();
+    private Client_Server_Connector csc = null;
+    private Crypto crypto = null;
 
-		setKey();
-		crypto = new Crypto(Crypto_Factory.create("RSA1024", Cipher.DECRYPT_MODE, _priKey));
+    private Key _priKey = null;
+    private Key _pubKey = null;
 
-		// Send public key to server
-		try {
-			byte[] event = new byte[1024];
-			event[0] = KEY_EXCHANGE;
-			event[1]  = 2;
-			csc.send.setPacket(event).write();
-			
-			csc.send.setPacket(_pubKey.getEncoded(),128).write();
+    private SecretKey _secretKey = null;
 
-			byte[] encryptData = csc.receive.setAllocate(32).read().getByte();
-			
-			// Decrypt recieved secret Key from server
-			this._secretKey = new SecretKeySpec(crypto.endecription(encryptData), "AES");
-		}
-		// exchange done
-		catch (IOException e) {
-			System.out.println("key exchange failed");
-			e.printStackTrace();
-		}
-	}
+    public Client_KeyExchange() {
+        // Server Connect
+        csc = Client_Server_Connector.getInstance();
 
-	public SecretKey get_secretKey() {
-		return _secretKey;
-	}
+        setKey();
+        crypto = new Crypto(Crypto_Factory.create("RSA1024", Cipher.DECRYPT_MODE, _priKey));
 
-	private void setKey() {
-		rsaKeyGenerator generator = new rsaKeyGenerator();
-		this._priKey = (PrivateKey) generator.get_priKey();
-		this._pubKey = generator.get_pubKey();
-	}
+        // Send public key to server
+        try {
+            byte[] event = new byte[1024];
+            event[0] = KEY_EXCHANGE;
+            event[1] = 2;
+            csc.send.setPacket(event).write();
+
+            csc.send.setPacket(_pubKey.getEncoded(), 162).write();
+
+            byte[] encryptData = csc.receive.setAllocate(128).read().getByte();
+
+            // Decrypt recieved secret Key from server
+            this._secretKey = new SecretKeySpec(crypto.endecription(encryptData), "AES");
+            
+            KeyReposit reposit = KeyReposit.getInstance();
+            reposit.set_rsaKey(this._secretKey);
+        }
+        // exchange done
+        catch (IOException e) {
+            System.out.println("key exchange failed");
+            e.printStackTrace();
+        }
+    }
+
+    private void setKey() {
+        rsaKeyGenerator generator = new rsaKeyGenerator();
+        this._priKey = (PrivateKey) generator.get_priKey();
+        this._pubKey = generator.get_pubKey();
+    }
 
 }

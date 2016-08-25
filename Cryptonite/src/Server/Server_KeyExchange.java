@@ -13,61 +13,60 @@ import javax.crypto.SecretKey;
 
 import Crypto.Crypto;
 import Crypto.Crypto_Factory;
+import Crypto.KeyReposit;
 import Crypto.userKeyGenerator;
 
 public class Server_KeyExchange extends Server_Funtion {
-	private Key _pubKey = null;
-	private SecretKey _secretKey = null;
+    private SecretKey _secretKey = null;
 
-	private Crypto crypto = null;
+    private Crypto crypto = null;
 
-	public Server_KeyExchange(Server_Client_Activity activity) {
-		super(activity);
-		// TODO �ڵ� ������ ������ ����
-	}
+    public Server_KeyExchange(Server_Client_Activity activity) {
+        super(activity);
+        // TODO �ڵ� ������ ������ ����
+    }
 
-	@Override
-	public void Checker(byte[] packet) {
-		_activity.receive.setAllocate(128);
-		_packetMaxCount = packet[1];
-	}
+    @Override
+    public void Checker(byte[] packet) {
+        _activity.receive.setAllocate(162);
+        _packetMaxCount = packet[1];
+    }
 
-	@Override
-	public void running(int count) throws IOException {
-		if (count == 1) {
-			Checker(_activity.getReceiveEvent());
-		} else {
+    @Override
+    public void running(int count) throws IOException {
+        if (count == 1) {
+            Checker(_activity.getReceiveEvent());
+        } else {
+            makeSecretKey();
+            KeyFactory keyFactory = null;
+            try {
+                keyFactory = KeyFactory.getInstance("RSA");
+                // Recieve public key from client
+                byte[] pubKeyBytes = _activity.receive.getByte();
+                PublicKey pubKey = keyFactory.generatePublic(new X509EncodedKeySpec(pubKeyBytes));
 
-			// exchange done
-			makeSecretKey();
-			KeyFactory keyFactory = null;
-			try {
-				keyFactory = KeyFactory.getInstance("RSA");
-				// Recieve public key from client
-				byte[] pubKeyBytes = _activity.receive.getByte();
-				PublicKey pubKey = keyFactory.generatePublic(new X509EncodedKeySpec(pubKeyBytes));
-				
-				// Encrypt secret key by public key
-				crypto = new Crypto(Crypto_Factory.create("RSA1024", Cipher.ENCRYPT_MODE, pubKey));
-				byte[] aesKey = crypto.endecription(_secretKey.getEncoded());
-				
-				// Send encrypted secret key to client
-				_activity.send.setPacket(aesKey);
+                // Encrypt secret key by public key
+                crypto = new Crypto(Crypto_Factory.create("RSA1024", Cipher.ENCRYPT_MODE, pubKey));
+                byte[] aesKey = crypto.endecription(_secretKey.getEncoded());
 
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-	}
+                // Send encrypted secret key to client
+                _activity.send.setPacket(aesKey, 128);
+                
+                
 
-	public SecretKey get_secretKey() {
-		return _secretKey;
-	}
+            } catch (Exception e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
+    }
 
-	private void makeSecretKey() {
-		userKeyGenerator generator = new userKeyGenerator();
+    private void makeSecretKey() {
+        userKeyGenerator generator = new userKeyGenerator();
 
-		this._secretKey = generator.getAesKey();
-	}
+        this._secretKey = generator.getAesKey();
+        
+        KeyReposit reposit = KeyReposit.getInstance();
+        reposit.set_rsaKey(_secretKey);
+    }
 }
