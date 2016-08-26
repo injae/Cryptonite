@@ -31,7 +31,7 @@ public class Client_KeyExchange implements PacketRule {
     public Client_KeyExchange() {
         // Server Connect
         csc = Client_Server_Connector.getInstance();
-       
+        
         setKey();
         crypto = new Crypto(Crypto_Factory.create("RSA1024", Cipher.DECRYPT_MODE, _priKey));
 
@@ -49,7 +49,9 @@ public class Client_KeyExchange implements PacketRule {
             this._secretKey = new SecretKeySpec(crypto.endecription(encryptData), "AES");
             KeyReposit reposit = KeyReposit.getInstance();
             reposit.set_rsaKey(this._secretKey);
-        
+         
+            csc.send.init(reposit.get_rsaKey());
+        	csc.receive.init(reposit.get_rsaKey());
         }
        
         catch (IOException e) {

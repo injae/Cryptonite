@@ -14,6 +14,7 @@ import javax.crypto.SecretKey;
 
 import Function.PacketProcessor;
 import Function.PacketRule;
+import Function.SecurePacketProcessor;
 
 /*
  * @author In Jae Lee
@@ -35,8 +36,8 @@ public class Server_Client_Activity implements PacketRule
 	
 	public LinkedList<Server_Funtion> _funtionList;
 	
-	public PacketProcessor receive;
-	public PacketProcessor send;
+	public SecurePacketProcessor receive;
+	public SecurePacketProcessor send;
 	
 	//Aes key for Communication
 	private SecretKey comKey;
@@ -62,8 +63,8 @@ public class Server_Client_Activity implements PacketRule
 
             System.out.println(_channel.toString() + "connect");
             
-            receive = new PacketProcessor(_channel, true);
-            send = new PacketProcessor(_channel, true); 
+            receive = new SecurePacketProcessor(_channel, true);
+            send = new SecurePacketProcessor(_channel, true); 
             
 		} 
 		catch (IOException e) 

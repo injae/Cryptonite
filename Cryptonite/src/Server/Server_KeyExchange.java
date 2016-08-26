@@ -7,9 +7,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import Crypto.Crypto;
 import Crypto.Crypto_Factory;
@@ -40,10 +42,10 @@ public class Server_KeyExchange extends Server_Funtion {
             makeSecretKey();
 
             try {
-            	KeyFactory keyFactory = KeyFactory.getInstance("RSA");
                 // Recieve public key from client
+            	
                 byte[] pubKeyBytes = _activity.receive.getByte();
-                PublicKey pubKey = keyFactory.generatePublic(new X509EncodedKeySpec(pubKeyBytes));
+                PublicKey pubKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(pubKeyBytes));
                 
                 // Encrypt secret key by public key
                 crypto = new Crypto(Crypto_Factory.create("RSA1024", Cipher.ENCRYPT_MODE, pubKey));
@@ -51,7 +53,10 @@ public class Server_KeyExchange extends Server_Funtion {
                 
                 // Send encrypted secret key to client
                 _activity.send.setPacket(aesKey, 128).write();
-               
+                
+                
+                _activity.send.init(_activity.getKey());
+            	_activity.receive.init(_activity.getKey());
             } catch (Exception e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
@@ -64,7 +69,6 @@ public class Server_KeyExchange extends Server_Funtion {
 
         this._secretKey = generator.getAesKey();
         
-        KeyReposit reposit = KeyReposit.getInstance();
-        reposit.set_rsaKey(_secretKey);
+        _activity.setKey(_secretKey);
     }
 }
