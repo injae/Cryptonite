@@ -70,18 +70,18 @@ public class Client_Login extends JFrame implements PacketRule
     private String _password="";
     private String _address ="";
     
-    private Client_Server_Connector csc;
-    private Client_FolderSelector cfs = null;
+    private Client_Server_Connector _csc;
+    private Client_FolderSelector _cfs = null;
     
 
-    private byte[] gpcount=null;
+    private byte[] _gpcount=null;
     
-    private String name=null;
-    private String uscode=null;
-    private String aeskey=null;
+    private String _name=null;
+    private String _uscode=null;
+    private String _aeskey=null;
 		
-    private ArrayList<String> gpcode = new ArrayList<String>();
-    private ArrayList<String> gpname = new ArrayList<String>();
+    private ArrayList<String> _gpcode = new ArrayList<String>();
+    private ArrayList<String> _gpname = new ArrayList<String>();
     /*//private Client_FolderChooser_UI fc = null;
     
     // 로그인 카운터 읽어주기 위한 것
@@ -129,7 +129,7 @@ public class Client_Login extends JFrame implements PacketRule
 			System.out.println("Appilcation icon not found");
 		}
 
-			csc=Client_Server_Connector.getInstance();
+			_csc=Client_Server_Connector.getInstance();
 
     	setTitle("Cryptonite");
         setBounds(710,200,456,665);
@@ -220,15 +220,15 @@ public class Client_Login extends JFrame implements PacketRule
           				byte[] event =new byte[1024];
           				event[0]=LOGIN;
           				event[1]=size;
-          				csc.send.setPacket(event).write();
-          				csc.send.setPacket(_id.getBytes(),500).write();//수정
+          				_csc.send.setPacket(event).write();
+          				_csc.send.setPacket(_id.getBytes(),500).write();//수정
           				_password=Encode_password(_password);
-          				csc.send.setPacket(_password.getBytes(),500).write();
+          				_csc.send.setPacket(_password.getBytes(),500).write();
 					
           				System.out.println(_id+"\t"+_password);
 	
 	          		
-          				byte[] checkLogin = csc.receive.read().getByte();
+          				byte[] checkLogin = _csc.receive.read().getByte();
           				switch(checkLogin[0])
           				{
           					case 1 :
@@ -238,24 +238,24 @@ public class Client_Login extends JFrame implements PacketRule
           					case 2 : 
           						showMessage("LOGIN", "Welcome,\t"+_id);
 	          			
-          						gpcount=csc.receive.setAllocate(100).read().getByte();
+          						_gpcount=_csc.receive.setAllocate(100).read().getByte();
           						
-          						name=csc.receive.setAllocate(500).read().getByte().toString().trim();
-          						uscode=csc.receive.setAllocate(100).read().getByte().toString().trim();
-          						aeskey=csc.receive.setAllocate(500).read().getByte().toString().trim();
+          						_name=_csc.receive.setAllocate(500).read().getByte().toString().trim();
+          						_uscode=_csc.receive.setAllocate(100).read().getByte().toString().trim();
+          						_aeskey=_csc.receive.setAllocate(500).read().getByte().toString().trim();
 	          	
-          						for(int i =0; i < gpcount[0]; i++)
+          						for(int i =0; i < _gpcount[0]; i++)
           						{
-          							gpcode.add(new String(csc.receive.setAllocate(100).read().getByte()).trim());
-          							gpname.add(new String(csc.receive.setAllocate(500).read().getByte()).trim());
+          							_gpcode.add(new String(_csc.receive.setAllocate(100).read().getByte()).trim());
+          							_gpname.add(new String(_csc.receive.setAllocate(500).read().getByte()).trim());
           						}
           						
           						if(checkLogin[1]==1)//count 1일때
           						{
           							showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
-          							cfs	 = new Client_FolderSelector();
-          							cfs.folderSelectorON();
-          							while(!cfs.getSelectionEnd())
+          							_cfs	 = new Client_FolderSelector();
+          							_cfs.folderSelectorON();
+          							while(!_cfs.getSelectionEnd())
           							{
           								try 
           								{
@@ -266,7 +266,7 @@ public class Client_Login extends JFrame implements PacketRule
           									e1.printStackTrace();
           								}
           							}	
-          							_address = cfs.getSelectedPath();
+          							_address = _cfs.getSelectedPath();
           							File save = new File("Cryptonite_Client/log/protectedlog.ser");
           							FileWriter fw = new FileWriter(save);
           							fw.write(_address);
@@ -274,7 +274,7 @@ public class Client_Login extends JFrame implements PacketRule
           						}
           						new Client_FolderScan().start();
           						dispose();
-          						new Client_Main_UI(gpcode, gpname, name, uscode);
+          						new Client_Main_UI(_gpcode, _gpname, _name, _uscode);
           						
           						break;
           					case 3 : 
