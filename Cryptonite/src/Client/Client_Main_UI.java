@@ -6,8 +6,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -26,6 +30,9 @@ public class Client_Main_UI extends JFrame
 	private ArrayList<String> _gpName;
 	private String _name;
 	private String _usCode;
+	private String _address;
+	
+	private Client_FolderSelector cfs = null;
 	
 	private BufferedImage img = null;
 	private BufferedImage img2=null;
@@ -63,9 +70,20 @@ public class Client_Main_UI extends JFrame
 		_name = name;
 		_usCode = usCode;
 		
+		WindowListener exitLitsener = new WindowAdapter() {
+				
+			@Override
+			public void windowClosing(WindowEvent e){
+				dispose();
+				new Client_Logout().logout();
+				new Client_Login();
+			}
+		};
+		
 		container=getContentPane();
 		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
+		addWindowListener(exitLitsener);
 		setResizable(false);
 		setBounds(500,300,816,480);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -170,7 +188,7 @@ public class Client_Main_UI extends JFrame
         Settingbt.setContentAreaFilled(false);
         Settingbt.setBorderPainted(false);
         
-        //--------------------
+        //-------------------------------------------------
         
         
         Sendbt = new JButton(new ImageIcon("img/Filesend.png"));		
@@ -203,6 +221,34 @@ public class Client_Main_UI extends JFrame
         Encryptbt.setContentAreaFilled(false);
         Encryptbt.setBorderPainted(false);
         Encryptbt.setBounds(1, 245, 470, 190);
+        Encryptbt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					cfs	 = new Client_FolderSelector();
+					cfs.folderSelectorON();
+					while(!cfs.getSelectionEnd())
+					{
+						try 
+						{
+							Thread.sleep(1);
+						} 
+						catch (InterruptedException e1) 
+						{
+							e1.printStackTrace();
+						}
+					}	
+					_address = cfs.getSelectedPath();
+					File save = new File("Cryptonite_Client/log/protectedlog.ser");
+					FileWriter fw;
+					try {
+						fw = new FileWriter(save);
+						fw.write(_address);
+						fw.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				new Client_FolderScan().start();		
+			}
+		});
         
         Cloudbt = new JButton(new ImageIcon("img/Cloud.png"));
         Cloudbt.setRolloverIcon(new ImageIcon("img/Cloudh.png"));

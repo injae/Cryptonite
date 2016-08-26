@@ -96,7 +96,7 @@ import Crypto.userKeyGenerator;
 
 		public Client_SignUp(){
 			                                              
-	
+			
 			_csc=Client_Server_Connector.getInstance();
 	
 			setTitle("CRYPTONITE");

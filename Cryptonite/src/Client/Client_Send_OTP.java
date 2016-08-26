@@ -28,18 +28,23 @@ import javax.swing.border.BevelBorder;
 
 
 public class Client_Send_OTP extends JFrame{
-	BufferedImage img = null;
-	JLabel Otpfield;
 	
-	String Otp;
+	private BufferedImage img = null;
+
+	private Container container;
 	
-	JButton Select;
-	JButton Send;
-	JButton Cancel;
+	private JButton Select;
+	private JButton Send;
+	private JButton Cancel;
 	
+	private String Otp;
+	private boolean _checkotp=false;
+	
+	private JLayeredPane layeredPane = new JLayeredPane();
 	private Client_FileShare_Send _cfs = null;
 	
 	Font font = new Font ("SansSerif", Font.BOLD,20);
+	Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
 
 	public static void main(String args[]){
 		new Client_Send_OTP();
@@ -48,14 +53,16 @@ public class Client_Send_OTP extends JFrame{
 	
 	public Client_Send_OTP(){
 		_cfs = new Client_FileShare_Send();
-		getContentPane().setBackground(Color.WHITE);
+		container=getContentPane();
+		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(500,300,460,550);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
+		container.setLayout(null);
+		
 		getContentPane().setLayout(null);
-        JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setBounds(0, 0, 470, 550);
         layeredPane.setLayout(null);
         
@@ -69,7 +76,7 @@ public class Client_Send_OTP extends JFrame{
         MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 460, 500);
         
-        Otpfield = new JLabel();
+       /* Otpfield = new JLabel();
         Otpfield.setText(_cfs.getOTP());
         Otpfield.setBounds(158, 247, 254, 50);
         Otpfield.setForeground(Color.black);        
@@ -77,7 +84,7 @@ public class Client_Send_OTP extends JFrame{
         Otpfield.setOpaque(false);
         Otpfield.setBorder(BorderFactory.createEmptyBorder());
         Otpfield.setHorizontalAlignment(JTextField.CENTER);
-        layeredPane.add(Otpfield);
+        layeredPane.add(Otpfield);*/
         
         Select = new JButton(new ImageIcon("img/select.png"));		
         Select.setPressedIcon(new ImageIcon("img/selectp.png"));
@@ -87,7 +94,7 @@ public class Client_Send_OTP extends JFrame{
         Select.setContentAreaFilled(false);
         Select.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_cfs.fileSelect();		
+				_cfs.fileSelect();
 			}
 		});
         layeredPane.add(Select);
@@ -100,7 +107,20 @@ public class Client_Send_OTP extends JFrame{
         Send.setContentAreaFilled(false);
         Send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_cfs.sendFile();	
+				_cfs.sendFile();
+				_checkotp=true;
+				
+				layeredPane.removeAll();
+				
+				layeredPane.add(Send);
+				layeredPane.add(Select);
+				layeredPane.add(Cancel);
+				
+				layeredPane.add(panel);
+				container.add(layeredPane);
+				setVisible(true);
+				layeredPane.updateUI();
+				repaint();
 			}
 		});
         layeredPane.add(Send);
@@ -125,10 +145,16 @@ public class Client_Send_OTP extends JFrame{
         setVisible(true);
         
         
+        
 	}
 	class MyPanel extends JPanel {
         public void paint(Graphics g) {
             g.drawImage(img, 0, 0, null);
+            if(_checkotp){
+            	g.setColor(Color.BLACK);
+            	g.setFont(_precondition_font);
+            	g.drawString(_cfs.getOTP(), 200, 275);
+            }
        }
    }
 	
