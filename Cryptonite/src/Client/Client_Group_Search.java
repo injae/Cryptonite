@@ -37,7 +37,6 @@ public class Client_Group_Search implements PacketRule
 			_csc.send.setPacket(event).write();
 			
 			String choice = new String(_csc.receive.setAllocate(1024).read().getByte()).trim();
-			System.out.println("초이스 : " + choice);
 			if(choice.equals("FALSE"))
 			{
 				System.out.println("존재하는 ID가 없습니다.");
