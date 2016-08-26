@@ -53,7 +53,7 @@ public class Client_Group_Name extends JFrame{
 			System.out.println("Appilcation icon not found");
 		}	
 		setTitle("Cryptonite");
-        setBounds(710,200,600,300);
+        setBounds(449,329,449,329);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
  
@@ -74,7 +74,7 @@ public class Client_Group_Name extends JFrame{
         _panel.setBounds(0, 0, 600, 300);
         
         _NameField = new JTextField(15);
-        _NameField.setBounds(190, 70, 200, 31);
+        _NameField.setBounds(173, 150, 200, 31);
         _NameField.setOpaque(true);
         _NameField.setForeground(Color.BLACK);
         _NameField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -97,11 +97,12 @@ public class Client_Group_Name extends JFrame{
         _layeredPane.add( _NameField);
         
         _create = new JButton(new ImageIcon("gui/create.png"));//input buttonimage
-        _create.setBounds(100, 150, 400, 50);
+        _create.setBounds(70, 220, 141, 53);
         _create.setBorderPainted(false);
         _create.setFocusPainted(false);
         _create.setContentAreaFilled(false);
-        _create.setPressedIcon(new ImageIcon("gui/create.png"));
+        _create.setRolloverIcon(new ImageIcon("gui/createR.png"));
+        //_create.setPressedIcon(new ImageIcon("gui/create.png"));
         _create.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
          		String[] test = new String[3];
@@ -126,10 +127,11 @@ public class Client_Group_Name extends JFrame{
         
         
         _cancel = new JButton(new ImageIcon("gui/gn_cancel.png"));//input buttonimage
-        _cancel.setBounds(100, 150, 400, 50);
+        _cancel.setBounds(250, 220, 141, 53);
         _cancel.setBorderPainted(false);
         _cancel.setFocusPainted(false);
         _cancel.setContentAreaFilled(false);
+        _cancel.setRolloverIcon(new ImageIcon("gui/gn_cancelR.png"));
         _cancel.setPressedIcon(new ImageIcon("gui/gn_cancel.png"));
         
         _layeredPane.add(_cancel);
