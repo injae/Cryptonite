@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -69,6 +71,16 @@ public class Client_Main_UI extends JFrame
 		_gpName = gpname;
 		_name = name;
 		_usCode = usCode;
+		
+		try{
+			 Toolkit tk = Toolkit.getDefaultToolkit(); 
+			 Image image = tk.getImage("gui/logo.png");
+			 this.setIconImage(image);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Appilcation icon not found");
+		}	
 		
 		WindowListener exitLitsener = new WindowAdapter() {
 				
