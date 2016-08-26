@@ -25,8 +25,10 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.StringTokenizer;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.imageio.ImageIO;
 import javax.lang.model.element.PackageElement;
 import javax.swing.BorderFactory;
@@ -42,6 +44,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import Crypto.Base64Coder;
+import Crypto.KeyReposit;
 import Function.PacketRule;
 import Server.Server_DataBase;
 
@@ -78,7 +81,7 @@ public class Client_Login extends JFrame implements PacketRule
     
     private String name=null;
     private String uscode=null;
-    private String aeskey=null;
+    private byte[] aeskey=null;
 		
     private ArrayList<String> gpcode = new ArrayList<String>();
     private ArrayList<String> gpname = new ArrayList<String>();
@@ -242,7 +245,10 @@ public class Client_Login extends JFrame implements PacketRule
           						
           						name=csc.receive.setAllocate(500).read().getByte().toString().trim();
           						uscode=csc.receive.setAllocate(100).read().getByte().toString().trim();
-          						aeskey=csc.receive.setAllocate(500).read().getByte().toString().trim();
+          						aeskey=csc.receive.setAllocate(32).read().getByte();
+          						System.out.println("AES key size: "+ aeskey.length);
+          						(KeyReposit.getInstance()).set_aesKey(new SecretKeySpec(aeskey,"AES"));
+          						
 	          	
           						for(int i =0; i < gpcount[0]; i++)
           						{
