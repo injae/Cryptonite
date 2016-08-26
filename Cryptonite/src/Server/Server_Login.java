@@ -102,8 +102,10 @@ public class Server_Login extends Server_Funtion
 		    	   
 			       _activity.send.setPacket(groupcount,100).write();
 			       _activity.send.setPacket(cs.encode(myname).array(),500).write();
+
 			       _activity.send.setPacket(uscode.getBytes(), 100).write();
 			       _activity.send.setPacket(Base64.getDecoder().decode(aeskey)).write();
+
 		       
 				    for(int i =0; i < gpcode.size(); i++)
 				    {
