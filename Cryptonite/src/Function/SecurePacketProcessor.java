@@ -2,45 +2,56 @@ package Function;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import Crypto.*;
 
 public class SecurePacketProcessor extends PacketProcessor {
 	
-	private Crypto crypto = null;
+	private Crypto _crypto = null;
+	private SecretKey _key = null;
 
 	public SecurePacketProcessor(Object channel, boolean blocking) {
 		super(channel, blocking);
+		_key = new SecretKeySpec("unvalidfirstkeyspecunalidfirstke".getBytes(),"AES");
+		_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, _key));
 		// TODO Auto-generated constructor stub
 	}
 	
 	public void init(SecretKey key) {
-		crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, key));
+		_key = key;
 	}
 	
 	@Override
 	public PacketProcessor setAllocate(long size) {
 		// TODO Auto-generated method stub
 		
-		return super.setAllocate(Crypto.calc((int)size));
+		return super.setAllocate(size);
 	}
 
 	@Override
 	public PacketProcessor setPacket(byte[] packet, int size) {
-		byte[] byteArr = new byte[Crypto.calc(size)];
-		
-		for(int i=0; i<packet.length; i++){
-			byteArr[i] = packet[i];
+		_crypto.init(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, _key));
+		byte[] array = new byte[size];
+		for(int i =0; i  < packet.length; i++)
+		{
+			array[i] = packet[i];
 		}
-		crypto.endecription(byteArr);
-		
-		return super.setPacket(byteArr);
+		return super.setPacket(_crypto.endecription(array));
+	}
+
+	@Override
+	public byte[] getByte() {
+		// TODO 자동 생성된 메소드 스텁
+		_crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _key));
+		return _crypto.endecription(super.getByte());
 	}
 
 	@Override
 	public PacketProcessor setPacket(byte[] packet) {
-		byte[] byteArr = crypto.endecription(packet);
-	
+		_crypto.init(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, _key));
+		byte[] byteArr = _crypto.endecription(packet);
+
 		return super.setPacket(byteArr);
 	}
 

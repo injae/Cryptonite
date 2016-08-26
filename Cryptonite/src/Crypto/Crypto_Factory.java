@@ -1,5 +1,6 @@
 package Crypto;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -9,6 +10,7 @@ import java.security.PublicKey;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 
 public class Crypto_Factory
 {
@@ -23,8 +25,9 @@ public class Crypto_Factory
             switch(type)
             {
                 case "AES256":
-                    cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-                    cipher.init(mode, (SecretKey)key);
+                    cipher = Cipher.getInstance("AES/CTR/NoPadding");
+                    IvParameterSpec iv = new IvParameterSpec("1234567890123456".getBytes());
+                    cipher.init(mode, (SecretKey)key, iv);
                     break;
                 case "RSA1024":
                     cipher = Cipher.getInstance("RSA");
@@ -40,7 +43,9 @@ public class Crypto_Factory
             e.printStackTrace();
         } catch (InvalidKeyException e) {
             e.printStackTrace();
-        }
+        } catch (InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
+		}
 
         return cipher;
     }
