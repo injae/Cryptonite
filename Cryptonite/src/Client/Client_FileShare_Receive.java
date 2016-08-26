@@ -57,8 +57,9 @@ public class Client_FileShare_Receive implements PacketRule
 		_downloadFolder = _cfs.getSelectedPath();
 	}
 	
-	public void receiveFiles(String OTP)
+	public boolean receiveFiles(String OTP)
 	{
+		boolean check=false;
 		Charset cs = Charset.forName("UTF-8");
 		_OTP = OTP;
 		if(_OTP.length() != 6)
@@ -102,6 +103,7 @@ public class Client_FileShare_Receive implements PacketRule
 							p.setPacket(_csc.receive.read().getByte()).write();
 						}
 						p.close();
+						check=true;
 					}
 				}
 			} 
@@ -115,5 +117,6 @@ public class Client_FileShare_Receive implements PacketRule
 			}
 			
 		}
+		return check;
 	}
 }

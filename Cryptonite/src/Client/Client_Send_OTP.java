@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -50,6 +51,9 @@ public class Client_Send_OTP extends JFrame{
 		new Client_Send_OTP();
 	}
 
+	 private void showMessage(String title, String message) {
+			JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+		}
 	
 	public Client_Send_OTP(){
 		_cfs = new Client_FileShare_Send();
@@ -107,7 +111,8 @@ public class Client_Send_OTP extends JFrame{
         Send.setContentAreaFilled(false);
         Send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_cfs.sendFile();
+				boolean check;
+				check=_cfs.sendFile();
 				_checkotp=true;
 				
 				layeredPane.removeAll();
@@ -118,9 +123,14 @@ public class Client_Send_OTP extends JFrame{
 				
 				layeredPane.add(panel);
 				container.add(layeredPane);
-				setVisible(true);
 				layeredPane.updateUI();
 				repaint();
+				if(check){
+					showMessage("Success", "yo!");
+				}
+				else{
+					showMessage("fail", "uuuu~");
+				}
 			}
 		});
         layeredPane.add(Send);
@@ -137,9 +147,7 @@ public class Client_Send_OTP extends JFrame{
 			}
 		});
         layeredPane.add(Cancel);
-        
-        
-        
+
         layeredPane.add(panel);
         getContentPane().add(layeredPane);
         setVisible(true);
