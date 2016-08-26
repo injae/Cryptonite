@@ -12,7 +12,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,12 +44,12 @@ public class Client_Main_UI extends JFrame
 	
 	private JButton Sendbt;
 	private JButton Receivebt;
-	private JButton Encryptbt;
+	private JButton ProtectedFolderbt;
 	private JButton Cloudbt;
 	private JButton Indivbt;
 	private JButton Groupbt;
 	private JButton Developerbt;
-	private JButton Settingbt;
+	private JButton ProtectedFolderOpenbt;
 	private JButton tab;
 	
 	private JButton Create;
@@ -97,7 +100,7 @@ public class Client_Main_UI extends JFrame
 		setTitle("Cryptonite");
 		addWindowListener(exitLitsener);
 		setResizable(false);
-		setBounds(500,300,816,480);
+		setBounds(500,300,807,480);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
@@ -128,7 +131,7 @@ public class Client_Main_UI extends JFrame
         layeredPane.add(Indivbt);
  		layeredPane.add(Groupbt);
         layeredPane.add(Developerbt);
-        layeredPane.add(Settingbt);
+        layeredPane.add(ProtectedFolderOpenbt);
         
  	    layeredPane.add(Create);
  	    layeredPane.add(Participate);
@@ -144,11 +147,11 @@ public class Client_Main_UI extends JFrame
 		 layeredPane.add(Indivbt);
 		 layeredPane.add(Groupbt);
 		 layeredPane.add(Developerbt);
-		 layeredPane.add(Settingbt);
+		 layeredPane.add(ProtectedFolderOpenbt);
 		 
 		 layeredPane.add(Sendbt);
 		 layeredPane.add(Receivebt);
-		 layeredPane.add(Encryptbt); 
+		 layeredPane.add(ProtectedFolderbt); 
 		 layeredPane.add(Cloudbt);
 		 
 		 layeredPane.add(panel);
@@ -193,12 +196,33 @@ public class Client_Main_UI extends JFrame
         Developerbt.setContentAreaFilled(false);
         
         
-        Settingbt = new JButton(new ImageIcon("img/Settingbt.png"));
-        Settingbt.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
-        Settingbt.setBounds(707, 4, 60, 60);
-        Settingbt.setFocusPainted(false);
-        Settingbt.setContentAreaFilled(false);
-        Settingbt.setBorderPainted(false);
+        ProtectedFolderOpenbt = new JButton(new ImageIcon("img/protectedFolderOpen.png"));
+        ProtectedFolderOpenbt.setPressedIcon(new ImageIcon("img/protectedFolderOpenR.png"));
+        ProtectedFolderOpenbt.setBounds(740, 20, 30, 30);
+        ProtectedFolderOpenbt.setFocusPainted(false);
+        ProtectedFolderOpenbt.setContentAreaFilled(false);
+        ProtectedFolderOpenbt.setBorderPainted(false);
+        ProtectedFolderOpenbt.addActionListener(new ActionListener() {
+   			public void actionPerformed(ActionEvent e) {
+   				
+				try 
+				{
+					FileReader fr = new FileReader(new File("Cryptonite_Client/log/protectedlog.ser"));
+					BufferedReader br = new BufferedReader(fr);
+					String address = br.readLine();
+					Runtime rt = Runtime.getRuntime();
+					rt.exec("explorer.exe " + address);
+				} 
+				catch (FileNotFoundException e1) 
+				{
+					e1.printStackTrace();
+				} 
+				catch (IOException e1) 
+				{
+					e1.printStackTrace();
+				}
+   			}
+   		});
         
         //-------------------------------------------------
         
@@ -227,13 +251,13 @@ public class Client_Main_UI extends JFrame
 			}
 		});
         
-        Encryptbt = new JButton(new ImageIcon("img/protectedfolder.png"));
-        Encryptbt.setPressedIcon(new ImageIcon("img/protectedfolderh.png"));
-        Encryptbt.setFocusPainted(false);
-        Encryptbt.setContentAreaFilled(false);
-        Encryptbt.setBorderPainted(false);
-        Encryptbt.setBounds(1, 245, 470, 190);
-        Encryptbt.addActionListener(new ActionListener() {
+        ProtectedFolderbt = new JButton(new ImageIcon("img/protectedfolder.png"));
+        ProtectedFolderbt.setPressedIcon(new ImageIcon("img/protectedfolderh.png"));
+        ProtectedFolderbt.setFocusPainted(false);
+        ProtectedFolderbt.setContentAreaFilled(false);
+        ProtectedFolderbt.setBorderPainted(false);
+        ProtectedFolderbt.setBounds(1, 245, 470, 190);
+        ProtectedFolderbt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					cfs	 = new Client_FolderSelector();
 					cfs.folderSelectorON();
