@@ -241,7 +241,6 @@ public class Client_Login extends JFrame implements PacketRule
           						_gpcount=_csc.receive.setAllocate(100).read().getByte();
           						
           						_name=_csc.receive.setAllocate(500).read().getByte().toString().trim();
-          						_uscode=_csc.receive.setAllocate(100).read().getByte().toString().trim();
           						_aeskey=_csc.receive.setAllocate(500).read().getByte().toString().trim();
 	          	
           						for(int i =0; i < _gpcount[0]; i++)
