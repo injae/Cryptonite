@@ -56,6 +56,15 @@ public class Client_Send_OTP extends JFrame{
 		}
 	
 	public Client_Send_OTP(){
+		try{
+			 Toolkit tk = Toolkit.getDefaultToolkit(); 
+			 Image image = tk.getImage("gui/logo.png");
+			 this.setIconImage(image);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Appilcation icon not found");
+		}	
 		_cfs = new Client_FileShare_Send();
 		container=getContentPane();
 		container.setBackground(Color.WHITE);

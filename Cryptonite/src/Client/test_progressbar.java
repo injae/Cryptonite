@@ -1,6 +1,135 @@
 package Client;
 
-import java.awt.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import javafx.application.Application;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+public class test_progressbar extends Application {
+    
+    @Override
+    public void start(Stage primaryStage) {      
+        VBox vBox = new VBox();
+        vBox.setSpacing(5);
+        vBox.setAlignment(Pos.CENTER);
+        final Scene scene = new Scene(vBox, 300, 250);
+        // ¡Ú1ú¼ÙÍ
+        HBox hBox1 = new HBox();
+        hBox1.setSpacing(5);
+        Text title1 = new Text("Task1");
+        Button btn1 = new Button("start");
+        final ProgressBar bar1 = new ProgressBar(0);
+        final Text text1 = new Text("ready");
+        hBox1.setAlignment(Pos.CENTER);
+        hBox1.getChildren().addAll(title1, btn1, bar1, text1);
+        btn1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                final Task<String> task1 = getTask1();       
+                bar1.progressProperty().unbind();
+                bar1.progressProperty().bind(task1.progressProperty());
+                text1.textProperty().bind(task1.messageProperty()); 
+                final ExecutorService exe = Executors.newSingleThreadExecutor();
+                exe.submit(task1);  
+                task1.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, 
+                    new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent t) {
+                        exe.shutdown(); 
+                    }
+                });
+            }
+        });
+        
+      
+        HBox hBox2 = new HBox();
+        hBox2.setSpacing(5);
+        Text title2 = new Text("Task2");
+        Button btn2 = new Button("start");
+        final ProgressBar bar2 = new ProgressBar(0);
+        final Text text2 = new Text("ready");
+        hBox2.setAlignment(Pos.CENTER);
+        hBox2.getChildren().addAll(title2, btn2, bar2, text2);
+        btn2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                final Task<String> task2 = getTask2();
+                bar2.progressProperty().unbind();
+                bar2.progressProperty().bind(task2.progressProperty());
+                text2.textProperty().bind(task2.messageProperty());                        
+                final ExecutorService exe = Executors.newSingleThreadExecutor();
+                exe.submit(task2);
+                task2.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, 
+                    new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent t) {
+                        exe.shutdown();
+                    }
+                });
+            }
+        });
+        vBox.getChildren().add(hBox1);
+        vBox.getChildren().add(hBox2);
+        primaryStage.setTitle("Progress Smaple");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    private Task<String> getTask1() {
+        return new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                updateMessage("start task1");
+                int i;
+                for (i = 1; i <= 10; i++) {
+                    updateProgress(i, 10); 
+                    TimeUnit.SECONDS.sleep(1);
+                    updateMessage(String.format("running %d/%d", i, 10)); 
+                }
+                updateMessage("task1 done");
+                return "Done";
+            }
+        };
+    }
+
+    private Task<String> getTask2() {
+        return new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                updateMessage("start task2");
+                int i;
+                for (i = 1; i <= 20; i++) {
+                    updateProgress(i, 20);
+                    TimeUnit.SECONDS.sleep(1);
+                    updateMessage(String.format("running %d/%d", i, 20));
+                }
+                updateMessage("task2 done");
+                return "Done";
+            }
+        };
+    }
+}
+
+//////////////////////////////////////swing
+/*import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.beans.*;
@@ -41,8 +170,6 @@ public class test_progressbar extends JPanel implements ActionListener, Property
         }
  
         
-       
-         
         @Override
         public void done() {
             Toolkit.getDefaultToolkit().beep();
@@ -122,8 +249,8 @@ public class test_progressbar extends JPanel implements ActionListener, Property
             }
         });
     }
-}
-
+}*/
+///////////////////////////////////////////////fx
 
 /*import java.util.Timer;
 import java.util.TimerTask;
