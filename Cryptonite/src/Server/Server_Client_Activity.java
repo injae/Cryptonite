@@ -10,6 +10,8 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.crypto.SecretKey;
+
 import Function.PacketProcessor;
 import Function.PacketRule;
 
@@ -35,6 +37,9 @@ public class Server_Client_Activity implements PacketRule
 	
 	public PacketProcessor receive;
 	public PacketProcessor send;
+	
+	//Aes key for Communication
+	private SecretKey comKey;
 
 	public Server_Client_Activity(Selector selector, SelectionKey key, String clientCode)
 	{
@@ -123,5 +128,12 @@ public class Server_Client_Activity implements PacketRule
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setKey(SecretKey key){
+		this.comKey = key;
+	}
+	public SecretKey getKey(){
+		return this.comKey;
 	}
 }
