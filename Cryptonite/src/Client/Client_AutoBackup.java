@@ -1,8 +1,15 @@
 package Client;
 
 import java.nio.channels.*;
+import java.sql.Ref;
 import java.io.*;
 import java.util.*;
+
+import javax.crypto.Cipher;
+
+import Crypto.Crypto;
+import Crypto.Crypto_Factory;
+import Crypto.KeyReposit;
 import Function.*;
 
 /*
@@ -28,18 +35,25 @@ public class Client_AutoBackup implements PacketRule
 	private String _protectedFolderName = null;
 	private String _serverFolder = null;
 	
+	private Crypto _crypto = null;
+	private KeyReposit _reposit = null;
+	
 	// Sending Module
 	private Client_Server_Connector _csc = null;
 	
 	// Constructors
 	public Client_AutoBackup()
 	{
+		_reposit = KeyReposit.getInstance();
+		_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, _reposit.get_aesKey()));
 		_csc = Client_Server_Connector.getInstance();
 		_protectedFolderName = nameTokenizer();
 	}
 	
 	public Client_AutoBackup(String address) 
 	{
+		_reposit = KeyReposit.getInstance();
+		_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, _reposit.get_aesKey()));
 		_csc = Client_Server_Connector.getInstance();
 		_protectedFolderName = nameTokenizer(address);
 	}
@@ -84,9 +98,10 @@ public class Client_AutoBackup implements PacketRule
 						try
 						{
 							_raf = new RandomAccessFile(_absoluteDirectory, "rw");
+							RandomAccessFile sraf = new RandomAccessFile(_absoluteDirectory + ".cnec", "rw");
 							_fileChannel = _raf.getChannel();
-							PacketProcessor p = new PacketProcessor(_fileChannel, false);
-
+							PacketProcessor pr = new PacketProcessor(_fileChannel, false);
+							PacketProcessor pw = new PacketProcessor(sraf.getChannel(), false);
 							byte[] temp = new byte[1024];
 							temp[0] = AUTOBACKUP;
 							temp[1] = FILE;
@@ -97,21 +112,28 @@ public class Client_AutoBackup implements PacketRule
 							Function.frontInsertByte(5 + String.valueOf(_fileSize).getBytes().length, _absoluteDirectory.getBytes(), temp);
 							Function.frontInsertByte(900, _protectedFolderName.getBytes(), temp);
 							_csc.send.setPacket(temp).write();
-							
-							p.setAllocate(_fileSize);
+							pw.setAllocate(_fileSize);
+							pr.setAllocate(_fileSize);
 							_csc.send.setAllocate(_fileSize); // 
-							while(!p.isAllocatorEmpty())
+							while(!pr.isAllocatorEmpty())
 							{
-								_csc.send.setPacket(p.read().getByte()).write();
+								_crypto.init(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, _reposit.get_aesKey()));
+								byte[] buf = _crypto.endecription(pr.read().getByte());
+								_csc.send.setPacket(buf).write();
+								pw.setPacket(buf).write();
 							}
-							p.close();
+							pr.close();
+							pw.close();
+							
 							fileCopyEnd = true;
+							
 						}
 						catch (FileNotFoundException e) 
 						{
 							fileCopyEnd = false;
 						}
 					} while(!fileCopyEnd);
+					_checkProperty.delete();
 				}
 			} 
 			catch (IOException e) 

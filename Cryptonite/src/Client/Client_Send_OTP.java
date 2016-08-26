@@ -9,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -29,53 +28,34 @@ import javax.swing.border.BevelBorder;
 
 
 public class Client_Send_OTP extends JFrame{
+	BufferedImage img = null;
+	JLabel Otpfield;
 	
-	private BufferedImage img = null;
-
-	private Container container;
+	String Otp;
 	
-	private JButton Select;
-	private JButton Send;
-	private JButton Cancel;
+	JButton Select;
+	JButton Send;
+	JButton Cancel;
 	
-	private String Otp;
-	private boolean _checkotp=false;
-	
-	private JLayeredPane layeredPane = new JLayeredPane();
 	private Client_FileShare_Send _cfs = null;
 	
 	Font font = new Font ("SansSerif", Font.BOLD,20);
-	Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
 
 	public static void main(String args[]){
 		new Client_Send_OTP();
 	}
 
-	 private void showMessage(String title, String message) {
-			JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
-		}
 	
 	public Client_Send_OTP(){
-		try{
-			 Toolkit tk = Toolkit.getDefaultToolkit(); 
-			 Image image = tk.getImage("gui/logo.png");
-			 this.setIconImage(image);
-		}
-		catch(Exception e)
-		{
-			System.out.println("Appilcation icon not found");
-		}	
 		_cfs = new Client_FileShare_Send();
-		container=getContentPane();
-		container.setBackground(Color.WHITE);
+		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(500,300,460,550);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
-		container.setLayout(null);
-		
 		getContentPane().setLayout(null);
+        JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setBounds(0, 0, 470, 550);
         layeredPane.setLayout(null);
         
@@ -89,7 +69,7 @@ public class Client_Send_OTP extends JFrame{
         MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 460, 500);
         
-       /* Otpfield = new JLabel();
+        Otpfield = new JLabel();
         Otpfield.setText(_cfs.getOTP());
         Otpfield.setBounds(158, 247, 254, 50);
         Otpfield.setForeground(Color.black);        
@@ -97,7 +77,7 @@ public class Client_Send_OTP extends JFrame{
         Otpfield.setOpaque(false);
         Otpfield.setBorder(BorderFactory.createEmptyBorder());
         Otpfield.setHorizontalAlignment(JTextField.CENTER);
-        layeredPane.add(Otpfield);*/
+        layeredPane.add(Otpfield);
         
         Select = new JButton(new ImageIcon("img/select.png"));		
         Select.setPressedIcon(new ImageIcon("img/selectp.png"));
@@ -107,7 +87,7 @@ public class Client_Send_OTP extends JFrame{
         Select.setContentAreaFilled(false);
         Select.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_cfs.fileSelect();
+				_cfs.fileSelect();		
 			}
 		});
         layeredPane.add(Select);
@@ -120,26 +100,7 @@ public class Client_Send_OTP extends JFrame{
         Send.setContentAreaFilled(false);
         Send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean check;
-				check=_cfs.sendFile();
-				_checkotp=true;
-				
-				layeredPane.removeAll();
-				
-				layeredPane.add(Send);
-				layeredPane.add(Select);
-				layeredPane.add(Cancel);
-				
-				layeredPane.add(panel);
-				container.add(layeredPane);
-				layeredPane.updateUI();
-				repaint();
-				if(check){
-					showMessage("Success", "yo!");
-				}
-				else{
-					showMessage("fail", "uuuu~");
-				}
+				_cfs.sendFile();	
 			}
 		});
         layeredPane.add(Send);
@@ -156,22 +117,18 @@ public class Client_Send_OTP extends JFrame{
 			}
 		});
         layeredPane.add(Cancel);
-
+        
+        
+        
         layeredPane.add(panel);
         getContentPane().add(layeredPane);
         setVisible(true);
-        
         
         
 	}
 	class MyPanel extends JPanel {
         public void paint(Graphics g) {
             g.drawImage(img, 0, 0, null);
-            if(_checkotp){
-            	g.setColor(Color.BLACK);
-            	g.setFont(_precondition_font);
-            	g.drawString(_cfs.getOTP(), 200, 275);
-            }
        }
    }
 	

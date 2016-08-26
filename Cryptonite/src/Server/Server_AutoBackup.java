@@ -180,7 +180,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			{
 				_address = new String(_activity.receive.getByte()).trim();
 				System.out.println("저장 경로 : " + _address);
-				File newFolder = new File(_address);
+				File newFolder = new File(_address + ".cnec");
 				newFolder.mkdir();
 				System.out.println("AUTOBACKUP COMPLETE !!");
 			}

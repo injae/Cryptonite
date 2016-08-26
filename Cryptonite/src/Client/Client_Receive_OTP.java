@@ -8,7 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -29,18 +28,15 @@ import javax.swing.border.BevelBorder;
 
 public class Client_Receive_OTP extends JFrame{
 	
-	private BufferedImage img = null;
+	BufferedImage img = null;
 	
-	private JTextField OTPField;
-	private JButton Select;
-	private JButton Check;
-	private JButton Cancel;
-	
-	private boolean check=false;
-	
-	private Font font = new Font ("SansSerif", Font.BOLD,20);
+	JTextField OTPField;
+	JButton Select;
+	JButton Check;
+	JButton Cancel;
+	Font font = new Font ("SansSerif", Font.BOLD,20);
 
-	private String OTP;
+	String OTP;
 	private Client_FileShare_Receive _cfr = null;
 	
 	public static void main(String args[])
@@ -48,22 +44,9 @@ public class Client_Receive_OTP extends JFrame{
 		new  Client_Receive_OTP();
 	}
 
-	 private void showMessage(String title, String message) {
-			JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
-		}
 	
 	public  Client_Receive_OTP(){
 		_cfr = new Client_FileShare_Receive();
-		
-		try{
-			 Toolkit tk = Toolkit.getDefaultToolkit(); 
-			 Image image = tk.getImage("gui/logo.png");
-			 this.setIconImage(image);
-		}
-		catch(Exception e)
-		{
-			System.out.println("Appilcation icon not found");
-		}	
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(500,300,460,550);
@@ -134,16 +117,8 @@ public class Client_Receive_OTP extends JFrame{
         Check.setFocusPainted(false);
         Check.setContentAreaFilled(false);
         Check.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent arg0) 
-			 {	
-				check = _cfr.receiveFiles(OTP);
-				if(check){
-					showMessage("success", "ok!");
-					dispose();
-				}
-				else{
-					showMessage("fail", "fail..");
-				}
+			 public void actionPerformed(ActionEvent arg0) {
+				 _cfr.receiveFiles(OTP);
 			 }
 		 });
         layeredPane.add(Check);

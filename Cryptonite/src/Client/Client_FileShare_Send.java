@@ -97,9 +97,8 @@ public class Client_FileShare_Send implements PacketRule
 		}
 	}
 	
-	public boolean sendFile()	// when you click send button
+	public void sendFile()	// when you click send button
 	{
-		boolean check=false;
 		Charset cs = Charset.forName("UTF-8");
 		ByteBuffer[] fileNameArray = new ByteBuffer[_fileNameArray.length];
 		try 
@@ -140,7 +139,6 @@ public class Client_FileShare_Send implements PacketRule
 					_csc.send.setPacket(p.read().getByte()).write();
 				}
 				p.close();
-				check=true;
 				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");			
 			}
 			//_cfs.dispose();
@@ -154,8 +152,6 @@ public class Client_FileShare_Send implements PacketRule
 			System.exit(1);
 			e.printStackTrace();
 		}
-		return check;
-		
 	}
 	
 	private void changeFilesName()
