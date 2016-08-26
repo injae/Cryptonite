@@ -25,9 +25,9 @@ public  class Crypto
 	}
 
 	//Calculate capacity of file after encrypting
-	public long calc(long capacity)
+	public static int calc(int capacity)
 	{
-		long remainder = capacity%32;		
+		int remainder = capacity%32;		
 		if (remainder != 0) { return capacity - remainder + 32; }
 		else 			   { return capacity; }
 	}
