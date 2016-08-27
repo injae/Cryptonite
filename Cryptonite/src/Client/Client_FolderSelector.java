@@ -29,16 +29,15 @@ public class Client_FolderSelector
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.showOpenDialog(chooser);
 	  	File dir = chooser.getSelectedFile();
-	  	/*if(dir.length() == 0)
+	  	try
 	  	{
-	  		selectedPath = "DEFAULT";
-	  		selectionEnd = true;
-	  	}
-	  	else
-	  	{*/
 	  		selectedPath = dir.getPath();
 		  	selectionEnd = true;
-	  	//}
+	  	}
+	  	catch(NullPointerException e)
+	  	{
+	  		System.out.println("폴더가 선택되지 않았습니다.");
+	  	}
 	}
 	
 	public String getSelectedPath()
