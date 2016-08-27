@@ -301,7 +301,6 @@ import Crypto.userKeyGenerator;
 		_layeredpane.add(_same);
 
 		_cancel = new JButton(new ImageIcon("gui/cancel_bt.png"));
-/*		_cancel.setRolloverIcon(new ImageIcon(""));*/
 		_cancel.setPressedIcon(new ImageIcon("img/_cancel_hv.png"));
 
 		_cancel.setBounds(190, 560, 90, 50);//input value
@@ -322,7 +321,6 @@ import Crypto.userKeyGenerator;
 		_layeredpane.add(_cancel);
 
 		_ok = new JButton(new ImageIcon("gui/signup_bt.png"));
-		/*_ok.setRolloverIcon(new ImageIcon(""));*/
 		_ok.setPressedIcon(new ImageIcon("img/signup_bt_hv.png"));
 
 		_ok.setBounds(30, 500, 400, 50);//input value

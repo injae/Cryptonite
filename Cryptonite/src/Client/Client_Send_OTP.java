@@ -27,7 +27,8 @@ import javax.swing.border.BevelBorder;
 
 
 
-public class Client_Send_OTP extends JFrame{
+public class Client_Send_OTP extends JFrame
+{
 	BufferedImage img = null;
 	JLabel Otpfield;
 	
@@ -41,12 +42,14 @@ public class Client_Send_OTP extends JFrame{
 	
 	Font font = new Font ("SansSerif", Font.BOLD,20);
 
-	public static void main(String args[]){
+	public static void main(String args[])
+	{
 		new Client_Send_OTP();
 	}
 
 	
-	public Client_Send_OTP(){
+	public Client_Send_OTP()
+	{
 		_cfs = new Client_FileShare_Send();
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
@@ -59,9 +62,12 @@ public class Client_Send_OTP extends JFrame{
         layeredPane.setBounds(0, 0, 470, 550);
         layeredPane.setLayout(null);
         
-        try {
+        try 
+        {
             img = ImageIO.read(new File("img/Filesendbg.png"));
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             System.out.println("이미지 불러오기 실패");
             System.exit(0);
         }
@@ -126,10 +132,12 @@ public class Client_Send_OTP extends JFrame{
         
         
 	}
-	class MyPanel extends JPanel {
-        public void paint(Graphics g) {
+	class MyPanel extends JPanel 
+	{
+        public void paint(Graphics g) 
+        {
             g.drawImage(img, 0, 0, null);
-       }
+        }
    }
 	
 }
