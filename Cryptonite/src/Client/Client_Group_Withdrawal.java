@@ -22,8 +22,9 @@ public class Client_Group_Withdrawal implements PacketRule
 			event[0] = GROUP_WITHDRAWAL;
 			Function.frontInsertByte(1, gpCode.getBytes(), event);
 			csc.send.setPacket(event).write();
-		} catch (IOException e) {
-			// TODO 자동 생성된 catch 블록
+		} 
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
 		
