@@ -30,7 +30,7 @@ import javax.swing.border.BevelBorder;
 public class Client_Receive_OTP extends JFrame{
 	
 	private BufferedImage img = null;
-	
+
 	private JTextField OTPField;
 	private JButton Select;
 	private JButton Check;
@@ -40,6 +40,7 @@ public class Client_Receive_OTP extends JFrame{
 	
 	private Font font = new Font ("SansSerif", Font.BOLD,20);
 
+	private int _flag=2;
 	private String OTP;
 	private Client_FileShare_Receive _cfr = null;
 	
@@ -135,14 +136,14 @@ public class Client_Receive_OTP extends JFrame{
         Check.setContentAreaFilled(false);
         Check.addActionListener(new ActionListener() {
 			 public void actionPerformed(ActionEvent arg0) 
-			 {	
+			 {	//new Client_Progressbar(_flag);
 				check = _cfr.receiveFiles(OTP);
 				if(check){
-					showMessage("success", "ok!");
+					showMessage("Success", "Download Success!");
 					dispose();
 				}
 				else{
-					showMessage("fail", "fail..");
+					showMessage("Failed", "Download Failed");
 				}
 			 }
 		 });

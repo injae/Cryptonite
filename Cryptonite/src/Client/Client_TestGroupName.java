@@ -34,7 +34,7 @@ public class Client_TestGroupName extends JFrame{
         }
     }
 	JButton _OK;   
-	
+	//button
 	JTextField _NameField;
 		
 /*	Client_Testmain test=new Client_Testmain();*/

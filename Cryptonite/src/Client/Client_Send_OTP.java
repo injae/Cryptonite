@@ -26,6 +26,8 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.border.BevelBorder;
 
+import Client.Client_Progressbar.Task;
+
 
 
 public class Client_Send_OTP extends JFrame{
@@ -40,6 +42,7 @@ public class Client_Send_OTP extends JFrame{
 	
 	private String Otp;
 	private boolean _checkotp=false;
+	private int _flag=1;
 	
 	private JLayeredPane layeredPane = new JLayeredPane();
 	private Client_FileShare_Send _cfs = null;
@@ -120,10 +123,12 @@ public class Client_Send_OTP extends JFrame{
         Send.setContentAreaFilled(false);
         Send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean check;
+				boolean check=false;
+				//boolean progresscheck=false;
 				check=_cfs.sendFile();
 				_checkotp=true;
-				
+				//new Client_Progressbar(_flag);
+				//progresscheck=Client_Progressbar.Progress_Check();
 				layeredPane.removeAll();
 				
 				layeredPane.add(Send);
@@ -134,11 +139,11 @@ public class Client_Send_OTP extends JFrame{
 				container.add(layeredPane);
 				layeredPane.updateUI();
 				repaint();
-				if(check){
-					showMessage("Success", "yo!");
+				if(check/*&&progresscheck*/){
+					showMessage("Success", "Send Complete!");
 				}
 				else{
-					showMessage("fail", "uuuu~");
+					showMessage("Failed", "Send failed");
 				}
 			}
 		});
@@ -170,10 +175,10 @@ public class Client_Send_OTP extends JFrame{
             if(_checkotp){
             	g.setColor(Color.BLACK);
             	g.setFont(_precondition_font);
-            	g.drawString(_cfs.getOTP(), 200, 275);
+            	g.drawString(_cfs.getOTP(), 240, 275);
             }
        }
    }
-	
+
 }
 
