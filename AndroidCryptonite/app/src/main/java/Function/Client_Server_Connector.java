@@ -10,15 +10,16 @@ import java.util.Queue;
 import java.util.Vector;
 
 import Function.PacketProcessor;
+import Function.SecurePacketProcessor;
 
 
 public class Client_Server_Connector extends Thread
 {
 	private static Client_Server_Connector _singleton = null;
 
-	public SocketChannel _channel;
-	public PacketProcessor receive;
-	public PacketProcessor send;
+	private SocketChannel _channel;
+	public SecurePacketProcessor receive;
+	public SecurePacketProcessor send;
 
 	private Client_Server_Connector()
 	{
@@ -34,8 +35,8 @@ public class Client_Server_Connector extends Thread
 				System.out.println("still connecting");
 			}*/
 
-			receive = new PacketProcessor(_channel, false);
-			send = new PacketProcessor(_channel, false);
+			receive = new SecurePacketProcessor(_channel, false);
+			send = new SecurePacketProcessor(_channel, false);
 		}
 		catch (IOException e)
 		{
@@ -49,6 +50,7 @@ public class Client_Server_Connector extends Thread
 		if(_singleton == null)
 		{
 			_singleton = new Client_Server_Connector();
+			new Client_KeyExchange();
 		}
 
 		return _singleton;
@@ -56,10 +58,6 @@ public class Client_Server_Connector extends Thread
 
 	public static boolean isConnected()
 	{
-		return _singleton != null;
+		return _singleton!=null;
 	}
-
-
-
-
 }
