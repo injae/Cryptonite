@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -33,14 +34,20 @@ public class Client_Group_Name extends JFrame{
             g.drawImage(_img, 0, 0, null);
         }
     }
+	
+	 private void showMessage(String title, String message) {
+			JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+		}
+	
 	JButton _create;  
 	JButton _cancel;
 	
 	JTextField _NameField;
-		
+	
+	Client_Main_UI main;
 /*	Client_Testmain test=new Client_Testmain();*/
 	
-	String Name;
+	static String Name;
 	
 	public Client_Group_Name(){
 		try{
@@ -105,23 +112,32 @@ public class Client_Group_Name extends JFrame{
         //_create.setPressedIcon(new ImageIcon("gui/create.png"));
         _create.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
-         		String[] test = new String[3];
-        		test[0] = "a";
-        		test[1] = "b";
-        		test[2] = "c";
-        		String temp = Name;
-        		new Client_Make_Group().make(test, temp);
-        		byte[] event = new Client_Receive_Event().getEvent();
-        		byte[] buffer = new byte[1021]; 
-        		for(int i = 0; i < buffer.length; i++)
-        		{
-        			buffer[i] = event[i+3];
-        		}
-        		System.out.println("Name ="+Name);
-        		System.out.println("GroupCode : "+new String(buffer).trim());
-        		System.out.println("GroupName : "+temp);
-         		
-        		dispose();
+         		if(Name=="")
+         		{
+         			showMessage("ERROR", "Please insert GroupName!");
+         		}
+         		else
+         		{
+	         		String[] test = new String[3];
+	        		test[0] = "a";
+	        		test[1] = "b";
+	        		test[2] = "c";
+	        		String temp = Name;
+	        		new Client_Make_Group().make(test, temp);
+	        		byte[] event = new Client_Receive_Event().getEvent();
+	        		byte[] buffer = new byte[1021]; 
+	        		for(int i = 0; i < buffer.length; i++)
+	        		{
+	        			buffer[i] = event[i+3];
+	        		}
+	        		System.out.println("Name ="+Name);
+	        		System.out.println("GroupCode : "+new String(buffer).trim());
+	        		System.out.println("GroupName : "+temp);
+	         		
+	        		dispose();
+	        		//main.dispose();
+	        		new Client_Group_Main();
+         		}
          	}
         });
         
@@ -141,7 +157,7 @@ public class Client_Group_Name extends JFrame{
         getContentPane().add(_layeredPane);          
         setVisible(true);
 	}
-	public String GiveName(){
+	public static String GiveName(){
 		return Name;
 	}
 }
