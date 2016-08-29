@@ -64,12 +64,15 @@ public class Client_Main_UI extends JFrame
 	
 	Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	
+	Client_Main_UI main;
+	
 	public static void main(String args[]){
 		new Client_Main_UI(new ArrayList<String>(),new ArrayList<String>(),null,null);
 	}
-
+	
 	public Client_Main_UI(ArrayList<String> gpCode, ArrayList<String> gpname, String name, String usCode)
 	{
+		main=this;
 		_gpCode = gpCode;
 		_gpName = gpname;
 		_name = name;
@@ -307,7 +310,7 @@ public class Client_Main_UI extends JFrame
  		Create.setContentAreaFilled(false);
  		Create.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		new Client_TestGroupName();
+        		new Client_Group_Name();
         	}
         });
  	    Participate = new JButton(new ImageIcon("img/Participate.png"));
@@ -318,7 +321,7 @@ public class Client_Main_UI extends JFrame
  	    Participate.setContentAreaFilled(false);
  	    Participate.addActionListener(new ActionListener() {
  	       	public void actionPerformed(ActionEvent arg0) {
- 	       	while(true)
+ 	       /*	while(true)
     		{
     			System.out.println("하고싶은 모드를 입력하세요 (1. 사람검색, 2. 사람초대, 3. 그룹삭제, 4. 그룹탈퇴) ");
     			System.out.print("입력 : ");
@@ -349,7 +352,8 @@ public class Client_Main_UI extends JFrame
     				default:
     					break;
     			}
-    		}
+    		}*/
+ 	       		new Client_Invitation();
  	       	}
  	    });
 		//----------------------------------------------------------------------indivial

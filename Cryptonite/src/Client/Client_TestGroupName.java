@@ -120,6 +120,7 @@ public class Client_TestGroupName extends JFrame{
         		System.out.println("GroupName : "+temp);
          		
         		dispose();
+        		new Client_Group_Main();
          	}
         });
         
