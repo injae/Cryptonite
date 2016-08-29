@@ -4,8 +4,13 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,6 +36,7 @@ public class Client_Main_UI extends JFrame
 	private String _name;
 	private String _usCode;
 	private String _address;
+	
 	private Client_FolderSelector cfs = null;
 	
 	private BufferedImage img = null;
@@ -58,22 +64,46 @@ public class Client_Main_UI extends JFrame
 	
 	Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	
+	Client_Main_UI main;
+	
 	public static void main(String args[]){
 		new Client_Main_UI(new ArrayList<String>(),new ArrayList<String>(),null,null);
 	}
-
+	
 	public Client_Main_UI(ArrayList<String> gpCode, ArrayList<String> gpname, String name, String usCode)
 	{
+		main=this;
 		_gpCode = gpCode;
 		_gpName = gpname;
 		_name = name;
 		_usCode = usCode;
 		
+		try{
+			 Toolkit tk = Toolkit.getDefaultToolkit(); 
+			 Image image = tk.getImage("gui/logo.png");
+			 this.setIconImage(image);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Appilcation icon not found");
+		}	
+		
+		WindowListener exitLitsener = new WindowAdapter() {
+				
+			@Override
+			public void windowClosing(WindowEvent e){
+				dispose();
+				new Client_Logout().logout();
+				new Client_Login();
+			}
+		};
+		
 		container=getContentPane();
 		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
+		addWindowListener(exitLitsener);
 		setResizable(false);
-		setBounds(500,300,816,480);
+		setBounds(500,300,807,480);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
@@ -176,25 +206,29 @@ public class Client_Main_UI extends JFrame
         ProtectedFolderOpenbt.setContentAreaFilled(false);
         ProtectedFolderOpenbt.setBorderPainted(false);
         ProtectedFolderOpenbt.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-		        try 
-		        {
-		        FileReader fr = new FileReader(new File("Cryptonite_Client/log/protectedlog.ser"));
-		        BufferedReader br = new BufferedReader(fr);
-		        String address = br.readLine();
-		        Runtime rt = Runtime.getRuntime();
-		        rt.exec("explorer.exe " + address);
-		        } 
-		        catch (FileNotFoundException e1) 
-		        {
-		        	e1.printStackTrace();
-		        } 
-		        catch (IOException e1) 
-		        {
-		        	e1.printStackTrace();
-		        }
-        	}
-        });
+   			public void actionPerformed(ActionEvent e) {
+   				
+				try 
+				{
+					FileReader fr = new FileReader(new File("Cryptonite_Client/log/protectedlog.ser"));
+					BufferedReader br = new BufferedReader(fr);
+					String address = br.readLine();
+					Runtime rt = Runtime.getRuntime();
+					rt.exec("explorer.exe " + address);
+				} 
+				catch (FileNotFoundException e1) 
+				{
+					e1.printStackTrace();
+				} 
+				catch (IOException e1) 
+				{
+					e1.printStackTrace();
+				}
+   			}
+   		});
+        
+        //-------------------------------------------------
+        
         
         Sendbt = new JButton(new ImageIcon("img/Filesend.png"));		
         Sendbt.setPressedIcon(new ImageIcon("img/Filesendh.png"));
@@ -227,35 +261,33 @@ public class Client_Main_UI extends JFrame
         ProtectedFolderbt.setBorderPainted(false);
         ProtectedFolderbt.setBounds(1, 245, 470, 190);
         ProtectedFolderbt.addActionListener(new ActionListener() {
-        	 public void actionPerformed(ActionEvent e) {
-        	 cfs = new Client_FolderSelector();
-        	 cfs.folderSelectorON();
-        	 while(!cfs.getSelectionEnd())
-        	 {
-        	 	try 
-        	 	{
-        	 		Thread.sleep(1);
-        	 	} 
-        	 	catch (InterruptedException e1) 
-        	 	{
-        	 		e1.printStackTrace();
-        	 	}
-        	 }	
-        	 _address = cfs.getSelectedPath();
-        	 File save = new File("Cryptonite_Client/log/protectedlog.ser");
-        	 FileWriter fw;
-        	 try {
-        	 	fw = new FileWriter(save);
-        	 	fw.write(_address);
-        	 	fw.close();
-        	 } 
-        	 catch (IOException e1) 
-        	 {
-        	 	e1.printStackTrace();
-        	 }
-        	 new Client_FolderScan().start();		
-        	 }
-        	 });
+			public void actionPerformed(ActionEvent e) {
+					cfs	 = new Client_FolderSelector();
+					cfs.folderSelectorON();
+					while(!cfs.getSelectionEnd())
+					{
+						try 
+						{
+							Thread.sleep(1);
+						} 
+						catch (InterruptedException e1) 
+						{
+							e1.printStackTrace();
+						}
+					}	
+					_address = cfs.getSelectedPath();
+					File save = new File("Cryptonite_Client/log/protectedlog.ser");
+					FileWriter fw;
+					try {
+						fw = new FileWriter(save);
+						fw.write(_address);
+						fw.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				new Client_FolderScan().start();		
+			}
+		});
         
         Cloudbt = new JButton(new ImageIcon("img/Cloud.png"));
         Cloudbt.setRolloverIcon(new ImageIcon("img/Cloudh.png"));
@@ -278,7 +310,7 @@ public class Client_Main_UI extends JFrame
  		Create.setContentAreaFilled(false);
  		Create.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		new Client_TestGroupName();
+        		new Client_Group_Name();
         	}
         });
  	    Participate = new JButton(new ImageIcon("img/Participate.png"));
@@ -289,7 +321,7 @@ public class Client_Main_UI extends JFrame
  	    Participate.setContentAreaFilled(false);
  	    Participate.addActionListener(new ActionListener() {
  	       	public void actionPerformed(ActionEvent arg0) {
- 	       	while(true)
+ 	       /*	while(true)
     		{
     			System.out.println("하고싶은 모드를 입력하세요 (1. 사람검색, 2. 사람초대, 3. 그룹삭제, 4. 그룹탈퇴) ");
     			System.out.print("입력 : ");
@@ -320,10 +352,8 @@ public class Client_Main_UI extends JFrame
     				default:
     					break;
     			}
-    		}
- 	       		/*Scanner sc = new Scanner(System.in);
- 	       		String code = sc.nextLine();
- 	       		new Client_Group_Withdrawal().running(code);*/
+    		}*/
+ 	       		new Client_Invitation();
  	       	}
  	    });
 		//----------------------------------------------------------------------indivial
