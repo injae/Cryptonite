@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
@@ -22,6 +25,9 @@ https://github.com/arimorty/floatingsearchview
 public class MakeGroupActivity extends AppCompatActivity {
 
         FloatingSearchView searchView;
+        ListView listView;
+        ArrayAdapter<String> arrayAdapter;
+        ArrayList<String> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +35,16 @@ public class MakeGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_make_group);
 
 
+        listView = (ListView) findViewById(R.id.id_listView);
+
+        arrayList = new ArrayList<String>();
+        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.make_group_id_list,R.id.Search_id,arrayList);
+
+        listView.setAdapter(arrayAdapter);
+
         searchView = (FloatingSearchView) findViewById(R.id.floating_search_view);
 
-        final Client_Group_Search cgs = new Client_Group_Search(searchView);
+        final Client_Group_Search cgs = Client_Group_Search.getInstance(searchView);
 
         searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
@@ -56,12 +69,12 @@ public class MakeGroupActivity extends AppCompatActivity {
                         searchView.clearSuggestions();
                         searchView.clearQuery();
                         searchView.clearSearchFocus();
-                        Log.d("Search",textView.getText().toString());
+                        arrayList.add(textView.getText().toString());
+                        arrayAdapter.notifyDataSetChanged();
                     }
                 });
             }
         });
-
 
     }
 }
