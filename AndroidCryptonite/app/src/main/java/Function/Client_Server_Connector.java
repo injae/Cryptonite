@@ -50,7 +50,6 @@ public class Client_Server_Connector extends Thread
 		if(_singleton == null)
 		{
 			_singleton = new Client_Server_Connector();
-			new Client_KeyExchange();
 		}
 
 		return _singleton;

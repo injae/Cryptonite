@@ -27,6 +27,7 @@ import java.nio.charset.CharsetEncoder;
 
 import Crypto.SHAEncrypt;
 import Function.C_Toast;
+import Function.Client_KeyExchange;
 import Function.Client_Server_Connector;
 import Function.PacketRule;
 
@@ -243,6 +244,7 @@ public class RegisterActivity extends AppCompatActivity implements PacketRule{
 
             try {
 
+                new Client_KeyExchange();
                 Client_Server_Connector css = Client_Server_Connector.getInstance();
 
                 byte[] op = new byte[1024];

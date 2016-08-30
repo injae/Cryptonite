@@ -1,5 +1,7 @@
 package Crypto;
 
+import java.nio.ByteBuffer;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -19,6 +21,19 @@ public class Crypto {
     public byte[] endecription(byte[] target) {
         try {
             return _cipher.doFinal(target);
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ByteBuffer endecription(ByteBuffer target) {
+        try {
+            ByteBuffer bb = ByteBuffer.allocate(target.limit());
+            bb.put(_cipher.doFinal(target.array())); bb.flip();
+            return bb;
         } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
         } catch (BadPaddingException e) {

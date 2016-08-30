@@ -30,7 +30,7 @@ public class Crypto_Factory
                     cipher.init(mode, (SecretKey)key, iv);
                     break;
                 case "RSA1024":
-                    cipher = Cipher.getInstance("RSA");
+                    cipher = Cipher.getInstance("RSA/None/PKCS1Padding");
                     if(mode == Cipher.ENCRYPT_MODE)	cipher.init(mode, (PublicKey)key);
                     else cipher.init(mode, (PrivateKey) key);
                     break;
