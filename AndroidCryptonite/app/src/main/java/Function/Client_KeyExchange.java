@@ -25,36 +25,38 @@ public class Client_KeyExchange implements PacketRule {
     private Key _pubKey = null;
 
     private SecretKey _secretKey = null;
+    private boolean init = false;
 
     public Client_KeyExchange() {
-        // Server Connect
-        csc = Client_Server_Connector.getInstance();
+        if (init == false) {
+            // Server Connect
+            csc = Client_Server_Connector.getInstance();
 
-        setKey();
-        crypto = new Crypto(Crypto_Factory.create("RSA1024", Cipher.DECRYPT_MODE, _priKey));
+            setKey();
+            crypto = new Crypto(Crypto_Factory.create("RSA1024", Cipher.DECRYPT_MODE, _priKey));
 
-        // Send public key to server
-        try {
-            byte[] event = new byte[1024];
-            event[0] = KEY_EXCHANGE;
-            event[1] = 2;
-            csc.send.setPacket(event).write();
+            // Send public key to server
+            try {
+                byte[] event = new byte[1024];
+                event[0] = KEY_EXCHANGE;
+                event[1] = 2;
+                csc.send.setPacket(event).write();
 
-            csc.send.setPacket(_pubKey.getEncoded(), 162).write();
-            byte[] encryptData = csc.receive.setAllocate(128).read().getByte();
+                csc.send.setPacket(_pubKey.getEncoded(), 162).write();
+                byte[] encryptData = csc.receive.setAllocate(128).read().getByte();
 
-            // Decrypt recieved secret Key from server
-            this._secretKey = new SecretKeySpec(crypto.endecription(encryptData), "AES");
-            KeyReposit reposit = KeyReposit.getInstance();
-            reposit.set_rsaKey(this._secretKey);
+                // Decrypt recieved secret Key from server
+                this._secretKey = new SecretKeySpec(crypto.endecription(encryptData), "AES");
+                KeyReposit reposit = KeyReposit.getInstance();
+                reposit.set_rsaKey(this._secretKey);
 
-            csc.send.init(reposit.get_rsaKey());
-            csc.receive.init(reposit.get_rsaKey());
-        }
-
-        catch (IOException e) {
-            System.out.println("key exchange failed");
-            e.printStackTrace();
+                csc.send.init(reposit.get_rsaKey());
+                csc.receive.init(reposit.get_rsaKey());
+                init = true;
+            } catch (IOException e) {
+                System.out.println("key exchange failed");
+                e.printStackTrace();
+            }
         }
     }
 
