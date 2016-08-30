@@ -20,6 +20,8 @@ public class Client_FileShare_Receive implements PacketRule
 	// OTP Instance
 	private String _OTP;
 	
+	private static long _filesize = 0;
+	
 	// File Instance
 	private String _downloadFolder = null;
 	private RandomAccessFile _raf = null;
@@ -57,8 +59,13 @@ public class Client_FileShare_Receive implements PacketRule
 		_downloadFolder = _cfs.getSelectedPath();
 	}
 	
-	public void receiveFiles(String OTP)
+	public static long receive_filesize(){
+		return _filesize;
+	}
+	
+	public boolean receiveFiles(String OTP)
 	{
+		boolean check=false;
 		Charset cs = Charset.forName("UTF-8");
 		_OTP = OTP;
 		if(_OTP.length() != 6)
@@ -91,7 +98,7 @@ public class Client_FileShare_Receive implements PacketRule
 						_csc.receive.setAllocate(500);
 						_fileSize = Long.parseLong(new String(_csc.receive.read().getByte()).trim());
 						System.out.println("파일 사이즈 : " + _fileSize);
-						
+				
 						_raf = new RandomAccessFile(_downloadFolder + "\\" + _fileName, "rw");
 						
 						p = new PacketProcessor(_raf.getChannel(), false);
@@ -102,6 +109,8 @@ public class Client_FileShare_Receive implements PacketRule
 							p.setPacket(_csc.receive.read().getByte()).write();
 						}
 						p.close();
+						check=true;
+						_filesize+=_fileSize;
 					}
 				}
 			} 
@@ -115,5 +124,6 @@ public class Client_FileShare_Receive implements PacketRule
 			}
 			
 		}
+		return check;
 	}
 }

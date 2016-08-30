@@ -28,15 +28,17 @@ import javax.swing.border.BevelBorder;
 
 public class Client_Receive_OTP extends JFrame{
 	
-	BufferedImage img = null;
+	private BufferedImage img = null;
 	
-	JTextField OTPField;
-	JButton Select;
-	JButton Check;
-	JButton Cancel;
-	Font font = new Font ("SansSerif", Font.BOLD,20);
+	private JTextField OTPField;
+	private JButton Select;
+	private JButton Check;
+	private JButton Cancel;
+	private Font font = new Font ("SansSerif", Font.BOLD,20);
 
-	String OTP;
+	private String OTP;
+	private static boolean _flag=false;
+	
 	private Client_FileShare_Receive _cfr = null;
 	
 	public static void main(String args[])
@@ -119,6 +121,7 @@ public class Client_Receive_OTP extends JFrame{
         Check.addActionListener(new ActionListener() {
 			 public void actionPerformed(ActionEvent arg0) {
 				 _cfr.receiveFiles(OTP);
+				 _flag=true;
 			 }
 		 });
         layeredPane.add(Check);
@@ -143,6 +146,10 @@ public class Client_Receive_OTP extends JFrame{
         
         
 	}
+	public static boolean send_flag(){
+		return _flag;
+	}
+	
 	class MyPanel extends JPanel {
         public void paint(Graphics g) {
             g.drawImage(img, 0, 0, null);
