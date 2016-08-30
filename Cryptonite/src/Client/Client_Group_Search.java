@@ -3,6 +3,9 @@ package Client;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
+
 import Function.PacketRule;
 import Function.Function;
 
@@ -37,10 +40,10 @@ public class Client_Group_Search implements PacketRule
 			_csc.send.setPacket(event).write();
 			
 			String choice = new String(_csc.receive.setAllocate(1024).read().getByte()).trim();
-			System.out.println("초이스 : " + choice);
 			if(choice.equals("FALSE"))
 			{
-				System.out.println("존재하는 ID가 없습니다.");
+				//System.out.println("존재하는 ID가 없습니다.");
+				showMessage("ID Error","존재하는 ID가 없습니다.");
 			}
 			else
 			{
@@ -55,5 +58,21 @@ public class Client_Group_Search implements PacketRule
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public String[] getID()
+	{
+		String[] temp = new String[_id.size()];
+		for(int i = 0; i < temp.length; i++)
+		{
+			temp[i] = _id.get(i);
+		}
+		
+		return temp;
+	}
+	
+	private void showMessage(String title, String message) 
+	{
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }
