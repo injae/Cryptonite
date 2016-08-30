@@ -365,7 +365,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         byte[] gpcount = css.receive.setAllocate(100).read().getByte();
                         String name = cs.decode(css.receive.setAllocate(500).read().getByteBuf()).toString().trim();
-                        String uscode = css.receive.setAllocate(100).read().getByte().toString().trim();
+                       // String uscode = css.receive.setAllocate(100).read().getByte().toString().trim();
                         byte[] aeskey = css.receive.setAllocate(32).read().getByte();
 
                         (KeyReposit.getInstance()).set_aesKey(new SecretKeySpec(aeskey, "AES"));
@@ -376,7 +376,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             gpname.add(new String(css.receive.setAllocate(500).read().getByte()).trim());
                         }
 
-                        Client_Info.getInstance().init(name,uscode,aeskey,gpcode,gpname);
+                        Client_Info.getInstance().init(name,aeskey,gpcode,gpname);
 
                         return true;
                     case 3:

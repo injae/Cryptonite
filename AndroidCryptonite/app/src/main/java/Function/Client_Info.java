@@ -12,7 +12,6 @@ public class Client_Info {
     private static Client_Info client_info;
 
     private String name;
-    private String uscode;
     private byte[] aeskey;
 
     private ArrayList<String> gpcode = new ArrayList<String>();
@@ -33,10 +32,9 @@ public class Client_Info {
         }
     }
 
-    public void init(String name, String uscode, byte[] aeskey, ArrayList<String> gpcode, ArrayList<String> gpname)
+    public void init(String name, byte[] aeskey, ArrayList<String> gpcode, ArrayList<String> gpname)
     {
         this.name = name;
-        this.uscode = uscode;
         this.aeskey = aeskey;
         this.gpcode = gpcode;
         this.gpname = gpname;
