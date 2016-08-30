@@ -103,12 +103,10 @@ public class Client_Group_Main extends JFrame{
         Search.addActionListener(new ActionListener() {     
          	public void actionPerformed(ActionEvent arg0)
          	{	
-         		new Client_Group_Search().search();
+         		_cgs.setDefault();
+         		_cgs.search();
          		_result=_cgs.getID();
-         		System.out.println(_result.length);
-         		for(int i=0;i<_result.length;i++){
-         			System.out.println(_result[i]);
-         		}
+         		
          	     /*DefaultListModel<String> model = new DefaultListModel<>();
                 for(int i=0;i<_result.length;i++){
                 	if(!(_result[i]==Client_Group_Name.getID())){
