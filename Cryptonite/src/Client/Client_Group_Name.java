@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -27,7 +29,7 @@ public class Client_Group_Name extends JFrame{
 		new Client_Group_Name(null);
 	}
 	
-	private String _id;
+	private static String _id;
 	
 	BufferedImage _img = null;
 	
@@ -144,6 +146,11 @@ public class Client_Group_Name extends JFrame{
         _cancel.setContentAreaFilled(false);
         _cancel.setRolloverIcon(new ImageIcon("gui/gn_cancelR.png"));
         _cancel.setPressedIcon(new ImageIcon("gui/gn_cancel.png"));
+       	_cancel.addActionListener(new ActionListener() {     
+         	public void actionPerformed(ActionEvent arg0) {
+         		dispose();
+         	}
+         });
         
         _layeredPane.add(_cancel);
         _layeredPane.add(_create);
@@ -152,6 +159,11 @@ public class Client_Group_Name extends JFrame{
         getContentPane().add(_layeredPane);          
         setVisible(true);
 	}
+	public static String getID()
+	{
+		return _id;
+	}
+	
 	public static String GiveName(){
 		return Name;
 	}
