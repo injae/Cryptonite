@@ -1,5 +1,7 @@
 package Function;
 
+import java.nio.ByteBuffer;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -46,6 +48,12 @@ public class SecurePacketProcessor extends PacketProcessor {
 		_crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _key));
 		return _crypto.endecription(super.getByte());
 	}
+	
+	@Override
+    public ByteBuffer getByteBuf() {
+        _crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _key));
+        return _crypto.endecription(super.getByteBuf());
+    }
 
 	@Override
 	public PacketProcessor setPacket(byte[] packet) {
