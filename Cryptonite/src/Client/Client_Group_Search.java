@@ -28,8 +28,7 @@ public class Client_Group_Search implements PacketRule
 	// Methods
 	public void search()
 	{
-		Scanner scanner = new Scanner(System.in);
-		_searchID = scanner.nextLine();
+		_searchID = Client_Group_Main.givename();
 		
 		try 
 		{
@@ -50,7 +49,7 @@ public class Client_Group_Search implements PacketRule
 				for(int i = 0; i < Integer.parseInt(choice); i++)
 				{
 					_id.add(new String(_csc.receive.setAllocate(1024).read().getByte()));
-					System.out.println("결과 : " + _id.get(i));
+					System.out.println("결과 : " + _id.get(i).trim());
 				}
 			}
 		}
