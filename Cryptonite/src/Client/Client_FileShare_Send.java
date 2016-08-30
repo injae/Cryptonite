@@ -27,6 +27,7 @@ public class Client_FileShare_Send implements PacketRule
 	// Instance
 	private String _OTP = "";
 	
+	private static long _filesize = 0;
 	// About Files
 	private FileChannel _fileChannel = null;
 	private RandomAccessFile _raf = null;
@@ -97,8 +98,9 @@ public class Client_FileShare_Send implements PacketRule
 		}
 	}
 	
-	public void sendFile()	// when you click send button
+	public boolean sendFile()	// when you click send button
 	{
+		boolean check=false;
 		Charset cs = Charset.forName("UTF-8");
 		ByteBuffer[] fileNameArray = new ByteBuffer[_fileNameArray.length];
 		try 
@@ -140,7 +142,11 @@ public class Client_FileShare_Send implements PacketRule
 					_csc.send.setPacket(p.read().getByte()).write();
 				}
 				p.close();
-				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");			
+				check=true;
+				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
+				for(int l=0;l<_fileSizeArray.length;l++){
+					_filesize+=_fileSizeArray[l];
+				}
 			}
 			//_cfs.dispose();
 		}
@@ -153,6 +159,7 @@ public class Client_FileShare_Send implements PacketRule
 			System.exit(1);
 			e.printStackTrace();
 		}
+		return check;
 	}
 	
 	private void changeFilesName()
