@@ -31,7 +31,7 @@ public class MakeGroupActivity extends AppCompatActivity {
 
         searchView = (FloatingSearchView) findViewById(R.id.floating_search_view);
 
-        final Client_Group_Search cgs = Client_Group_Search.getInstance(searchView);
+        final Client_Group_Search cgs = new Client_Group_Search(searchView);
 
         searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override

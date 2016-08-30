@@ -23,11 +23,12 @@ public class Client_Group_Search implements PacketRule{
     private FloatingSearchView searchView;
     public Queue<String> queue = new LinkedList<>();
 
-    private Client_Group_Search(FloatingSearchView searchView){
+    public Client_Group_Search(FloatingSearchView searchView){
         css = Client_Server_Connector.getInstance();
         this.searchView = searchView;
     }
 
+/*
     public static Client_Group_Search getInstance(FloatingSearchView searchView){
         if (cgs == null)
         {
@@ -35,6 +36,7 @@ public class Client_Group_Search implements PacketRule{
         }
         return cgs;
     }
+*/
 
 
     public void Search(String id){
