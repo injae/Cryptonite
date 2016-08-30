@@ -266,7 +266,7 @@ public class Client_Login extends JFrame implements PacketRule {
 							}
 							new Client_FolderScan().start();
 							dispose();
-							new Client_Main_UI(_gpcode, _gpname, _name, _uscode);
+							new Client_Main_UI(_gpcode, _gpname, _name, _uscode, _id);
 
 							break;
 						case 3:
@@ -321,6 +321,11 @@ public class Client_Login extends JFrame implements PacketRule {
 		}
 
 		return _password;
+	}
+	
+	public String getID()
+	{
+		return _id;
 	}
 }
 

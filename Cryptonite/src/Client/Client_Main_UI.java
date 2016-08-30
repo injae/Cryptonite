@@ -33,6 +33,7 @@ public class Client_Main_UI extends JFrame
 {
 	private ArrayList<String> _gpCode;
 	private ArrayList<String> _gpName;
+	private String _id;
 	private String _name;
 	private String _usCode;
 	private String _address;
@@ -67,16 +68,17 @@ public class Client_Main_UI extends JFrame
 	Client_Main_UI main;
 	
 	public static void main(String args[]){
-		new Client_Main_UI(new ArrayList<String>(),new ArrayList<String>(),null,null);
+		new Client_Main_UI(new ArrayList<String>(),new ArrayList<String>(),null,null,null);
 	}
 	
-	public Client_Main_UI(ArrayList<String> gpCode, ArrayList<String> gpname, String name, String usCode)
+	public Client_Main_UI(ArrayList<String> gpCode, ArrayList<String> gpname, String name, String usCode, String id)
 	{
 		main=this;
 		_gpCode = gpCode;
 		_gpName = gpname;
 		_name = name;
 		_usCode = usCode;
+		_id = id;
 		
 		try{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
@@ -310,7 +312,7 @@ public class Client_Main_UI extends JFrame
  		Create.setContentAreaFilled(false);
  		Create.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		new Client_Group_Name();
+        		new Client_Group_Name(_id);
         	}
         });
  	    Participate = new JButton(new ImageIcon("img/Participate.png"));

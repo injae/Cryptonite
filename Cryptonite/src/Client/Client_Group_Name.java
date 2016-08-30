@@ -24,20 +24,12 @@ import javax.swing.JTextField;
 
 public class Client_Group_Name extends JFrame{
 	public static void main(String[] args){
-		new Client_Group_Name();
+		new Client_Group_Name(null);
 	}
 	
+	private String _id;
+	
 	BufferedImage _img = null;
-	
-	class MyPanel extends JPanel {
-        public void paint(Graphics g) {
-            g.drawImage(_img, 0, 0, null);
-        }
-    }
-	
-	 private void showMessage(String title, String message) {
-			JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
-		}
 	
 	JButton _create;  
 	JButton _cancel;
@@ -49,7 +41,8 @@ public class Client_Group_Name extends JFrame{
 	
 	static String Name;
 	
-	public Client_Group_Name(){
+	public Client_Group_Name(String id){
+		_id = id;
 		try{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
 			 Image image = tk.getImage("gui/logo.png");
@@ -118,11 +111,13 @@ public class Client_Group_Name extends JFrame{
          		}
          		else
          		{
-	         		String[] test = new String[3];
-	        		test[0] = "a";
+	         		String[] test = new String[1];
+	        		/*test[0] = "a";
 	        		test[1] = "b";
-	        		test[2] = "c";
+	        		test[2] = "c";*/
+	         		test[0] = _id;
 	        		String temp = Name;
+	        		
 	        		new Client_Make_Group().make(test, temp);
 	        		byte[] event = new Client_Receive_Event().getEvent();
 	        		byte[] buffer = new byte[1021]; 
@@ -160,4 +155,14 @@ public class Client_Group_Name extends JFrame{
 	public static String GiveName(){
 		return Name;
 	}
+	
+	class MyPanel extends JPanel {
+        public void paint(Graphics g) {
+            g.drawImage(_img, 0, 0, null);
+        }
+    }
+	
+	 private void showMessage(String title, String message) {
+			JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+		}
 }
