@@ -107,15 +107,15 @@ public class Client_Group_Main extends JFrame{
          		_cgs.search();
          		_result=_cgs.getID();
          		
-         	     /*DefaultListModel<String> model = new DefaultListModel<>();
+         	     DefaultListModel<String> model = new DefaultListModel<>();
                 for(int i=0;i<_result.length;i++){
                 	if(!(_result[i]==Client_Group_Name.getID())){
-                		model.addElement(_result[i]);
+                		model.addElement(_result[i].trim());
                 	}
                 }
                  JList<String> list = new JList<>(model);
                  list.setBounds(640, 200, 100, 100);
-                 layeredPane.add(list);*/
+                 layeredPane.add(list);
          	}
          });
         
