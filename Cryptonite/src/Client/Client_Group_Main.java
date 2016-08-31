@@ -14,6 +14,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -38,6 +39,7 @@ public class Client_Group_Main extends JFrame{
 	
 	private String[] _result;
 	private String _id;
+	private String _receivedID;
 	
 	private DefaultListModel<String> _model;
 	private JList<String> _list;
@@ -49,12 +51,14 @@ public class Client_Group_Main extends JFrame{
 	
 	private Client_Group_Search _cgs;
 	
-	public static void main(String args[]){
-		new Client_Group_Main();
+	public static void main(String args[])
+	{
+		new Client_Group_Main(null);
 	}
 
 
-	public Client_Group_Main(){
+	public Client_Group_Main(String id){
+		_receivedID = id;
 		_cgs=new Client_Group_Search();
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
@@ -67,9 +71,12 @@ public class Client_Group_Main extends JFrame{
         layeredPane.setBounds(0, 0, 816, 480);
         layeredPane.setLayout(null);
         
-        try {
+        try 
+        {
             img = ImageIO.read(new File("img/초대목록화면.png"));
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             System.out.println("이미지 불러오기 실패");
             System.exit(0);
         }
@@ -83,11 +90,13 @@ public class Client_Group_Main extends JFrame{
         _idField.setForeground(Color.BLACK);
         _idField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         _idField.setHorizontalAlignment(JTextField.CENTER);
-        _idField.addKeyListener(new KeyListener(){
+        _idField.addKeyListener(new KeyListener()
+        {
      		@Override
      		public void keyPressed(KeyEvent e) {}
      		@Override
-     		public void keyReleased(KeyEvent e) {
+     		public void keyReleased(KeyEvent e) 
+     		{
      			_id = _idField.getText();
      		}
      		@Override
@@ -127,13 +136,14 @@ public class Client_Group_Main extends JFrame{
          			_model = new DefaultListModel<>();
                     for(int i=0;i<_result.length;i++)
                     {
-                     	if(!(_result[i]==Client_Group_Name.getID()))
+                     	if(!_result[i].equals(_receivedID))
                      	{
-                     		_model.addElement(_result[i].trim());
+                     		_model.addElement(_result[i]);
                      	}
                     }
                     _list = new JList<>(_model);
                     _list.setBounds(640, 200, 100, 100);
+                    _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                     layeredPane.add(_list);
          		}
          	    
@@ -141,13 +151,9 @@ public class Client_Group_Main extends JFrame{
          });
         
         layeredPane.add(Search);
-        
-        
         layeredPane.add(panel);
         getContentPane().add(layeredPane);
         setVisible(true);
-        
-        
 	}
 	
 	class MyPanel extends JPanel 
