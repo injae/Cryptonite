@@ -35,6 +35,7 @@ public class Client_Group_Main extends JFrame{
 	private BufferedImage img = null;
 
 	private JButton Search;
+	private JButton Search2;
 	private JTextField _idField;
 	
 	private String[] _result;
@@ -149,6 +150,23 @@ public class Client_Group_Main extends JFrame{
          	    
          	}
          });
+        
+        
+        Search2 = new JButton(new ImageIcon("img/Search.png"));
+        Search2.setPressedIcon(new ImageIcon("img/Searchh.png"));
+        Search2.setBounds(740, 280, 50, 50);
+        Search2.setFocusPainted(false);
+        Search2.setContentAreaFilled(false);
+        Search2.setBorderPainted(false);
+        Search2.addActionListener(new ActionListener() {     
+         	public void actionPerformed(ActionEvent arg0)
+         	{	String selectedID;
+         		selectedID=_model.getElementAt(_list.getSelectedIndex());
+         		System.out.println(selectedID);
+         	}
+         });
+        
+        layeredPane.add(Search2);
         
         layeredPane.add(Search);
         layeredPane.add(panel);
