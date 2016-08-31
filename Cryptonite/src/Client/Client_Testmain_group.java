@@ -138,7 +138,7 @@ public static void main(String[] args){
         			case 2:
         				System.out.print("그룹코드를 작성하세요 : ");
         				String gpCode = scanner.nextLine();
-        				new Client_Group_Invite().running(gpCode);
+        				//new Client_Group_Invite().running(gpCode);
         				break;
         			case 3:
         				System.out.print("그룹코드를 작성하세요 : ");

@@ -20,27 +20,23 @@ public class Client_Group_Invite implements PacketRule
 	}
 	
 	// Methods
-	public void running(String gpCode)
+	public void running(String id, String gpCode)
 	{
-		while(true) //
-		{ // 
-			Scanner scanner = new Scanner(System.in);
-			_id = scanner.nextLine();
-			
-			try 
-			{
-				byte[] event = new byte[1024];
-				event[0] = GROUP_INVITE;
-				event[1] = (byte)_id.getBytes().length;
-				event[2] = (byte)gpCode.getBytes().length;
-				Function.frontInsertByte(3, _id.getBytes(), event);
-				Function.frontInsertByte(3 + _id.getBytes().length, gpCode.getBytes(), event);
-				_csc.send.setPacket(event).write();
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
-		} // 
+		_id = id;
+		
+		try 
+		{
+			byte[] event = new byte[1024];
+			event[0] = GROUP_INVITE;
+			event[1] = (byte)_id.getBytes().length;
+			event[2] = (byte)gpCode.getBytes().length;
+			Function.frontInsertByte(3, _id.getBytes(), event);
+			Function.frontInsertByte(3 + _id.getBytes().length, gpCode.getBytes(), event);
+			_csc.send.setPacket(event).write();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 }
