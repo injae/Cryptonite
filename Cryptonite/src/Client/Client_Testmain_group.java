@@ -132,7 +132,8 @@ public static void main(String[] args){
         			{
         			case 1:
         				System.out.print("아이디를 입력하세요 : ");
-        				new Client_Group_Search().search();
+        				String id  = scanner.nextLine();
+        				new Client_Group_Search().search(id);
         				break;
         			case 2:
         				System.out.print("그룹코드를 작성하세요 : ");
