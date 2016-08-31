@@ -58,7 +58,7 @@ public class Client_Group_Search implements PacketRule
 		String[] temp = new String[_id.size()];
 		for(int i = 0; i < temp.length; i++)
 		{
-			temp[i] = _id.get(i);
+			temp[i] = _id.get(i).trim();
 		}
 		
 		return temp;
