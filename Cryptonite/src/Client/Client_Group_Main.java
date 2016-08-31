@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -36,7 +37,10 @@ public class Client_Group_Main extends JFrame{
 	private JTextField _idField;
 	
 	private String[] _result;
-	private static String _id;
+	private String _id;
+	
+	private DefaultListModel<String> _model;
+	private JList<String> _list;
 	
 	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	private Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
@@ -104,18 +108,28 @@ public class Client_Group_Main extends JFrame{
          	public void actionPerformed(ActionEvent arg0)
          	{	
          		_cgs.setDefault();
-         		_cgs.search();
+         		_cgs.search(_id);
          		_result=_cgs.getID();
-         		
-         	     DefaultListModel<String> model = new DefaultListModel<>();
-                for(int i=0;i<_result.length;i++){
-                	if(!(_result[i]==Client_Group_Name.getID())){
-                		model.addElement(_result[i].trim());
-                	}
-                }
-                 JList<String> list = new JList<>(model);
-                 list.setBounds(640, 200, 100, 100);
-                 layeredPane.add(list);
+         		if(_result.length == 0)
+         		{
+         			_list.setVisible(false);
+         			showMessage("ID Error","존재하는 ID가 없습니다.");
+         		}
+         		else
+         		{
+         			_model = new DefaultListModel<>();
+                    for(int i=0;i<_result.length;i++)
+                    {
+                     	if(!(_result[i]==Client_Group_Name.getID()))
+                     	{
+                     		_model.addElement(_result[i].trim());
+                     	}
+                    }
+                    _list = new JList<>(_model);
+                    _list.setBounds(640, 200, 100, 100);
+                    layeredPane.add(_list);
+         		}
+         	    
          	}
          });
         
@@ -129,11 +143,10 @@ public class Client_Group_Main extends JFrame{
         
 	}
 	
-	public static String givename(){
-		return _id;
-	}
-	class MyPanel extends JPanel {
-        public void paint(Graphics g) {
+	class MyPanel extends JPanel 
+	{
+        public void paint(Graphics g) 
+        {
             g.drawImage(img, 0, 0, null);
             g.setColor(Color.BLACK);
         	g.setFont(_precondition_font);
@@ -141,4 +154,8 @@ public class Client_Group_Main extends JFrame{
         }
    }
 	
+	private void showMessage(String title, String message) 
+	{
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+	}
 }

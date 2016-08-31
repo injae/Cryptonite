@@ -25,9 +25,10 @@ public class Client_Group_Search implements PacketRule
 	}
 	
 	// Methods
-	public void search()
+	public void search(String id)
 	{
-		_searchID = Client_Group_Main.givename();
+		_searchID = id;
+		//_searchID = Client_Group_Main.givename();
 		
 		try 
 		{
@@ -38,11 +39,7 @@ public class Client_Group_Search implements PacketRule
 			_csc.send.setPacket(event).write();
 			
 			String choice = new String(_csc.receive.setAllocate(1024).read().getByte()).trim();
-			if(choice.equals("FALSE"))
-			{
-				showMessage("ID Error","존재하는 ID가 없습니다.");
-			}
-			else
+			if(!choice.equals("FALSE"))
 			{
 				for(int i = 0; i < Integer.parseInt(choice); i++)
 				{
@@ -71,10 +68,5 @@ public class Client_Group_Search implements PacketRule
 	{
 		_id = new ArrayList<String>();
 		_searchID = null;
-	}
-	
-	private void showMessage(String title, String message) 
-	{
-		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }
