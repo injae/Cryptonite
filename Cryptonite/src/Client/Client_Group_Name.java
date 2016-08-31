@@ -114,9 +114,6 @@ public class Client_Group_Name extends JFrame{
          		else
          		{
 	         		String[] test = new String[1];
-	        		/*test[0] = "a";
-	        		test[1] = "b";
-	        		test[2] = "c";*/
 	         		test[0] = _id;
 	        		String temp = Name;
 	        		
@@ -128,12 +125,12 @@ public class Client_Group_Name extends JFrame{
 	        			buffer[i] = event[i+3];
 	        		}
 	        		System.out.println("Name ="+Name);
-	        		System.out.println("GroupCode : "+new String(buffer).trim());
-	        		System.out.println("GroupName : "+temp);
+	        		System.out.println("GroupCode : " + new String(buffer).trim());
+	        		System.out.println("GroupName : " + temp);
 	         		
 	        		dispose();
 	        		//main.dispose();
-	        		new Client_Group_Main(_id);
+	        		new Client_Group_Main(_id, new String(buffer).trim());
          		}
          	}
         });

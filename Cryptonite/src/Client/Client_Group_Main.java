@@ -41,6 +41,7 @@ public class Client_Group_Main extends JFrame{
 	private String[] _result;
 	private String _id;
 	private String _receivedID;
+	private String _gpCode;
 	
 	private DefaultListModel<String> _model;
 	private JList<String> _list;
@@ -51,16 +52,20 @@ public class Client_Group_Main extends JFrame{
 	private Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
 	
 	private Client_Group_Search _cgs;
+	private Client_Group_Invite _cgi;
 	
 	public static void main(String args[])
 	{
-		new Client_Group_Main(null);
+		new Client_Group_Main(null, null);
 	}
 
 
-	public Client_Group_Main(String id){
+	public Client_Group_Main(String id, String gpCode){
 		_receivedID = id;
-		_cgs=new Client_Group_Search();
+		_gpCode = gpCode;
+		_cgs = new Client_Group_Search();
+		_cgi = new Client_Group_Invite();
+		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(0,0,816,480);
@@ -160,9 +165,10 @@ public class Client_Group_Main extends JFrame{
         Search2.setBorderPainted(false);
         Search2.addActionListener(new ActionListener() {     
          	public void actionPerformed(ActionEvent arg0)
-         	{	String selectedID;
-         		selectedID=_model.getElementAt(_list.getSelectedIndex());
-         		System.out.println(selectedID);
+         	{	
+         		String selectedID;
+         		selectedID = _model.getElementAt(_list.getSelectedIndex());
+         		_cgi.running(selectedID, _gpCode);
          	}
          });
         
