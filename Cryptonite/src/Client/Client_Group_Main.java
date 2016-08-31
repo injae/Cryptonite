@@ -42,6 +42,8 @@ public class Client_Group_Main extends JFrame{
 	private DefaultListModel<String> _model;
 	private JList<String> _list;
 	
+	private int _count = 1;
+	
 	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	private Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
 	
@@ -117,6 +119,11 @@ public class Client_Group_Main extends JFrame{
          		}
          		else
          		{
+         			if(_count != 1)
+         			{
+         				layeredPane.remove(_list);
+         			}
+         			_count = 2;
          			_model = new DefaultListModel<>();
                     for(int i=0;i<_result.length;i++)
                     {
