@@ -36,6 +36,8 @@ public class Client_Group_Main extends JFrame{
 
 	private JButton Search;
 	private JButton Search2;
+	private JButton Withdrawal;
+	private JButton Delete;
 	private JTextField _idField;
 	
 	private String[] _result;
@@ -53,6 +55,7 @@ public class Client_Group_Main extends JFrame{
 	
 	private Client_Group_Search _cgs;
 	private Client_Group_Invite _cgi;
+	private Client_Group_Withdrawal _cgw;
 	
 	public static void main(String args[])
 	{
@@ -155,7 +158,7 @@ public class Client_Group_Main extends JFrame{
          	    
          	}
          });
-        
+        layeredPane.add(Search);
         
         Search2 = new JButton(new ImageIcon("img/Search.png"));
         Search2.setPressedIcon(new ImageIcon("img/Searchh.png"));
@@ -178,10 +181,23 @@ public class Client_Group_Main extends JFrame{
          		}
          	}
          });
-        
         layeredPane.add(Search2);
         
-        layeredPane.add(Search);
+        Withdrawal = new JButton(new ImageIcon("img/Search.png"));
+        Withdrawal.setPressedIcon(new ImageIcon("img/Searchh.png"));
+        Withdrawal.setBounds(685, 350, 50, 50);
+        Withdrawal.setFocusPainted(false);
+        Withdrawal.setContentAreaFilled(false);
+        Withdrawal.setBorderPainted(false);
+        Withdrawal.addActionListener(new ActionListener() {     
+         	public void actionPerformed(ActionEvent arg0)
+         	{
+         		_cgw.running(_gpCode);
+         	}
+         });
+        layeredPane.add(Withdrawal);
+        
+        
         layeredPane.add(panel);
         getContentPane().add(layeredPane);
         setVisible(true);
