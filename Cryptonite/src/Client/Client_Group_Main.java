@@ -95,115 +95,132 @@ public class Client_Group_Main extends JFrame{
         MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 816, 480);
         
-        if(_mod == 1)
+        _idField = new JTextField(15);
+        _idField.setBounds(640, 115, 100, 31);
+        _idField.setOpaque(false);
+        _idField.setForeground(Color.BLACK);
+        _idField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        _idField.setHorizontalAlignment(JTextField.CENTER);
+        _idField.addKeyListener(new KeyListener()
         {
-        	_idField = new JTextField(15);
-            _idField.setBounds(640, 115, 100, 31);
-            _idField.setOpaque(false);
-            _idField.setForeground(Color.BLACK);
-            _idField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-            _idField.setHorizontalAlignment(JTextField.CENTER);
-            _idField.addKeyListener(new KeyListener()
-            {
-         		@Override
-         		public void keyPressed(KeyEvent e) {}
-         		@Override
-         		public void keyReleased(KeyEvent e) 
+     		@Override
+     		public void keyPressed(KeyEvent e) {}
+     		@Override
+     		public void keyReleased(KeyEvent e) 
+     		{
+     			_id = _idField.getText();
+     		}
+     		@Override
+     		public void keyTyped(KeyEvent e) {}
+           });
+        	_idField.addMouseListener(new MouseAdapter(){
+         	public void mouseClicked(MouseEvent e){
+         		 _idField.setText("");
+         	}
+         });
+        layeredPane.add( _idField);
+        
+        Search = new JButton(new ImageIcon("img/Search.png"));
+        Search.setPressedIcon(new ImageIcon("img/Searchh.png"));
+        Search.setBounds(740, 107, 50, 50);
+        Search.setFocusPainted(false);
+        Search.setContentAreaFilled(false);
+        Search.setBorderPainted(false);
+        Search.addActionListener(new ActionListener() {     
+         	public void actionPerformed(ActionEvent arg0)
+         	{	
+         		_cgs.setDefault();
+         		_cgs.search(_id);
+         		_result=_cgs.getID();
+         		if(_result.length == 0)
          		{
-         			_id = _idField.getText();
+         			_list.setVisible(false);
+         			showMessage("ID Error","존재하는 ID가 없습니다.");
          		}
-         		@Override
-         		public void keyTyped(KeyEvent e) {}
-               });
-            	_idField.addMouseListener(new MouseAdapter(){
-             	public void mouseClicked(MouseEvent e){
-             		 _idField.setText("");
-             	}
-             });
-            layeredPane.add( _idField);
-            
-            Search = new JButton(new ImageIcon("img/Search.png"));
-            Search.setPressedIcon(new ImageIcon("img/Searchh.png"));
-            Search.setBounds(740, 107, 50, 50);
-            Search.setFocusPainted(false);
-            Search.setContentAreaFilled(false);
-            Search.setBorderPainted(false);
-            Search.addActionListener(new ActionListener() {     
-             	public void actionPerformed(ActionEvent arg0)
-             	{	
-             		_cgs.setDefault();
-             		_cgs.search(_id);
-             		_result=_cgs.getID();
-             		if(_result.length == 0)
-             		{
-             			_list.setVisible(false);
-             			showMessage("ID Error","존재하는 ID가 없습니다.");
-             		}
-             		else
-             		{
-             			if(_count != 1)
-             			{
-             				layeredPane.remove(_list);
-             			}
-             			_count = 2;
-             			_model = new DefaultListModel<>();
-                        for(int i=0;i<_result.length;i++)
-                        {
-                         	if(!_result[i].equals(_receivedID))
-                         	{
-                         		_model.addElement(_result[i]);
-                         	}
-                        }
-                        _list = new JList<>(_model);
-                        _list.setBounds(640, 200, 100, 100);
-                        _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                        layeredPane.add(_list);
-             		}
-             	    
-             	}
-             });
-            layeredPane.add(Search);
-            
-            Search2 = new JButton(new ImageIcon("img/Search.png"));
-            Search2.setPressedIcon(new ImageIcon("img/Searchh.png"));
-            Search2.setBounds(740, 280, 50, 50);
-            Search2.setFocusPainted(false);
-            Search2.setContentAreaFilled(false);
-            Search2.setBorderPainted(false);
-            Search2.addActionListener(new ActionListener() {     
-             	public void actionPerformed(ActionEvent arg0)
-             	{	
-             		String selectedID = _model.getElementAt(_list.getSelectedIndex());
-             		String check = _cgi.running(selectedID, _gpCode);
-             		if(check.equals("TRUE"))
-             		{
-             			showMessage("Notification","그룹원 성공적으로 추가 되었습니다.");
-             		}
-             		else if(check.equals("FALSE"))
-             		{
-             			showMessage("Notification","그룹원이 중복 됩니다.");
-             		}
-             	}
-             });
-            layeredPane.add(Search2);
-            
-            Withdrawal = new JButton(new ImageIcon("img/Search.png"));
-            Withdrawal.setPressedIcon(new ImageIcon("img/Searchh.png"));
-            Withdrawal.setBounds(685, 350, 50, 50);
-            Withdrawal.setFocusPainted(false);
-            Withdrawal.setContentAreaFilled(false);
-            Withdrawal.setBorderPainted(false);
-            Withdrawal.addActionListener(new ActionListener() {     
-             	public void actionPerformed(ActionEvent arg0)
-             	{
-             		_cgw.running(_gpCode);
-             	}
-             });
-            layeredPane.add(Withdrawal);
+         		else
+         		{
+         			if(_count != 1)
+         			{
+         				layeredPane.remove(_list);
+         			}
+         			_count = 2;
+         			_model = new DefaultListModel<>();
+                    for(int i=0;i<_result.length;i++)
+                    {
+                     	if(!_result[i].equals(_receivedID))
+                     	{
+                     		_model.addElement(_result[i]);
+                     	}
+                    }
+                    _list = new JList<>(_model);
+                    _list.setBounds(640, 200, 100, 100);
+                    _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                    layeredPane.add(_list);
+         		}
+         	    
+         	}
+         });
+        layeredPane.add(Search);
+        
+        Search2 = new JButton(new ImageIcon("img/Search.png"));
+        Search2.setPressedIcon(new ImageIcon("img/Searchh.png"));
+        Search2.setBounds(740, 280, 50, 50);
+        Search2.setFocusPainted(false);
+        Search2.setContentAreaFilled(false);
+        Search2.setBorderPainted(false);
+        Search2.addActionListener(new ActionListener() {     
+         	public void actionPerformed(ActionEvent arg0)
+         	{	
+         		String selectedID = _model.getElementAt(_list.getSelectedIndex());
+         		String check = _cgi.running(selectedID, _gpCode);
+         		if(check.equals("TRUE"))
+         		{
+         			showMessage("Notification","그룹원 성공적으로 추가 되었습니다.");
+         		}
+         		else if(check.equals("FALSE"))
+         		{
+         			showMessage("Notification","그룹원이 중복 됩니다.");
+         		}
+         	}
+         });
+        layeredPane.add(Search2);
+        
+        Withdrawal = new JButton(new ImageIcon("img/Check.png"));
+        Withdrawal.setPressedIcon(new ImageIcon("img/Checkp.png"));
+        Withdrawal.setBounds(685, 350, 50, 50);
+        Withdrawal.setFocusPainted(false);
+        Withdrawal.setContentAreaFilled(false);
+        Withdrawal.setBorderPainted(false);
+        Withdrawal.addActionListener(new ActionListener() {     
+         	public void actionPerformed(ActionEvent arg0)
+         	{
+         		_cgw.running(_gpCode);
+         	}
+         });
+        
+        Delete = new JButton(new ImageIcon("img/Settingbt.png"));
+        Delete.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
+        Delete.setBounds(685, 350, 50, 50);
+        Delete.setFocusPainted(false);
+        Delete.setContentAreaFilled(false);
+        Delete.setBorderPainted(false);
+        Delete.addActionListener(new ActionListener() {     
+         	public void actionPerformed(ActionEvent arg0)
+         	{
+         		
+         	}
+         });
+       
+        
+        if(_mod == 1)
+        {	
+        	layeredPane.remove(Delete);
+        	layeredPane.add(Withdrawal);
         }
         else
         {
-        	
+        	layeredPane.remove(Withdrawal);
+        	layeredPane.add(Delete);
         }
         
         layeredPane.add(panel);
@@ -221,7 +238,6 @@ public class Client_Group_Main extends JFrame{
         	g.drawString("Group Name : "+Client_Group_Name.GiveName(), 200, 50);
         }
    }
-	
 	private void showMessage(String title, String message) 
 	{
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
