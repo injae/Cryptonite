@@ -9,6 +9,7 @@ public class Client_Group_Invite implements PacketRule
 {
 	// Instance
 	private String _id;
+	private String _check;
 	
 	// Another Class Instance
 	private Client_Server_Connector _csc = null;
@@ -20,7 +21,7 @@ public class Client_Group_Invite implements PacketRule
 	}
 	
 	// Methods
-	public void running(String id, String gpCode)
+	public String running(String id, String gpCode)
 	{
 		_id = id;
 		
@@ -33,10 +34,13 @@ public class Client_Group_Invite implements PacketRule
 			Function.frontInsertByte(3, _id.getBytes(), event);
 			Function.frontInsertByte(3 + _id.getBytes().length, gpCode.getBytes(), event);
 			_csc.send.setPacket(event).write();
+			_check = new String(_csc.receive.setAllocate(100).read().getByte()).trim();
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
-		}
+		}	
+		
+		return _check;
 	}
 }
