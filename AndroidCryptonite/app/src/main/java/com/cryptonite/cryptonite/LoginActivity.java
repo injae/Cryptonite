@@ -376,7 +376,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             gpname.add(new String(css.receive.setAllocate(500).read().getByte()).trim());
                         }
 
-                        Client_Info.getInstance().init(name,aeskey,gpcode,gpname);
+                        Client_Info.getInstance().init(mid,name,aeskey,gpcode,gpname);
 
                         return true;
                     case 3:

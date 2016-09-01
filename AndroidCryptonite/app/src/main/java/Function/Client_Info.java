@@ -8,10 +8,10 @@ import java.util.ArrayList;
 public class Client_Info {
 
 
-    private static  boolean init=false;
     private static Client_Info client_info;
 
     private String name;
+    private String id;
     private byte[] aeskey;
 
     private ArrayList<String> gpcode = new ArrayList<String>();
@@ -20,9 +20,8 @@ public class Client_Info {
 
 
     public static Client_Info getInstance(){
-        if (init == false)
+        if (client_info == null)
         {
-            init = true;
             client_info = new Client_Info();
             return client_info;
         }
@@ -32,8 +31,9 @@ public class Client_Info {
         }
     }
 
-    public void init(String name, byte[] aeskey, ArrayList<String> gpcode, ArrayList<String> gpname)
+    public void init(String id, String name, byte[] aeskey, ArrayList<String> gpcode, ArrayList<String> gpname)
     {
+        this.id = id;
         this.name = name;
         this.aeskey = aeskey;
         this.gpcode = gpcode;
@@ -41,7 +41,23 @@ public class Client_Info {
     }
 
 
+    public String getName() {
+        return name;
+    }
 
+    public String getId() {
+        return id;
+    }
 
+    public byte[] getAeskey() {
+        return aeskey;
+    }
 
+    public ArrayList<String> getGpcode() {
+        return gpcode;
+    }
+
+    public ArrayList<String> getGpname() {
+        return gpname;
+    }
 }
