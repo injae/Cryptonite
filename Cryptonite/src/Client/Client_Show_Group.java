@@ -54,8 +54,8 @@ public class Client_Show_Group implements PacketRule
 		for(int i = 0; i < temp.length; i++)
 		{
 			temp[i] = _groupNameArray.get(i);
+			System.out.println("temp : "+temp[i]);
 		}
-		
 		return temp;
 	}
 }

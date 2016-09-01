@@ -8,7 +8,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -16,14 +18,27 @@ import java.awt.event.MouseListener;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 
 
 
 public class Client_Invitation extends JFrame{
-	BufferedImage img = null;
 	
-	Font fontbt = new Font("SansSerif", Font.BOLD,24);
+	private BufferedImage img = null;
+	
+	private JButton _Ok;
+	
+	private DefaultListModel<String> _model;
+	private JList<String> _list;
+	
+	private String[] _groupname;
+	private int _count = 1;
+	private boolean _checkimage=false;
+	
+	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
+	
+	private Client_Show_Group _showgroup;
 
 	
 	public static void main(String args[]){
@@ -31,7 +46,9 @@ public class Client_Invitation extends JFrame{
 	}
 
 
-	public Client_Invitation (){
+	public Client_Invitation (){		
+		_showgroup=new Client_Show_Group();
+		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(500,300,816,480);
@@ -53,6 +70,50 @@ public class Client_Invitation extends JFrame{
         MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 900, 500);
         
+        _Ok = new JButton(new ImageIcon("img/_Ok.png"));
+        _Ok.setPressedIcon(new ImageIcon("img/_Okh.png"));
+        _Ok.setBounds(740, 107, 50, 50);
+        _Ok.setFocusPainted(false);
+        _Ok.setContentAreaFilled(false);
+        _Ok.setBorderPainted(false);
+        _Ok.addActionListener(new ActionListener() {     
+         	public void actionPerformed(ActionEvent arg0)
+         	{	
+
+         	    
+         	}
+         });
+        
+        _groupname=_showgroup.getGroupName();
+        //System.out.println("내가 속해있는 그룹 :"+_groupname[0]);
+		if(_groupname.length == 0)
+		{	
+			System.out.println("아무것도 없음");
+			/*layeredPane.remove(panel);
+			_checkimage=true;
+			layeredPane.add(panel);
+			layeredPane.updateUI();
+			repaint();*/
+		}
+		else
+		{
+		/*	if(_count != 1)
+			{
+				layeredPane.remove(_list);
+			}
+			_count = 2;*/
+			_model = new DefaultListModel<>();
+           for(int i=0;i< _groupname.length;i++)
+           {
+            		_model.addElement( _groupname[i]);
+           }
+           _list = new JList<>(_model);
+           _list.setBounds(100, 100, 100, 100);
+           _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+           layeredPane.add(_list);
+		}
+        
+        layeredPane.add(_Ok);
         layeredPane.add(panel);
         getContentPane().add(layeredPane);
         setVisible(true);
