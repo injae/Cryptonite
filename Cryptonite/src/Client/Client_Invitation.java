@@ -38,16 +38,16 @@ public class Client_Invitation extends JFrame{
 	
 	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	
-	private Client_Show_Group _showgroup;
+	private Client_Show_Group _csg;
 
 	
 	public static void main(String args[]){
-		new Client_Invitation ();
+		new Client_Invitation (null);
 	}
 
 
-	public Client_Invitation (){		
-		_showgroup=new Client_Show_Group();
+	public Client_Invitation (Client_Show_Group csg){
+		_csg = csg;
 		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
@@ -84,8 +84,7 @@ public class Client_Invitation extends JFrame{
          	}
          });
         
-        _groupname=_showgroup.getGroupName();
-        //System.out.println("내가 속해있는 그룹 :"+_groupname[0]);
+        _groupname = _csg.getGroupName();
 		if(_groupname.length == 0)
 		{	
 			System.out.println("아무것도 없음");
@@ -97,11 +96,6 @@ public class Client_Invitation extends JFrame{
 		}
 		else
 		{
-		/*	if(_count != 1)
-			{
-				layeredPane.remove(_list);
-			}
-			_count = 2;*/
 			_model = new DefaultListModel<>();
            for(int i=0;i< _groupname.length;i++)
            {
@@ -117,9 +111,8 @@ public class Client_Invitation extends JFrame{
         layeredPane.add(panel);
         getContentPane().add(layeredPane);
         setVisible(true);
-        
-        
 	}
+	
 	class MyPanel extends JPanel {
         public void paint(Graphics g) {
             g.drawImage(img, 0, 0, null);
