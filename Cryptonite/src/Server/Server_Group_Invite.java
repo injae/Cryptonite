@@ -3,11 +3,13 @@ package Server;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.StringTokenizer;
 
 public class Server_Group_Invite extends Server_Funtion 
 {
 	private String _id;
 	private String _gpCode;
+	private boolean _passCheck;
 	
 	public Server_Group_Invite(Server_Client_Activity activity) 
 	{
@@ -51,6 +53,7 @@ public class Server_Group_Invite extends Server_Funtion
 			Checker(_activity.getReceiveEvent()); 
 			try 
 			{
+				_passCheck = true;
 				Server_DataBase db = Server_DataBase.getInstance();
 				ResultSet rs = db.Query("select * from test where id = '" + _id + "';");
 				rs.next();
@@ -59,21 +62,37 @@ public class Server_Group_Invite extends Server_Funtion
 				ResultSet rs2 = db.Query("select * from grouplist where gpcode = " + Server_Code_Manager.codeCutter(_gpCode) + ";");
 				rs2.next();
 				String gplist = rs2.getString(2);
-				gplist += ":" + uscode;
-				db.Update("update grouplist set gplist = '" + gplist + "' where gpcode = " + Server_Code_Manager.codeCutter(_gpCode) + ";");
-				
-				ResultSet rs3 = db.Query("select * from test where id = '" + _id + "';");
-				rs3.next();
-				String mygrouplist = rs3.getString(10);
-				if(mygrouplist.equals("NULL"))
+				StringTokenizer st = new StringTokenizer(gplist, ":");
+				while(st.hasMoreTokens())
 				{
-					mygrouplist = _gpCode;
+					if(st.nextToken().equals(uscode))
+					{
+						_passCheck = false;
+					}
+				}
+				if(_passCheck == true)
+				{
+					gplist += ":" + uscode;
+					db.Update("update grouplist set gplist = '" + gplist + "' where gpcode = " + Server_Code_Manager.codeCutter(_gpCode) + ";");
+					
+					ResultSet rs3 = db.Query("select * from test where id = '" + _id + "';");
+					rs3.next();
+					String mygrouplist = rs3.getString(10);
+					if(mygrouplist.equals("NULL"))
+					{
+						mygrouplist = _gpCode;
+					}
+					else
+					{
+						mygrouplist = ":" + _gpCode;
+					}
+					db.Update("update test set mygrouplist = '" + mygrouplist + "' where uscode = " + Server_Code_Manager.codeCutter(uscode) + ";");
+					_activity.send.setPacket("TRUE".getBytes(), 100).write();
 				}
 				else
 				{
-					mygrouplist = ":" + _gpCode;
+					_activity.send.setPacket("FALSE".getBytes(), 100).write();
 				}
-				db.Update("update test set mygrouplist = '" + mygrouplist + "' where uscode = " + Server_Code_Manager.codeCutter(uscode) + ";");
 			} 
 			catch (SQLException e) 
 			{

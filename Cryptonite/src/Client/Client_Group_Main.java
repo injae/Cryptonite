@@ -166,9 +166,16 @@ public class Client_Group_Main extends JFrame{
         Search2.addActionListener(new ActionListener() {     
          	public void actionPerformed(ActionEvent arg0)
          	{	
-         		String selectedID;
-         		selectedID = _model.getElementAt(_list.getSelectedIndex());
-         		_cgi.running(selectedID, _gpCode);
+         		String selectedID = _model.getElementAt(_list.getSelectedIndex());
+         		String check = _cgi.running(selectedID, _gpCode);
+         		if(check.equals("TRUE"))
+         		{
+         			showMessage("Notification","그룹원 성공적으로 추가 되었습니다.");
+         		}
+         		else if(check.equals("FALSE"))
+         		{
+         			showMessage("Notification","그룹원이 중복 됩니다.");
+         		}
          	}
          });
         
