@@ -22,6 +22,8 @@ public class Server_Show_Group extends Server_Funtion
 	@Override
 	public void Checker(byte[] packet) 
 	{
+		_packetMaxCount = 1;
+		
 		byte[] idTemp = new byte[packet[1]];
 		for(int i = 0; i < idTemp.length; i++)
 		{
@@ -44,19 +46,26 @@ public class Server_Show_Group extends Server_Funtion
 				ResultSet rs = db.Query("select * from test where id = '" + _id + "';");
 				rs.next();
 				String myGroupList = rs.getString(10);
-				StringTokenizer st = new StringTokenizer(myGroupList, ":");
-				while(st.hasMoreTokens())
+				if(!myGroupList.equals("NULL"))
 				{
-					_groupCodeArray.add(st.nextToken());
+					StringTokenizer st = new StringTokenizer(myGroupList, ":");
+					while(st.hasMoreTokens())
+					{
+						_groupCodeArray.add(st.nextToken());
+					}
+					
+					_activity.send.setPacket(String.valueOf(_groupCodeArray.size()).getBytes(), 100).write();
+					
+					for(int i = 0; i < _groupCodeArray.size(); i++)
+					{
+						ResultSet rs2 = db.Query("select * from grouplist where gpcode = " + Server_Code_Manager.codeCutter(_groupCodeArray.get(i)) + ";");
+						rs2.next();
+						_activity.send.setPacket(rs2.getString(3).getBytes(), 1024).write();
+					}
 				}
-				
-				_activity.send.setPacket(String.valueOf(_groupCodeArray.size()).getBytes(), 100).write();
-				
-				for(int i = 0; i < _groupCodeArray.size(); i++)
+				else if(myGroupList.equals("NULL"))
 				{
-					ResultSet rs2 = db.Query("select * from grouplist where gpcode = " + Server_Code_Manager.codeCutter(_groupCodeArray.get(i)) + ";");
-					rs2.next();
-					_activity.send.setPacket(rs2.getString(3).getBytes(), 1024).write();
+					_activity.send.setPacket(String.valueOf(0).getBytes(), 100).write();
 				}
 			} 
 			catch (SQLException e) 

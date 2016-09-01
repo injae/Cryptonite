@@ -107,6 +107,7 @@ public class Client_Group_Name extends JFrame{
         //_create.setPressedIcon(new ImageIcon("gui/create.png"));
         _create.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
+         		System.out.println("마우스 클릭됨");
          		if(Name=="")
          		{
          			showMessage("ERROR", "Please insert GroupName!");

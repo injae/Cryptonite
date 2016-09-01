@@ -13,6 +13,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
@@ -57,6 +58,7 @@ public class Client_Group_Main extends JFrame{
 	private Client_Group_Search _cgs;
 	private Client_Group_Invite _cgi;
 	private Client_Group_Withdrawal _cgw;
+	private Client_Delete_Group _cdg;
 	
 	public static void main(String args[])
 	{
@@ -70,6 +72,8 @@ public class Client_Group_Main extends JFrame{
 		_mod = mod;
 		_cgs = new Client_Group_Search();
 		_cgi = new Client_Group_Invite();
+		_cgw = new Client_Group_Withdrawal();
+		_cdg = new Client_Delete_Group();
 		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
@@ -153,18 +157,19 @@ public class Client_Group_Main extends JFrame{
                      	}
                     }
                     _list = new JList<>(_model);
-                    _list.setBounds(640, 200, 100, 100);
                     _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                    layeredPane.add(_list);
+                    JScrollPane scrollPane = new JScrollPane(_list);
+                    scrollPane.setVisible(true);
+                    scrollPane.setBounds(628, 200, 115, 150);
+                    layeredPane.add(scrollPane);
          		}
-         	    
          	}
          });
         layeredPane.add(Search);
         
-        Search2 = new JButton(new ImageIcon("img/Search.png"));
-        Search2.setPressedIcon(new ImageIcon("img/Searchh.png"));
-        Search2.setBounds(740, 280, 50, 50);
+        Search2 = new JButton(new ImageIcon("img/OK.png"));
+        Search2.setRolloverIcon(new ImageIcon("img/OKR.png"));
+        Search2.setBounds(747, 304, 45, 45);
         Search2.setFocusPainted(false);
         Search2.setContentAreaFilled(false);
         Search2.setBorderPainted(false);
@@ -187,7 +192,7 @@ public class Client_Group_Main extends JFrame{
         
         Withdrawal = new JButton(new ImageIcon("img/Check.png"));
         Withdrawal.setPressedIcon(new ImageIcon("img/Checkp.png"));
-        Withdrawal.setBounds(685, 350, 50, 50);
+        Withdrawal.setBounds(685, 380, 50, 50);
         Withdrawal.setFocusPainted(false);
         Withdrawal.setContentAreaFilled(false);
         Withdrawal.setBorderPainted(false);
@@ -195,32 +200,35 @@ public class Client_Group_Main extends JFrame{
          	public void actionPerformed(ActionEvent arg0)
          	{
          		_cgw.running(_gpCode);
+         		dispose();
          	}
          });
         
         Delete = new JButton(new ImageIcon("img/Settingbt.png"));
         Delete.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
-        Delete.setBounds(685, 350, 50, 50);
+        Delete.setBounds(685, 380, 50, 50);
         Delete.setFocusPainted(false);
         Delete.setContentAreaFilled(false);
         Delete.setBorderPainted(false);
         Delete.addActionListener(new ActionListener() {     
          	public void actionPerformed(ActionEvent arg0)
          	{
-         		
+         		_cdg.deleteGroup(_gpCode);
+         		dispose();
          	}
          });
        
         
         if(_mod == 1)
         {	
-        	layeredPane.remove(Delete);
-        	layeredPane.add(Withdrawal);
+        	layeredPane.remove(Withdrawal);
+        	layeredPane.add(Delete);
+        	
         }
         else
         {
-        	layeredPane.remove(Withdrawal);
-        	layeredPane.add(Delete);
+        	layeredPane.remove(Delete);
+        	layeredPane.add(Withdrawal);
         }
         
         layeredPane.add(panel);
