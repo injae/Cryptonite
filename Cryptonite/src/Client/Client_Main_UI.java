@@ -39,6 +39,7 @@ public class Client_Main_UI extends JFrame
 	private String _address;
 	
 	private Client_FolderSelector cfs = null;
+	private Client_Show_Group _csg = null;
 	
 	private BufferedImage img = null;
 	private BufferedImage img2=null;
@@ -73,14 +74,16 @@ public class Client_Main_UI extends JFrame
 	
 	public Client_Main_UI(ArrayList<String> gpCode, ArrayList<String> gpname, String name, String usCode, String id)
 	{
-		main=this;
+		_csg = new Client_Show_Group();
+		main = this;
 		_gpCode = gpCode;
 		_gpName = gpname;
 		_name = name;
 		_usCode = usCode;
 		_id = id;
 		
-		try{
+		try
+		{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
 			 Image image = tk.getImage("gui/logo.png");
 			 this.setIconImage(image);
@@ -90,7 +93,8 @@ public class Client_Main_UI extends JFrame
 			System.out.println("Appilcation icon not found");
 		}	
 		
-		WindowListener exitLitsener = new WindowAdapter() {
+		WindowListener exitLitsener = new WindowAdapter() 
+		{
 				
 			@Override
 			public void windowClosing(WindowEvent e){
@@ -321,40 +325,11 @@ public class Client_Main_UI extends JFrame
  	    Participate.setBorderPainted(false);
  	    Participate.setFocusPainted(false);
  	    Participate.setContentAreaFilled(false);
- 	    Participate.addActionListener(new ActionListener() {
- 	       	public void actionPerformed(ActionEvent arg0) {
- 	       /*	while(true)
-    		{
-    			System.out.println("하고싶은 모드를 입력하세요 (1. 사람검색, 2. 사람초대, 3. 그룹삭제, 4. 그룹탈퇴) ");
-    			System.out.print("입력 : ");
-    			Scanner scanner = new Scanner(System.in);
-    			int choice = scanner.nextInt();
-    			
-    			switch(choice)
-    			{
-    			case 1:
-    				System.out.print("아이디를 입력하세요 : ");
-    				new Client_Group_Search().search();
-    				break;
-    			case 2:
-    				System.out.print("그룹코드를 작성하세요 : ");
-    				String gpCode = scanner.nextLine();
-    				new Client_Group_Invite().running(gpCode);
-    				break;
-    			case 3:
-    				System.out.print("그룹코드를 작성하세요 : ");
-    				String gpCode2 = scanner.nextLine();
-    				new Client_Delete_Group().deleteGroup(gpCode2);
-    				break;
-    			case 4:
-    				System.out.print("그룹코드를 작성하세요 : ");
-    				String gpCode3 = scanner.nextLine();
-    				new Client_Group_Withdrawal().running(gpCode3);
-    				break;
-    				default:
-    					break;
-    			}
-    		}*/
+ 	    Participate.addActionListener(new ActionListener() 
+ 	    {
+ 	       	public void actionPerformed(ActionEvent arg0) 
+ 	       	{
+ 	       		_csg.running(_id);
  	       		new Client_Invitation();
  	       	}
  	    });
