@@ -67,7 +67,7 @@ public class Client_Group_Search implements PacketRule{
                 String choice = new String(css.receive.setAllocate(1024).read().getByte()).trim();
 
                 if (choice.equals("FALSE")) {
-                    publishProgress(null);
+                    publishProgress(new ArrayList<Client_Group_Search_Suggestion>());
                     Log.d("Search","NULL");
                     return false;
                 } else {
@@ -87,10 +87,7 @@ public class Client_Group_Search implements PacketRule{
 
         @Override
         protected void onProgressUpdate(ArrayList<Client_Group_Search_Suggestion>... values) {
-            if(values != null)
-                searchView.swapSuggestions(values[0]);
-            else
-                searchView.clearSuggestions();
+            searchView.swapSuggestions(values[0]);
         }
 
         @Override
