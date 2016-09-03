@@ -27,7 +27,16 @@ public class Server_Send_Event extends Server_Funtion
 		if(count == 1)
 		{
 			Checker(_activity.getReceiveEvent());
-			_activity.send.setPacket(_activity._eventQueue.remove()).write();
+			if(_activity._eventQueue.isEmpty())
+			{
+				byte[] event = new byte[1024];
+				event[0] = -1;
+				_activity.send.setPacket(event).write();
+			}
+			else
+			{
+				_activity.send.setPacket(_activity._eventQueue.remove()).write();
+			}
 		}
 		else
 		{

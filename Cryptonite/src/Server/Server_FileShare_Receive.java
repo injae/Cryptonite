@@ -73,12 +73,6 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		}
 		_fileSize = Long.parseLong(new String(sizeTemp).trim());
 		
-		int max = end;
-		while(packet[max] != 0)
-		{
-			max++;
-		}
-		
 		byte[] nameTemp = new byte[packet[3]];
 		for(int i = 0; i < nameTemp.length; i++)
 		{
