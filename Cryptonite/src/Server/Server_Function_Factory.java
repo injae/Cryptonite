@@ -49,6 +49,8 @@ public class Server_Function_Factory implements PacketRule
 			return new Server_Group_Search(activity);
 		case SHOW_GROUP:
 			return new Server_Show_Group(activity);
+		case FIND_CAPTAIN:
+			return new Server_Find_Captain(activity);
 		default:
 			System.out.println("Server Funtion Factory: "+ mode);
 			return	new Server_ImDie(activity);
