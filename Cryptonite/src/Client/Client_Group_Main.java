@@ -45,6 +45,7 @@ public class Client_Group_Main extends JFrame{
 	private String _id;
 	private String _receivedID;
 	private String _gpCode;
+	private String _gpName;
 	private int _mod;
 	
 	private DefaultListModel<String> _model;
@@ -62,13 +63,14 @@ public class Client_Group_Main extends JFrame{
 	
 	public static void main(String args[])
 	{
-		new Client_Group_Main(null, null, 0);
+		new Client_Group_Main(null, null, null, 0);
 	}
 
 
-	public Client_Group_Main(String id, String gpCode, int mod){
+	public Client_Group_Main(String id, String gpCode, String gpName, int mod){
 		_receivedID = id;
 		_gpCode = gpCode;
+		_gpName = gpName;
 		_mod = mod;
 		_cgs = new Client_Group_Search();
 		_cgi = new Client_Group_Invite();
@@ -243,7 +245,7 @@ public class Client_Group_Main extends JFrame{
             g.drawImage(img, 0, 0, null);
             g.setColor(Color.BLACK);
         	g.setFont(_precondition_font);
-        	g.drawString("Group Name : "+Client_Group_Name.GiveName(), 200, 50);
+        	g.drawString("Group Name : " + _gpName, 200, 50);
         }
    }
 	private void showMessage(String title, String message) 

@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.StringTokenizer;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,6 +32,11 @@ import javax.swing.Icon;
 
 public class Client_Invitation extends JFrame{
 	
+	private String _selectedGroup;
+	private String _id;
+	private String _choice;
+	private String _gpCode;
+	
 	private BufferedImage img = null;
 	private BufferedImage img2=null;
 	
@@ -52,16 +59,19 @@ public class Client_Invitation extends JFrame{
 	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	
 	private Client_Show_Group _csg;
+	private Client_Find_Captain _cfc;
 
 	
 	public static void main(String args[]){
-		new Client_Invitation (null);
+		new Client_Invitation (null, null);
 	}
 
 
-	public Client_Invitation (Client_Show_Group csg){
+	public Client_Invitation (Client_Show_Group csg, String id){
 		
+		_id = id;
 		_csg = csg;
+		_cfc = new Client_Find_Captain();
 		
 		container=getContentPane();
 		container.setBackground(Color.WHITE);
@@ -142,8 +152,8 @@ public class Client_Invitation extends JFrame{
 	}
 	public void allocator()
 	{
-		_Ok = new JButton(new ImageIcon("img/_OK.png"));
-		_Ok.setPressedIcon(new ImageIcon("img/_OKR.png"));
+		_Ok = new JButton(new ImageIcon("img/OK.png"));
+		_Ok.setPressedIcon(new ImageIcon("img/OKR.png"));
 		_Ok.setBounds(240, 400, 80,40);
 		_Ok.setFocusPainted(false);
 		_Ok.setContentAreaFilled(false);
@@ -151,13 +161,30 @@ public class Client_Invitation extends JFrame{
 		_Ok.addActionListener(new ActionListener() {     
 			public void actionPerformed(ActionEvent arg0)
 			{	
+				_selectedGroup = _model.getElementAt(_list.getSelectedIndex());
 				
+				String temp = _cfc.running(_selectedGroup, _id);
+				StringTokenizer st = new StringTokenizer(temp, ":");
+				_choice = st.nextToken();
+				_gpCode = st.nextToken();
+				
+				System.out.println("초이스 : " + _choice);
+				System.out.println("그룹코드 :" + _gpCode);
+				
+				if(_choice.equals("TRUE"))
+				{
+					new Client_Group_Main(_id, _gpCode, _selectedGroup, 1);
+				}
+				else
+				{
+					new Client_Group_Main(_id, _gpCode, _selectedGroup, 2);
+				}
 			}
 		});
 	        
 		_Cancel = new JButton(new ImageIcon("img/Cancel.png"));		
 		_Cancel.setPressedIcon(new ImageIcon("img/Cancelp.png"));
-		_Cancel.setBounds(251, 400, 80,40);
+		_Cancel.setBounds(350, 400, 80,40);
 		_Cancel.setBorderPainted(false);
 		_Cancel.setFocusPainted(false);
 		_Cancel.setContentAreaFilled(false);
