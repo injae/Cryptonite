@@ -17,6 +17,8 @@ public class Client_Info {
     private ArrayList<String> gpcode = new ArrayList<String>();
     private ArrayList<String> gpname = new ArrayList<String>();
 
+    private static String ip="192.168.0.10";
+
 
 
     public static Client_Info getInstance(){
@@ -59,5 +61,13 @@ public class Client_Info {
 
     public ArrayList<String> getGpname() {
         return gpname;
+    }
+
+    public static void setIp(String ip){
+        Client_Info.ip = ip;
+    }
+
+    public static String getIp(){
+        return ip;
     }
 }

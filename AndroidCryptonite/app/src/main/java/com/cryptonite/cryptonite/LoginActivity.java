@@ -3,6 +3,8 @@ package com.cryptonite.cryptonite;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -21,6 +23,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -30,6 +33,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -40,6 +44,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import Crypto.KeyReposit;
 import Crypto.SHAEncrypt;
+import Function.C_Toast;
 import Function.Client_Info;
 import Function.Client_KeyExchange;
 import Function.Client_Server_Connector;
@@ -104,6 +109,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == event.KEYCODE_MENU)
+        {
+            // get prompts.xml view
+            LayoutInflater layoutInflater = LayoutInflater.from(LoginActivity.this);
+            View promptView = layoutInflater.inflate(R.layout.test_dialog, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
+            alertDialogBuilder.setView(promptView);
+
+            final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+            // setup a dialog window
+            alertDialogBuilder.setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Client_Info.setIp(editText.getText().toString());
+                            new C_Toast(LoginActivity.this).showToast(editText.getText().toString(), Toast.LENGTH_LONG);
+                        }
+                    })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create an alert dialog
+            AlertDialog alert = alertDialogBuilder.create();
+            alert.show();
+
+        }
+
+
+        return super.onKeyDown(keyCode, event);
     }
 
     private void populateAutoComplete() {
