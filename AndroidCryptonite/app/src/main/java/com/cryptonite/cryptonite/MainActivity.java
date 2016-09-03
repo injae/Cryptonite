@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton filesend = (ImageButton) findViewById(R.id.file_send_button);
         ImageButton filerecevice = (ImageButton) findViewById(R.id.file_receive_button);
         ImageButton makegroup = (ImageButton) findViewById(R.id.make_group_button);
+        ImageButton grouplist = (ImageButton) findViewById(R.id.group_list_button);
 
         filesend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),MakeGroupActivity.class));
             }
         });
+
+        grouplist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),GroupListActivity.class));
+            }
+        });
+
 
 
     }

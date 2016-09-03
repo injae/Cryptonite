@@ -1,6 +1,7 @@
 package com.cryptonite.cryptonite;
 
 import android.app.Dialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +25,8 @@ import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 
 import java.io.IOException;
+import java.util.List;
+
 import Function.C_Toast;
 import Function.Client_Group_Search;
 import Function.Client_Info;
@@ -42,6 +45,7 @@ public class MakeGroupActivity extends AppCompatActivity implements PacketRule {
         ProgressDialog dialog;
         EditText groupname;
         ImageButton make;
+        long focusLostTime =0;
 
 
     @Override
@@ -100,6 +104,28 @@ public class MakeGroupActivity extends AppCompatActivity implements PacketRule {
                 make();
             }
         });
+
+        searchView.setOnFocusChangeListener(new FloatingSearchView.OnFocusChangeListener() {
+            @Override
+            public void onFocus() {
+
+            }
+
+            @Override
+            public void onFocusCleared() {
+                focusLostTime = System.currentTimeMillis();
+                Log.d("test",String.valueOf(focusLostTime));
+            }
+        });
+
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - focusLostTime > 200 )
+            super.onBackPressed();
     }
 
     private void make(){

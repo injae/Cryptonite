@@ -28,11 +28,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" android:screenOrientation="portrait" />
-        <activity android:name=".MainActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".FileReceiveActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".FileSendActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".MakeGroupActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FileReceiveActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FileSendActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MakeGroupActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".GroupListActivity"></activity>
     </application>
 
 </manifest>
