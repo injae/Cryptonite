@@ -21,19 +21,19 @@ public class Client_Find_Captain implements PacketRule
 	}
 	
 	// Methods
-	public String running(String gpCode, String id)
+	public String running(String gpName, String id)
 	{
 		try 
 		{
 			byte[] event = new byte[1024];
 			event[0] = FIND_CAPTAIN;
-			event[1] = (byte)gpCode.getBytes().length;
+			event[1] = (byte)gpName.getBytes().length;
 			event[2] = (byte)id.getBytes().length;
-			Function.frontInsertByte(3, gpCode.getBytes(), event);
-			Function.frontInsertByte(3 + gpCode.getBytes().length, id.getBytes(), event);
+			Function.frontInsertByte(3, gpName.getBytes(), event);
+			Function.frontInsertByte(3 + gpName.getBytes().length, id.getBytes(), event);
 			_csc.send.setPacket(event).write();
 			
-			_choice = new String(_csc.receive.setAllocate(1024).read().getByte()).trim(); // TRUE = CAPTAIN, FALSE = CREW
+			_choice = new String(_csc.receive.setAllocate(1024).read().getByte()).trim(); // TRUE:$gpCode = CAPTAIN, FALSE:$gpCode = CREW
 		} 
 		catch (IOException e) 
 		{

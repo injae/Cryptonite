@@ -3,13 +3,16 @@ package Server;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Server_Find_Captain extends Server_Funtion
 {
 	// Instance
 	private String _gpCode;
+	private String _gpName;
 	private String _id;
+	private boolean _passCheck;
 	
 	// Constructors
 	public Server_Find_Captain(Server_Client_Activity activity) 
@@ -27,7 +30,7 @@ public class Server_Find_Captain extends Server_Funtion
 			gpCodeTemp[i] = packet[i + 3];
 			end = i + 3;
 		}
-		_gpCode = new String(gpCodeTemp).trim();
+		_gpName = new String(gpCodeTemp).trim();
 		
 		byte[] idTemp = new byte[packet[2]];
 		for(int i = 0; i < idTemp.length; i++)
@@ -52,26 +55,46 @@ public class Server_Find_Captain extends Server_Funtion
 			Checker(_activity.getReceiveEvent());
 			try 
 			{
+				_passCheck = false;	
+				
 				Server_DataBase db = Server_DataBase.getInstance();
 				ResultSet rs = db.Query("select * from test where id = '" + _id + "';");
 				rs.next();
 				String usCode = "@" + rs.getString(6);
 				
-				ResultSet rs2 = db.Query("select * from grouplist where gpcode = " + Server_Code_Manager.codeCutter(_gpCode) + ";");
-				rs2.next();
-				String gpList = rs2.getString(2);
-				StringTokenizer st = new StringTokenizer(gpList, ":");
-				String captain = st.nextToken();
+				ResultSet rs2 = db.Query("select * from grouplist where gpname like '%" + _gpName + "%';");
+				String choice = "DEFAULT";
+				int counter = 0;
+				while(rs2.next())
+				{
+					_gpCode = "$" + rs2.getString(1);
+					String gpList = rs2.getString(2);
+					StringTokenizer st = new StringTokenizer(gpList, ":");
+					while(st.hasMoreTokens())
+					{
+						String temp = st.nextToken();
+						if(temp.equals(usCode))
+						{
+							if(counter == 0)
+							{
+								choice = "TRUE:";
+							}
+							_passCheck = true;
+							break;
+						}
+						counter++;
+					}
+					if(_passCheck)
+					{
+						break;
+					}
+				}
 				
-				String choice;
-				if(captain.equals(usCode))
+				if(!choice.equals("TRUE:"))
 				{
-					choice = "TRUE";
+					choice = "FALSE:";
 				}
-				else
-				{
-					choice = "FALSE";
-				}
+				choice += _gpCode;
 				
 				_activity.send.setPacket(choice.getBytes(), 1024).write();
 			} 

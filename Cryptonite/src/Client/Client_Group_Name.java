@@ -131,7 +131,7 @@ public class Client_Group_Name extends JFrame{
 	         		
 	        		dispose();
 	        		//main.dispose();
-	        		new Client_Group_Main(_id, new String(buffer).trim(), 1);
+	        		new Client_Group_Main(_id, new String(buffer).trim(), temp,  1);
          		}
          	}
         });
