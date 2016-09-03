@@ -1,7 +1,11 @@
 package Client;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -10,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import java.awt.*;
@@ -26,8 +31,16 @@ import javax.swing.Icon;
 public class Client_Invitation extends JFrame{
 	
 	private BufferedImage img = null;
+	private BufferedImage img2=null;
+	
+	private JLayeredPane layeredPane = new JLayeredPane();
+	private MyPanel panel = new MyPanel();
+	private JScrollPane scrollPane;
 	
 	private JButton _Ok;
+	private JButton _Cancel;
+	
+	private Container container;
 	
 	private DefaultListModel<String> _model;
 	private JList<String> _list;
@@ -47,75 +60,121 @@ public class Client_Invitation extends JFrame{
 
 
 	public Client_Invitation (Client_Show_Group csg){
+		
 		_csg = csg;
 		
-		getContentPane().setBackground(Color.WHITE);
+		container=getContentPane();
+		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(500,300,816,480);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
-		getContentPane().setLayout(null);
-        JLayeredPane layeredPane = new JLayeredPane();
+		container.setLayout(null);
+		
         layeredPane.setBounds(0, 0, 816, 480);
         layeredPane.setLayout(null);
         
         try {
             img = ImageIO.read(new File("img/초대목록.png"));
+            img2 = ImageIO.read(new File("img/x.png"));
         } catch (IOException e) {
             System.out.println("이미지 불러오기 실패");
             System.exit(0);
         }
         
-        MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 900, 500);
         
-        _Ok = new JButton(new ImageIcon("img/_Ok.png"));
-        _Ok.setPressedIcon(new ImageIcon("img/_Okh.png"));
-        _Ok.setBounds(740, 107, 50, 50);
-        _Ok.setFocusPainted(false);
-        _Ok.setContentAreaFilled(false);
-        _Ok.setBorderPainted(false);
-        _Ok.addActionListener(new ActionListener() {     
-         	public void actionPerformed(ActionEvent arg0)
-         	{	
-
-         	    
-         	}
-         });
-        
         _groupname = _csg.getGroupName();
-		if(_groupname.length == 0)
+		if(_groupname.length==0)
 		{	
-			System.out.println("아무것도 없음");
-			/*layeredPane.remove(panel);
-			_checkimage=true;
-			layeredPane.add(panel);
-			layeredPane.updateUI();
-			repaint();*/
+			_checkimage=false;
 		}
 		else
 		{
+			_checkimage=true;
 			_model = new DefaultListModel<>();
-           for(int i=0;i< _groupname.length;i++)
-           {
-            		_model.addElement( _groupname[i]);
-           }
-           _list = new JList<>(_model);
-           _list.setBounds(100, 100, 100, 100);
-           _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-           layeredPane.add(_list);
+
+			for(int i=0;i< _groupname.length;i++)
+			{
+				_model.addElement( _groupname[i]);
+			}
+	           _list = new JList<>(_model);
+	           _list.setBounds(100, 100, 100, 100);
+	           _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	          
+	           scrollPane = new JScrollPane(_list);
+               scrollPane.setVisible(true);
+               scrollPane.setBounds(45, 100, 690, 300);
 		}
         
-        layeredPane.add(_Ok);
-        layeredPane.add(panel);
-        getContentPane().add(layeredPane);
+		allocator();
+		
+		if(!_checkimage)
+		{
+			nohave();
+		}
+		else
+		{
+			have();
+		}
+		
         setVisible(true);
 	}
 	
+	public void have(){
+		layeredPane.removeAll();
+		
+		layeredPane.add(_Ok);
+		layeredPane.add(_Cancel);
+		
+		layeredPane.add(scrollPane);
+		layeredPane.add(panel);
+		container.add(layeredPane);
+	}
+	public void nohave(){
+		layeredPane.removeAll();
+		
+		layeredPane.add(_Cancel);
+		
+		layeredPane.add(panel);
+		container.add(layeredPane);
+	}
+	public void allocator()
+	{
+		_Ok = new JButton(new ImageIcon("img/_OK.png"));
+		_Ok.setPressedIcon(new ImageIcon("img/_OKR.png"));
+		_Ok.setBounds(240, 400, 80,40);
+		_Ok.setFocusPainted(false);
+		_Ok.setContentAreaFilled(false);
+		_Ok.setBorderPainted(false);
+		_Ok.addActionListener(new ActionListener() {     
+			public void actionPerformed(ActionEvent arg0)
+			{	
+				
+			}
+		});
+	        
+		_Cancel = new JButton(new ImageIcon("img/Cancel.png"));		
+		_Cancel.setPressedIcon(new ImageIcon("img/Cancelp.png"));
+		_Cancel.setBounds(251, 400, 80,40);
+		_Cancel.setBorderPainted(false);
+		_Cancel.setFocusPainted(false);
+		_Cancel.setContentAreaFilled(false);
+		_Cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();		
+			}
+		});
+		//----------------------------------------------------------------------indivial
+	}
 	class MyPanel extends JPanel {
         public void paint(Graphics g) {
             g.drawImage(img, 0, 0, null);
+            if(!_checkimage)
+            {
+            	g.drawImage(img2, 0, 0,null);
+            }
        }
    }
 	
