@@ -7,7 +7,7 @@ import android.content.Context;
 import java.util.List;
 
 /**
- * Created by olleh on 2016-08-19.
+ * Created by 전용범 on 2016-08-19.
  */
 public class isApplicationSentToBackground {
 

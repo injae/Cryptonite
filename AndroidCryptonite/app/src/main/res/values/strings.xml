@@ -17,4 +17,5 @@
         completions."
     </string>
     <string name="error_used_id">Already Used</string>
+    <string name="action_settings">Settings</string>
 </resources>

@@ -7,38 +7,28 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.cryptonite.cryptonite.GroupListActivity"
+    tools:context="com.cryptonite.cryptonite.GroupMainActivity"
     android:orientation="vertical">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView6"
-            android:src="@drawable/bh" />
+            android:id="@+id/imageView7"
+            android:src="@drawable/bh"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Group List"
-            android:id="@+id/textView5"
+            android:id="@+id/Group_main_title"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="10dp"
-            android:textSize="16dp"
-            android:textColor="#02aeef"
-            android:textStyle="bold" />
+            android:textSize="22dp"
+            android:textStyle="bold"
+            android:textColor="#02aeef" />
     </LinearLayout>
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/Group_List_View"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/list_view_border"
-        android:padding="1dp"/>
 </LinearLayout>

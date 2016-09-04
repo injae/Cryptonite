@@ -43,7 +43,10 @@
         <activity
             android:name=".MakeGroupActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".GroupListActivity"></activity>
+        <activity
+            android:name=".GroupListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".GroupMainActivity"></activity>
     </application>
 
 </manifest>

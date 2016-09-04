@@ -29,7 +29,9 @@
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="190dp"
-            android:id="@+id/id_listView" />
+            android:id="@+id/id_listView"
+            android:background="@drawable/list_view_border"
+            android:padding="1dp"/>
 
         <LinearLayout
             android:orientation="horizontal"
