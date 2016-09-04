@@ -13,7 +13,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -30,5 +31,12 @@
             android:textStyle="bold"
             android:textColor="#02aeef" />
     </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/File_ListView"
+        android:background="@drawable/list_view_border"
+        android:padding="1dp"/>
 
 </LinearLayout>

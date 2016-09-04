@@ -57,7 +57,7 @@ public class Server_File_ListSender extends Server_Funtion
 			switch(_mod)
 			{
 			case 1:
-				ResultSet rs = Server_DataBase.getInstance().Query("select *from grouplist where gpname = '" + _name + "');");
+				ResultSet rs = Server_DataBase.getInstance().Query("select *from grouplist where gpname = '" + _name + "';");
 				rs.next();
 				_folderName = "Server_Folder//Backup//$" + rs.getInt(1);
 				break;
