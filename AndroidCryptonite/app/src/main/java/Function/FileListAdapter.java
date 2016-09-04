@@ -21,14 +21,14 @@ import java.util.ArrayList;
 /**
  * Created by 전용범 on 2016-09-01.
  */
-public class GroupListAdapter extends BaseAdapter {
+public class FileListAdapter extends BaseAdapter {
 
     ArrayList<String> arr;
     LayoutInflater inf;
     Context context;
     int layout;
 
-    public GroupListAdapter(Context context, int layout) {
+    public FileListAdapter(Context context, int layout) {
         arr = new ArrayList<>();
 
         this.context = context;
@@ -48,7 +48,6 @@ public class GroupListAdapter extends BaseAdapter {
 
     public void clear(){
         arr.clear();
-        this.notifyDataSetChanged();
     }
 
     public String[] list(){
@@ -83,34 +82,7 @@ public class GroupListAdapter extends BaseAdapter {
         TextView t = (TextView) view.findViewById(R.id.Search_id_textView);
         t.setText(arr.get(i));
 
-        if (i == 0 && arr.get(0).equals("No Group"))
-        {
-            view.findViewById(R.id.Search_id_Button).setVisibility(View.GONE);
-        }
-
-        final GroupListAdapter adapter = this;
-
-        view.findViewById(R.id.Search_id_Button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final AlertDialog dialog = new AlertDialog.Builder(context).create();
-                dialog.setMessage("Are you sure you want to remove Group?");
-                dialog.setCancelable(true);
-                dialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int ii) {
-                        new Client_Group_Withdrawal(adapter,i).execute(arr.get(i),Client_Info.getInstance().getId());
-                    }
-                });
-                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-            }
-        });
+        view.findViewById(R.id.Search_id_Button).setVisibility(View.GONE);
 
         return view;
     }

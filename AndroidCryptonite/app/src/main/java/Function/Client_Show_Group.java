@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class Client_Show_Group extends AsyncTask<Void, Integer, Void> implements PacketRule
+public class Client_Show_Group extends AsyncTask<Void, String, Void> implements PacketRule
 {
     // Instance
     private Client_Server_Connector _csc = null;
@@ -37,7 +37,7 @@ public class Client_Show_Group extends AsyncTask<Void, Integer, Void> implements
     protected Void doInBackground(Void... voids) {
         try
         {
-            publishProgress(0);
+            publishProgress("0");
 
             _id = Client_Info.getInstance().getId();
 
@@ -51,10 +51,10 @@ public class Client_Show_Group extends AsyncTask<Void, Integer, Void> implements
 
             for(int i = 0; i < _groupCount; i++)
             {
-                _adapter.add(new String(_csc.receive.setAllocate(1024).read().getByte()).trim());
+                publishProgress("3",new String(_csc.receive.setAllocate(1024).read().getByte()).trim());
             }
 
-            publishProgress(1);
+            publishProgress("1");
 
 
         }
@@ -66,20 +66,22 @@ public class Client_Show_Group extends AsyncTask<Void, Integer, Void> implements
     }
 
     @Override
-    protected void onProgressUpdate(Integer... params) {
+    protected void onProgressUpdate(String... params) {
         switch (params[0])
         {
-            case 0:
+            case "0":
                 dialog = ProgressDialog.show(_context,"Loading","Loading Group List",true,false);
-                _adapter.clear();
-                _adapter.notifyDataSetChanged();
                 break;
-            case 1:
+            case "1":
                 if (_groupCount==0)
                     _adapter.add("No Group");
                 _adapter.notifyDataSetChanged();
-            case 2:
+            case "2":
                 dialog.dismiss();
+                break;
+            case "3":
+                _adapter.add(params[1]);
+                _adapter.notifyDataSetChanged();
                 break;
         }
     }

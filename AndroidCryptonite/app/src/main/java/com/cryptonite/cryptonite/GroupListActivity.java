@@ -32,7 +32,6 @@ public class GroupListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("test","Gdgd");
                 new Client_Find_Captain(GroupListActivity.this).execute((String)adapter.getItem(i), Client_Info.getInstance().getId());
             }
         });
@@ -43,6 +42,7 @@ public class GroupListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        adapter.clear();
         Client_Show_Group csg = new Client_Show_Group(adapter,GroupListActivity.this);
         csg.execute();
     }

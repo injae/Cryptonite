@@ -1,5 +1,6 @@
 package Function;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ public class Client_Find_Captain extends AsyncTask<String,String,Void> implement
     private String _choice;
     private Context _context;
     private String _gpname;
+    private ProgressDialog dialog;
 
     // Another Instance
     private Client_Server_Connector _csc = null;
@@ -32,6 +34,7 @@ public class Client_Find_Captain extends AsyncTask<String,String,Void> implement
     protected Void doInBackground(String... strings) { //gpName,Id
         try
         {
+            publishProgress("1");
             _gpname = strings[0];
 
             byte[] event = new byte[1024];
@@ -56,14 +59,24 @@ public class Client_Find_Captain extends AsyncTask<String,String,Void> implement
 
     @Override
     protected void onProgressUpdate(String... values) {
-        StringTokenizer st = new StringTokenizer(values[0],":");
-        st.nextToken();
-        String gpCode= st.nextToken();
+        switch (values[0])
+        {
+            case "1":
+                dialog = ProgressDialog.show(_context,"Loading","Loading Group",true,false);
+                break;
+            default:
+                StringTokenizer st = new StringTokenizer(values[0],":");
+                st.nextToken();
+                String gpCode= st.nextToken();
 
 
-        Intent intent = new Intent(_context, GroupMainActivity.class);
-        intent.putExtra("title",_gpname);
-        intent.putExtra("gpCode",gpCode);
-        _context.startActivity(intent);
+                Intent intent = new Intent(_context, GroupMainActivity.class);
+                intent.putExtra("title",_gpname);
+                intent.putExtra("gpCode",gpCode);
+                _context.startActivity(intent);
+            case "2":
+                dialog.dismiss();
+        }
+
     }
 }
