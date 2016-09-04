@@ -23,6 +23,7 @@ public interface PacketRule
     byte GROUP_WITHDRAWAL = 16;
     byte GROUP_SEARCH = 17;
     byte SHOW_GROUP = 18;
+    byte FIND_CAPTAIN = 19;
     //---------------------------------------
 
     // AUTOBACKUP(1) AUTOBACKUP EVENT

@@ -74,6 +74,8 @@ public class Client_Show_Group extends AsyncTask<Void, Integer, Void> implements
                 dialog = ProgressDialog.show(_context,"Loading","Loading Group List",true,false);
                 break;
             case 1:
+                if (_groupCount==0)
+                    _adapter.add("No Group");
                 _adapter.notifyDataSetChanged();
             case 2:
                 dialog.dismiss();

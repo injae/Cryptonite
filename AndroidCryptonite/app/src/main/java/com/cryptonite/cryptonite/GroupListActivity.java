@@ -21,7 +21,7 @@ public class GroupListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_list);
 
         listView = (ListView) findViewById(R.id.Group_List_View);
-        adapter = new GroupListAdapter(getApplicationContext(),R.layout.make_group_id_list);
+        adapter = new GroupListAdapter(GroupListActivity.this,R.layout.make_group_id_list);
         listView.setAdapter(adapter);
     }
 

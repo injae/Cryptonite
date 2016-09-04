@@ -50,6 +50,7 @@ public class Client_Group_Main extends JFrame{
 	
 	private DefaultListModel<String> _model;
 	private JList<String> _list;
+	JScrollPane scrollPane = null;
 	
 	private int _count = 1;
 	
@@ -126,6 +127,7 @@ public class Client_Group_Main extends JFrame{
          });
         layeredPane.add( _idField);
         
+        
         Search = new JButton(new ImageIcon("img/Search.png"));
         Search.setPressedIcon(new ImageIcon("img/Searchh.png"));
         Search.setBounds(740, 107, 50, 50);
@@ -147,7 +149,7 @@ public class Client_Group_Main extends JFrame{
          		{
          			if(_count != 1)
          			{
-         				layeredPane.remove(_list);
+         				layeredPane.remove(scrollPane);
          			}
          			_count = 2;
          			_model = new DefaultListModel<>();
@@ -160,7 +162,7 @@ public class Client_Group_Main extends JFrame{
                     }
                     _list = new JList<>(_model);
                     _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                    JScrollPane scrollPane = new JScrollPane(_list);
+                    scrollPane = new JScrollPane(_list);
                     scrollPane.setVisible(true);
                     scrollPane.setBounds(628, 200, 115, 150);
                     layeredPane.add(scrollPane);
