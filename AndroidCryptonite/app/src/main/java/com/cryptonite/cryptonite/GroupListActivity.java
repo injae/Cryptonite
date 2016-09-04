@@ -2,11 +2,16 @@ package com.cryptonite.cryptonite;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import Function.Client_Find_Captain;
+import Function.Client_Info;
 import Function.Client_Show_Group;
 import Function.GroupListAdapter;
 
@@ -23,6 +28,15 @@ public class GroupListActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.Group_List_View);
         adapter = new GroupListAdapter(GroupListActivity.this,R.layout.make_group_id_list);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("test","Gdgd");
+                new Client_Find_Captain(GroupListActivity.this).execute((String)adapter.getItem(i), Client_Info.getInstance().getId());
+            }
+        });
+
     }
 
     @Override

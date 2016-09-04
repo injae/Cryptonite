@@ -33,6 +33,7 @@ public class Client_FileShare_Send extends AsyncTask<String,Integer,Boolean> imp
 {
     // Instance
     private String _OTP = null;
+    public static boolean isSending = false;
 
     // About Files
     private FileChannel _fileChannel = null;
@@ -50,8 +51,8 @@ public class Client_FileShare_Send extends AsyncTask<String,Integer,Boolean> imp
     private final int INIT_PROGRESS = 1;
     private final int RETURN_PROGRESS = 2;
 
-    private ProgressBar progressBar;
-    private TextView step2,step3,OTP;
+    private static ProgressBar progressBar;
+    private static TextView step2,step3,OTP;
     // Constructors
     public Client_FileShare_Send(ProgressBar progressBar, TextView step2, TextView step3, TextView OTP)
     {
@@ -62,8 +63,18 @@ public class Client_FileShare_Send extends AsyncTask<String,Integer,Boolean> imp
         _csc = Client_Server_Connector.getInstance();
     }
 
+    public static void init(ProgressBar progressBar1,TextView step22, TextView step33, TextView OTP1)
+    {
+        progressBar = progressBar1;
+        step2 = step22;
+        step3 = step33;
+        OTP = OTP1;
+    }
+
     @Override
     protected Boolean doInBackground(String... paths) {
+
+        isSending = true;
 
         Charset cs = Charset.forName("UTF-8");
         ByteBuffer[] fileNameArray = new ByteBuffer[paths.length];
@@ -149,6 +160,7 @@ public class Client_FileShare_Send extends AsyncTask<String,Integer,Boolean> imp
             OTP.setText("File Upload Fail...");
             OTP.setTextColor(Color.RED);
         }
+        isSending = false;
     }
 
     private void initFiles(String[] paths)

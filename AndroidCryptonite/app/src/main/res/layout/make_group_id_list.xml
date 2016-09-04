@@ -6,7 +6,8 @@
     android:paddingRight="4dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    android:background="@drawable/id_list_border">
+    android:background="@drawable/id_list_border"
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
         android:layout_width="wrap_content"

@@ -31,15 +31,15 @@ public class Client_FileShare_Receive extends AsyncTask<String,Integer,Integer> 
 {
     // OTP Instance
     private String _OTP;
-    private EditText otp;
-    private ImageButton receiveButton;
+    private static EditText otp;
+    private static ImageButton receiveButton;
 
     // File Instance
     private String _downloadFolder = null;
     private RandomAccessFile _raf = null;
 
     private String _downloadFlag = null;
-    private String _fileName = null;
+    public static String _fileName = null;
     private long _fileSize = 0;
     private PacketProcessor p = null;
     private long _downSize = 0;
@@ -55,8 +55,9 @@ public class Client_FileShare_Receive extends AsyncTask<String,Integer,Integer> 
 
     // View Instance
     private Context context;
-    private TextView download;
-    private ProgressBar progressBar;
+    private static TextView download;
+    private static ProgressBar progressBar;
+    public static boolean isReceiving = false;
 
 
     // Constructors
@@ -70,11 +71,19 @@ public class Client_FileShare_Receive extends AsyncTask<String,Integer,Integer> 
         _csc = Client_Server_Connector.getInstance();
     }
 
+    public static void init(TextView download1, ProgressBar progressBar1, EditText otp1, ImageButton receiveButton1)
+    {
+        download = download1;
+        progressBar = progressBar1;
+        otp = otp1;
+        receiveButton = receiveButton1;
+    }
 
 
 
     @Override
     protected Integer doInBackground(String... strings) {
+        isReceiving = true;
         this._OTP = strings[1];
         Charset cs = Charset.forName("UTF-8");
         if(_OTP.length() != 6)
@@ -221,8 +230,10 @@ public class Client_FileShare_Receive extends AsyncTask<String,Integer,Integer> 
     @Override
     protected void onPostExecute(Integer integer) {
         if (integer == SUCCESS){
-            download.setText("Finish Download..");
+            _fileName = "Finish Download..";
+            download.setText(_fileName);
             new C_Toast(context).showToast("Finish Download..",Toast.LENGTH_LONG);
         }
+        isReceiving = false;
     }
 }

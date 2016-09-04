@@ -40,7 +40,6 @@ public class Client_Show_Group extends AsyncTask<Void, Integer, Void> implements
             publishProgress(0);
 
             _id = Client_Info.getInstance().getId();
-            _adapter.clear();
 
             byte[] event = new byte[1024];
             event[0] = SHOW_GROUP;
@@ -72,6 +71,8 @@ public class Client_Show_Group extends AsyncTask<Void, Integer, Void> implements
         {
             case 0:
                 dialog = ProgressDialog.show(_context,"Loading","Loading Group List",true,false);
+                _adapter.clear();
+                _adapter.notifyDataSetChanged();
                 break;
             case 1:
                 if (_groupCount==0)
