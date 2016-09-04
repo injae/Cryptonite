@@ -87,16 +87,6 @@ public class GroupListAdapter extends BaseAdapter {
             view.findViewById(R.id.Search_id_Button).setVisibility(View.GONE);
         }
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Client_Find_Captain().execute(arr.get(i),Client_Info.getInstance().getId());
-                Intent intent = new Intent(context, GroupMainActivity.class);
-                intent.putExtra("title",arr.get(i));
-                context.startActivity(intent);
-            }
-        });
-
         final GroupListAdapter adapter = this;
 
         view.findViewById(R.id.Search_id_Button).setOnClickListener(new View.OnClickListener() {

@@ -60,8 +60,18 @@ public class FileReceiveActivity extends AppCompatActivity {
         otp = (EditText) findViewById(R.id.OTP);
         path = (TextView) findViewById(R.id.Path_View);
 
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Client_FileShare_Receive.isReceiving == true) {
+            receiveButton.setVisibility(View.GONE);
+            downloading.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+            Client_FileShare_Receive.init(downloading, progressBar, otp, receiveButton);
+            downloading.setText(Client_FileShare_Receive._fileName);
+        }
     }
 
     private void dirChoose()

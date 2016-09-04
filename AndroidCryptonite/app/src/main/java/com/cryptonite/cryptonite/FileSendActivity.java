@@ -60,6 +60,22 @@ public class FileSendActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (Client_FileShare_Send.isSending == true)
+        {
+            choose.setClickable(false);
+            step2.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+            Client_FileShare_Send.init(progressBar,step2,step3,OTP);
+        }
+
+
+
+    }
+
     private void fileChoose(){
         PathPicker picker = new PathPicker(this,PathPicker.Select_Files);
         picker.setDialogSelectionListener(new DialogSelectionListener() {
