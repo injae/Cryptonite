@@ -29,7 +29,7 @@ public class Client_File_ListReceiver implements PacketRule
 	}
 	
 	// Methods
-	public void click(byte mod, String gpCode)
+	public void running(byte mod, String gpCode)
 	{
 		try 
 		{
@@ -53,7 +53,7 @@ public class Client_File_ListReceiver implements PacketRule
 				System.out.println(_fileList.get(i));
 			}
 			
-			_cfs.folderSelectorON();
+			/*_cfs.folderSelectorON();
 			while(!_cfs.getSelectionEnd())
 			{
 				Thread.sleep(1);
@@ -63,16 +63,28 @@ public class Client_File_ListReceiver implements PacketRule
 			for(int i = 0 ; i < _fileCount; i++)
 			{
 				_cfd.requestFile(_fileList.get(i), _downloadFolder + "\\" + nameTokenizer(_fileList.get(i)));
-			}
+			}*/
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		} 
-		catch (InterruptedException e) 
+		/*catch (InterruptedException e) 
 		{
 			e.printStackTrace();
+		}*/
+	}
+	
+	public String[] getFileList()
+	{
+		String[] temp = new String[_fileList.size()];
+		
+		for(int i = 0 ; i < temp.length; i++)
+		{
+			temp[i] = _fileList.get(i);
 		}
+		
+		return temp;
 	}
 	
 	private String nameTokenizer(String target)
