@@ -49,6 +49,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 
 import Client.Client_Main_UI.MyPanel;
 
@@ -58,8 +59,12 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	private JLabel _downloadArea;
 	private DropTarget _dropTarget;
 	private List _loadedFileList;
+	
 	private String[] _fileList;
-
+	private String[] _name=null;
+	private int _x=0;
+	private int _y=0;
+	
 	private JButton _Cancel;
 	private JButton _OK;
 	
@@ -105,6 +110,16 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
         MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 816, 480);
 
+        _name=new String[_fileList.length];
+        for(int i=0;i<_fileList.length;i++)
+        {	
+        	StringTokenizer st=new StringTokenizer(_fileList[i], "\\");
+
+        	while(st.hasMoreTokens()){
+    			_name[i]=st.nextToken();
+    		}
+    	}
+    
         _OK = new JButton(new ImageIcon("img/OK.png"));
         _OK.setRolloverIcon(new ImageIcon("img/OKR.png"));
         _OK.setBounds(600, 360, 45, 45);
@@ -117,11 +132,13 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
          		
          	}
          });
-        _OK.setVisible(false);
-        
-        _Cancel = new JButton(new ImageIcon("img/Cancel.png"));		
+
+        _Cancel = new JButton("cancel",new ImageIcon("img/Cancel.png"));	
 		_Cancel.setPressedIcon(new ImageIcon("img/Cancelp.png"));
-		_Cancel.setBounds(350, 360, 80,40);
+		_Cancel.setBounds(350, 360, 100,100);
+		_Cancel.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+		_Cancel.setVerticalAlignment    ( SwingConstants.TOP ) ;
+		_Cancel.setHorizontalTextPosition( SwingConstants.CENTER ) ;
 		_Cancel.setBorderPainted(false);
 		_Cancel.setFocusPainted(false);
 		_Cancel.setContentAreaFilled(false);
@@ -130,10 +147,53 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 				dispose();		
 			}
 		});
-		_Cancel.setVisible(false);
+
+
+		for(int i=1;i<_name.length+1;i++)
+		{
+			JButton Button;
+			if((i%7)==0){
+				Button = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
+				Button.setPressedIcon(new ImageIcon("gui/logo_mini.png"));
+				Button.setBounds((5-_x),(70+_y),200,200);
+				Button.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+				Button.setVerticalAlignment    ( SwingConstants.TOP ) ;
+				Button.setHorizontalTextPosition( SwingConstants.CENTER ) ;
+				Button.setBorderPainted(false);
+				Button.setFocusPainted(false);
+				Button.setContentAreaFilled(false);
+				Button.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e)
+					{
+						
+					}
+				});
+				_y+=150;
+				_x=0;
+			}
+			else{
+				Button = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
+				Button.setPressedIcon(new ImageIcon("gui/logo_mini.png"));
+				Button.setBounds((5+_x),70,200,200);
+				Button.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+				Button.setVerticalAlignment    ( SwingConstants.TOP ) ;
+				Button.setHorizontalTextPosition( SwingConstants.CENTER ) ;
+				Button.setBorderPainted(false);
+				Button.setFocusPainted(false);
+				Button.setContentAreaFilled(false);
+				Button.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e)
+					{
+						
+					}
+				});
+				_x+=150;
+			}
+			layeredPane.add(Button);
+		}
 		
-		layeredPane.add(_Cancel);
-        layeredPane.add(_OK);
+		//layeredPane.add(_Cancel);
+        //layeredPane.add(_OK);
         layeredPane.add(panel);
         getContentPane().add(layeredPane);
         setVisible(true);
