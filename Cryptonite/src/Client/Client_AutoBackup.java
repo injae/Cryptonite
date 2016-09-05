@@ -98,7 +98,8 @@ public class Client_AutoBackup implements PacketRule
 						try
 						{
 							_raf = new RandomAccessFile(_absoluteDirectory, "rw");
-							RandomAccessFile sraf = new RandomAccessFile(_absoluteDirectory + ".cnec", "rw");
+														
+							RandomAccessFile sraf = new RandomAccessFile(_absoluteDirectory + _reposit.get_fileExtention(), "rw");
 							_fileChannel = _raf.getChannel();
 							PacketProcessor pr = new PacketProcessor(_fileChannel, false);
 							PacketProcessor pw = new PacketProcessor(sraf.getChannel(), false);
@@ -153,7 +154,7 @@ public class Client_AutoBackup implements PacketRule
 			temp = st.nextToken();
 		}
 		
-		if(temp.equals("cnec"))
+		if(temp.equals("cnec") || temp.equals("cnmc") || temp.equals("cnac"))
 		{
 			return false;
 		}
