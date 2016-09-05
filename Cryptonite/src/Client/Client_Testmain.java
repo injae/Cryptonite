@@ -132,7 +132,7 @@ public class Client_Testmain extends JFrame{
         _ProtectedFile.setPressedIcon(new ImageIcon("img/tset_protectbt_hv.png"));
         _ProtectedFile.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		new Client_File_ListReceiver().click((byte)2, null);
+        		
         	}
         });
         

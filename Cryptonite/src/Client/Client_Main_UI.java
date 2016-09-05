@@ -37,9 +37,11 @@ public class Client_Main_UI extends JFrame
 	private String _name;
 	private String _usCode;
 	private String _address;
+	private String[] _fileList;
 	
 	private Client_FolderSelector cfs = null;
 	private Client_Show_Group _csg = null;
+	private Client_File_ListReceiver _cfl = null;
 	
 	private BufferedImage img = null;
 	private BufferedImage img2=null;
@@ -74,6 +76,7 @@ public class Client_Main_UI extends JFrame
 	
 	public Client_Main_UI(ArrayList<String> gpCode, ArrayList<String> gpname, String name, String usCode, String id)
 	{
+		_cfl = new Client_File_ListReceiver();
 		_csg = new Client_Show_Group();
 		main = this;
 		_gpCode = gpCode;
@@ -303,7 +306,9 @@ public class Client_Main_UI extends JFrame
         FileRecoverybt.setContentAreaFilled(false);
         FileRecoverybt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Client_File_ListReceiver().click((byte)2, null);
+				_cfl.running((byte)2, null);
+				_fileList = _cfl.getFileList();
+				// 여기에 UI 실행시키면됨
 			}
 		});
 		//--------------------------------------------------
