@@ -59,11 +59,13 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	private JLabel _downloadArea;
 	private DropTarget _dropTarget;
 	private List _loadedFileList;
+	private JButton[] Button;
 	
 	private String[] _fileList;
 	private String[] _name=null;
 	private int _x=0;
 	private int _y=0;
+	private int _i=0;
 	
 	private JButton _Cancel;
 	private JButton _OK;
@@ -151,45 +153,46 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 
 		for(int i=1;i<_name.length+1;i++)
 		{
-			JButton Button;
+			_i=i;
+			
 			if((i%7)==0){
-				Button = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
-				Button.setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-				Button.setBounds((5-_x),(70+_y),200,200);
-				Button.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-				Button.setVerticalAlignment    ( SwingConstants.TOP ) ;
-				Button.setHorizontalTextPosition( SwingConstants.CENTER ) ;
-				Button.setBorderPainted(false);
-				Button.setFocusPainted(false);
-				Button.setContentAreaFilled(false);
-				Button.addActionListener(new ActionListener() {
+				Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
+				Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
+				Button[i-1].setBounds((5-_x),(70+_y),200,200);
+				Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+				Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
+				Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
+				Button[i-1].setBorderPainted(false);
+				Button[i-1].setFocusPainted(false);
+				Button[i-1].setContentAreaFilled(false);
+				Button[i-1].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e)
 					{
-						
+						Button[_i-1].setBackground(Color.BLACK);
 					}
 				});
 				_y+=150;
 				_x=0;
 			}
 			else{
-				Button = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
-				Button.setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-				Button.setBounds((5+_x),70,200,200);
-				Button.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-				Button.setVerticalAlignment    ( SwingConstants.TOP ) ;
-				Button.setHorizontalTextPosition( SwingConstants.CENTER ) ;
-				Button.setBorderPainted(false);
-				Button.setFocusPainted(false);
-				Button.setContentAreaFilled(false);
-				Button.addActionListener(new ActionListener() {
+				Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
+				Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
+				Button[i-1].setBounds((5+_x),70,200,200);
+				Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+				Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
+				Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
+				Button[i-1].setBorderPainted(false);
+				Button[i-1].setFocusPainted(false);
+				Button[i-1].setContentAreaFilled(false);
+				Button[i-1].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e)
 					{
-						
+						Button[_i-1].setBackground(Color.BLACK);
 					}
 				});
 				_x+=150;
 			}
-			layeredPane.add(Button);
+			layeredPane.add(Button[i-1]);
 		}
 		
 		//layeredPane.add(_Cancel);
