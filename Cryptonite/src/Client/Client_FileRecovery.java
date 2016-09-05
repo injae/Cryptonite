@@ -61,6 +61,9 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	private List _loadedFileList;
 	private JButton[] Button;
 	
+	private ArrayList<String> _directoryArray;
+	private boolean _passCheck = true;
+	
 	private String[] _fileList;
 	private String[] _name=null;
 	private int _x=0;
@@ -82,6 +85,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 
 	public Client_FileRecovery(String[] fileList){
 		
+		_directoryArray = new ArrayList<String>();
 		_fileList = fileList;
 		_downloadArea = new JLabel();
 		_downloadArea.setBounds(2, 69, 800, 384);
@@ -112,13 +116,14 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
         MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 816, 480);
 
-        _name=new String[_fileList.length];
-        for(int i=0;i<_fileList.length;i++)
+        _name = new String[_fileList.length];
+        for(int i = 0; i < _fileList.length; i++)
         {	
         	StringTokenizer st=new StringTokenizer(_fileList[i], "\\");
 
-        	while(st.hasMoreTokens()){
-    			_name[i]=st.nextToken();
+        	while(st.hasMoreTokens())
+        	{
+    			_name[i] = st.nextToken();
     		}
     	}
     
@@ -150,25 +155,55 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 			}
 		});
 
-
-		for(int i=1;i<_name.length+1;i++)
+		Button = new JButton[_name.length];
+		for(int i = 1; i < _name.length + 1; i++)
 		{
-			_i=i;
+			System.out.println("Æ÷¹®");
 			
-			if((i%7)==0){
-				Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
-				Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-				Button[i-1].setBounds((5-_x),(70+_y),200,200);
-				Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-				Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
-				Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
-				Button[i-1].setBorderPainted(false);
-				Button[i-1].setFocusPainted(false);
-				Button[i-1].setContentAreaFilled(false);
-				Button[i-1].addActionListener(new ActionListener() {
+			_i = i - 1;
+			
+			if((i % 7) == 0){
+				Button[i - 1] = new JButton(_name[i - 1],new ImageIcon("gui/logo_mini.png"));		
+				Button[i - 1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
+				Button[i - 1].setBounds((5 - _x),(70 + _y), 92, 120);
+				Button[i - 1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+				Button[i - 1].setVerticalAlignment    ( SwingConstants.TOP ) ;
+				Button[i - 1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
+				Button[i - 1].setBorderPainted(false);
+				Button[i - 1].setFocusPainted(false);
+				Button[i - 1].setContentAreaFilled(false);
+				Button[i - 1].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e)
 					{
-						Button[_i-1].setBackground(Color.BLACK);
+						_passCheck = true;
+						int index = findIndex(e.getActionCommand());
+						if(!_directoryArray.isEmpty())
+						{
+							for(int j = 0; j < _directoryArray.size(); j++)
+							{
+								if(_fileList[index].equals(_directoryArray.get(j)))
+								{
+									_directoryArray.remove(j);
+									_passCheck = false;
+									break;
+								}
+							}
+							if(_passCheck)
+							{
+								_directoryArray.add(_fileList[index]);
+							}
+						}
+						else
+						{
+							_directoryArray.add(_fileList[index]);
+						}
+						Button[index].setBackground(Color.BLACK);
+						
+						for(int k = 0 ; k < _directoryArray.size(); k++)
+						{
+							System.out.println(_directoryArray.get(k));
+						}
+						System.out.println("----------------------");
 					}
 				});
 				_y+=150;
@@ -177,7 +212,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 			else{
 				Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
 				Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-				Button[i-1].setBounds((5+_x),70,200,200);
+				Button[i-1].setBounds((5+_x),70,92,120);
 				Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 				Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
 				Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
@@ -187,13 +222,43 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 				Button[i-1].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e)
 					{
-						Button[_i-1].setBackground(Color.BLACK);
+						_passCheck = true;
+						int index = findIndex(e.getActionCommand());
+						if(!_directoryArray.isEmpty())
+						{
+							for(int j = 0; j < _directoryArray.size(); j++)
+							{
+								if(_fileList[index].equals(_directoryArray.get(j)))
+								{
+									_directoryArray.remove(j);
+									_passCheck = false;
+									break;
+								}
+							}
+							if(_passCheck)
+							{
+								_directoryArray.add(_fileList[index]);
+							}
+						}
+						else
+						{
+							_directoryArray.add(_fileList[index]);
+						}
+						Button[index].setBackground(Color.BLACK);
+						
+						for(int k = 0 ; k < _directoryArray.size(); k++)
+						{
+							System.out.println(_directoryArray.get(k));
+						}
+						System.out.println("----------------------");
 					}
 				});
 				_x+=150;
 			}
 			layeredPane.add(Button[i-1]);
 		}
+		
+		
 		
 		//layeredPane.add(_Cancel);
         //layeredPane.add(_OK);
@@ -212,6 +277,21 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	private void showMessage(String title, String message) 
 	{
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	private int findIndex(String text)
+	{
+		int temp = 0;
+		
+		for(int i = 0; i < _name.length; i++)
+		{
+			if(_name[i].equals(text))
+			{
+				temp = i;
+			}
+		}
+		
+		return temp;
 	}
 
 
