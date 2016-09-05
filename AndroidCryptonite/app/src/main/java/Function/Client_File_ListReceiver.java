@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -32,6 +33,7 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
     protected Void doInBackground(String... strings) {  // gpname
         try
         {
+            Charset cs = Charset.forName("UTF-8");
             publishProgress(0);
             byte[] event = new byte[1024];
             event[0] = FILE_LIST_REQUEST;
@@ -47,7 +49,7 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
             _fileCount = Integer.parseInt(new String(_csc.receive.setAllocate(100).read().getByte()).trim());
             for(int i = 0; i < _fileCount; i++)
             {
-                adapter.add(nameTokenizer(new String(_csc.receive.setAllocate(1024).read().getByte()).trim()));
+                adapter.add(nameTokenizer(cs.decode(_csc.receive.setAllocate(1024).read().getByteBuf()).toString().trim()));
             }
 
             publishProgress(1);
@@ -63,6 +65,7 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
     protected void onProgressUpdate(Integer... values) {
         if (values[0] == 0)
         {
+            adapter.clear();
             dialog = ProgressDialog.show(context,"Loading..","Receiving File List",true,false);
         } else if(values[0] == 1) {
             if (_fileCount == 0)

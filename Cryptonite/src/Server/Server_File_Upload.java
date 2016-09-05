@@ -3,7 +3,11 @@ package Server;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import Function.PacketProcessor;
 import Function.PacketRule;
@@ -38,6 +42,8 @@ public class Server_File_Upload extends Server_Funtion implements PacketRule
 	
 	private void setFileInformation(byte[] packet)
 	{
+		Charset cs = Charset.forName("UTF-8");
+		ByteBuffer bb = ByteBuffer.allocate(packet[1]);
 		int end = 0;
 		byte[] nameTemp = new byte[packet[1]];
 		for(int i = 0; i < nameTemp.length; i++)
@@ -45,7 +51,8 @@ public class Server_File_Upload extends Server_Funtion implements PacketRule
 			nameTemp[i] = packet[i + 3];
 			end = i + 3;
 		}
-		_fileName = new String(nameTemp).trim();
+		bb.put(nameTemp); bb.flip();
+		_fileName = cs.decode(bb).toString();
 		
 		byte[] sizeTemp = new byte[packet[2]];
 		for(int i = 0; i < sizeTemp.length; i++)
@@ -74,6 +81,7 @@ public class Server_File_Upload extends Server_Funtion implements PacketRule
 		
 		try 
 		{
+			_address = "Server_Folder\\Backup\\" + _gpCode;
 			_raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
 			_fileChannel = _raf.getChannel();
 		} 
