@@ -1,7 +1,6 @@
 package Client;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -30,11 +29,10 @@ public class Client_File_ListReceiver implements PacketRule
 	}
 	
 	// Methods
-	public void click(byte mod, String gpCode)
+	public void running(byte mod, String gpCode)
 	{
 		try 
 		{
-			Charset cs = Charset.forName("UTF-8");
 			byte[] event = new byte[1024];
 			event[0] = FILE_LIST_REQUEST;
 			event[1] = mod;
@@ -51,11 +49,14 @@ public class Client_File_ListReceiver implements PacketRule
 			_fileCount = Integer.parseInt(new String(_csc.receive.setAllocate(100).read().getByte()).trim());
 			for(int i = 0; i < _fileCount; i++)
 			{
-				_fileList.add(cs.decode(_csc.receive.setAllocate(1024).read().getByteBuf()).toString().trim());
-				System.out.println(_fileList.get(i));
+				_fileList.add(new String(_csc.receive.setAllocate(1024).read().getByte()).trim());
+			}
+			if(_fileCount == 0)
+			{
+				System.out.println("읽을 파일 리스트가 존재하지 않습니다.");
 			}
 			
-			_cfs.folderSelectorON();
+			/*_cfs.folderSelectorON();
 			while(!_cfs.getSelectionEnd())
 			{
 				Thread.sleep(1);
@@ -65,16 +66,28 @@ public class Client_File_ListReceiver implements PacketRule
 			for(int i = 0 ; i < _fileCount; i++)
 			{
 				_cfd.requestFile(_fileList.get(i), _downloadFolder + "\\" + nameTokenizer(_fileList.get(i)));
-			}
+			}*/
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		} 
-		catch (InterruptedException e) 
+		/*catch (InterruptedException e) 
 		{
 			e.printStackTrace();
+		}*/
+	}
+	
+	public String[] getFileList()
+	{
+		String[] temp = new String[_fileList.size()];
+		
+		for(int i = 0 ; i < temp.length; i++)
+		{
+			temp[i] = _fileList.get(i);
 		}
+		
+		return temp;
 	}
 	
 	private String nameTokenizer(String target)
