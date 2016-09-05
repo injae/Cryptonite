@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
+import java.util.List;
 
 import Function.PacketRule;
 import Function.Function;
@@ -27,7 +28,7 @@ public class Client_File_Upload implements PacketRule
 	public Client_File_Upload()
 	{
 		_csc = Client_Server_Connector.getInstance();
-		_cfs = new Client_FileSelector();
+		//_cfs = new Client_FileSelector();
 	}
 	
 	// Methods
@@ -35,7 +36,7 @@ public class Client_File_Upload implements PacketRule
 	{
 		try 
 		{	
-			fileSelection();
+			//fileSelection();
 			
 			for(int i = 0; i < _fileNameArray.length; i++)
 			{
@@ -59,7 +60,7 @@ public class Client_File_Upload implements PacketRule
 				}
 				p.close();
 				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
-				_cfs.dispose();
+				//_cfs.dispose();
 			}
 		} 
 		catch (IOException e) 
@@ -68,7 +69,27 @@ public class Client_File_Upload implements PacketRule
 		}
 	}
 	
-	private void fileSelection()
+	public void setInformation(List list)
+	{
+		_filePathArray = new String[list.size()];
+		for(int i = 0; i < list.size(); i++)
+		{
+			_filePathArray[i] = list.get(i).toString();
+		}
+		nameExtraction(_filePathArray);
+	}
+	
+	private void nameExtraction(String[] filePathArray)
+	{
+		_fileNameArray = new String[filePathArray.length];
+		for(int i = 0; i < _fileNameArray.length; i++)
+		{
+			File temp = new File(filePathArray[i]);
+			_fileNameArray[i] = temp.getName();
+		}
+	}
+	
+	/*private void fileSelection()
 	{
 		_cfs.fileFinderON();
 		while(!_cfs.getSelectionFinish())
@@ -91,5 +112,5 @@ public class Client_File_Upload implements PacketRule
 			File temp = new File(_filePathArray[i]);
 			_fileSizeArray[i] = temp.length();
 		}
-	}
+	}*/
 }
