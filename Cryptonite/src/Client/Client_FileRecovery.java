@@ -62,6 +62,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	private JButton[] Button;
 	
 	private ArrayList<String> _directoryArray;
+	private ArrayList<String> _nameArray;
 	private boolean _passCheck = true;
 	
 	private String[] _fileList;
@@ -70,11 +71,15 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	private int _y=0;
 	private int _i=0;
 	
-	private JButton _Cancel;
-	private JButton _OK;
+	private JButton _Select;
+	private JButton _Download;
 	
 	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	private Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
+	
+	private Client_FolderSelector _cfs = null;
+	private Client_File_Download _cfd = null;
+	private String _downloadDirectory;
 
 	
 	public static void main(String args[])
@@ -85,7 +90,10 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 
 	public Client_FileRecovery(String[] fileList){
 		
+		_cfs = new Client_FolderSelector();
+		_cfd = new Client_File_Download();
 		_directoryArray = new ArrayList<String>();
+		_nameArray = new ArrayList<String>();
 		_fileList = fileList;
 		_downloadArea = new JLabel();
 		_downloadArea.setBounds(2, 69, 800, 384);
@@ -127,31 +135,49 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
     		}
     	}
     
-        _OK = new JButton(new ImageIcon("img/OK.png"));
-        _OK.setRolloverIcon(new ImageIcon("img/OKR.png"));
-        _OK.setBounds(600, 360, 45, 45);
-        _OK.setFocusPainted(false);
-        _OK.setContentAreaFilled(false);
-        _OK.setBorderPainted(false);
-        _OK.addActionListener(new ActionListener() {     
+        _Select = new JButton(new ImageIcon("img/select.png"));
+        _Select.setRolloverIcon(new ImageIcon("img/Selectp.png"));
+        _Select.setBounds(600, 300, 80, 40);
+        _Select.setFocusPainted(false);
+        _Select.setContentAreaFilled(false);
+        _Select.setBorderPainted(false);
+        _Select.addActionListener(new ActionListener() 
+        {     
          	public void actionPerformed(ActionEvent arg0)
          	{	
-         		
+         		_cfs.folderSelectorON();
+         		while(!_cfs.getSelectionEnd())
+         		{
+         			try 
+         			{
+						Thread.sleep(1);
+					}
+         			catch (InterruptedException e)
+         			{
+						e.printStackTrace();
+					}
+         		}
+         		_downloadDirectory = _cfs.getSelectedPath();
          	}
          });
 
-        _Cancel = new JButton("cancel",new ImageIcon("img/Cancel.png"));	
-		_Cancel.setPressedIcon(new ImageIcon("img/Cancelp.png"));
-		_Cancel.setBounds(350, 360, 100,100);
-		_Cancel.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-		_Cancel.setVerticalAlignment    ( SwingConstants.TOP ) ;
-		_Cancel.setHorizontalTextPosition( SwingConstants.CENTER ) ;
-		_Cancel.setBorderPainted(false);
-		_Cancel.setFocusPainted(false);
-		_Cancel.setContentAreaFilled(false);
-		_Cancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();		
+        _Download = new JButton(new ImageIcon("img/OK.png"));	
+		_Download.setPressedIcon(new ImageIcon("img/OKR.png"));
+		_Download.setBounds(350, 300, 45,45);
+		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
+		_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
+		_Download.setBorderPainted(false);
+		_Download.setFocusPainted(false);
+		_Download.setContentAreaFilled(false);
+		_Download.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				for(int i = 0; i < _directoryArray.size(); i++)
+				{
+					_cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i));
+				}
 			}
 		});
 
@@ -184,6 +210,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 								if(_fileList[index].equals(_directoryArray.get(j)))
 								{
 									_directoryArray.remove(j);
+									_nameArray.remove(j);
 									_passCheck = false;
 									break;
 								}
@@ -191,11 +218,13 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 							if(_passCheck)
 							{
 								_directoryArray.add(_fileList[index]);
+								_nameArray.add(e.getActionCommand());
 							}
 						}
 						else
 						{
 							_directoryArray.add(_fileList[index]);
+							_nameArray.add(e.getActionCommand());
 						}
 						Button[index].setBackground(Color.BLACK);
 						
@@ -231,6 +260,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 								if(_fileList[index].equals(_directoryArray.get(j)))
 								{
 									_directoryArray.remove(j);
+									_nameArray.remove(j);
 									_passCheck = false;
 									break;
 								}
@@ -238,11 +268,13 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 							if(_passCheck)
 							{
 								_directoryArray.add(_fileList[index]);
+								_nameArray.add(e.getActionCommand());
 							}
 						}
 						else
 						{
 							_directoryArray.add(_fileList[index]);
+							_nameArray.add(e.getActionCommand());
 						}
 						Button[index].setBackground(Color.BLACK);
 						
@@ -260,8 +292,8 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 		
 		
 		
-		//layeredPane.add(_Cancel);
-        //layeredPane.add(_OK);
+		layeredPane.add(_Download);
+        layeredPane.add(_Select);
         layeredPane.add(panel);
         getContentPane().add(layeredPane);
         setVisible(true);
