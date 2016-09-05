@@ -47,7 +47,7 @@ public class Client_Main_UI extends JFrame
 	private JButton Sendbt;
 	private JButton Receivebt;
 	private JButton ProtectedFolderbt;
-	private JButton Cloudbt;
+	private JButton FileRecoverybt;
 	private JButton Indivbt;
 	private JButton Groupbt;
 	private JButton Developerbt;
@@ -161,7 +161,7 @@ public class Client_Main_UI extends JFrame
 		 layeredPane.add(Sendbt);
 		 layeredPane.add(Receivebt);
 		 layeredPane.add(ProtectedFolderbt); 
-		 layeredPane.add(Cloudbt);
+		 layeredPane.add(FileRecoverybt);
 		 
 		 layeredPane.add(panel);
 		 container.add(layeredPane);
@@ -295,15 +295,15 @@ public class Client_Main_UI extends JFrame
 			}
 		});
         
-        Cloudbt = new JButton(new ImageIcon("img/Cloud.png"));
-        Cloudbt.setRolloverIcon(new ImageIcon("img/Cloudh.png"));
-        Cloudbt.setBounds(478, 250, 315, 181);
-        Cloudbt.setFocusPainted(false);
-        Cloudbt.setBorderPainted(false);
-        Cloudbt.setContentAreaFilled(false);
-        Cloudbt.addActionListener(new ActionListener() {
+        FileRecoverybt = new JButton(new ImageIcon("img/Cloud.png"));
+        FileRecoverybt.setRolloverIcon(new ImageIcon("img/Cloudh.png"));
+        FileRecoverybt.setBounds(478, 250, 315, 181);
+        FileRecoverybt.setFocusPainted(false);
+        FileRecoverybt.setBorderPainted(false);
+        FileRecoverybt.setContentAreaFilled(false);
+        FileRecoverybt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Client_File_ListReceiver().click((byte)1, null);
+				new Client_File_ListReceiver().click((byte)2, null);
 			}
 		});
 		//--------------------------------------------------
