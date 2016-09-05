@@ -3,7 +3,9 @@ package Client;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 
 import Function.PacketRule;
 import Function.Function;
@@ -36,15 +38,17 @@ public class Client_File_Upload implements PacketRule
 		try 
 		{	
 			fileSelection();
-			
+			ByteBuffer bb;
+			Charset cs = Charset.forName("UTF-8");
 			for(int i = 0; i < _fileNameArray.length; i++)
 			{
+				bb = cs.encode(_fileNameArray[i]);
 				byte[] event = new byte[1024];
 				event[0] = FILE_UPLOAD;
-				event[1] = (byte)_fileNameArray[i].getBytes().length;
+				event[1] = (byte)bb.limit();
 				event[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
-				Function.frontInsertByte(3, _fileNameArray[i].getBytes(), event);
-				Function.frontInsertByte(3 + _fileNameArray[i].getBytes().length, String.valueOf(_fileSizeArray[i]).getBytes(), event);
+				Function.frontInsertByte(3, bb.array(), event);
+				Function.frontInsertByte(3 + bb.limit(), String.valueOf(_fileSizeArray[i]).getBytes(), event);
 				Function.frontInsertByte(800, gpCode.getBytes(), event);
 				_csc.send.setPacket(event).write();
 				
@@ -70,6 +74,7 @@ public class Client_File_Upload implements PacketRule
 	
 	private void fileSelection()
 	{
+		Charset cs = Charset.forName("UTF-8");
 		_cfs.fileFinderON();
 		while(!_cfs.getSelectionFinish())
 		{

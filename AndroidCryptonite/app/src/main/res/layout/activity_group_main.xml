@@ -10,27 +10,43 @@
     tools:context="com.cryptonite.cryptonite.GroupMainActivity"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
+        android:layout_height="wrap_content">
 
-        <ImageView
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView7"
+                android:src="@drawable/bh"
+                android:layout_marginRight="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Group_main_title"
+                android:layout_gravity="bottom"
+                android:textSize="22dp"
+                android:textStyle="bold"
+                android:textColor="#02aeef"
+                android:text="GroupTitle" />
+        </LinearLayout>
+
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView7"
-            android:src="@drawable/bh"/>
+            android:id="@+id/File_Send"
+            android:layout_gravity="top|right"
+            android:background="#00000000"
+            android:src="@drawable/upload"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/Group_main_title"
-            android:layout_gravity="bottom"
-            android:textSize="22dp"
-            android:textStyle="bold"
-            android:textColor="#02aeef" />
-    </LinearLayout>
+    </FrameLayout>
 
     <ListView
         android:layout_width="match_parent"

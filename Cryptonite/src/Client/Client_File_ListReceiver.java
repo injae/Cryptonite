@@ -1,6 +1,7 @@
 package Client;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -33,6 +34,7 @@ public class Client_File_ListReceiver implements PacketRule
 	{
 		try 
 		{
+			Charset cs = Charset.forName("UTF-8");
 			byte[] event = new byte[1024];
 			event[0] = FILE_LIST_REQUEST;
 			event[1] = mod;
@@ -49,7 +51,7 @@ public class Client_File_ListReceiver implements PacketRule
 			_fileCount = Integer.parseInt(new String(_csc.receive.setAllocate(100).read().getByte()).trim());
 			for(int i = 0; i < _fileCount; i++)
 			{
-				_fileList.add(new String(_csc.receive.setAllocate(1024).read().getByte()).trim());
+				_fileList.add(cs.decode(_csc.receive.setAllocate(1024).read().getByteBuf()).toString().trim());
 				System.out.println(_fileList.get(i));
 			}
 			
