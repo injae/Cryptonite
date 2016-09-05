@@ -2,6 +2,7 @@ package Server;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -79,6 +80,7 @@ public class Server_File_ListSender extends Server_Funtion
 		
 		public void run()
 		{
+			Charset cs = Charset.forName("UTF-8");
 			searchFolder();
 			try
 			{
@@ -95,7 +97,7 @@ public class Server_File_ListSender extends Server_Funtion
 				_activity.send.setPacket(String.valueOf(_fileCount).getBytes(), 100).write();
 				while(!_fileList.isEmpty() && _fileCount != 0)
 				{
-					_activity.send.setPacket(_fileList.remove().getBytes(), 1024).write();
+					_activity.send.setPacket(cs.encode(_fileList.remove()).array(), 1024).write();
 				}
 			} 
 			catch (IOException e) 
