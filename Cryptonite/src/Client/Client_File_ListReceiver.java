@@ -51,6 +51,10 @@ public class Client_File_ListReceiver implements PacketRule
 			{
 				_fileList.add(new String(_csc.receive.setAllocate(1024).read().getByte()).trim());
 			}
+			if(_fileCount == 0)
+			{
+				System.out.println("읽을 파일 리스트가 존재하지 않습니다.");
+			}
 			
 			/*_cfs.folderSelectorON();
 			while(!_cfs.getSelectionEnd())
