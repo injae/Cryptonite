@@ -107,10 +107,10 @@ public class Client_AutoBackup implements PacketRule
 							temp[0] = AUTOBACKUP;
 							temp[1] = FILE;
 							temp[2] = (byte)String.valueOf(_fileSize).getBytes().length;
-							temp[3] = (byte)_absoluteDirectory.getBytes().length;
+							temp[3] = (byte)(absoluteDirectory + _reposit.get_fileExtention()).getBytes().length;
 							temp[4] = (byte)_protectedFolderName.getBytes().length;
 							Function.frontInsertByte(5, String.valueOf(_fileSize).getBytes(), temp);
-							Function.frontInsertByte(5 + String.valueOf(_fileSize).getBytes().length, _absoluteDirectory.getBytes(), temp);
+							Function.frontInsertByte(5 + String.valueOf(_fileSize).getBytes().length, (_absoluteDirectory+_reposit.get_fileExtention()).getBytes(), temp);
 							Function.frontInsertByte(900, _protectedFolderName.getBytes(), temp);
 							_csc.send.setPacket(temp).write();
 							pw.setAllocate(_fileSize);
