@@ -34,6 +34,8 @@ public class Client_File_ListReceiver implements PacketRule
 	{
 		try 
 		{
+			_fileList.clear();
+			
 			Charset cs = Charset.forName("UTF-8");
 			byte[] event = new byte[1024];
 			event[0] = FILE_LIST_REQUEST;
