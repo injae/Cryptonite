@@ -115,8 +115,8 @@ public class Client_Send_OTP extends JFrame{
 		});
         layeredPane.add(Select);
         
-        Send = new JButton(new ImageIcon("img/Sendbt.png"));		
-        Send.setPressedIcon(new ImageIcon("img/Sendp.png"));
+        Send = new JButton(new ImageIcon("img/Check.png"));		
+        Send.setPressedIcon(new ImageIcon("img/Checkp.png"));
         Send.setBounds(121, 400, 80, 40);
         Send.setBorderPainted(false);
         Send.setFocusPainted(false);
