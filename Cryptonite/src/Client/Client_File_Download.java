@@ -2,16 +2,30 @@ package Client;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.StringTokenizer;
 
+import javax.crypto.Cipher;
+
+import Crypto.Crypto;
+import Crypto.Crypto_Factory;
+import Crypto.KeyReposit;
 import Function.PacketProcessor;
 import Function.PacketRule;
 
 public class Client_File_Download implements PacketRule
 {
+	Crypto _crypto;
+	KeyReposit _reposit;
 	public void requestFile(String path, String targetpath)
 	{
 		try 
 		{
+			targetpath = targetpath.substring(0,targetpath.length() - 5);
+			System.out.println(targetpath);
+			_reposit = KeyReposit.getInstance();
+			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _reposit.get_aesKey()));
+			_crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _reposit.get_aesKey()));
+			
 			Client_Server_Connector csc = Client_Server_Connector.getInstance();
 			byte[] event = new byte[1024];
 			event[0] = FILE_DOWNLOAD;
@@ -27,8 +41,8 @@ public class Client_File_Download implements PacketRule
 			
 			p.setAllocate(fileSize);
 			while(!csc.receive.isAllocatorEmpty())
-			{
-				p.setPacket(csc.receive.read().getByte()).write();
+			{	
+				p.setPacket(_crypto.endecription(csc.receive.read().getByte())).write();
 			}
 			p.close();
 			
