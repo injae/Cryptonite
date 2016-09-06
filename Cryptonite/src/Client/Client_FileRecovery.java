@@ -137,7 +137,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
     
         _Select = new JButton(new ImageIcon("img/select.png"));
         _Select.setRolloverIcon(new ImageIcon("img/Selectp.png"));
-        _Select.setBounds(600, 300, 80, 40);
+        _Select.setBounds(685, 300, 80, 40);
         _Select.setFocusPainted(false);
         _Select.setContentAreaFilled(false);
         _Select.setBorderPainted(false);
@@ -163,7 +163,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 
         _Download = new JButton(new ImageIcon("img/OK.png"));	
 		_Download.setPressedIcon(new ImageIcon("img/OKR.png"));
-		_Download.setBounds(350, 300, 45,45);
+		_Download.setBounds(700, 100, 45,45);
 		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
 		_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
@@ -191,7 +191,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 			if((i % 7) == 0){
 				Button[i - 1] = new JButton(_name[i - 1],new ImageIcon("gui/logo_mini.png"));		
 				Button[i - 1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-				Button[i - 1].setBounds((5 - _x),(70 + _y), 92, 120);
+				Button[i - 1].setBounds((10 - _x),(70 + _y), 92, 120);
 				Button[i - 1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 				Button[i - 1].setVerticalAlignment    ( SwingConstants.TOP ) ;
 				Button[i - 1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
@@ -235,13 +235,13 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 						System.out.println("----------------------");
 					}
 				});
-				_y+=150;
+				_y+=100;
 				_x=0;
 			}
 			else{
 				Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
 				Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-				Button[i-1].setBounds((5+_x),70,92,120);
+				Button[i-1].setBounds((10+_x),70,92,120);
 				Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 				Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
 				Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
@@ -285,7 +285,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 						System.out.println("----------------------");
 					}
 				});
-				_x+=150;
+				_x+=120;
 			}
 			layeredPane.add(Button[i-1]);
 		}
