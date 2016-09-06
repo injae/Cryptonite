@@ -103,6 +103,7 @@ public class Client_AutoBackup implements PacketRule
 							_fileChannel = _raf.getChannel();
 							PacketProcessor pr = new PacketProcessor(_fileChannel, false);
 							PacketProcessor pw = new PacketProcessor(sraf.getChannel(), false);
+							
 							byte[] temp = new byte[1024];
 							temp[0] = AUTOBACKUP;
 							temp[1] = FILE;
@@ -112,6 +113,7 @@ public class Client_AutoBackup implements PacketRule
 							Function.frontInsertByte(5, String.valueOf(_fileSize).getBytes(), temp);
 							Function.frontInsertByte(5 + String.valueOf(_fileSize).getBytes().length, (_absoluteDirectory+_reposit.get_fileExtention()).getBytes(), temp);
 							Function.frontInsertByte(900, _protectedFolderName.getBytes(), temp);
+							
 							_csc.send.setPacket(temp).write();
 							pw.setAllocate(_fileSize);
 							pr.setAllocate(_fileSize);
