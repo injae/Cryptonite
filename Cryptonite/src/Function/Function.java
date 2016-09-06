@@ -57,4 +57,13 @@ public class Function
 		return buff.getInt();
 	}
 	
+	public static byte[] doubleToByteArray(double value) {
+	    byte[] bytes = new byte[8];
+	    ByteBuffer.wrap(bytes).putDouble(value);
+	    return bytes;
+	}
+
+	public static double byteArrayToDouble(byte[] bytes) {
+	    return ByteBuffer.wrap(bytes).getDouble();
+	}
 }
