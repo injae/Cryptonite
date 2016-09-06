@@ -24,7 +24,7 @@ public class Client_FolderSelector
 		
 	}
 	
-	public void folderSelectorON()
+	public boolean folderSelectorON()
 	{
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.showOpenDialog(chooser);
@@ -33,10 +33,12 @@ public class Client_FolderSelector
 	  	{
 	  		selectedPath = dir.getPath();
 		  	selectionEnd = true;
+		  	return true;
 	  	}
 	  	catch(NullPointerException e)
 	  	{
 	  		System.out.println("폴더가 선택되지 않았습니다.");
+	  		return false;
 	  	}
 	}
 	

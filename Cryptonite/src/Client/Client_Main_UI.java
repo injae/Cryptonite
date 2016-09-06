@@ -271,29 +271,32 @@ public class Client_Main_UI extends JFrame
         ProtectedFolderbt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					cfs	 = new Client_FolderSelector();
-					cfs.folderSelectorON();
-					while(!cfs.getSelectionEnd())
+					if(cfs.folderSelectorON())
 					{
-						try 
+						while(!cfs.getSelectionEnd())
 						{
-							Thread.sleep(1);
-						} 
-						catch (InterruptedException e1) 
-						{
+							try 
+							{
+								Thread.sleep(1);
+							} 
+							catch (InterruptedException e1) 
+							{
+								e1.printStackTrace();
+							}
+						}	
+						_address = cfs.getSelectedPath();
+						
+						File save = new File("Cryptonite_Client/log/protectedlog.ser");
+						try {
+							
+							FileWriter fw = new FileWriter(save);
+							fw.write(_address);
+							fw.close();
+						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-					}	
-					_address = cfs.getSelectedPath();
-					File save = new File("Cryptonite_Client/log/protectedlog.ser");
-					FileWriter fw;
-					try {
-						fw = new FileWriter(save);
-						fw.write(_address);
-						fw.close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
+						new Client_FolderScan().start();		
 					}
-				new Client_FolderScan().start();		
 			}
 		});
         

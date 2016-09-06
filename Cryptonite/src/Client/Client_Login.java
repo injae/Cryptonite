@@ -127,7 +127,7 @@ public class Client_Login extends JFrame implements PacketRule {
 		setTitle("Cryptonite");
 		setBounds(710, 200, 456, 665);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		getContentPane().setLayout(null);
 		JLayeredPane _layeredPane = new JLayeredPane();
