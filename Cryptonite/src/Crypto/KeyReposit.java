@@ -8,10 +8,15 @@ import java.net.UnknownHostException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import Client.Client_GetGPS;
+import Function.Function;
+
 public class KeyReposit {
 	private static KeyReposit _singleton = null;
 	
 	private int _level = 1;
+	
+	private Client_GetGPS cgp = null;
 
 	private SecretKey _aesKey_lv1 = null; // Default AES Key
 	private SecretKey _aesKey_lv2 = null; // AES Key based on MAC address
@@ -35,7 +40,7 @@ public class KeyReposit {
 
 	public void set_aesKey(SecretKey aesKey) {
 		this._aesKey_lv1 = aesKey;
-		makeKey();
+		cgp = new Client_GetGPS();
 	}
 
 	public void set_rsaKey(SecretKey rsaKey) {
@@ -49,9 +54,11 @@ public class KeyReposit {
 			aesKey = _aesKey_lv1;
 			break;
 		case 2:
+			makeLv2Key();
 			aesKey = _aesKey_lv2;
 			break;
 		case 3:
+			makeLv3Key();
 			aesKey = _aesKey_lv3;
 			break;
 		}
@@ -79,7 +86,7 @@ public class KeyReposit {
 		return fileExtension;
 	}
 
-	private void makeKey() {
+	private void makeLv2Key() {
 		
 		NetworkInterface ni = null;
 		byte[] originalAesKeyBytes = _aesKey_lv1.getEncoded();
@@ -97,17 +104,31 @@ public class KeyReposit {
 				} else {
 					xorAesKeyBytes[i] = originalAesKeyBytes[i];
 				}
-			}
-			
+			}			
 			_aesKey_lv2 = new SecretKeySpec(xorAesKeyBytes, "AES");
-			
-			// create lv3 key
-			
-			_aesKey_lv3 = _aesKey_lv1; //test
 			
 		} catch (SocketException | UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void makeLv3Key(){
+		
+		byte[] originalAesKeyBytes = _aesKey_lv1.getEncoded();
+		byte[] xorAesKeyBytes = new byte[originalAesKeyBytes.length];
+		
+		cgp.getGPS();
+		byte[] xposBytes = Function.doubleToByteArray(cgp.get_xpos());
+		byte[] yposBytes = Function.doubleToByteArray(cgp.get_ypos());
+		
+		for(int i =0; i<originalAesKeyBytes.length ; i++){
+			if(i < xposBytes.length){
+				xorAesKeyBytes[i] = (byte) (originalAesKeyBytes[i] ^ xposBytes[i] ^ yposBytes[i]);
+			} else {
+				xorAesKeyBytes[i] = originalAesKeyBytes[i];
+			}
+		}	
+		_aesKey_lv3 = new SecretKeySpec(xorAesKeyBytes, "AES");
 	}
 }
