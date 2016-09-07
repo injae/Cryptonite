@@ -65,18 +65,20 @@ public class Client_Invitation extends JFrame{
 	
 	private Client_Show_Group _csg;
 	private Client_Find_Captain _cfc;
-
+	private Client_File_ListReceiver _cfl;
 	
 	public static void main(String args[]){
 		new Client_Invitation (null, null);
 	}
 
 
-	public Client_Invitation (Client_Show_Group csg, String id){
+	public Client_Invitation (Client_Show_Group csg, String id)
+	{
 		
 		_id = id;
 		_csg = csg;
 		_cfc = new Client_Find_Captain();
+		_cfl = new Client_File_ListReceiver();
 		
 		container=getContentPane();
 		container.setBackground(Color.WHITE);
@@ -184,11 +186,13 @@ public class Client_Invitation extends JFrame{
 				{
 					if(_choice.equals("TRUE"))
 					{
-						new Client_Group_Main(_id, _gpCode, _selectedGroup, 1);
+						_cfl.running((byte)1, _gpCode);
+						new Client_Group_Main(_id, _gpCode, _selectedGroup, 1, _cfl);
 					}
 					else
 					{
-						new Client_Group_Main(_id, _gpCode, _selectedGroup, 2);
+						_cfl.running((byte)1, _gpCode);
+						new Client_Group_Main(_id, _gpCode, _selectedGroup, 2, _cfl);
 					}
 				}
 			}

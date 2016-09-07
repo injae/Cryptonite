@@ -11,7 +11,7 @@ import java.util.Queue;
 public class Server_File_ListSender extends Server_Funtion 
 {
 	private byte _mod;
-	private String _name;
+	private String _gpCode;
 	private String _folderName;
 	private Queue<String> _fileList = new LinkedList<String>();
 
@@ -33,7 +33,7 @@ public class Server_File_ListSender extends Server_Funtion
 		 	{
 		 		temp[i] = packet[i + 2];
 		 	}
-		 	_name = new String(temp).trim();
+		 	_gpCode = new String(temp).trim();
 	 	}
 	}
 
@@ -53,24 +53,25 @@ public class Server_File_ListSender extends Server_Funtion
 
 	private void searchFolder()
 	{
-		try 
-		{
+		//try 
+		//{
 			switch(_mod)
 			{
 			case 1:
-				ResultSet rs = Server_DataBase.getInstance().Query("select *from grouplist where gpname = '" + _name + "';");
+				/*ResultSet rs = Server_DataBase.getInstance().Query("select *from grouplist where gpname = '" + _name + "';");
 				rs.next();
-				_folderName = "Server_Folder//Backup//$" + rs.getInt(1);
+				_folderName = "Server_Folder//Backup//$" + rs.getInt(1);*/
+				_folderName = "Server_Folder//Backup//" + _gpCode;
 				break;
 			case 2:
 				_folderName = "Server_Folder//Backup//"+_activity.getClientCode();
 				break;
 			}
-		} 
-		catch (SQLException e) 
+		//} 
+		/*catch (SQLException e) 
 		{
 			e.printStackTrace();
-		}
+		}*/
 		
 	}
 	

@@ -42,6 +42,7 @@ public class Client_Group_Main extends JFrame{
 	private JTextField _idField;
 	
 	private String[] _result;
+	private String[] _fileList;
 	private String _id;
 	private String _receivedID;
 	private String _gpCode;
@@ -61,14 +62,15 @@ public class Client_Group_Main extends JFrame{
 	private Client_Group_Invite _cgi;
 	private Client_Group_Withdrawal _cgw;
 	private Client_Delete_Group _cdg;
+	private Client_File_ListReceiver _cfl;
 	
 	public static void main(String args[])
 	{
-		new Client_Group_Main(null, null, null, 0);
+		new Client_Group_Main(null, null, null, 0, null);
 	}
 
 
-	public Client_Group_Main(String id, String gpCode, String gpName, int mod){
+	public Client_Group_Main(String id, String gpCode, String gpName, int mod, Client_File_ListReceiver cfl){
 		_receivedID = id;
 		_gpCode = gpCode;
 		_gpName = gpName;
@@ -77,6 +79,13 @@ public class Client_Group_Main extends JFrame{
 		_cgi = new Client_Group_Invite();
 		_cgw = new Client_Group_Withdrawal();
 		_cdg = new Client_Delete_Group();
+		_cfl = cfl;
+		_fileList = _cfl.getFileList();
+		
+		for(int i = 0 ; i < _fileList.length; i++)
+		{
+			System.out.println(_fileList[i]);
+		}
 		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
