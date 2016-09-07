@@ -113,10 +113,10 @@ public class Client_Send_OTP extends JFrame{
 				_cfs.fileSelect();
 			}
 		});
-        layeredPane.add(Select);
+        //layeredPane.add(Select);
         
-        Send = new JButton(new ImageIcon("img/Check.png"));		
-        Send.setPressedIcon(new ImageIcon("img/Checkp.png"));
+        Send = new JButton(new ImageIcon("img/SENDP.png"));		
+        Send.setRolloverIcon(new ImageIcon("img/SENDR.png"));
         Send.setBounds(121, 400, 80, 40);
         Send.setBorderPainted(false);
         Send.setFocusPainted(false);
@@ -133,7 +133,7 @@ public class Client_Send_OTP extends JFrame{
 				layeredPane.removeAll();
 				
 				layeredPane.add(Send);
-				layeredPane.add(Select);
+				//layeredPane.add(Select);
 				layeredPane.add(Cancel);
 				
 				layeredPane.add(panel);
@@ -150,8 +150,8 @@ public class Client_Send_OTP extends JFrame{
 		});
         layeredPane.add(Send);
         
-        Cancel = new JButton(new ImageIcon("img/Cancel.png"));		
-        Cancel.setPressedIcon(new ImageIcon("img/Cancelp.png"));
+        Cancel = new JButton(new ImageIcon("img/_cancel.png"));		
+        Cancel.setRolloverIcon(new ImageIcon("img/_cancelR.png"));
         Cancel.setBounds(251, 400, 80,40);
         Cancel.setBorderPainted(false);
         Cancel.setFocusPainted(false);
@@ -170,9 +170,17 @@ public class Client_Send_OTP extends JFrame{
         
         
 	}
-	public static boolean send_flag(){
+	
+	public static boolean send_flag()
+	{
 		return _flag;
 	}
+	
+	public void fileSelect()
+	{
+		_cfs.fileSelect();
+	}
+	
 	class MyPanel extends JPanel {
         public void paint(Graphics g) {
             g.drawImage(img, 0, 0, null);

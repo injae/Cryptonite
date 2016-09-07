@@ -239,19 +239,19 @@ public class Client_Main_UI extends JFrame
         
         
         Sendbt = new JButton(new ImageIcon("img/Filesend.png"));		
-        Sendbt.setPressedIcon(new ImageIcon("img/Filesendh.png"));
+        Sendbt.setRolloverIcon(new ImageIcon("img/Filesendh.png"));
         Sendbt.setBounds(1, 82, 396, 160);
         Sendbt.setBorderPainted(false);
         Sendbt.setFocusPainted(false);
         Sendbt.setContentAreaFilled(false);
         Sendbt.addActionListener(new ActionListener() {
    			public void actionPerformed(ActionEvent e) {
-   				new Client_Send_OTP();		
+   				new Client_Send_OTP().fileSelect();	
    			}
    		});
         
         Receivebt = new JButton(new ImageIcon("img/Filereceive.png"));
-        Receivebt.setPressedIcon(new ImageIcon("img/Filereceiveh.png"));
+        Receivebt.setRolloverIcon(new ImageIcon("img/Filereceiveh.png"));
         Receivebt.setFocusPainted(false);
         Receivebt.setContentAreaFilled(false);
         Receivebt.setBorderPainted(false);
@@ -263,7 +263,7 @@ public class Client_Main_UI extends JFrame
 		});
         
         ProtectedFolderbt = new JButton(new ImageIcon("img/protectedfolder.png"));
-        ProtectedFolderbt.setPressedIcon(new ImageIcon("img/protectedfolderh.png"));
+        ProtectedFolderbt.setRolloverIcon(new ImageIcon("img/protectedfolderh.png"));
         ProtectedFolderbt.setFocusPainted(false);
         ProtectedFolderbt.setContentAreaFilled(false);
         ProtectedFolderbt.setBorderPainted(false);
