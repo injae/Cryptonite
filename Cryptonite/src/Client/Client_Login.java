@@ -73,6 +73,7 @@ public class Client_Login extends JFrame implements PacketRule {
 
 	private Client_Server_Connector _csc;
 	private Client_FolderSelector _cfs = null;
+	private Client_FolderScan _cfc = null;
 
 	private byte[] _gpcount = null;
 
@@ -264,9 +265,10 @@ public class Client_Login extends JFrame implements PacketRule {
 								fw.write(_address);
 								fw.close();
 							}
-							new Client_FolderScan().start();
+							_cfc = new Client_FolderScan();
+							_cfc.start();
 							dispose();
-							new Client_Main_UI(_gpcode, _gpname, _name, _uscode, _id);
+							new Client_Main_UI(_gpcode, _gpname, _name, _uscode, _id, _cfc);
 
 							break;
 						case 3:
