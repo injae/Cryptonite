@@ -104,6 +104,7 @@ public class Client_Main_UI extends JFrame
 			@Override
 			public void windowClosing(WindowEvent e){
 				dispose();
+				_cfs.stopThread();
 				new Client_Logout().logout();
 				new Client_Login();
 			}
