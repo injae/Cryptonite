@@ -35,7 +35,7 @@ public class Client_Send_OTP extends JFrame{
 	private BufferedImage img = null;
 
 	private Container container;
-	
+
 	private JButton Select;
 	private JButton Send;
 	private JButton Cancel;
@@ -101,6 +101,7 @@ public class Client_Send_OTP extends JFrame{
         Otpfield.setBorder(BorderFactory.createEmptyBorder());
         Otpfield.setHorizontalAlignment(JTextField.CENTER);
         layeredPane.add(Otpfield);*/
+     
         
         Select = new JButton(new ImageIcon("img/select.png"));		
         Select.setPressedIcon(new ImageIcon("img/selectp.png"));
@@ -187,7 +188,7 @@ public class Client_Send_OTP extends JFrame{
             if(_checkotp){
             	g.setColor(Color.BLACK);
             	g.setFont(_precondition_font);
-            	g.drawString(_cfs.getOTP(), 240, 275);
+            	g.drawString(_cfs.getOTP(), 240, 280);
             }
        }
    }

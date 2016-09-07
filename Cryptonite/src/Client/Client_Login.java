@@ -288,7 +288,7 @@ public class Client_Login extends JFrame implements PacketRule {
 		_Resistor = new JButton(new ImageIcon("gui/register_bt.png"));
 		_Resistor.setFont(_fontjoin);
 		_Resistor.setForeground(Color.white);
-		_Resistor.setBounds(184, 480, 80, 37);
+		_Resistor.setBounds(188, 480, 80, 37);
 		_Resistor.setBorderPainted(false);
 		_Resistor.setFocusPainted(false);
 		_Resistor.setContentAreaFilled(false);

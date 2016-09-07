@@ -89,7 +89,6 @@ public class Client_FileShare_Send implements PacketRule
 				_tempFile = new File(_filePathArray[i]);
 				_fileSizeArray[i] = _tempFile.length();
 			}
-			//sendFile();	// Temporary
 			_cfs.dispose();
 		}
 		catch(NullPointerException e)
