@@ -74,6 +74,12 @@ public class Server_Delete_Group extends Server_Funtion
 				db.Update("delete from grouplist where gpcode = "+Server_Code_Manager.codeCutter(gpCode)+";");
 				
 				File forDelete = new File("Server_Folder/Backup/" + gpCode);
+				String[] arrayTemp = forDelete.list();
+				for(int i = 0; i < arrayTemp.length; i++)
+				{
+					File temp = new File(forDelete.getPath() + "\\" + arrayTemp[i]);
+					temp.delete();
+				}
 				forDelete.delete();
 				Server_Client_Manager.getInstance()._code_manager.removeCode(gpCode);
 			} 
