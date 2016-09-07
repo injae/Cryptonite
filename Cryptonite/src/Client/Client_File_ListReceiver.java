@@ -59,27 +59,11 @@ public class Client_File_ListReceiver implements PacketRule
 			{
 				System.out.println("읽을 파일 리스트가 존재하지 않습니다.");
 			}
-			
-			/*_cfs.folderSelectorON();
-			while(!_cfs.getSelectionEnd())
-			{
-				Thread.sleep(1);
-			}
-			_downloadFolder = _cfs.getSelectedPath();
-			
-			for(int i = 0 ; i < _fileCount; i++)
-			{
-				_cfd.requestFile(_fileList.get(i), _downloadFolder + "\\" + nameTokenizer(_fileList.get(i)));
-			}*/
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
-		} 
-		/*catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}*/
+		}
 	}
 	
 	public String[] getFileList()

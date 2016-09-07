@@ -24,12 +24,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
-public class Client_Group_Name extends JFrame{
-	public static void main(String[] args){
+public class Client_Group_Name extends JFrame
+{
+	
+	public static void main(String[] args)
+	{
 		new Client_Group_Name(null);
 	}
 	
 	private static String _id;
+	
+	private Client_File_ListReceiver _cfl;
 	
 	BufferedImage _img = null;
 	
@@ -39,11 +44,12 @@ public class Client_Group_Name extends JFrame{
 	JTextField _NameField;
 	
 	Client_Main_UI main;
-/*	Client_Testmain test=new Client_Testmain();*/
 	
 	static String Name;
 	
-	public Client_Group_Name(String id){
+	public Client_Group_Name(String id)
+	{
+		_cfl = new Client_File_ListReceiver();
 		_id = id;
 		try{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
@@ -107,7 +113,6 @@ public class Client_Group_Name extends JFrame{
         //_create.setPressedIcon(new ImageIcon("gui/create.png"));
         _create.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
-         		System.out.println("마우스 클릭됨");
          		if(Name=="")
          		{
          			showMessage("ERROR", "Please insert GroupName!");
@@ -130,8 +135,8 @@ public class Client_Group_Name extends JFrame{
 	        		System.out.println("GroupName : " + temp);
 	         		
 	        		dispose();
-	        		//main.dispose();
-	        		new Client_Group_Main(_id, new String(buffer).trim(), temp,  1);
+	        		_cfl.running((byte)1, new String(buffer).trim());
+	        		new Client_Group_Main(_id, new String(buffer).trim(), temp,  1, _cfl);
          		}
          	}
         });
