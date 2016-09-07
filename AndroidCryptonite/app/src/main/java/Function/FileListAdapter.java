@@ -23,14 +23,14 @@ import java.util.ArrayList;
  */
 public class FileListAdapter extends BaseAdapter {
 
-    ArrayList<String> arr;
+    ArrayList<String> arr,arr1;
     LayoutInflater inf;
     Context context;
     int layout;
 
     public FileListAdapter(Context context, int layout) {
         arr = new ArrayList<>();
-
+        arr1 = new ArrayList<>();
         this.context = context;
         this.layout = layout;
         this.inf = (LayoutInflater)context
@@ -38,16 +38,23 @@ public class FileListAdapter extends BaseAdapter {
     }
 
     public void add(String string){
-        arr.add(string);
+        arr1.add(string);
     }
 
     public void remove(int i){
-        arr.remove(i);
+        arr1.remove(i);
         this.notifyDataSetChanged();
     }
 
-    public void clear(){
+    public void refresh(){
         arr.clear();
+        arr.addAll(arr1);
+        notifyDataSetChanged();
+    }
+
+    public void clear(){
+        arr1.clear();
+        notifyDataSetChanged();
     }
 
     public String[] list(){

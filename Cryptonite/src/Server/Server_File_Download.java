@@ -3,6 +3,8 @@ package Server;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 
 import Function.PacketProcessor;
 
@@ -29,7 +31,11 @@ public class Server_File_Download extends Server_Funtion
 		if(count == 1) { Checker(_activity.getReceiveEvent()); }
 		else
 		{
-			File file = new File(new String(_activity.receive.getByte()).trim());
+			Charset cs = Charset.forName("UTF-8");
+			
+			ByteBuffer bb = ByteBuffer.allocate(500);
+			bb.put(_activity.receive.getByte()); bb.flip();
+			File file = new File(cs.decode(bb).toString().trim());
 			_fileSize = file.length();
 			
 			_activity.send.setPacket(String.valueOf(_fileSize).getBytes(),500).write();
