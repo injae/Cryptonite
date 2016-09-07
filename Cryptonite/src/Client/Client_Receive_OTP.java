@@ -48,10 +48,23 @@ public class Client_Receive_OTP extends JFrame{
 
 	
 	public  Client_Receive_OTP(){
+		
 		_cfr = new Client_FileShare_Receive();
+		
+		try{
+			 Toolkit tk = Toolkit.getDefaultToolkit(); 
+			 Image image = tk.getImage("gui/logo.png");
+			 this.setIconImage(image);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Appilcation icon not found");
+		}	
+		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(500,300,460,550);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
