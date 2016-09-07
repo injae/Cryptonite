@@ -19,7 +19,6 @@ public class Client_Show_Group implements PacketRule
 	public Client_Show_Group()
 	{
 		_csc = Client_Server_Connector.getInstance();
-		_groupNameArray = new ArrayList<String>();
 	}
 	
 	// Methods
@@ -27,6 +26,7 @@ public class Client_Show_Group implements PacketRule
 	{
 		try 
 		{
+			_groupNameArray = new ArrayList<String>();
 			_id = id;
 			byte[] event = new byte[1024];
 			event[0] = SHOW_GROUP;
@@ -54,7 +54,6 @@ public class Client_Show_Group implements PacketRule
 		for(int i = 0; i < temp.length; i++)
 		{
 			temp[i] = _groupNameArray.get(i);
-			System.out.println("temp : "+temp[i]);
 		}
 		return temp;
 	}
