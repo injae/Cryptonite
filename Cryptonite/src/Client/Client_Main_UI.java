@@ -63,6 +63,8 @@ public class Client_Main_UI extends JFrame
 	private JLayeredPane layeredPane = new JLayeredPane();
 	private MyPanel panel = new MyPanel();
 	
+	private Client_FolderScan _cfs = null;
+	
 	private boolean _checkUI=false;
 	
 	Font fontbt = new Font("SansSerif", Font.BOLD,24);
@@ -70,11 +72,12 @@ public class Client_Main_UI extends JFrame
 	Client_Main_UI main;
 	
 	public static void main(String args[]){
-		new Client_Main_UI(new ArrayList<String>(),new ArrayList<String>(),null,null,null);
+		new Client_Main_UI(new ArrayList<String>(),new ArrayList<String>(),null,null,null,null);
 	}
 	
-	public Client_Main_UI(ArrayList<String> gpCode, ArrayList<String> gpname, String name, String usCode, String id)
+	public Client_Main_UI(ArrayList<String> gpCode, ArrayList<String> gpname, String name, String usCode, String id, Client_FolderScan cfs)
 	{
+		_cfs = cfs;
 		_cfl = new Client_File_ListReceiver();
 		_csg = new Client_Show_Group();
 		main = this;
@@ -295,7 +298,9 @@ public class Client_Main_UI extends JFrame
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-						new Client_FolderScan().start();		
+						_cfs.stopThread();
+						_cfs = new Client_FolderScan();
+						_cfs.start();
 					}
 			}
 		});

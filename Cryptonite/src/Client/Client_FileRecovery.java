@@ -136,7 +136,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
     	}
     
         _Select = new JButton(new ImageIcon("img/select.png"));
-        _Select.setRolloverIcon(new ImageIcon("img/Selectp.png"));
+        _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
         _Select.setBounds(685, 300, 80, 40);
         _Select.setFocusPainted(false);
         _Select.setContentAreaFilled(false);
@@ -162,7 +162,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
          });
 
         _Download = new JButton(new ImageIcon("img/OK.png"));	
-		_Download.setPressedIcon(new ImageIcon("img/OKR.png"));
+		_Download.setRolloverIcon(new ImageIcon("img/OKR.png"));
 		_Download.setBounds(700, 100, 45,45);
 		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
