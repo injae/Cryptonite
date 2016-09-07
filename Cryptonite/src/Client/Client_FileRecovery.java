@@ -100,9 +100,20 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 		_dropTarget = new DropTarget(_downloadArea, DnDConstants.ACTION_COPY_OR_MOVE, this, true, null);
 		this.add(_downloadArea, BorderLayout.CENTER);
 		
+		try{
+			 Toolkit tk = Toolkit.getDefaultToolkit(); 
+			 Image image = tk.getImage("gui/logo.png");
+			 this.setIconImage(image);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Appilcation icon not found");
+		}	
+		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(0,0,816,480);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
@@ -188,7 +199,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 			
 			_i = i - 1;
 			
-			if((i % 7) == 0){
+			if((i % 6) == 0){
 				Button[i - 1] = new JButton(_name[i - 1],new ImageIcon("gui/logo_mini.png"));		
 				Button[i - 1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
 				Button[i - 1].setBounds((10 - _x),(70 + _y), 92, 120);

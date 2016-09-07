@@ -69,6 +69,7 @@ public class Client_Group_Main extends JFrame{
 
 
 	public Client_Group_Main(String id, String gpCode, String gpName, int mod){
+		
 		_receivedID = id;
 		_gpCode = gpCode;
 		_gpName = gpName;
@@ -78,9 +79,20 @@ public class Client_Group_Main extends JFrame{
 		_cgw = new Client_Group_Withdrawal();
 		_cdg = new Client_Delete_Group();
 		
+		try{
+			 Toolkit tk = Toolkit.getDefaultToolkit(); 
+			 Image image = tk.getImage("gui/logo.png");
+			 this.setIconImage(image);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Appilcation icon not found");
+		}	
+		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(0,0,816,480);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
