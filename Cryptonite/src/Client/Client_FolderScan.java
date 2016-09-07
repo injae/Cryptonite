@@ -82,7 +82,6 @@ public class Client_FolderScan extends Thread
 		
 		File firstScan = new File(_address);
 		String[] fileList = firstScan.list();
-		System.out.println("파일의 개수 : " + fileList.length);
 		for(int i = 0; i < fileList.length; i++)
 		{
 			File temp = new File(_address + "\\" + fileList[i]);

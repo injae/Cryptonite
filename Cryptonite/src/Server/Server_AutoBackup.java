@@ -20,7 +20,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
 	public Server_AutoBackup(Server_Client_Activity activity) {
 		super(activity);
-		// TODO �ڵ� ������ ������ ����
+		// TODO 占쌘듸옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
 	}
 
 	// protectedFolder
@@ -103,7 +103,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			end = i+5;
 		}
 		_fileSize = Long.parseLong(new String(sizeTemp).trim());
-		//System.out.println("���� �뷮 : " + _fileSize + " (Byte)");
 		
 		int max = end;
 		while(packet[max] != 0)
@@ -125,7 +124,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		}
 		_protectedFolderName = new String(protectedTemp).trim();
 		treeTokenizer();
-		System.out.println("���� ��� : " + _address);
 	}
 	
 	@Override
@@ -169,7 +167,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			}
 			else if(_checkProperty.equals("FILE"))
 			{
-				System.out.println("���� �뷮 : " + _fileSize + " (Byte)");
 				_activity.receive.setAllocate(_fileSize);
 			}
 		}
@@ -178,7 +175,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			if(_checkProperty.equals("DIRECTORY"))
 			{
 				_address = new String(_activity.receive.getByte()).trim();
-				System.out.println("���� ��� : " + _address);
 				File newFolder = new File(_address);
 				newFolder.mkdir();
 				System.out.println("AUTOBACKUP COMPLETE !!");
