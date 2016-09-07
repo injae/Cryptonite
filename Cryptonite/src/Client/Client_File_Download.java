@@ -2,6 +2,7 @@ package Client;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.Charset;
 import java.util.StringTokenizer;
 
 import javax.crypto.Cipher;
@@ -20,6 +21,8 @@ public class Client_File_Download implements PacketRule
 	{
 		try 
 		{
+			Charset cs = Charset.forName("UTF-8");
+			
 			targetpath = targetpath.substring(0,targetpath.length() - 5);
 			System.out.println(targetpath);
 			_reposit = KeyReposit.getInstance();
@@ -31,7 +34,7 @@ public class Client_File_Download implements PacketRule
 			event[0] = FILE_DOWNLOAD;
 			csc.send.setPacket(event).write();
 			
-			csc.send.setPacket(path.getBytes(), 500).write();
+			csc.send.setPacket(cs.encode(path).array(), 500).write();
 			
 			long fileSize =  Long.parseLong(new String(csc.receive.setAllocate(500).read().getByte()).trim());
 			csc.receive.setAllocate(fileSize);

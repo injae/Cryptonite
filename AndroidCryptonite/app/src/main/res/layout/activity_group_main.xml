@@ -36,15 +36,33 @@
                 android:textStyle="bold"
                 android:textColor="#02aeef"
                 android:text="GroupTitle" />
+
         </LinearLayout>
 
-        <ImageButton
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/File_Send"
-            android:layout_gravity="top|right"
-            android:background="#00000000"
-            android:src="@drawable/upload"/>
+            android:layout_gravity="right">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/File_Send"
+                android:layout_gravity="top|right"
+                android:background="#00000000"
+                android:src="@drawable/upload"
+                android:layout_marginRight="5dp" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/File_Download"
+                android:layout_gravity="right"
+                android:src="@drawable/download"
+                android:background="#00000000"/>
+
+        </LinearLayout>
 
     </FrameLayout>
 

@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.cryptonite.cryptonite.GroupMainActivity;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -18,14 +20,17 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
     private  FileListAdapter adapter;
     private ProgressDialog dialog;
     private Context context;
+    private String[] paths;
+    private GroupMainActivity groupMainActivity;
     // Another Class
     private Client_Server_Connector _csc = null;
 
     // Constructors
-    public Client_File_ListReceiver(Context context, FileListAdapter adapter)
+    public Client_File_ListReceiver(Context context, FileListAdapter adapter, GroupMainActivity groupMainActivity)
     {
         this.context = context;
         this.adapter = adapter;
+        this.groupMainActivity = groupMainActivity;
         _csc = Client_Server_Connector.getInstance();
     }
 
@@ -47,9 +52,11 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
             _csc.send.setPacket(event).write();
 
             _fileCount = Integer.parseInt(new String(_csc.receive.setAllocate(100).read().getByte()).trim());
+            paths = new String[_fileCount];
             for(int i = 0; i < _fileCount; i++)
             {
-                adapter.add(nameTokenizer(cs.decode(_csc.receive.setAllocate(1024).read().getByteBuf()).toString().trim()));
+                paths[i] = cs.decode(_csc.receive.setAllocate(1024).read().getByteBuf()).toString().trim();
+                adapter.add(nameTokenizer(paths[i]));
             }
 
             publishProgress(1);
@@ -68,10 +75,14 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
             adapter.clear();
             dialog = ProgressDialog.show(context,"Loading..","Receiving File List",true,false);
         } else if(values[0] == 1) {
-            if (_fileCount == 0)
+            if (_fileCount == 0) {
                 adapter.add("No Files");
-            adapter.notifyDataSetChanged();
+                paths = new String[1];
+                paths[0] = "No Files";
+            }
+            adapter.refresh();
             dialog.dismiss();
+            groupMainActivity.setFilePath(paths);
         }
     }
 
