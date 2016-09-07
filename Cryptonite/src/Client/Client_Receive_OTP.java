@@ -73,7 +73,7 @@ public class Client_Receive_OTP extends JFrame{
         
         OTPField = new JTextField();
         OTPField.setText("Type otp number");
-        OTPField.setBounds(158, 247, 254, 50);
+        OTPField.setBounds(140, 244, 254, 50);
         OTPField.setForeground(Color.black);        
         OTPField.setFont(font);
         OTPField.setOpaque(false);
@@ -98,8 +98,8 @@ public class Client_Receive_OTP extends JFrame{
         layeredPane.add(OTPField);
         
         
-        Select = new JButton(new ImageIcon("img/Select.png"));		
-        Select.setPressedIcon(new ImageIcon("img/Selectp.png"));
+        Select = new JButton(new ImageIcon("img/select.png"));		
+        Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
         Select.setBounds(324, 328, 80, 40);
         Select.setBorderPainted(false);
         Select.setFocusPainted(false);
@@ -112,8 +112,8 @@ public class Client_Receive_OTP extends JFrame{
 		 });
         layeredPane.add(Select);
         
-        Check = new JButton(new ImageIcon("img/Check.png"));		
-        Check.setPressedIcon(new ImageIcon("img/Checkp.png"));
+        Check = new JButton(new ImageIcon("img/DOWNLOAD.png"));		
+        Check.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
         Check.setBounds(116, 410, 80, 40);
         Check.setBorderPainted(false);
         Check.setFocusPainted(false);
@@ -126,8 +126,8 @@ public class Client_Receive_OTP extends JFrame{
 		 });
         layeredPane.add(Check);
         
-        Cancel = new JButton(new ImageIcon("img/Cancel.png"));		
-        Cancel.setPressedIcon(new ImageIcon("img/Cancelp.png"));
+        Cancel = new JButton(new ImageIcon("img/_cancel.png"));		
+        Cancel.setRolloverIcon(new ImageIcon("img/_cancelR.png"));
         Cancel.setBounds(254, 410, 80,40);
         Cancel.setBorderPainted(false);
         Cancel.setFocusPainted(false);

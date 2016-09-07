@@ -246,8 +246,8 @@ public class Client_Group_Main extends JFrame{
         {
             g.drawImage(img, 0, 0, null);
             g.setColor(Color.BLACK);
-        	g.setFont(_precondition_font);
-        	g.drawString("Group Name : " + _gpName, 200, 50);
+        	g.setFont(fontbt);
+        	g.drawString("Group Name : " + _gpName, 230, 35);
         }
    }
 	private void showMessage(String title, String message) 
