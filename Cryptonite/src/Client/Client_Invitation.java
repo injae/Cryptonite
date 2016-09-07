@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -22,6 +23,9 @@ import javax.swing.UIManager;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
@@ -35,7 +39,7 @@ public class Client_Invitation extends JFrame{
 	private String _selectedGroup;
 	private String _id;
 	private String _choice;
-	private String _gpCode;
+	private String _gpCode = "null";
 	
 	private BufferedImage img = null;
 	private BufferedImage img2=null;
@@ -54,7 +58,8 @@ public class Client_Invitation extends JFrame{
 	
 	private String[] _groupname;
 	private int _count = 1;
-	private boolean _checkimage=false;
+	private boolean _checkimage = false;
+	private boolean _passCheck = true;
 	
 	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	
@@ -85,7 +90,8 @@ public class Client_Invitation extends JFrame{
         layeredPane.setBounds(0, 0, 816, 480);
         layeredPane.setLayout(null);
         
-        try {
+        try 
+        {
             img = ImageIO.read(new File("img/초대목록.png"));
             img2 = ImageIO.read(new File("img/x.png"));
         } catch (IOException e) {
@@ -96,26 +102,28 @@ public class Client_Invitation extends JFrame{
         panel.setBounds(0, 0, 900, 500);
         
         _groupname = _csg.getGroupName();
-		if(_groupname.length==0)
+         
+		if(_groupname.length == 0)
 		{	
-			_checkimage=false;
+			_checkimage = false;
 		}
 		else
 		{
-			_checkimage=true;
+			_checkimage = true;
 			_model = new DefaultListModel<>();
-
-			for(int i=0;i< _groupname.length;i++)
+			
+			for(int i = 0; i <  _groupname.length; i++)
 			{
 				_model.addElement( _groupname[i]);
 			}
-	           _list = new JList<>(_model);
-	           _list.setBounds(100, 100, 100, 100);
-	           _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	          
-	           scrollPane = new JScrollPane(_list);
-               scrollPane.setVisible(true);
-               scrollPane.setBounds(45, 100, 690, 300);
+		
+           _list = new JList<>(_model);
+           _list.setBounds(100, 100, 100, 100);
+           _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+          
+           scrollPane = new JScrollPane(_list);
+           scrollPane.setVisible(true);
+           scrollPane.setBounds(45, 100, 690, 300);
 		}
         
 		allocator();
@@ -168,16 +176,20 @@ public class Client_Invitation extends JFrame{
 				_choice = st.nextToken();
 				_gpCode = st.nextToken();
 				
-				System.out.println("초이스 : " + _choice);
-				System.out.println("그룹코드 :" + _gpCode);
-				
-				if(_choice.equals("TRUE"))
+				if(_gpCode.equals("null"))
 				{
-					new Client_Group_Main(_id, _gpCode, _selectedGroup, 1);
+					showMessage("ERROR","이미 삭제되거나, 존재하지 않는 그룹입니다.");
 				}
 				else
 				{
-					new Client_Group_Main(_id, _gpCode, _selectedGroup, 2);
+					if(_choice.equals("TRUE"))
+					{
+						new Client_Group_Main(_id, _gpCode, _selectedGroup, 1);
+					}
+					else
+					{
+						new Client_Group_Main(_id, _gpCode, _selectedGroup, 2);
+					}
 				}
 			}
 		});
@@ -195,8 +207,16 @@ public class Client_Invitation extends JFrame{
 		});
 		//----------------------------------------------------------------------indivial
 	}
-	class MyPanel extends JPanel {
-        public void paint(Graphics g) {
+	
+	 private void showMessage(String title, String message) 
+	 {
+			JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+	 }
+	
+	class MyPanel extends JPanel 
+	{
+        public void paint(Graphics g) 
+        {
             g.drawImage(img, 0, 0, null);
             if(!_checkimage)
             {

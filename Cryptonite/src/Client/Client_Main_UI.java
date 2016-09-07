@@ -342,7 +342,6 @@ public class Client_Main_UI extends JFrame
  	       	public void actionPerformed(ActionEvent arg0) 
  	       	{
  	       		_csg.running(_id);
- 	       		System.out.println("ºüÁ®³ª¿È");
  	       		new Client_Invitation(_csg, _id);
  	       	}
  	    });

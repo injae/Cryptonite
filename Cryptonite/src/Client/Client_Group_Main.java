@@ -36,7 +36,7 @@ public class Client_Group_Main extends JFrame{
 	private BufferedImage img = null;
 
 	private JButton Search;
-	private JButton Search2;
+	private JButton OK;
 	private JButton Withdrawal;
 	private JButton Delete;
 	private JTextField _idField;
@@ -129,7 +129,7 @@ public class Client_Group_Main extends JFrame{
         
         
         Search = new JButton(new ImageIcon("img/Search.png"));
-        Search.setPressedIcon(new ImageIcon("img/Searchh.png"));
+        Search.setRolloverIcon(new ImageIcon("img/Searchh.png"));
         Search.setBounds(740, 107, 50, 50);
         Search.setFocusPainted(false);
         Search.setContentAreaFilled(false);
@@ -171,13 +171,13 @@ public class Client_Group_Main extends JFrame{
          });
         layeredPane.add(Search);
         
-        Search2 = new JButton(new ImageIcon("img/OK.png"));
-        Search2.setRolloverIcon(new ImageIcon("img/OKR.png"));
-        Search2.setBounds(747, 304, 45, 45);
-        Search2.setFocusPainted(false);
-        Search2.setContentAreaFilled(false);
-        Search2.setBorderPainted(false);
-        Search2.addActionListener(new ActionListener() {     
+        OK = new JButton(new ImageIcon("img/OK.png"));
+        OK.setRolloverIcon(new ImageIcon("img/OKR.png"));
+        OK.setBounds(747, 304, 45, 45);
+        OK.setFocusPainted(false);
+        OK.setContentAreaFilled(false);
+        OK.setBorderPainted(false);
+        OK.addActionListener(new ActionListener() {     
          	public void actionPerformed(ActionEvent arg0)
          	{	
          		String selectedID = _model.getElementAt(_list.getSelectedIndex());
@@ -192,10 +192,10 @@ public class Client_Group_Main extends JFrame{
          		}
          	}
          });
-        layeredPane.add(Search2);
+        layeredPane.add(OK);
         
         Withdrawal = new JButton(new ImageIcon("img/Check.png"));
-        Withdrawal.setPressedIcon(new ImageIcon("img/Checkp.png"));
+        Withdrawal.setRolloverIcon(new ImageIcon("img/Checkp.png"));
         Withdrawal.setBounds(685, 380, 50, 50);
         Withdrawal.setFocusPainted(false);
         Withdrawal.setContentAreaFilled(false);
