@@ -195,10 +195,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 		Button = new JButton[_name.length];
 		for(int i = 1; i < _name.length + 1; i++)
 		{
-			System.out.println("Æ÷¹®");
-			
-			_i = i - 1;
-			
+
 			if((i % 6) == 0){
 				Button[i - 1] = new JButton(_name[i - 1],new ImageIcon("gui/logo_mini.png"));		
 				Button[i - 1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));

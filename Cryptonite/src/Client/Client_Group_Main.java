@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -35,19 +36,31 @@ public class Client_Group_Main extends JFrame{
 	
 	private BufferedImage img = null;
 
+	private JButton _Select;
+	private JButton _Download;
 	private JButton Search;
+	private JButton[] Button;
 	private JButton OK;
 	private JButton Withdrawal;
 	private JButton Delete;
 	private JTextField _idField;
 	
+	private boolean _passCheck = true;
+
+	private ArrayList<String> _directoryArray;
+	private ArrayList<String> _nameArray;
+	
 	private String[] _result;
 	private String[] _fileList;
+	private String[] _name;
 	private String _id;
 	private String _receivedID;
 	private String _gpCode;
 	private String _gpName;
+	private String _downloadDirectory;
 	private int _mod;
+	private int _x=0;
+	private int _y=0;
 	
 	private DefaultListModel<String> _model;
 	private JList<String> _list;
@@ -58,11 +71,13 @@ public class Client_Group_Main extends JFrame{
 	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	private Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
 	
+	private Client_FolderSelector _cfs;
 	private Client_Group_Search _cgs;
 	private Client_Group_Invite _cgi;
 	private Client_Group_Withdrawal _cgw;
 	private Client_Delete_Group _cdg;
 	private Client_File_ListReceiver _cfl;
+	private Client_File_Download _cfd;
 	
 	public static void main(String args[])
 	{
@@ -76,17 +91,29 @@ public class Client_Group_Main extends JFrame{
 		_gpCode = gpCode;
 		_gpName = gpName;
 		_mod = mod;
+		_cfs = new Client_FolderSelector();
 		_cgs = new Client_Group_Search();
 		_cgi = new Client_Group_Invite();
 		_cgw = new Client_Group_Withdrawal();
 		_cdg = new Client_Delete_Group();
+		_cfd = new Client_File_Download();
 		_cfl = cfl;
 		_fileList = _cfl.getFileList();
-		for(int i = 0 ; i < _fileList.length; i++)
-		{
-			System.out.println(_fileList[i]);
-		}
+		_directoryArray = new ArrayList<String>();
+		_nameArray = new ArrayList<String>();
 		
+		
+		 _name = new String[_fileList.length];
+	        for(int i = 0; i < _fileList.length; i++)
+	        {	
+	        	StringTokenizer st=new StringTokenizer(_fileList[i], "\\");
+
+	        	while(st.hasMoreTokens())
+	        	{
+	    			_name[i] = st.nextToken();
+	    		}
+	    	}
+	
 		try{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
 			 Image image = tk.getImage("gui/logo.png");
@@ -243,6 +270,160 @@ public class Client_Group_Main extends JFrame{
          });
        
         
+        _Select = new JButton(new ImageIcon("img/select.png"));
+        _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
+        _Select.setBounds(685, 300, 80, 40);
+        _Select.setFocusPainted(false);
+        _Select.setContentAreaFilled(false);
+        _Select.setBorderPainted(false);
+        _Select.addActionListener(new ActionListener() 
+        {     
+         	public void actionPerformed(ActionEvent arg0)
+         	{	
+         		_cfs.folderSelectorON();
+         		while(!_cfs.getSelectionEnd())
+         		{
+         			try 
+         			{
+						Thread.sleep(1);
+					}
+         			catch (InterruptedException e)
+         			{
+						e.printStackTrace();
+					}
+         		}
+         		_downloadDirectory = _cfs.getSelectedPath();
+         	}
+         });
+        
+        _Download = new JButton(new ImageIcon("img/OK.png"));	
+		_Download.setRolloverIcon(new ImageIcon("img/OKR.png"));
+		_Download.setBounds(700, 100, 45,45);
+		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
+		_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
+		_Download.setBorderPainted(false);
+		_Download.setFocusPainted(false);
+		_Download.setContentAreaFilled(false);
+		_Download.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				for(int i = 0; i < _directoryArray.size(); i++)
+				{
+					_cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i));
+				}
+			}
+		});
+        
+    	Button = new JButton[_name.length];
+		for(int i = 1; i < _name.length + 1; i++)
+		{
+			System.out.println("Æ÷¹®");
+
+			if((i % 6) == 0){
+				Button[i - 1] = new JButton(_name[i - 1],new ImageIcon("gui/logo_mini.png"));		
+				Button[i - 1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
+				Button[i - 1].setBounds((10 - _x),(70 + _y), 92, 120);
+				Button[i - 1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+				Button[i - 1].setVerticalAlignment    ( SwingConstants.TOP ) ;
+				Button[i - 1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
+				Button[i - 1].setBorderPainted(false);
+				Button[i - 1].setFocusPainted(false);
+				Button[i - 1].setContentAreaFilled(false);
+				Button[i - 1].addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e)
+					{
+						_passCheck = true;
+						int index = findIndex(e.getActionCommand());
+						if(!_directoryArray.isEmpty())
+						{
+							for(int j = 0; j < _directoryArray.size(); j++)
+							{
+								if(_fileList[index].equals(_directoryArray.get(j)))
+								{
+									_directoryArray.remove(j);
+									_nameArray.remove(j);
+									_passCheck = false;
+									break;
+								}
+							}
+							if(_passCheck)
+							{
+								_directoryArray.add(_fileList[index]);
+								_nameArray.add(e.getActionCommand());
+							}
+						}
+						else
+						{
+							_directoryArray.add(_fileList[index]);
+							_nameArray.add(e.getActionCommand());
+						}
+						Button[index].setBackground(Color.BLACK);
+						
+						for(int k = 0 ; k < _directoryArray.size(); k++)
+						{
+							System.out.println(_directoryArray.get(k));
+						}
+						System.out.println("----------------------");
+					}
+				});
+				_y+=100;
+				_x=0;
+			}
+			else{
+				Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
+				Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
+				Button[i-1].setBounds((10+_x),70,92,120);
+				Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+				Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
+				Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
+				Button[i-1].setBorderPainted(false);
+				Button[i-1].setFocusPainted(false);
+				Button[i-1].setContentAreaFilled(false);
+				Button[i-1].addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e)
+					{
+						_passCheck = true;
+						int index = findIndex(e.getActionCommand());
+						if(!_directoryArray.isEmpty())
+						{
+							for(int j = 0; j < _directoryArray.size(); j++)
+							{
+								if(_fileList[index].equals(_directoryArray.get(j)))
+								{
+									_directoryArray.remove(j);
+									_nameArray.remove(j);
+									_passCheck = false;
+									break;
+								}
+							}
+							if(_passCheck)
+							{
+								_directoryArray.add(_fileList[index]);
+								_nameArray.add(e.getActionCommand());
+							}
+						}
+						else
+						{
+							_directoryArray.add(_fileList[index]);
+							_nameArray.add(e.getActionCommand());
+						}
+						Button[index].setBackground(Color.BLACK);
+						
+						for(int k = 0 ; k < _directoryArray.size(); k++)
+						{
+							System.out.println(_directoryArray.get(k));
+						}
+						System.out.println("----------------------");
+					}
+				});
+				_x+=120;
+			}
+			layeredPane.add(Button[i-1]);
+		}
+        
+        
         if(_mod == 1)
         {	
         	layeredPane.remove(Withdrawal);
@@ -274,4 +455,21 @@ public class Client_Group_Main extends JFrame{
 	{
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	private int findIndex(String text)
+	{
+		int temp = 0;
+		
+		for(int i = 0; i < _name.length; i++)
+		{
+			if(_name[i].equals(text))
+			{
+				temp = i;
+			}
+		}
+		
+		return temp;
+	}
+
+
 }
