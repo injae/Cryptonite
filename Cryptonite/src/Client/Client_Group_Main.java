@@ -35,7 +35,9 @@ import javax.swing.Icon;
 public class Client_Group_Main extends JFrame{
 	
 	private BufferedImage img = null;
+	private BufferedImage img2 = null;
 
+	private JButton _Upload;
 	private JButton _Select;
 	private JButton _Download;
 	private JButton Search;
@@ -61,6 +63,7 @@ public class Client_Group_Main extends JFrame{
 	private int _mod;
 	private int _x=0;
 	private int _y=0;
+	private boolean _checkmod=true;
 	
 	private DefaultListModel<String> _model;
 	private JList<String> _list;
@@ -127,7 +130,7 @@ public class Client_Group_Main extends JFrame{
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(0,0,816,480);
-		setResizable(false);
+		//setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
@@ -139,6 +142,7 @@ public class Client_Group_Main extends JFrame{
         try 
         {
             img = ImageIO.read(new File("img/초대목록화면.png"));
+            img2 = ImageIO.read(new File("img/초대목록화면2.png"));
         }
         catch (IOException e)
         {
@@ -172,7 +176,6 @@ public class Client_Group_Main extends JFrame{
          		 _idField.setText("");
          	}
          });
-        layeredPane.add( _idField);
         
         
         Search = new JButton(new ImageIcon("img/Search.png"));
@@ -216,7 +219,6 @@ public class Client_Group_Main extends JFrame{
          		}
          	}
          });
-        layeredPane.add(Search);
         
         OK = new JButton(new ImageIcon("img/OK.png"));
         OK.setRolloverIcon(new ImageIcon("img/OKR.png"));
@@ -239,7 +241,8 @@ public class Client_Group_Main extends JFrame{
          		}
          	}
          });
-        layeredPane.add(OK);
+
+        
         
         Withdrawal = new JButton(new ImageIcon("img/Check.png"));
         Withdrawal.setRolloverIcon(new ImageIcon("img/Checkp.png"));
@@ -254,6 +257,20 @@ public class Client_Group_Main extends JFrame{
          		dispose();
          	}
          });
+        
+        _Upload = new JButton(new ImageIcon("img/upload.png"));
+        _Upload.setRolloverIcon(new ImageIcon("img/uploadR.png"));
+        _Upload.setBounds(700, 8, 80, 45);
+        _Upload.setFocusPainted(false);
+        _Upload.setContentAreaFilled(false);
+        _Upload.setBorderPainted(false);
+        _Upload.addActionListener(new ActionListener() {     
+        	public void actionPerformed(ActionEvent arg0)
+        	{	
+        		
+        	}
+        });
+        layeredPane.add(_Upload);
         
         Delete = new JButton(new ImageIcon("img/Settingbt.png"));
         Delete.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
@@ -295,6 +312,7 @@ public class Client_Group_Main extends JFrame{
          		_downloadDirectory = _cfs.getSelectedPath();
          	}
          });
+        layeredPane.add(_Select);
         
         _Download = new JButton(new ImageIcon("img/OK.png"));	
 		_Download.setRolloverIcon(new ImageIcon("img/OKR.png"));
@@ -315,6 +333,7 @@ public class Client_Group_Main extends JFrame{
 				}
 			}
 		});
+		layeredPane.add(_Download);
         
     	Button = new JButton[_name.length];
 		for(int i = 1; i < _name.length + 1; i++)
@@ -426,18 +445,24 @@ public class Client_Group_Main extends JFrame{
         
         if(_mod == 1)
         {	
-        	layeredPane.remove(Withdrawal);
-        	layeredPane.add(Delete);
+            layeredPane.add(Search);
+        	layeredPane.add( _idField);
+            layeredPane.add(OK);
+            layeredPane.remove(Withdrawal);
+            layeredPane.add(Delete);
+        	layeredPane.add(panel);
+            getContentPane().add(layeredPane);
         	
         }
         else
         {
+        	_checkmod=false;
         	layeredPane.remove(Delete);
         	layeredPane.add(Withdrawal);
+        	layeredPane.add(panel);
+            getContentPane().add(layeredPane);
         }
         
-        layeredPane.add(panel);
-        getContentPane().add(layeredPane);
         setVisible(true);
 	}
 	
@@ -445,10 +470,20 @@ public class Client_Group_Main extends JFrame{
 	{
         public void paint(Graphics g) 
         {
-            g.drawImage(img, 0, 0, null);
-            g.setColor(Color.BLACK);
-        	g.setFont(fontbt);
-        	g.drawString("Group Name : " + _gpName, 230, 35);
+        	if(_checkmod)
+        	{
+        		g.drawImage(img, 0, 0, null);
+        		g.setColor(Color.BLACK);
+        		g.setFont(fontbt);
+        		g.drawString("Group Name : " + _gpName, 230, 35);
+        	}
+        	else
+        	{
+        		g.drawImage(img2, 0, 0, null);
+        		g.setColor(Color.BLACK);
+        		g.setFont(fontbt);
+        		g.drawString("Group Name : " + _gpName, 230, 35);
+        	}
         }
    }
 	private void showMessage(String title, String message) 
