@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import org.omg.stub.java.rmi._Remote_Stub;
 
+import Crypto.aesKeyGenerator;
 import Function.PacketProcessor;
 
 public class Server_Make_Group extends Server_Funtion
@@ -76,7 +77,14 @@ public class Server_Make_Group extends Server_Funtion
 			}
 			String gpName = new String(_activity.receive.getByte()).trim();
 			
-			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"');");
+			aesKeyGenerator ukg = new aesKeyGenerator();
+			ukg.init();
+			String aeskey= ukg.getAesKeyToString();
+			String iteration= ukg.getIterationCountToString();
+			String salt= ukg.getSaltToString();
+			
+			
+			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"','" +aeskey+"','" + iteration +"','" + salt+"');");
 			
 			for(int i = 0; i < _members.size(); i++)
 			{
