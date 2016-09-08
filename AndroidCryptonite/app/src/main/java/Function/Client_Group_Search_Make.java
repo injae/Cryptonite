@@ -16,23 +16,23 @@ import java.util.Queue;
 /**
  * Created by olleh on 2016-08-26.
  */
-public class Client_Group_Search implements PacketRule{
+public class Client_Group_Search_Make implements PacketRule{
 
     private Client_Server_Connector css;
-    private static Client_Group_Search cgs;
+    private static Client_Group_Search_Make cgs;
     private FloatingSearchView searchView;
     public Queue<String> queue = new LinkedList<>();
 
-    private Client_Group_Search(FloatingSearchView searchView){
+    private Client_Group_Search_Make(FloatingSearchView searchView){
         css = Client_Server_Connector.getInstance();
         this.searchView = searchView;
     }
 
 
-    public static Client_Group_Search getInstance(FloatingSearchView searchView){
+    public static Client_Group_Search_Make getInstance(FloatingSearchView searchView){
  //       if (cgs == null)
   //      {
-            cgs = new Client_Group_Search(searchView);
+            cgs = new Client_Group_Search_Make(searchView);
   //      }
         return cgs;
     }

@@ -26,4 +26,8 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     compile 'com.github.angads25:filepicker:1.0.2'
     compile 'com.github.arimorty:floatingsearchview:2.0.3'
+    repositories {
+        mavenCentral()
+    }
+    compile 'com.sothree.slidinguppanel:library:3.3.0'
 }

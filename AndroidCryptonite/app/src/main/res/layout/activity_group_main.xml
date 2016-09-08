@@ -1,76 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.cryptonite.cryptonite.GroupMainActivity"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="bottom"
+    android:id="@+id/Add_User_Pane"
+    app:umanoPanelHeight="0dp"
+    app:umanoShadowHeight="0dp"
+    app:umanoParallaxOffset="100dp"
+    tools:context="com.cryptonite.cryptonite.GroupMainActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_height="wrap_content">
 
-            <ImageView
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView7"
+                    android:src="@drawable/bh"
+                    android:layout_marginRight="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Group_main_title"
+                    android:layout_gravity="bottom"
+                    android:textSize="22dp"
+                    android:textStyle="bold"
+                    android:textColor="#02aeef"
+                    android:text="GroupTitle" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView7"
-                android:src="@drawable/bh"
-                android:layout_marginRight="5dp" />
+                android:layout_gravity="right">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/Group_main_title"
-                android:layout_gravity="bottom"
-                android:textSize="22dp"
-                android:textStyle="bold"
-                android:textColor="#02aeef"
-                android:text="GroupTitle" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Add_User"
+                    android:background="#00000000"
+                    android:src="@drawable/add_user"
+                    android:layout_marginRight="5dp"/>
 
-        </LinearLayout>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/File_Send"
+                    android:layout_gravity="top|right"
+                    android:background="#00000000"
+                    android:src="@drawable/upload"
+                    android:layout_marginRight="5dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/File_Download"
+                    android:layout_gravity="right"
+                    android:src="@drawable/download"
+                    android:background="#00000000"/>
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/File_Send"
-                android:layout_gravity="top|right"
-                android:background="#00000000"
-                android:src="@drawable/upload"
-                android:layout_marginRight="5dp" />
+            </LinearLayout>
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/File_Download"
-                android:layout_gravity="right"
-                android:src="@drawable/download"
-                android:background="#00000000"/>
+        </FrameLayout>
 
-        </LinearLayout>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/File_ListView"
+            android:background="@drawable/list_view_border"
+            android:padding="1dp"/>
 
-    </FrameLayout>
+    </LinearLayout>
 
-    <ListView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/File_ListView"
-        android:background="@drawable/list_view_border"
-        android:padding="1dp"/>
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="60dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/id_listView2"
+                    android:background="@drawable/list_view_border"
+                    android:padding="1dp"
+                    android:layout_weight=".9"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/invite_Button"
+                    android:background="#00000000"
+                    android:src="@drawable/add_user2"
+                    android:layout_marginTop="40dp"
+                    android:layout_weight=".1"
+                    android:layout_gravity="center"/>
+
+
+            </LinearLayout>
+
+
+            <com.arlib.floatingsearchview.FloatingSearchView
+                android:id="@+id/invite_search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:floatingSearch_searchHint="Search id to invite"
+                app:floatingSearch_suggestionsListAnimDuration="250"
+                app:floatingSearch_showSearchKey="false"
+                app:floatingSearch_leftActionMode="showSearch"
+                app:floatingSearch_close_search_on_keyboard_dismiss="true" />
+
+        </FrameLayout>
+
+
+
+
+    </LinearLayout>
+
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

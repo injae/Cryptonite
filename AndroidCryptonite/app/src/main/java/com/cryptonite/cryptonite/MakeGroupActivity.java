@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.List;
 
 import Function.C_Toast;
-import Function.Client_Group_Search;
+import Function.Client_Group_Search_Make;
 import Function.Client_Info;
 import Function.Client_Server_Connector;
 import Function.GroupAdapter;
@@ -64,7 +64,7 @@ public class MakeGroupActivity extends AppCompatActivity implements PacketRule {
 
         searchView = (FloatingSearchView) findViewById(R.id.floating_search_view);
 
-        final Client_Group_Search cgs = Client_Group_Search.getInstance(searchView);
+        final Client_Group_Search_Make cgs = Client_Group_Search_Make.getInstance(searchView);
 
         searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
