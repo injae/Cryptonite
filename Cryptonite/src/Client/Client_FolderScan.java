@@ -82,22 +82,24 @@ public class Client_FolderScan extends Thread
 		
 		File firstScan = new File(_address);
 		String[] fileList = firstScan.list();
-		for(int i = 0; i < fileList.length; i++)
+		try 
 		{
-			File temp = new File(_address + "\\" + fileList[i]);
-			if(temp.isDirectory())
+			for(int i = 0; i < fileList.length; i++)
 			{
-				System.out.println("New Folder is Created >> " + _address + "\\" + fileList[i]);
-				new Client_FolderScan(_address + "\\" + fileList[i]);
+				File temp = new File(_address + "\\" + fileList[i]);
+				if(temp.isDirectory())
+				{
+					System.out.println("New Folder is Created >> " + _address + "\\" + fileList[i]);
+					new Client_FolderScan(_address + "\\" + fileList[i]);
+				}
+				else if(temp.isFile())
+				{
+					System.out.println("New File is Created >> " + _address + "\\" + fileList[i]);
+				}
+				_cab.autoBackup(_address + "\\" + fileList[i]);
 			}
-			else if(temp.isFile())
-			{
-				System.out.println("New File is Created >> " + _address + "\\" + fileList[i]);
-			}
-			_cab.autoBackup(_address + "\\" + fileList[i]);
-		}
 		
-		try {
+		//try {
 			_watchService = FileSystems.getDefault().newWatchService();
 			Path directory = Paths.get(_address);
 		    directory.register(_watchService, StandardWatchEventKinds.ENTRY_CREATE);
@@ -157,6 +159,36 @@ public class Client_FolderScan extends Thread
 		{
 			System.out.println("WatchService Thread was closed successfully.");
 			this.interrupt();
+		}
+		catch(NullPointerException e)
+		{
+			showMessage("ERROR","Protected Folder Was deleted.");
+			_cfs = new Client_FolderSelector();
+			_cfs.folderSelectorON();
+			while (!_cfs.getSelectionEnd()) 
+			{
+				try 
+				{
+					Thread.sleep(1);
+				} catch (InterruptedException e1) 
+				{
+					e1.printStackTrace();
+				}
+			}
+			_address = _cfs.getSelectedPath();
+			File save = new File("Cryptonite_Client/log/protectedlog.ser");
+			try 
+			{
+				FileWriter fw = new FileWriter(save);
+				fw.write(_address);
+				fw.close();
+			} 
+			catch (IOException e1)
+			{
+				e1.printStackTrace();
+			}
+			showMessage("Notification","Restart the Cryptonite Please.");
+			System.exit(0);
 		}
 	}
 	
