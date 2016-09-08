@@ -103,6 +103,7 @@ public class Server_Make_Group extends Server_Funtion
 				}
 				_db.Update("update test set mygrouplist = '" + groupList + "' where uscode = " + Server_Code_Manager.codeCutter(_members.get(i)) + ";");
 			}
+			
 			File newFolder = new File("Server_Folder/Backup/" + gpCode);
 			if(!newFolder.exists())
 			{

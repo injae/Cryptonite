@@ -19,9 +19,7 @@ public class Server_MakeOTP extends Server_Funtion
 	private ObjectOutputStream _oos = null;
 	
 	private int _oneTime = 1;
-	
 
-	
 	private void makeOTP()
 	{
 		int temp;

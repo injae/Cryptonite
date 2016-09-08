@@ -11,7 +11,7 @@ public class Crypto_test {
 		rsaKeyGenerator generator = new rsaKeyGenerator();
 		Key _pubKey = generator.get_pubKey();
 		Key _priKey = generator.get_priKey();
-		userKeyGenerator uGenerator = new userKeyGenerator();
+		aesKeyGenerator uGenerator = new aesKeyGenerator();
 		SecretKey secretKey = uGenerator.getAesKey();
 
 		Crypto encrypt = new Crypto(Crypto_Factory.create("RSA1024", Cipher.ENCRYPT_MODE, _pubKey));

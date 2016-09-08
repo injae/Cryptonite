@@ -7,14 +7,14 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import Function.*;
 
-public class userKeyGenerator {
+public class aesKeyGenerator {
 	private byte[] _salt = null;
 	private SecretKey _keyData = null;
 	private int _iterationCount = 0;
 	private SecureRandom _random = null;
 
 	//Constructor
-	public userKeyGenerator()
+	public aesKeyGenerator()
 	{
 		init();
 	}
