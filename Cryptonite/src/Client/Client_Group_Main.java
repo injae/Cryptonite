@@ -35,7 +35,9 @@ import javax.swing.Icon;
 public class Client_Group_Main extends JFrame{
 	
 	private BufferedImage img = null;
+	private BufferedImage img2 = null;
 
+	private JButton _Upload;
 	private JButton _Select;
 	private JButton _Download;
 	private JButton Search;
@@ -61,10 +63,14 @@ public class Client_Group_Main extends JFrame{
 	private int _mod;
 	private int _x=0;
 	private int _y=0;
+	private boolean _checkmod=true;
 	
 	private DefaultListModel<String> _model;
 	private JList<String> _list;
-	JScrollPane scrollPane = null;
+	private JScrollPane scrollPane = null;
+	private Container container;
+	private JLayeredPane layeredPane = new JLayeredPane();
+	private  MyPanel panel = new MyPanel();
 	
 	private int _count = 1;
 	
@@ -78,6 +84,7 @@ public class Client_Group_Main extends JFrame{
 	private Client_Delete_Group _cdg;
 	private Client_File_ListReceiver _cfl;
 	private Client_File_Download _cfd;
+	private Client_File_Upload _cfu;
 	
 	public static void main(String args[])
 	{
@@ -91,6 +98,7 @@ public class Client_Group_Main extends JFrame{
 		_gpCode = gpCode;
 		_gpName = gpName;
 		_mod = mod;
+		_cfu = new Client_File_Upload();
 		_cfs = new Client_FolderSelector();
 		_cgs = new Client_Group_Search();
 		_cgi = new Client_Group_Invite();
@@ -124,21 +132,24 @@ public class Client_Group_Main extends JFrame{
 			System.out.println("Appilcation icon not found");
 		}	
 		
-		getContentPane().setBackground(Color.WHITE);
+		container=getContentPane();
+		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(0,0,816,480);
-		setResizable(false);
+		//setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
+		container.setLayout(null);
+		
 		getContentPane().setLayout(null);
-        JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setBounds(0, 0, 816, 480);
         layeredPane.setLayout(null);
         
         try 
         {
             img = ImageIO.read(new File("img/초대목록화면.png"));
+            img2 = ImageIO.read(new File("img/초대목록화면2.png"));
         }
         catch (IOException e)
         {
@@ -146,10 +157,150 @@ public class Client_Group_Main extends JFrame{
             System.exit(0);
         }
         
-        MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 816, 480);
         
-        _idField = new JTextField(15);
+    
+       allocator();
+       button();
+        if(_mod == 1)
+        {	
+        	mod1();
+        }
+        else
+        {
+        	mod2();
+        }
+        
+        setVisible(true);
+	}
+	
+	class MyPanel extends JPanel 
+	{
+        public void paint(Graphics g) 
+        {
+        	if(_checkmod)
+        	{
+        		g.drawImage(img, 0, 0, null);
+        		g.setColor(Color.BLACK);
+        		g.setFont(fontbt);
+        		g.drawString("Group Name : " + _gpName, 230, 35);
+        	}
+        	else
+        	{
+        		g.drawImage(img2, 0, 0, null);
+        		g.setColor(Color.BLACK);
+        		g.setFont(fontbt);
+        		g.drawString("Group Name : " + _gpName, 230, 35);
+        	}
+        }
+   }
+	
+	private void mod1(){
+		layeredPane.add(Search);
+    	layeredPane.add( _idField);
+        layeredPane.add(OK);
+        layeredPane.remove(Withdrawal);
+        layeredPane.add(Delete);
+    	layeredPane.add(panel);
+        container.add(layeredPane);
+	}
+	private void mod2(){
+		
+		_checkmod=false;
+    	layeredPane.remove(Delete);
+    	layeredPane.add(Withdrawal);
+    	layeredPane.add(panel);
+        container.add(layeredPane);
+        
+	}
+	
+	private void allocator(){
+		
+		_Upload = new JButton(new ImageIcon("img/upload.png"));
+        _Upload.setRolloverIcon(new ImageIcon("img/uploadR.png"));
+        _Upload.setBounds(700, 8, 80, 45);
+        _Upload.setFocusPainted(false);
+        _Upload.setContentAreaFilled(false);
+        _Upload.setBorderPainted(false);
+        _Upload.addActionListener(new ActionListener() {     
+        	public void actionPerformed(ActionEvent arg0)
+        	{	
+        		_cfu.click(_gpCode);
+        		_fileList = _cfl.getFileList();
+        		_x=0;
+        		_y=0;
+        		layeredPane.removeAll();
+        		for(int i=0;i<_fileList.length;i++){
+        			System.out.println(_fileList[i]);
+        			if(_fileList.length==0){
+        				System.out.println("아무것도 없습니다.");
+        			}
+        		}
+        	    allocator();
+        	       button();
+        	        if(_mod == 1)
+        	        {	
+        	        	mod1();
+        	        }
+        	        else
+        	        {
+        	        	mod2();
+        	        }
+        	        
+        	       repaint();
+         	}
+        });
+        layeredPane.add(_Upload);
+        
+        _Select = new JButton(new ImageIcon("img/select.png"));
+        _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
+        _Select.setBounds(400, 370, 80, 40);
+        _Select.setFocusPainted(false);
+        _Select.setContentAreaFilled(false);
+        _Select.setBorderPainted(false);
+        _Select.addActionListener(new ActionListener() 
+        {     
+         	public void actionPerformed(ActionEvent arg0)
+         	{	
+         		_cfs.folderSelectorON();
+         		while(!_cfs.getSelectionEnd())
+         		{
+         			try 
+         			{
+						Thread.sleep(1);
+					}
+         			catch (InterruptedException e)
+         			{
+						e.printStackTrace();
+					}
+         		}
+         		_downloadDirectory = _cfs.getSelectedPath();
+         	}
+         });
+        layeredPane.add(_Select);
+        
+        _Download = new JButton(new ImageIcon("img/OK.png"));	
+		_Download.setRolloverIcon(new ImageIcon("img/OKR.png"));
+		_Download.setBounds(200, 370, 45,45);
+		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
+		_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
+		_Download.setBorderPainted(false);
+		_Download.setFocusPainted(false);
+		_Download.setContentAreaFilled(false);
+		_Download.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				for(int i = 0; i < _directoryArray.size(); i++)
+				{
+					_cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i));
+				}
+			}
+		});
+		layeredPane.add(_Download);
+        
+	    _idField = new JTextField(15);
         _idField.setBounds(640, 115, 100, 31);
         _idField.setOpaque(false);
         _idField.setForeground(Color.BLACK);
@@ -172,7 +323,6 @@ public class Client_Group_Main extends JFrame{
          		 _idField.setText("");
          	}
          });
-        layeredPane.add( _idField);
         
         
         Search = new JButton(new ImageIcon("img/Search.png"));
@@ -216,7 +366,6 @@ public class Client_Group_Main extends JFrame{
          		}
          	}
          });
-        layeredPane.add(Search);
         
         OK = new JButton(new ImageIcon("img/OK.png"));
         OK.setRolloverIcon(new ImageIcon("img/OKR.png"));
@@ -239,7 +388,8 @@ public class Client_Group_Main extends JFrame{
          		}
          	}
          });
-        layeredPane.add(OK);
+
+        
         
         Withdrawal = new JButton(new ImageIcon("img/Check.png"));
         Withdrawal.setRolloverIcon(new ImageIcon("img/Checkp.png"));
@@ -255,6 +405,7 @@ public class Client_Group_Main extends JFrame{
          	}
          });
         
+        
         Delete = new JButton(new ImageIcon("img/Settingbt.png"));
         Delete.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
         Delete.setBounds(685, 380, 50, 50);
@@ -268,55 +419,11 @@ public class Client_Group_Main extends JFrame{
          		dispose();
          	}
          });
-       
-        
-        _Select = new JButton(new ImageIcon("img/select.png"));
-        _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
-        _Select.setBounds(685, 300, 80, 40);
-        _Select.setFocusPainted(false);
-        _Select.setContentAreaFilled(false);
-        _Select.setBorderPainted(false);
-        _Select.addActionListener(new ActionListener() 
-        {     
-         	public void actionPerformed(ActionEvent arg0)
-         	{	
-         		_cfs.folderSelectorON();
-         		while(!_cfs.getSelectionEnd())
-         		{
-         			try 
-         			{
-						Thread.sleep(1);
-					}
-         			catch (InterruptedException e)
-         			{
-						e.printStackTrace();
-					}
-         		}
-         		_downloadDirectory = _cfs.getSelectedPath();
-         	}
-         });
-        
-        _Download = new JButton(new ImageIcon("img/OK.png"));	
-		_Download.setRolloverIcon(new ImageIcon("img/OKR.png"));
-		_Download.setBounds(700, 100, 45,45);
-		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
-		_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
-		_Download.setBorderPainted(false);
-		_Download.setFocusPainted(false);
-		_Download.setContentAreaFilled(false);
-		_Download.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				for(int i = 0; i < _directoryArray.size(); i++)
-				{
-					_cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i));
-				}
-			}
-		});
-        
-    	Button = new JButton[_name.length];
+
+	}
+	private void button()
+	{
+		Button = new JButton[_name.length];
 		for(int i = 1; i < _name.length + 1; i++)
 		{
 			System.out.println("포문");
@@ -423,34 +530,7 @@ public class Client_Group_Main extends JFrame{
 			layeredPane.add(Button[i-1]);
 		}
         
-        
-        if(_mod == 1)
-        {	
-        	layeredPane.remove(Withdrawal);
-        	layeredPane.add(Delete);
-        	
-        }
-        else
-        {
-        	layeredPane.remove(Delete);
-        	layeredPane.add(Withdrawal);
-        }
-        
-        layeredPane.add(panel);
-        getContentPane().add(layeredPane);
-        setVisible(true);
 	}
-	
-	class MyPanel extends JPanel 
-	{
-        public void paint(Graphics g) 
-        {
-            g.drawImage(img, 0, 0, null);
-            g.setColor(Color.BLACK);
-        	g.setFont(fontbt);
-        	g.drawString("Group Name : " + _gpName, 230, 35);
-        }
-   }
 	private void showMessage(String title, String message) 
 	{
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
