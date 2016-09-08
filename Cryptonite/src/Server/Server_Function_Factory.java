@@ -53,6 +53,8 @@ public class Server_Function_Factory implements PacketRule
 			return new Server_Find_Captain(activity);
 		case GET_GPS:
 			return new Server_GetGPS(activity);
+		case GET_GROUP_KEY:
+			return new Server_Get_GroupKey(activity);
 		default:
 			System.out.println("Server Funtion Factory: "+ mode);
 			return	new Server_ImDie(activity);
