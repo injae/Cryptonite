@@ -132,9 +132,9 @@ public class Server_Client_Activity implements PacketRule
 	}
 	
 	public void setKey(SecretKey key){
-		this.comKey = key;
+		comKey = key;
 	}
 	public SecretKey getKey(){
-		return this.comKey;
+		return comKey;
 	}
 }
