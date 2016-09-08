@@ -9,7 +9,7 @@ import java.nio.*;
 import java.util.*;
 
 import Crypto.Crypto_Factory;
-import Crypto.userKeyGenerator;
+import Crypto.aesKeyGenerator;
 
 import java.io.*;
 

@@ -34,7 +34,7 @@ import Function.PacketRule;
 import Server.Server_DataBase;
 import Crypto.Base64Coder;
 import Crypto.Crypto;
-import Crypto.userKeyGenerator;
+import Crypto.aesKeyGenerator;
 
 	public class Client_SignUp extends JFrame implements PacketRule //Create new account
 	//Create new page

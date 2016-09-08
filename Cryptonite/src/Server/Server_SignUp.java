@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import Crypto.userKeyGenerator;
+import Crypto.aesKeyGenerator;
 import Function.PacketRule;
 
 public class Server_SignUp extends Server_Funtion  implements PacketRule
@@ -79,7 +79,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		String password=new String(_activity.receive.getByte()).trim();
 		String email=new String(_activity.receive.getByte()).trim();
 		
-		userKeyGenerator ukg = new userKeyGenerator();
+		aesKeyGenerator ukg = new aesKeyGenerator();
 		ukg.init();
 		String aeskey= ukg.getAesKeyToString();
 		String salt= ukg.getSaltToString();

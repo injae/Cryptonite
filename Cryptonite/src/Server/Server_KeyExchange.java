@@ -16,7 +16,7 @@ import javax.crypto.spec.SecretKeySpec;
 import Crypto.Crypto;
 import Crypto.Crypto_Factory;
 import Crypto.KeyReposit;
-import Crypto.userKeyGenerator;
+import Crypto.aesKeyGenerator;
 
 public class Server_KeyExchange extends Server_Funtion {
     private SecretKey _secretKey = null;
@@ -36,9 +36,12 @@ public class Server_KeyExchange extends Server_Funtion {
 
     @Override
     public void running(int count) throws IOException {
-        if (count == 1) {
+        if (count == 1) 
+        {
             Checker(_activity.getReceiveEvent());
-        } else {
+        }
+        else 
+        {
             makeSecretKey();
 
             try {
@@ -65,7 +68,7 @@ public class Server_KeyExchange extends Server_Funtion {
     }
 
     private void makeSecretKey() {
-        userKeyGenerator generator = new userKeyGenerator();
+        aesKeyGenerator generator = new aesKeyGenerator();
 
         this._secretKey = generator.getAesKey();
         
