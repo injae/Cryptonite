@@ -8,17 +8,23 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
+import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.github.angads25.filepicker.controller.DialogSelectionListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -29,18 +35,26 @@ import Function.C_Toast;
 import Function.Client_File_Download;
 import Function.Client_File_ListReceiver;
 import Function.Client_File_Upload;
+import Function.Client_Group_Invite;
+import Function.Client_Group_Search_Invite;
 import Function.FileListAdapter;
+import Function.GroupInviteAdapter;
 import Function.PathPicker;
 
 public class GroupMainActivity extends AppCompatActivity {
 
     String groupName;
-    ListView fileList;
+    ListView fileList,InviteList;
     FileListAdapter adapter;
     String gpCode;
     GroupMainActivity activity;
     String[] filePath;
     ArrayList<String> selectPath;
+    SlidingUpPanelLayout slidingUpPanelLayout;
+    FloatingSearchView floatingSearchView;
+    GroupInviteAdapter groupInviteAdapter;
+    Client_Group_Search_Invite cgs;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +62,8 @@ public class GroupMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_main);
 
         activity = this;
+        groupInviteAdapter = new GroupInviteAdapter(getApplicationContext(),R.layout.make_group_id_list);
+
 
         Intent intent = getIntent();
         groupName = intent.getStringExtra("title");
@@ -77,6 +93,75 @@ public class GroupMainActivity extends AppCompatActivity {
             }
         });
 
+        InviteList = (ListView) findViewById(R.id.id_listView2);
+
+        InviteList.setAdapter(groupInviteAdapter);
+        groupInviteAdapter.add("No Invite List");
+
+        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.Add_User_Pane);
+
+        floatingSearchView = (FloatingSearchView) findViewById(R.id.invite_search_view);
+
+        cgs = Client_Group_Search_Invite.getInstance(floatingSearchView);
+
+        floatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+            @Override
+            public void onSearchTextChanged(String oldQuery, String newQuery) {
+                if (newQuery.length() <= 1) {
+                    cgs.queue.clear();
+                    floatingSearchView.clearSuggestions();
+                } else {
+                    cgs.Search(newQuery);
+                }
+            }
+        });
+
+        floatingSearchView.setOnBindSuggestionCallback(new SearchSuggestionsAdapter.OnBindSuggestionCallback() {
+            @Override
+            public void onBindSuggestion(View suggestionView, ImageView leftIcon,final TextView textView, SearchSuggestion item, int itemPosition) {
+                suggestionView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        floatingSearchView.clearSuggestions();
+                        floatingSearchView.clearQuery();
+                        floatingSearchView.clearSearchFocus();
+                        groupInviteAdapter.add(textView.getText().toString());
+                    }
+                });
+            }
+        });
+
+        ImageButton invite = (ImageButton) findViewById(R.id.invite_Button);
+        invite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (groupInviteAdapter.getItem(0).equals("No Invite List"))
+                    new C_Toast(getApplicationContext()).showToast("Please add id to invite",Toast.LENGTH_SHORT);
+                else
+                {
+                    progressDialog = new ProgressDialog(GroupMainActivity.this);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setTitle("Inviting");
+                    progressDialog.show();
+                    String[] temp = new String[1 + groupInviteAdapter.size() + 1];
+                    temp[0]=String.valueOf(groupInviteAdapter.size());
+                    for(int i=0; i<groupInviteAdapter.size();i++)
+                        temp[1+i] = (String)groupInviteAdapter.getItem(i);
+                    temp[groupInviteAdapter.size()+1]=gpCode;
+                    new Client_Group_Invite(getApplicationContext(),progressDialog).execute(temp);
+                }
+            }
+        });
+
+        ImageButton addUser = (ImageButton) findViewById(R.id.Add_User);
+
+        addUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            }
+        });
+
         ImageButton fileDown = (ImageButton) findViewById(R.id.File_Download);
 
         fileDown.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +170,10 @@ public class GroupMainActivity extends AppCompatActivity {
                 if (selectPath.isEmpty())
                     new C_Toast(GroupMainActivity.this).showToast("Select files to download",Toast.LENGTH_SHORT);
                 else {
+                    if (selectPath.get(0).equals("No Files")){
+                        new C_Toast(getApplicationContext()).showToast("No Files in group folder",Toast.LENGTH_SHORT);
+                        return;
+                    }
                     new C_Toast(GroupMainActivity.this).showToast("Select download Folder",Toast.LENGTH_SHORT);
                     PathPicker p = new PathPicker(GroupMainActivity.this,PathPicker.Select_Dir);
                     p.setDialogSelectionListener(new DialogSelectionListener() {
@@ -109,8 +198,6 @@ public class GroupMainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
 
         ImageButton fileSend = (ImageButton) findViewById(R.id.File_Send);
@@ -162,6 +249,14 @@ public class GroupMainActivity extends AppCompatActivity {
         super.onResume();
 
         refreshList();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (slidingUpPanelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.COLLAPSED)
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        else
+            super.onBackPressed();
     }
 
     public void refreshList() {
