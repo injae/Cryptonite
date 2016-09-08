@@ -226,28 +226,47 @@ public class Client_Group_Main extends JFrame{
         	public void actionPerformed(ActionEvent arg0)
         	{	
         		_cfu.click(_gpCode);
+        		_cfl.running((byte)1, _gpCode);
         		_fileList = _cfl.getFileList();
         		_x=0;
         		_y=0;
+        		
+        		_name = new String[_fileList.length];
+    	        for(int i = 0; i < _fileList.length; i++)
+    	        {	
+    	        	StringTokenizer st=new StringTokenizer(_fileList[i], "\\");
+
+    	        	while(st.hasMoreTokens())
+    	        	{
+    	    			_name[i] = st.nextToken();
+    	    		}
+    	    	}
+        		
         		layeredPane.removeAll();
-        		for(int i=0;i<_fileList.length;i++){
+        		for(int i = 0; i < Button.length; i++)
+        		{
+        			Button[i].repaint();
+        		}
+        		
+        		for(int i=0;i<_fileList.length;i++)
+        		{
         			System.out.println(_fileList[i]);
-        			if(_fileList.length==0){
+        			if(_fileList.length==0)
+        			{
         				System.out.println("아무것도 없습니다.");
         			}
         		}
         	    allocator();
-        	       button();
-        	        if(_mod == 1)
-        	        {	
-        	        	mod1();
-        	        }
-        	        else
-        	        {
-        	        	mod2();
-        	        }
-        	        
-        	       repaint();
+        	    button();
+    	        if(_mod == 1)
+    	        {	
+    	        	mod1();
+    	        }
+    	        else
+    	        {
+    	        	mod2();
+    	        }
+    	       repaint();
          	}
         });
         layeredPane.add(_Upload);
@@ -279,9 +298,9 @@ public class Client_Group_Main extends JFrame{
          });
         layeredPane.add(_Select);
         
-        _Download = new JButton(new ImageIcon("img/OK.png"));	
-		_Download.setRolloverIcon(new ImageIcon("img/OKR.png"));
-		_Download.setBounds(200, 370, 45,45);
+        _Download = new JButton(new ImageIcon("img/DOWNLOAD.png"));	
+		_Download.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
+		_Download.setBounds(200, 370, 80,40);
 		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
 		_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;

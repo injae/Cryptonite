@@ -23,7 +23,7 @@ public class Client_File_ListReceiver implements PacketRule
 	// Constructors
 	public Client_File_ListReceiver()
 	{
-		_fileList = new ArrayList<String>();
+		
 		_csc = Client_Server_Connector.getInstance();
 		_cfs = new Client_FolderSelector();
 		_cfd = new Client_File_Download();
@@ -34,7 +34,8 @@ public class Client_File_ListReceiver implements PacketRule
 	{
 		try 
 		{
-			_fileList.clear();
+			_fileList = new ArrayList<String>();
+			//_fileList.clear();
 			
 			Charset cs = Charset.forName("UTF-8");
 			byte[] event = new byte[1024];

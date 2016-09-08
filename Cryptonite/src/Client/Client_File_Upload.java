@@ -7,6 +7,11 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
+import javax.crypto.Cipher;
+
+import Crypto.Crypto;
+import Crypto.Crypto_Factory;
+import Crypto.KeyReposit;
 import Function.PacketRule;
 import Function.Function;
 import Function.PacketProcessor;
@@ -25,9 +30,14 @@ public class Client_File_Upload implements PacketRule
 	private Client_Server_Connector _csc = null;
 	private Client_FileSelector _cfs = null;
 	
+	private Crypto _crypto = null;
+	private KeyReposit _reposit = null;
+	
 	// Constructors
 	public Client_File_Upload()
 	{
+		_reposit = KeyReposit.getInstance();
+		_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, _reposit.get_aesKey()));
 		_csc = Client_Server_Connector.getInstance();
 		_cfs = new Client_FileSelector();
 	}
