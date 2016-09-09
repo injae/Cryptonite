@@ -443,111 +443,74 @@ public class Client_Group_Main extends JFrame{
 	private void button()
 	{
 		Button = new JButton[_name.length];
+		int number=7;
 		for(int i = 1; i < _name.length + 1; i++)
 		{
-			System.out.println("Æ÷¹®");
+			if(i>6){
+				if(number==i){
+					_x=0;
+					_y+=120;
+					number+=6;
+				}
+				else
+				{
+					_x+=100;
+				}
+			}
+			else
+			{
+				if(i>1){_x+=100;}
+			}
 
-			if((i % 6) == 0){
-				Button[i - 1] = new JButton(_name[i - 1],new ImageIcon("gui/logo_mini.png"));		
-				Button[i - 1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-				Button[i - 1].setBounds((10 - _x),(70 + _y), 92, 120);
-				Button[i - 1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-				Button[i - 1].setVerticalAlignment    ( SwingConstants.TOP ) ;
-				Button[i - 1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
-				Button[i - 1].setBorderPainted(false);
-				Button[i - 1].setFocusPainted(false);
-				Button[i - 1].setContentAreaFilled(false);
-				Button[i - 1].addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e)
+			Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
+			Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
+			Button[i-1].setBounds((10+_x),(70+_y),92,120);
+			Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+			Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
+			Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
+			Button[i-1].setBorderPainted(false);
+			Button[i-1].setFocusPainted(false);
+			Button[i-1].setContentAreaFilled(false);
+			Button[i-1].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e)
+				{
+					_passCheck = true;
+					int index = findIndex(e.getActionCommand());
+					if(!_directoryArray.isEmpty())
 					{
-						_passCheck = true;
-						int index = findIndex(e.getActionCommand());
-						if(!_directoryArray.isEmpty())
+						for(int j = 0; j < _directoryArray.size(); j++)
 						{
-							for(int j = 0; j < _directoryArray.size(); j++)
+							if(_fileList[index].equals(_directoryArray.get(j)))
 							{
-								if(_fileList[index].equals(_directoryArray.get(j)))
-								{
-									_directoryArray.remove(j);
-									_nameArray.remove(j);
-									_passCheck = false;
-									break;
-								}
-							}
-							if(_passCheck)
-							{
-								_directoryArray.add(_fileList[index]);
-								_nameArray.add(e.getActionCommand());
+								_directoryArray.remove(j);
+								_nameArray.remove(j);
+								_passCheck = false;
+								break;
 							}
 						}
-						else
+						if(_passCheck)
 						{
 							_directoryArray.add(_fileList[index]);
 							_nameArray.add(e.getActionCommand());
 						}
-						Button[index].setBackground(Color.BLACK);
-						
-						for(int k = 0 ; k < _directoryArray.size(); k++)
-						{
-							System.out.println(_directoryArray.get(k));
-						}
-						System.out.println("----------------------");
 					}
-				});
-				_y+=100;
-				_x=0;
-			}
-			else{
-				Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
-				Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-				Button[i-1].setBounds((10+_x),70,92,120);
-				Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-				Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
-				Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
-				Button[i-1].setBorderPainted(false);
-				Button[i-1].setFocusPainted(false);
-				Button[i-1].setContentAreaFilled(false);
-				Button[i-1].addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e)
+					else
 					{
-						_passCheck = true;
-						int index = findIndex(e.getActionCommand());
-						if(!_directoryArray.isEmpty())
-						{
-							for(int j = 0; j < _directoryArray.size(); j++)
-							{
-								if(_fileList[index].equals(_directoryArray.get(j)))
-								{
-									_directoryArray.remove(j);
-									_nameArray.remove(j);
-									_passCheck = false;
-									break;
-								}
-							}
-							if(_passCheck)
-							{
-								_directoryArray.add(_fileList[index]);
-								_nameArray.add(e.getActionCommand());
-							}
-						}
-						else
-						{
-							_directoryArray.add(_fileList[index]);
-							_nameArray.add(e.getActionCommand());
-						}
-						Button[index].setBackground(Color.BLACK);
-						
-						for(int k = 0 ; k < _directoryArray.size(); k++)
-						{
-							System.out.println(_directoryArray.get(k));
-						}
-						System.out.println("----------------------");
+						_directoryArray.add(_fileList[index]);
+						_nameArray.add(e.getActionCommand());
 					}
-				});
-				_x+=120;
-			}
+					Button[index].setBackground(Color.BLACK);
+					
+					for(int k = 0 ; k < _directoryArray.size(); k++)
+					{
+						System.out.println(_directoryArray.get(k));
+					}
+					System.out.println("----------------------");
+				}
+			});
 			layeredPane.add(Button[i-1]);
 		}
+		
         
 	}
 	private void showMessage(String title, String message) 

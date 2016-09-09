@@ -1,81 +1,75 @@
 package Client;
 
-import java.awt.Component;
-import java.awt.Font;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JList;
-
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.util.HashMap;
-import java.util.Map;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.ImageIcon;
+import java.awt.GridLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
-public class jlistview {
-
-    private final Map<String, ImageIcon> imageMap;
+public class jlistview{
 
     public jlistview() {
-        String[] nameList = {"Mario", "Luigi", "Bowser", "Koopa", "Princess"};
-        imageMap = createImageMap(nameList);
-        JList list = new JList(nameList);
-        list.setCellRenderer(new MarioListRenderer());
-        list.setBounds(100,100, 100, 100);
-        list.setVisibleRowCount(JList.HORIZONTAL_WRAP);
-  
-        JScrollPane scroll = new JScrollPane(list);
-        scroll.setPreferredSize(new Dimension(300, 400));
-        
-        JFrame frame = new JFrame();
-        frame.add(scroll);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        initComponents();
     }
 
-    public class MarioListRenderer extends DefaultListCellRenderer {
 
-        Font font = new Font("helvitica", Font.BOLD, 24);
+    private void initComponents() {
+        JFrame jFrame = new JFrame();
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        @Override
-        public Component getListCellRendererComponent(
-                JList list, Object value, int index,
-                boolean isSelected, boolean cellHasFocus) {
+        JPanel panel = new JPanel(new GridLayout(15, 15));
 
-            JLabel label = (JLabel) super.getListCellRendererComponent(
-                    list, value, index, isSelected, cellHasFocus);
-            label.setIcon(imageMap.get((String) value));
-            label.setHorizontalTextPosition(JLabel.RIGHT);
-            label.setFont(font);
-            return label;
+        //create 225 JButtons and add them to JPanel;
+        for (int i = 0; i < 5; i++) {
+            panel.add(new JButton(String.valueOf((i + 1))) {
+                //make buttons bigger for demonstartion purposes
+                @Override
+                public Dimension getPreferredSize() {
+                    return new Dimension(100, 100);
+                }
+            });
         }
-    }
 
-    private Map<String, ImageIcon> createImageMap(String[] list) {
-        Map<String, ImageIcon> map = new HashMap<>();
-        for (String s : list) {
-            map.put(s, new ImageIcon("gui/logo_mini.png"));
-        }
-        return map;
+        JScrollPane scrollpane = new JScrollPane(panel) {
+            //size the JScrollPane purposelfully smaller than all components
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(300, 300);
+            }
+        };
+
+        //add scrollpane to frame
+        jFrame.add(scrollpane);
+
+        //pack frame (size JFrame to match preferred sizes of added components and set visible
+        jFrame.pack();
+        jFrame.setVisible(true);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
+
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new jlistview();
+                try {
+                    //set nimbus look and feel 
+                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                        if ("Nimbus".equals(info.getName())) {
+                            UIManager.setLookAndFeel(info.getClassName());
+                            break;
+                        }
+                    }
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                    e.printStackTrace();
+                }
+                //create new instance of GUI
+                jlistview test = new jlistview();
             }
         });
     }
 }
+
 
