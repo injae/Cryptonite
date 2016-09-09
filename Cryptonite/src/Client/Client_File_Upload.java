@@ -69,7 +69,7 @@ public class Client_File_Upload implements PacketRule
 				
 				while(!p.isAllocatorEmpty())
 				{
-					_csc.send.setPacket(p.read().getByte()).write();
+					_csc.send.setPacket(_crypto.endecription(p.read().getByte())).write();
 				}
 				p.close();
 				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
@@ -99,6 +99,11 @@ public class Client_File_Upload implements PacketRule
 		}
 		_fileNameArray = _cfs.getFileNames();
 		_filePathArray = _cfs.getFilePaths();
+		
+		for(int i = 0; i < _fileNameArray.length; i++)
+		{
+			_fileNameArray[i] += ".cnec";
+		}
 		
 		_fileSizeArray = new long[_filePathArray.length];
 		for(int i = 0; i < _filePathArray.length; i++)
