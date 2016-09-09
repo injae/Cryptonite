@@ -111,7 +111,7 @@ public class Server_File_ListSender extends Server_Funtion
 				else if(fileList[i].isDirectory())
 				{
 					_fileList.add(fileList[i].getPath());
-					readFolder(fileList[i].getPath());
+					//readFolder(fileList[i].getPath());
 				}
 			}
 		}
