@@ -454,12 +454,12 @@ public class Client_Group_Main extends JFrame{
 				}
 				else
 				{
-					_x+=100;
+					_x+=105;
 				}
 			}
 			else
 			{
-				if(i>1){_x+=100;}
+				if(i>1){_x+=105;}
 			}
 
 			Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		

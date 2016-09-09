@@ -69,10 +69,17 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	private String[] _name=null;
 	private int _x=0;
 	private int _y=0;
-	private int _i=0;
+	private int _nowpage=1;
+	private int _page;
 	
 	private JButton _Select;
 	private JButton _Download;
+	private JButton _Right;
+	private JButton _Left;
+
+	private Container container;
+	private JLayeredPane layeredPane = new JLayeredPane();
+	private  MyPanel panel = new MyPanel();
 	
 	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	private Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
@@ -110,15 +117,16 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 			System.out.println("Appilcation icon not found");
 		}	
 		
-		getContentPane().setBackground(Color.WHITE);
+		container=getContentPane();
+		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(0,0,816,480);
 		//setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
-		getContentPane().setLayout(null);
-        JLayeredPane layeredPane = new JLayeredPane();
+		container.setLayout(null);
+		
         layeredPane.setBounds(0, 0, 816, 480);
         layeredPane.setLayout(null);
         
@@ -132,7 +140,6 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
             System.exit(0);
         }
         
-        MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 816, 480);
 
         _name = new String[_fileList.length];
@@ -145,53 +152,157 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
     			_name[i] = st.nextToken();
     		}
     	}
-    
-        _Select = new JButton(new ImageIcon("img/select.png"));
-        _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
-        _Select.setBounds(685, 300, 80, 40);
-        _Select.setFocusPainted(false);
-        _Select.setContentAreaFilled(false);
-        _Select.setBorderPainted(false);
-        _Select.addActionListener(new ActionListener() 
-        {     
-         	public void actionPerformed(ActionEvent arg0)
-         	{	
-         		_cfs.folderSelectorON();
-         		while(!_cfs.getSelectionEnd())
-         		{
-         			try 
-         			{
-						Thread.sleep(1);
-					}
-         			catch (InterruptedException e)
-         			{
-						e.printStackTrace();
-					}
-         		}
-         		_downloadDirectory = _cfs.getSelectedPath();
-         	}
-         });
-
-        _Download = new JButton(new ImageIcon("img/OK.png"));	
-		_Download.setRolloverIcon(new ImageIcon("img/OKR.png"));
-		_Download.setBounds(700, 100, 45,45);
-		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
-		_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
-		_Download.setBorderPainted(false);
-		_Download.setFocusPainted(false);
-		_Download.setContentAreaFilled(false);
-		_Download.addActionListener(new ActionListener() 
+        _page=(_name.length/18)+1;
+       
+		
+		allocator();
+		button();
+		page();
+		
+		basic();
+		
+        setVisible(true);
+	}
+	
+	class MyPanel extends JPanel 
+	{
+        public void paint(Graphics g) 
+        {
+            g.drawImage(img, 0, 0, null);
+            g.setColor(Color.BLACK);
+			g.setFont(_precondition_font);
+			g.drawString(_nowpage+"/"+_page, 690, 330);
+        }
+   }
+	
+	private void basic()
+	{
+		layeredPane.add(_Left);
+		layeredPane.add(_Right);
+		layeredPane.add(_Download);
+        layeredPane.add(_Select);
+        layeredPane.add(panel);
+        container.add(layeredPane);
+	}
+	
+	private void page(){
+		if(_nowpage==1)
 		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				for(int i = 0; i < _directoryArray.size(); i++)
-				{
-					_cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i));
-				}
+			for(int i=0; i<(_nowpage*18);i++){			
+				layeredPane.add(Button[i]);
 			}
-		});
+		}
+		else
+		{
+			for(int i=((_nowpage*18)-((_nowpage-1)*18));i<(_nowpage*18);i++){
+				layeredPane.add(Button[i]);
+			}
+		}
+	}	
+	
+	private void allocator()
+	{
+		 _Select = new JButton(new ImageIcon("img/select.png"));
+	        _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
+	        _Select.setBounds(685, 100, 80, 40);
+	        _Select.setFocusPainted(false);
+	        _Select.setContentAreaFilled(false);
+	        _Select.setBorderPainted(false);
+	        _Select.addActionListener(new ActionListener() 
+	        {     
+	         	public void actionPerformed(ActionEvent arg0)
+	         	{	
+	         		_cfs.folderSelectorON();
+	         		while(!_cfs.getSelectionEnd())
+	         		{
+	         			try 
+	         			{
+							Thread.sleep(1);
+						}
+	         			catch (InterruptedException e)
+	         			{
+							e.printStackTrace();
+						}
+	         		}
+	         		_downloadDirectory = _cfs.getSelectedPath();
+	         	}
+	         });
 
+	        _Download = new JButton(new ImageIcon("img/DOWNLOAD.png"));	
+			_Download.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
+			_Download.setBounds(670, 170, 80,45);
+			_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+			_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
+			_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
+			_Download.setBorderPainted(false);
+			_Download.setFocusPainted(false);
+			_Download.setContentAreaFilled(false);
+			_Download.addActionListener(new ActionListener() 
+			{
+				public void actionPerformed(ActionEvent e) 
+				{
+					for(int i = 0; i < _directoryArray.size(); i++)
+					{
+						_cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i));
+					}
+				}
+			});
+			
+			
+			 _Left = new JButton(new ImageIcon("img/LEFT.png"));
+			 _Left.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
+			 _Left.setBounds(700, 300, 80, 40);
+			 _Left.setFocusPainted(false);
+			 _Left.setContentAreaFilled(false);
+			 _Left.setBorderPainted(false);
+			 _Left.addActionListener(new ActionListener() 
+		        {     
+		         	public void actionPerformed(ActionEvent arg0)
+		         	{	
+		         		if(_nowpage==_page){showMessage("error", "Here is the last page!");}
+		         		else{_nowpage+=1;}
+		         		
+		         		layeredPane.removeAll();
+		         		
+		         		basic();
+		         		page();
+		         		/*for(int i = 0; i < Button.length; i++)
+		        		{
+		        			Button[i].repaint();
+		        		}*/
+		         		layeredPane.updateUI();
+		         		repaint();
+		         	}
+		        });
+			 
+			 _Right = new JButton(new ImageIcon("img/RIGHT.png"));
+			 _Right.setRolloverIcon(new ImageIcon("img/RIGHTR.png"));
+			 _Right.setBounds(630, 300, 80, 40);
+			 _Right.setFocusPainted(false);
+			 _Right.setContentAreaFilled(false);
+			 _Right.setBorderPainted(false);
+			 _Right.addActionListener(new ActionListener() 
+		        {     
+		         	public void actionPerformed(ActionEvent arg0)
+		         	{	
+		         		if(_nowpage==1){showMessage("error", "Here is the first page!");}
+		         		else{_nowpage-=1;}
+		         		layeredPane.removeAll();
+		         		
+		         		basic();
+		         		page();
+		         		/*for(int i = 0; i < Button.length; i++)
+		        		{
+		        			Button[i].repaint();
+		        		}*/
+		         		layeredPane.updateUI();
+		         		repaint();
+		         	}
+		        });
+
+	}
+	private void button()
+	{
 		Button = new JButton[_name.length];
 		int number=7;
 		for(int i = 1; i < _name.length + 1; i++)
@@ -204,113 +315,14 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 				}
 				else
 				{
-					_x+=100;
+					_x+=105;
 				}
 			}
 			else
 			{
-				if(i>1){_x+=100;}
+				if(i>1){_x+=105;}
 			}
 
-			/*if((i % 6) == 0){
-				_y+=120;
-				Button[i - 1] = new JButton(_name[i - 1],new ImageIcon("gui/logo_mini.png"));		
-				Button[i - 1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-				Button[i - 1].setBounds(10,(70 + _y), 92, 120);
-				Button[i - 1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-				Button[i - 1].setVerticalAlignment    ( SwingConstants.TOP ) ;
-				Button[i - 1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
-				Button[i - 1].setBorderPainted(false);
-				Button[i - 1].setFocusPainted(false);
-				Button[i - 1].setContentAreaFilled(false);
-				Button[i - 1].addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e)
-					{
-						_passCheck = true;
-						int index = findIndex(e.getActionCommand());
-						if(!_directoryArray.isEmpty())
-						{
-							for(int j = 0; j < _directoryArray.size(); j++)
-							{
-								if(_fileList[index].equals(_directoryArray.get(j)))
-								{
-									_directoryArray.remove(j);
-									_nameArray.remove(j);
-									_passCheck = false;
-									break;
-								}
-							}
-							if(_passCheck)
-							{
-								_directoryArray.add(_fileList[index]);
-								_nameArray.add(e.getActionCommand());
-							}
-						}
-						else
-						{
-							_directoryArray.add(_fileList[index]);
-							_nameArray.add(e.getActionCommand());
-						}
-						Button[index].setBackground(Color.BLACK);
-						
-						for(int k = 0 ; k < _directoryArray.size(); k++)
-						{
-							System.out.println(_directoryArray.get(k));
-						}
-						System.out.println("----------------------");
-					}
-				});
-				_x=120;
-			}
-			else{
-				Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
-				Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-				Button[i-1].setBounds((10+_x),(70+_y),92,120);
-				Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-				Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
-				Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
-				Button[i-1].setBorderPainted(false);
-				Button[i-1].setFocusPainted(false);
-				Button[i-1].setContentAreaFilled(false);
-				Button[i-1].addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e)
-					{
-						_passCheck = true;
-						int index = findIndex(e.getActionCommand());
-						if(!_directoryArray.isEmpty())
-						{
-							for(int j = 0; j < _directoryArray.size(); j++)
-							{
-								if(_fileList[index].equals(_directoryArray.get(j)))
-								{
-									_directoryArray.remove(j);
-									_nameArray.remove(j);
-									_passCheck = false;
-									break;
-								}
-							}
-							if(_passCheck)
-							{
-								_directoryArray.add(_fileList[index]);
-								_nameArray.add(e.getActionCommand());
-							}
-						}
-						else
-						{
-							_directoryArray.add(_fileList[index]);
-							_nameArray.add(e.getActionCommand());
-						}
-						Button[index].setBackground(Color.BLACK);
-						
-						for(int k = 0 ; k < _directoryArray.size(); k++)
-						{
-							System.out.println(_directoryArray.get(k));
-						}
-						System.out.println("----------------------");
-					}
-				});
-				_x+=120;
-			}*/
 			Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
 			Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
 			Button[i-1].setBounds((10+_x),(70+_y),92,120);
@@ -357,25 +369,10 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 					System.out.println("----------------------");
 				}
 			});
-			layeredPane.add(Button[i-1]);
 		}
-		
-		
-		
-		layeredPane.add(_Download);
-        layeredPane.add(_Select);
-        layeredPane.add(panel);
-        getContentPane().add(layeredPane);
-        setVisible(true);
 	}
 	
-	class MyPanel extends JPanel 
-	{
-        public void paint(Graphics g) 
-        {
-            g.drawImage(img, 0, 0, null);
-        }
-   }
+	
 	private void showMessage(String title, String message) 
 	{
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
