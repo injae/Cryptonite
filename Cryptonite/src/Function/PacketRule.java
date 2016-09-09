@@ -26,6 +26,7 @@ public interface PacketRule
 	byte FIND_CAPTAIN = 19;
 	byte GET_GPS = 20;
 	byte GET_GROUP_KEY = 21;
+	byte FOLDER_LIST = 22;
 	//---------------------------------------
 	
 	// AUTOBACKUP(1) AUTOBACKUP EVENT
