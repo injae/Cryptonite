@@ -6,11 +6,15 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Base64;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import Function.PacketProcessor;
 import Function.PacketRule;
@@ -129,6 +133,22 @@ public class Server_Client_Activity implements PacketRule
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public SecretKey getFileKey()
+	{
+		Server_DataBase db = Server_DataBase.getInstance();
+		
+		ResultSet rs = db.Query("Select *from test where uscode = "+ Server_Code_Manager.codeCutter(getClientCode())+";");
+		String aeskey = null;
+		try {
+			rs.next();
+			aeskey = rs.getString(7);
+		} catch (SQLException e) {
+			// TODO 자동 생성된 catch 블록
+			e.printStackTrace();
+		}
+		return new SecretKeySpec(Base64.getDecoder().decode(aeskey), "AES");
 	}
 	
 	public void setKey(SecretKey key){

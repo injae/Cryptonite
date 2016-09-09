@@ -57,7 +57,6 @@ public class Server_KeyExchange extends Server_Funtion {
                 // Send encrypted secret key to client
                 _activity.send.setPacket(aesKey, 128).write();
                 
-                
                 _activity.send.init(_activity.getKey());
             	_activity.receive.init(_activity.getKey());
             } catch (Exception e1) {
