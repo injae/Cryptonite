@@ -1,4 +1,4 @@
-package Client;
+/*package Client;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -9,22 +9,28 @@ import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class jlistview{
+public class jlistview {
 
+    *//**
+     * Default constructor for ScrollBarOfComponents.class
+     *//*
     public jlistview() {
         initComponents();
     }
 
-
+    *//**
+     * Initialize GUI and components (including ActionListeners etc)
+     *//*
     private void initComponents() {
         JFrame jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridLayout(15, 15));
-
+        JButton[] button=new JButton[(15*15)];
         //create 225 JButtons and add them to JPanel;
-        for (int i = 0; i < 5; i++) {
-            panel.add(new JButton(String.valueOf((i + 1))) {
+        for (int i = 0; i < (15*15); i++) {
+            panel.add() {
+            	
                 //make buttons bigger for demonstartion purposes
                 @Override
                 public Dimension getPreferredSize() {
@@ -51,11 +57,14 @@ public class jlistview{
 
     public static void main(String[] args) {
 
+        *//**
+         * Create GUI and components on Event-Dispatch-Thread
+         *//*
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 try {
-                    //set nimbus look and feel 
+                    //set nimbus look and feel
                     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                         if ("Nimbus".equals(info.getName())) {
                             UIManager.setLookAndFeel(info.getClassName());
@@ -66,10 +75,8 @@ public class jlistview{
                     e.printStackTrace();
                 }
                 //create new instance of GUI
-                jlistview test = new jlistview();
+                jlistview test = new  jlistview();
             }
         });
     }
-}
-
-
+}*/
