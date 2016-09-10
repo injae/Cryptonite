@@ -152,7 +152,13 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
     			_name[i] = st.nextToken();
     		}
     	}
-        _page=(_name.length/18)+1;
+        if((_name.length%18)==0){
+        	_page=(_name.length/18);
+        }
+        else{
+        	_page=(_name.length/18)+1;
+        }
+        
        
 		
 		allocator();
@@ -187,15 +193,24 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	
 	private void page(){
 		if(_nowpage==1)
-		{
+		{ 
 			for(int i=0; i<(_nowpage*18);i++){			
 				layeredPane.add(Button[i]);
 			}
 		}
 		else
 		{
-			for(int i=((_nowpage*18)-((_nowpage-1)*18));i<(_nowpage*18);i++){
-				layeredPane.add(Button[i]);
+			if(_nowpage==_page){
+				for(int i=((_nowpage*18)-((_nowpage-1)*18));i<_name.length;i++)
+				{	
+					layeredPane.add(Button[i]);
+				}
+			}	
+			else{
+				for(int i=((_nowpage*18)-((_nowpage-1)*18));i<(_nowpage*18);i++)
+				{
+					layeredPane.add(Button[i]);
+				}
 			}
 		}
 	}	
@@ -203,102 +218,106 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	private void allocator()
 	{
 		 _Select = new JButton(new ImageIcon("img/select.png"));
-	        _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
-	        _Select.setBounds(685, 100, 80, 40);
-	        _Select.setFocusPainted(false);
-	        _Select.setContentAreaFilled(false);
-	        _Select.setBorderPainted(false);
-	        _Select.addActionListener(new ActionListener() 
-	        {     
-	         	public void actionPerformed(ActionEvent arg0)
-	         	{	
-	         		_cfs.folderSelectorON();
-	         		while(!_cfs.getSelectionEnd())
-	         		{
-	         			try 
-	         			{
-							Thread.sleep(1);
-						}
-	         			catch (InterruptedException e)
-	         			{
-							e.printStackTrace();
-						}
-	         		}
-	         		_downloadDirectory = _cfs.getSelectedPath();
-	         	}
-	         });
+		 _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
+		 _Select.setBounds(685, 100, 80, 40);
+		 _Select.setFocusPainted(false);
+		 _Select.setContentAreaFilled(false);
+		 _Select.setBorderPainted(false);
+		 _Select.addActionListener(new ActionListener() 
+		 {     
+			 public void actionPerformed(ActionEvent arg0)
+			 {	
+				 _cfs.folderSelectorON();
+				 while(!_cfs.getSelectionEnd())
+				 {
+					 try 
+					 {
+						 Thread.sleep(1);
+					 }	
+					 catch (InterruptedException e)
+					 {
+						 e.printStackTrace();
+					 }
+				 }
+				 _downloadDirectory = _cfs.getSelectedPath();
+			 }
+		 });
 
-	        _Download = new JButton(new ImageIcon("img/DOWNLOAD.png"));	
-			_Download.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
-			_Download.setBounds(670, 170, 80,45);
-			_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-			_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
-			_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
-			_Download.setBorderPainted(false);
-			_Download.setFocusPainted(false);
-			_Download.setContentAreaFilled(false);
-			_Download.addActionListener(new ActionListener() 
-			{
-				public void actionPerformed(ActionEvent e) 
-				{
-					for(int i = 0; i < _directoryArray.size(); i++)
-					{
-						_cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i));
-					}
-				}
-			});
-			
-			
-			 _Left = new JButton(new ImageIcon("img/LEFT.png"));
-			 _Left.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
-			 _Left.setBounds(700, 300, 80, 40);
-			 _Left.setFocusPainted(false);
-			 _Left.setContentAreaFilled(false);
-			 _Left.setBorderPainted(false);
-			 _Left.addActionListener(new ActionListener() 
-		        {     
-		         	public void actionPerformed(ActionEvent arg0)
-		         	{	
-		         		if(_nowpage==_page){showMessage("error", "Here is the last page!");}
-		         		else{_nowpage+=1;}
-		         		
-		         		layeredPane.removeAll();
-		         		
-		         		basic();
-		         		page();
-		         		/*for(int i = 0; i < Button.length; i++)
-		        		{
-		        			Button[i].repaint();
-		        		}*/
-		         		layeredPane.updateUI();
-		         		repaint();
-		         	}
-		        });
-			 
-			 _Right = new JButton(new ImageIcon("img/RIGHT.png"));
-			 _Right.setRolloverIcon(new ImageIcon("img/RIGHTR.png"));
-			 _Right.setBounds(630, 300, 80, 40);
-			 _Right.setFocusPainted(false);
-			 _Right.setContentAreaFilled(false);
-			 _Right.setBorderPainted(false);
-			 _Right.addActionListener(new ActionListener() 
-		        {     
-		         	public void actionPerformed(ActionEvent arg0)
-		         	{	
-		         		if(_nowpage==1){showMessage("error", "Here is the first page!");}
-		         		else{_nowpage-=1;}
-		         		layeredPane.removeAll();
-		         		
-		         		basic();
-		         		page();
-		         		/*for(int i = 0; i < Button.length; i++)
-		        		{
-		        			Button[i].repaint();
-		        		}*/
-		         		layeredPane.updateUI();
-		         		repaint();
-		         	}
-		        });
+		 _Download = new JButton(new ImageIcon("img/DOWNLOAD.png"));	
+		 _Download.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
+		 _Download.setBounds(670, 170, 80,45);
+		 _Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
+		 _Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
+		 _Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
+		 _Download.setBorderPainted(false);
+		 _Download.setFocusPainted(false);
+		 _Download.setContentAreaFilled(false);
+		 _Download.addActionListener(new ActionListener() 
+		 {
+			 public void actionPerformed(ActionEvent e) 
+			 {
+				 for(int i = 0; i < _directoryArray.size(); i++)
+				 {
+					 _cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i));
+				 }
+			 }
+		 });	
+				
+		 
+		 _Left = new JButton(new ImageIcon("img/LEFT.png"));
+		 _Left.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
+		 _Left.setBounds(700, 300, 80, 40);
+		 _Left.setFocusPainted(false);
+		 _Left.setContentAreaFilled(false);
+		 _Left.setBorderPainted(false);
+		 _Left.addActionListener(new ActionListener() 
+		 {     
+			 public void actionPerformed(ActionEvent arg0)
+			 {	
+				 _nowpage+=1;
+				 if(_nowpage>_page)
+				 {
+					 showMessage("error", "Here is the last page!");
+					 _nowpage-=1;
+				 }
+				 else
+				 { 
+					 layeredPane.removeAll();
+			         		
+					 page();
+					 basic();
+					 repaint();
+				 }       		
+				 
+			 }
+		 });
+		 
+		 _Right = new JButton(new ImageIcon("img/RIGHT.png"));
+		 _Right.setRolloverIcon(new ImageIcon("img/RIGHTR.png"));
+		 _Right.setBounds(630, 300, 80, 40);
+		 _Right.setFocusPainted(false);
+		 _Right.setContentAreaFilled(false);
+		 _Right.setBorderPainted(false);
+		 _Right.addActionListener(new ActionListener() 
+		 {     
+			 public void actionPerformed(ActionEvent arg0)
+			 {	
+				 _nowpage-=1;
+				 if(_nowpage<1)
+				 {
+					 showMessage("error", "Here is the first page!");
+					 _nowpage+=1;
+				 }
+				 else
+				 {   	
+					 layeredPane.removeAll();
+
+					 page();
+					 basic();
+					 repaint();
+				 }
+			 }
+		 });
 
 	}
 	private void button()
@@ -309,9 +328,16 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 		{
 			if(i>6){
 				if(number==i){
-					_x=0;
-					_y+=120;
-					number+=6;
+					if((i%18)==1){
+						_x=0;
+						_y=0;
+						number+=6;
+					}
+					else{
+						_x=0;
+						_y+=120;
+						number+=6;
+					}
 				}
 				else
 				{
