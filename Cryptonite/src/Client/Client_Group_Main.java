@@ -243,10 +243,10 @@ public class Client_Group_Main extends JFrame{
     	    	}
         		
         		layeredPane.removeAll();
-        		for(int i = 0; i < Button.length; i++)
+        	/*	for(int i = 0; i < Button.length; i++)
         		{
         			Button[i].repaint();
-        		}
+        		}*/
         		
         		for(int i=0;i<_fileList.length;i++)
         		{
