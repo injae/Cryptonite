@@ -303,7 +303,7 @@ import Crypto.aesKeyGenerator;
 		_cancel = new JButton(new ImageIcon("gui/cancel_bt.png"));
 		_cancel.setPressedIcon(new ImageIcon("img/_cancel_hv.png"));
 
-		_cancel.setBounds(190, 560, 90, 50);//input value
+		_cancel.setBounds(178, 560, 90, 50);//input value
 		_cancel.setBorder(BorderFactory.createEmptyBorder());
 
 		_cancel.setBorderPainted(false);
@@ -323,7 +323,7 @@ import Crypto.aesKeyGenerator;
 		_ok = new JButton(new ImageIcon("gui/signup_bt.png"));
 		_ok.setPressedIcon(new ImageIcon("img/signup_bt_hv.png"));
 
-		_ok.setBounds(30, 500, 400, 50);//input value
+		_ok.setBounds(25, 500, 400, 50);//input value
 		_ok.setBorderPainted(false);
 		_ok.setFocusPainted(false);
 		_ok.setContentAreaFilled(false);

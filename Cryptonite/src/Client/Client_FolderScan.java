@@ -130,6 +130,11 @@ public class Client_FolderScan extends Thread
 	        				_fileName = path.getFileName().toString();
 	        				System.out.println("New File is Created >> " + _fileName);
 	        				_absoluteDirectory = _isDirectory.getPath();
+	        				File deleteTemp = new File(_absoluteDirectory + ".cnec");
+	        				if(deleteTemp.exists())
+	        				{
+	        					deleteTemp.delete();
+	        				}
 	        				_cab.autoBackup(_absoluteDirectory);
 	        			}
 	        		}

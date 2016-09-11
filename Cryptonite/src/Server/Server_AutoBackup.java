@@ -18,9 +18,9 @@ import Function.*;
 
 public class Server_AutoBackup extends Server_Funtion implements PacketRule
 {
-	public Server_AutoBackup(Server_Client_Activity activity) {
+	public Server_AutoBackup(Server_Client_Activity activity) 
+	{
 		super(activity);
-		// TODO 占쌘듸옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
 	}
 
 	// protectedFolder
@@ -142,6 +142,11 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			
 			try 
 			{
+				File deleteTemp = new File(_address);
+				if(deleteTemp.exists())
+				{
+					deleteTemp.delete();
+				}
 				_raf = new RandomAccessFile(_address, "rw");
 				_fileChannel = _raf.getChannel();
 			} 
