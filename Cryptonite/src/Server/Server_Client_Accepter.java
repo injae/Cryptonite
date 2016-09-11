@@ -5,6 +5,8 @@ import java.net.InetSocketAddress;
 import java.nio.channels.*;
 import java.util.*;
 
+import Function.Timer;
+
 /*
  * @author In Jae Lee
  * 
@@ -37,11 +39,13 @@ public class Server_Client_Accepter extends Thread
 	public void run()
 	{
 		SelectionKey key = null;
-	
+		Timer timer = new Timer();
 		while(!Thread.interrupted())
 		{	
 			try 
 			{
+				if(timer.alarm(3000)) { System.out.println("timetime");}
+				
 				if(_selector.selectNow() == 0) continue;
 			    Iterator<SelectionKey> keys = _selector.selectedKeys().iterator();	
 			    
@@ -69,7 +73,7 @@ public class Server_Client_Accepter extends Thread
 				        }
 			        }
 			    }	
-			    _manager.run();			 
+			    _manager.run();	
 			}
 			catch (Exception e) 
 			{
