@@ -16,6 +16,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="permission_gps">"Contacts permissions are needed for providing decryption files"</string>
     <string name="error_used_id">Already Used</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

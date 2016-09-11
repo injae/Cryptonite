@@ -41,6 +41,8 @@ import Function.FileListAdapter;
 import Function.GroupInviteAdapter;
 import Function.PathPicker;
 
+
+// https://github.com/umano/AndroidSlidingUpPanel
 public class GroupMainActivity extends AppCompatActivity {
 
     String groupName;
@@ -260,7 +262,7 @@ public class GroupMainActivity extends AppCompatActivity {
     }
 
     public void refreshList() {
-        new Client_File_ListReceiver(GroupMainActivity.this,adapter,this).execute(groupName);
+        new Client_File_ListReceiver(GroupMainActivity.this,adapter,this).execute(gpCode);
     }
 
     public void setFilePath(String[] path) {
