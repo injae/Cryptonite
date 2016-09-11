@@ -44,7 +44,7 @@ public class Server_Client_Accepter extends Thread
 		{	
 			try 
 			{
-				if(timer.alarm(3000)) { System.out.println("timetime");}
+				if(timer.alarm(3000)) { System.out.println("3ÃÊ Áö³²");}
 				
 				if(_selector.selectNow() == 0) continue;
 			    Iterator<SelectionKey> keys = _selector.selectedKeys().iterator();	
