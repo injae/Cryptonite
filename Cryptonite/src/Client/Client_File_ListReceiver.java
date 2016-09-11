@@ -58,7 +58,7 @@ public class Client_File_ListReceiver implements PacketRule
 			}
 			if(_fileCount == 0)
 			{
-				System.out.println("읽을 파일 리스트가 존재하지 않습니다.");
+				System.out.println("There is no filelist to read.");
 			}
 		} 
 		catch (IOException e) 
