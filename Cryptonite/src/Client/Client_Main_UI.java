@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Client_Main_UI extends JFrame
@@ -314,8 +315,15 @@ public class Client_Main_UI extends JFrame
         FileRecoverybt.setContentAreaFilled(false);
         FileRecoverybt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_cfl.running((byte)2, null);
-				new Client_FileRecovery(_cfl.getFileList());
+				try
+				{
+					_cfl.running((byte)2, null);
+					new Client_FileRecovery(_cfl.getFileList());
+				}
+				catch(IndexOutOfBoundsException e1)
+				{
+					showMessage("ERROR","There are no backup files.");
+				}
 			}
 		});
 		//--------------------------------------------------
@@ -348,7 +356,8 @@ public class Client_Main_UI extends JFrame
 		//----------------------------------------------------------------------indivial
 	}
 	
-	class MyPanel extends JPanel {
+	class MyPanel extends JPanel 
+	{
         public void paint(Graphics g) 
         {
         	if(_checkUI){
@@ -359,4 +368,9 @@ public class Client_Main_UI extends JFrame
         	}
        }
    }
+	
+	private void showMessage(String title, String message) 
+	{
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+	}
 }

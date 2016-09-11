@@ -63,7 +63,7 @@ public class Client_Group_Main extends JFrame{
 	private int _mod;
 	private int _x=0;
 	private int _y=0;
-	private boolean _checkmod=true;
+	private boolean _checkmod = true;
 	
 	private DefaultListModel<String> _model;
 	private JList<String> _list;
@@ -85,6 +85,7 @@ public class Client_Group_Main extends JFrame{
 	private Client_File_ListReceiver _cfl;
 	private Client_File_Download _cfd;
 	private Client_File_Upload _cfu;
+	private Client_Get_Group_Key _cggk;
 	
 	public static void main(String args[])
 	{
@@ -98,6 +99,7 @@ public class Client_Group_Main extends JFrame{
 		_gpCode = gpCode;
 		_gpName = gpName;
 		_mod = mod;
+		_cggk = new Client_Get_Group_Key();
 		_cfu = new Client_File_Upload();
 		_cfs = new Client_FolderSelector();
 		_cgs = new Client_Group_Search();
@@ -122,7 +124,8 @@ public class Client_Group_Main extends JFrame{
 	    		}
 	    	}
 	
-		try{
+		try
+		{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
 			 Image image = tk.getImage("gui/logo.png");
 			 this.setIconImage(image);
@@ -159,9 +162,9 @@ public class Client_Group_Main extends JFrame{
         
         panel.setBounds(0, 0, 816, 480);
         
-    
-       allocator();
-       button();
+        allocator();
+        button();
+       
         if(_mod == 1)
         {	
         	mod1();
@@ -195,7 +198,8 @@ public class Client_Group_Main extends JFrame{
         }
    }
 	
-	private void mod1(){
+	private void mod1()
+	{
 		layeredPane.add(Search);
     	layeredPane.add( _idField);
         layeredPane.add(OK);
@@ -204,17 +208,18 @@ public class Client_Group_Main extends JFrame{
     	layeredPane.add(panel);
         container.add(layeredPane);
 	}
-	private void mod2(){
-		
-		_checkmod=false;
+	
+	private void mod2()
+	{
+		_checkmod = false;
     	layeredPane.remove(Delete);
     	layeredPane.add(Withdrawal);
     	layeredPane.add(panel);
         container.add(layeredPane);
-        
 	}
 	
-	private void allocator(){
+	private void allocator()
+	{
 		
 		_Upload = new JButton(new ImageIcon("img/upload.png"));
         _Upload.setRolloverIcon(new ImageIcon("img/uploadR.png"));
@@ -243,10 +248,6 @@ public class Client_Group_Main extends JFrame{
     	    	}
         		
         		layeredPane.removeAll();
-        	/*	for(int i = 0; i < Button.length; i++)
-        		{
-        			Button[i].repaint();
-        		}*/
         		
         		for(int i=0;i<_fileList.length;i++)
         		{
@@ -256,8 +257,10 @@ public class Client_Group_Main extends JFrame{
         				System.out.println("아무것도 없습니다.");
         			}
         		}
+        		
         	    allocator();
         	    button();
+        	    
     	        if(_mod == 1)
     	        {	
     	        	mod1();
@@ -313,7 +316,7 @@ public class Client_Group_Main extends JFrame{
 			{
 				for(int i = 0; i < _directoryArray.size(); i++)
 				{
-					_cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i));
+					_cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i), _cggk.running(_gpCode));
 				}
 			}
 		});

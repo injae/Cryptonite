@@ -52,9 +52,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import Client.Client_Main_UI.MyPanel;
+import Crypto.KeyReposit;
 
 public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	private BufferedImage img = null;
+	private final int MAX_BUTTON = 18;
 	
 	private JLabel _downloadArea;
 	private DropTarget _dropTarget;
@@ -63,13 +65,14 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	
 	private ArrayList<String> _directoryArray;
 	private ArrayList<String> _nameArray;
+	private ArrayList<JButton> _list;
 	private boolean _passCheck = true;
 	
 	private String[] _fileList;
 	private String[] _name=null;
 	private int _x=0;
 	private int _y=0;
-	private int _nowpage=1;
+	private int _nowPage = 0;
 	private int _page;
 	
 	private JButton _Select;
@@ -87,6 +90,8 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	private Client_FolderSelector _cfs = null;
 	private Client_File_Download _cfd = null;
 	private String _downloadDirectory;
+	
+	private KeyReposit _reposit;
 
 	
 	public static void main(String args[])
@@ -97,17 +102,20 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 
 	public Client_FileRecovery(String[] fileList){
 		
+		_reposit = KeyReposit.getInstance();
 		_cfs = new Client_FolderSelector();
 		_cfd = new Client_File_Download();
 		_directoryArray = new ArrayList<String>();
 		_nameArray = new ArrayList<String>();
+		_list = new ArrayList<JButton>();
 		_fileList = fileList;
 		_downloadArea = new JLabel();
 		_downloadArea.setBounds(2, 69, 800, 384);
 		_dropTarget = new DropTarget(_downloadArea, DnDConstants.ACTION_COPY_OR_MOVE, this, true, null);
 		this.add(_downloadArea, BorderLayout.CENTER);
 		
-		try{
+		try
+		{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
 			 Image image = tk.getImage("gui/logo.png");
 			 this.setIconImage(image);
@@ -152,21 +160,20 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
     			_name[i] = st.nextToken();
     		}
     	}
-        if((_name.length%18)==0){
-        	_page=(_name.length/18);
+        
+        if((_name.length % MAX_BUTTON) == 0)
+        {
+        	_page = (_name.length / MAX_BUTTON);
         }
-        else{
-        	_page=(_name.length/18)+1;
+        else
+        {
+        	_page = (_name.length / MAX_BUTTON) + 1;
         }
         
-       
-		
 		allocator();
 		button();
 		page();
-		
 		basic();
-		
         setVisible(true);
 	}
 	
@@ -177,7 +184,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
             g.drawImage(img, 0, 0, null);
             g.setColor(Color.BLACK);
 			g.setFont(_precondition_font);
-			g.drawString(_nowpage+"/"+_page, 690, 330);
+			g.drawString((_nowPage + 1) + "/" + _page, 705, 390);
         }
    }
 	
@@ -191,27 +198,21 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
         container.add(layeredPane);
 	}
 	
-	private void page(){
-		if(_nowpage==1)
-		{ 
-			for(int i=0; i<(_nowpage*18);i++){			
-				layeredPane.add(Button[i]);
-			}
+	private void page()
+	{
+		int buttonCount = 0;
+		if(_nowPage + 1 == _page)
+		{
+			buttonCount = _list.size() % MAX_BUTTON;
 		}
 		else
 		{
-			if(_nowpage==_page){
-				for(int i=((_nowpage*18)-((_nowpage-1)*18));i<_name.length;i++)
-				{	
-					layeredPane.add(Button[i]);
-				}
-			}	
-			else{
-				for(int i=((_nowpage*18)-((_nowpage-1)*18));i<(_nowpage*18);i++)
-				{
-					layeredPane.add(Button[i]);
-				}
-			}
+			buttonCount = MAX_BUTTON;
+		}
+		
+		for(int i = 0; i < buttonCount; i++)
+		{
+			layeredPane.add(_list.get(i + (MAX_BUTTON * _nowPage)));
 		}
 	}	
 	
@@ -219,7 +220,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	{
 		 _Select = new JButton(new ImageIcon("img/select.png"));
 		 _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
-		 _Select.setBounds(685, 100, 80, 40);
+		 _Select.setBounds(680, 120, 80, 40);
 		 _Select.setFocusPainted(false);
 		 _Select.setContentAreaFilled(false);
 		 _Select.setBorderPainted(false);
@@ -245,7 +246,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 
 		 _Download = new JButton(new ImageIcon("img/DOWNLOAD.png"));	
 		 _Download.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
-		 _Download.setBounds(670, 170, 80,45);
+		 _Download.setBounds(680, 250, 80,45);
 		 _Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 		 _Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
 		 _Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
@@ -258,7 +259,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 			 {
 				 for(int i = 0; i < _directoryArray.size(); i++)
 				 {
-					 _cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i));
+					 _cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i), _reposit.get_aesKey());
 				 }
 			 }
 		 });	
@@ -266,7 +267,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 		 
 		 _Left = new JButton(new ImageIcon("img/LEFT.png"));
 		 _Left.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
-		 _Left.setBounds(700, 300, 80, 40);
+		 _Left.setBounds(635, 362, 80, 40);
 		 _Left.setFocusPainted(false);
 		 _Left.setContentAreaFilled(false);
 		 _Left.setBorderPainted(false);
@@ -274,39 +275,11 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 		 {     
 			 public void actionPerformed(ActionEvent arg0)
 			 {	
-				 _nowpage+=1;
-				 if(_nowpage>_page)
+				 _nowPage -= 1;
+				 if(_nowPage < 0)
 				 {
-					 showMessage("error", "Here is the last page!");
-					 _nowpage-=1;
-				 }
-				 else
-				 { 
-					 layeredPane.removeAll();
-			         		
-					 page();
-					 basic();
-					 repaint();
-				 }       		
-				 
-			 }
-		 });
-		 
-		 _Right = new JButton(new ImageIcon("img/RIGHT.png"));
-		 _Right.setRolloverIcon(new ImageIcon("img/RIGHTR.png"));
-		 _Right.setBounds(630, 300, 80, 40);
-		 _Right.setFocusPainted(false);
-		 _Right.setContentAreaFilled(false);
-		 _Right.setBorderPainted(false);
-		 _Right.addActionListener(new ActionListener() 
-		 {     
-			 public void actionPerformed(ActionEvent arg0)
-			 {	
-				 _nowpage-=1;
-				 if(_nowpage<1)
-				 {
+					 _nowPage += 1;
 					 showMessage("error", "Here is the first page!");
-					 _nowpage+=1;
 				 }
 				 else
 				 {   	
@@ -318,38 +291,73 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 				 }
 			 }
 		 });
+		 
+		 _Right = new JButton(new ImageIcon("img/RIGHT.png"));
+		 _Right.setRolloverIcon(new ImageIcon("img/RIGHTR.png"));
+		 _Right.setBounds(724, 362, 80, 40);
+		 _Right.setFocusPainted(false);
+		 _Right.setContentAreaFilled(false);
+		 _Right.setBorderPainted(false);
+		 _Right.addActionListener(new ActionListener() 
+		 {     
+			 public void actionPerformed(ActionEvent arg0)
+			 {	
+				 _nowPage += 1;
+				 if(_nowPage + 1 > _page)
+				 {
+					 _nowPage -= 1;
+					 showMessage("error", "Here is the last page!");
+				 }
+				 else
+				 { 
+					 layeredPane.removeAll();
+			         		
+					 page();
+					 basic();
+					 repaint();
+				 } 
+			 }
+		 });
 
 	}
 	private void button()
 	{
 		Button = new JButton[_name.length];
-		int number=7;
+		int number = 7;
 		for(int i = 1; i < _name.length + 1; i++)
 		{
-			if(i>6){
-				if(number==i){
-					if((i%18)==1){
-						_x=0;
-						_y=0;
-						number+=6;
+			if(i > 6)
+			{
+				if(number == i)
+				{
+					if((i % 18) == 1)
+					{
+						_x = 0;
+						_y = 0;
+						number += 6;
 					}
-					else{
-						_x=0;
-						_y+=120;
-						number+=6;
+					else
+					{
+						_x = 0;
+						_y += 120;
+						number += 6;
 					}
 				}
 				else
 				{
-					_x+=105;
+					_x += 105;
 				}
 			}
 			else
 			{
-				if(i>1){_x+=105;}
+				if(i > 1)
+				{
+					_x += 105;
+				}
 			}
 
-			Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
+			Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));
+			_list.add(Button[i-1]);
 			Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
 			Button[i-1].setBounds((10+_x),(70+_y),92,120);
 			Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;

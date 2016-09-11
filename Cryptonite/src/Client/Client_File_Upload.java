@@ -37,7 +37,6 @@ public class Client_File_Upload implements PacketRule
 	public Client_File_Upload()
 	{
 		_reposit = KeyReposit.getInstance();
-		_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, _reposit.get_aesKey()));
 		_csc = Client_Server_Connector.getInstance();
 		_cfs = new Client_FileSelector();
 	}
@@ -47,6 +46,7 @@ public class Client_File_Upload implements PacketRule
 	{
 		try 
 		{	
+			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(gpCode)));
 			fileSelection();
 			ByteBuffer bb;
 			Charset cs = Charset.forName("UTF-8");

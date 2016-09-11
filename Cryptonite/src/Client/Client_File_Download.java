@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.util.StringTokenizer;
 
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 
 import Crypto.Crypto;
 import Crypto.Crypto_Factory;
@@ -17,7 +18,7 @@ public class Client_File_Download implements PacketRule
 {
 	Crypto _crypto;
 	KeyReposit _reposit;
-	public void requestFile(String path, String targetpath)
+	public void requestFile(String path, String targetpath, SecretKey key)
 	{
 		try 
 		{
@@ -26,8 +27,8 @@ public class Client_File_Download implements PacketRule
 			targetpath = targetpath.substring(0,targetpath.length() - 5);
 			System.out.println(targetpath);
 			_reposit = KeyReposit.getInstance();
-			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _reposit.get_aesKey()));
-			_crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _reposit.get_aesKey()));
+			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
+			_crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
 			
 			Client_Server_Connector csc = Client_Server_Connector.getInstance();
 			byte[] event = new byte[1024];
