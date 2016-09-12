@@ -19,6 +19,12 @@ public class Timer
 		stopTime = System.currentTimeMillis();
 	}
 	
+	public long runningTime()
+	{
+		stop();
+		return stopTime - startTime;
+	}
+	
 	public boolean alarm(long time)
 	{
 		stop();

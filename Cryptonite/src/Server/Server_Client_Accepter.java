@@ -39,13 +39,12 @@ public class Server_Client_Accepter extends Thread
 	public void run()
 	{
 		SelectionKey key = null;
-		Timer timer = new Timer();
+		Server_Administrator.getInstance().start();
+		
 		while(!Thread.interrupted())
 		{	
 			try 
 			{
-				if(timer.alarm(3000)) { System.out.println("3ÃÊ Áö³²");}
-				
 				if(_selector.selectNow() == 0) continue;
 			    Iterator<SelectionKey> keys = _selector.selectedKeys().iterator();	
 			    
@@ -64,12 +63,8 @@ public class Server_Client_Accepter extends Thread
 				        else if(key.isReadable())
 				        {			        	
 				        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
-				        	activity.Receiver();				        	
-				        }
-				        else if(key.isWritable())
-				        { 
-				        	System.out.println("¾¸!!!!!!!!!!!!!!!!!");
-				        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
+				        	activity.Receiver();	
+				        	Server_Administrator.getInstance().updatePacketSize();
 				        }
 			        }
 			    }	
