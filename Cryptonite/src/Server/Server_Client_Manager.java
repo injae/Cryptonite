@@ -57,6 +57,11 @@ public class Server_Client_Manager implements PacketRule
 		System.out.println("New Client: "+code);
 	}
 	
+	public int HowManyClient()
+	{
+		return _clientList.size();
+	}
+	
 	public void requestManage(String clientCode)
 	{
 		_runningQueue.offer(clientCode);		
