@@ -89,6 +89,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	
 	private Client_FolderSelector _cfs = null;
 	private Client_File_Download _cfd = null;
+	private Client_Folder_List _cfl = null;
 	private String _downloadDirectory;
 	
 	private KeyReposit _reposit;
@@ -105,6 +106,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 		_reposit = KeyReposit.getInstance();
 		_cfs = new Client_FolderSelector();
 		_cfd = new Client_File_Download();
+		_cfl = new Client_Folder_List();
 		_directoryArray = new ArrayList<String>();
 		_nameArray = new ArrayList<String>();
 		_list = new ArrayList<JButton>();
@@ -369,32 +371,46 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 			Button[i-1].addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e)
 				{
-					_passCheck = true;
 					int index = findIndex(e.getActionCommand());
-					if(!_directoryArray.isEmpty())
+					StringTokenizer st = new StringTokenizer(e.getActionCommand(), ".");
+					if(st.countTokens() == 1)	// Folder
 					{
-						for(int j = 0; j < _directoryArray.size(); j++)
+						_cfl.running(_fileList[index]);
+						String[] inFolder = _cfl.getFileList();
+						for(int i = 0; i < inFolder.length; i++)
 						{
-							if(_fileList[index].equals(_directoryArray.get(j)))
+							System.out.println(inFolder[i]);
+						}
+					}
+					else	// File
+					{
+						_passCheck = true;
+						//int index = findIndex(e.getActionCommand());
+						if(!_directoryArray.isEmpty())
+						{
+							for(int j = 0; j < _directoryArray.size(); j++)
 							{
-								_directoryArray.remove(j);
-								_nameArray.remove(j);
-								_passCheck = false;
-								break;
+								if(_fileList[index].equals(_directoryArray.get(j)))
+								{
+									_directoryArray.remove(j);
+									_nameArray.remove(j);
+									_passCheck = false;
+									break;
+								}
+							}
+							if(_passCheck)
+							{
+								_directoryArray.add(_fileList[index]);
+								_nameArray.add(e.getActionCommand());
 							}
 						}
-						if(_passCheck)
+						else
 						{
 							_directoryArray.add(_fileList[index]);
 							_nameArray.add(e.getActionCommand());
 						}
+						Button[index].setBackground(Color.BLACK);
 					}
-					else
-					{
-						_directoryArray.add(_fileList[index]);
-						_nameArray.add(e.getActionCommand());
-					}
-					Button[index].setBackground(Color.BLACK);
 					
 					for(int k = 0 ; k < _directoryArray.size(); k++)
 					{
