@@ -68,7 +68,6 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	{
 		int count=1;
 		boolean result;
-		System.out.println("SignUp running");
 		
 		Charset cs =Charset.forName("UTF-8");
 		ByteBuffer bb=ByteBuffer.allocateDirect(1024);			

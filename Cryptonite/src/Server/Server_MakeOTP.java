@@ -73,7 +73,6 @@ public class Server_MakeOTP extends Server_Funtion
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
-			System.out.println("OTP폴더에 OTP_List.ser 파일이 존재하지 않습니다.");
 		} 
 		catch (IOException e) 
 		{
@@ -100,7 +99,6 @@ public class Server_MakeOTP extends Server_Funtion
 			makeOTP();
 			_activity.receive.getByte();	// garbage delete
 			_activity.send.setPacket(_OTP.getBytes(),1024).write();
-			System.out.println("OTP Sending FINISH");
 		}
 	}
 }

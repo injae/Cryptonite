@@ -58,7 +58,7 @@ public class Server_Function_Factory implements PacketRule
 		case FOLDER_LIST:
 			return new Server_Folder_List(activity);
 		default:
-			System.out.println("Server Funtion Factory: "+ mode);
+		//	System.out.println("Server Funtion Factory: "+ mode);
 			return	new Server_ImDie(activity);
 		}
 	}

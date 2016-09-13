@@ -87,7 +87,6 @@ public class Server_FileShare_Send extends Server_Funtion
 		{
 			Charset cs = Charset.forName("UTF-8");
 			_OTP = new String(_activity.receive.getByte()).trim();
-			System.out.println("Receiving OTP : " + _OTP);
 			OTP_Check();
 			_activity.send.setPacket(_downloadFlag.getBytes(),500).write();
 			
@@ -105,10 +104,8 @@ public class Server_FileShare_Send extends Server_Funtion
 					
 					_activity.send.setPacket(cs.encode(_fileName).array(), 500).write();
 					//_activity.send.setPacket(_fileName.getBytes(), 500).write();
-					System.out.println("파일 이름(서버) : " + _fileName);
 					
 					_activity.send.setPacket(String.valueOf(_fileSize).getBytes(), 500).write();
-					System.out.println("파일 용량(서버) : " + _fileSize);
 					
 					_raf = new RandomAccessFile("Server_Folder\\Share" + "\\" + _searchedFile, "rw");
 					PacketProcessor p = new PacketProcessor(_raf.getChannel(), false);

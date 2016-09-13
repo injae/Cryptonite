@@ -67,10 +67,6 @@ public class Server_File_Upload extends Server_Funtion implements PacketRule
 			gpCodeTemp[i] = packet[i + 800];
 		}
 		_gpCode = new String(gpCodeTemp).trim();
-		
-		System.out.println("파일 이름 : " + _fileName);
-		System.out.println("파일 용량 : " + _fileSize + " (Byte)");
-		System.out.println("Group Code : " + _gpCode);
 	}
 
 	@Override
@@ -105,7 +101,6 @@ public class Server_File_Upload extends Server_Funtion implements PacketRule
 			
 			if(count == _packetMaxCount)
 			{
-				System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
 				_p.close();
 			}
 		}
