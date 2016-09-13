@@ -28,6 +28,7 @@ public class Server_Client_Accepter extends Thread
 	        _selector = Selector.open();	        
 	        channel.register(_selector, SelectionKey.OP_ACCEPT);
 	        
+			Server_Administrator.getInstance().start();
 	        _manager = Server_Client_Manager.getInstance();
  		 }
 		 catch (IOException e)
@@ -39,8 +40,7 @@ public class Server_Client_Accepter extends Thread
 	public void run()
 	{
 		SelectionKey key = null;
-		Server_Administrator.getInstance().start();
-		
+
 		while(!Thread.interrupted())
 		{	
 			try 

@@ -75,17 +75,17 @@ public class Server_DataBase
 			Class.forName(_jdbc_driver_name);
 			_con = DriverManager.getConnection(_url, _id, _passowrd);
 			_stmt = _con.createStatement();
-			System.out.println("DataBase Connect.....");
 		} 
 		catch (ClassNotFoundException e) 
 		{ 
 			System.out.println("ERROR: can't connect jdbc");	 // e.printStackTrace();
+			System.exit(1);
 		} 
 		catch (SQLException e)
 		{
 			System.out.println("ERROR: can't connect database"); // e.printStackTrace();
+			System.exit(1);
 		}
-		System.out.println("DataBase Connected");
 	}
 	
 	public static Server_DataBase getInstance()

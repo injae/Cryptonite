@@ -2,6 +2,8 @@ package Server;
 
 import java.util.Scanner;
 
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 import Function.Timer;
 
 public class Server_Administrator extends Thread
@@ -13,6 +15,16 @@ public class Server_Administrator extends Thread
 	private Server_Administrator() 
 	{
 		timer = new Timer();
+		Scanner input = new Scanner(System.in);
+		
+		System.out.println("<DataBase Login>");
+		System.out.print("id : "); String id  	 = input.nextLine();
+		System.out.print("password : "); String password = input.nextLine();
+		
+		Server_DataBase db=Server_DataBase.getInstance();
+	    db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", id, password);
+	    progressbar();
+	    db.connect();
 	}
 	
 	public static Server_Administrator getInstance()
@@ -29,12 +41,14 @@ public class Server_Administrator extends Thread
 	{
 		Scanner input = new Scanner(System.in);
 		
-		System.out.println("Server Running");
-		System.out.println("Server Adimistrator Start");
-		System.out.println("if you want to use command use help");
+		System.out.println("=============================");
+		System.out.println("* Welcome Cryptonite Server *");
+		System.out.println("* Version : Beta 1.0.0      *");
+		System.out.println("=============================");
 		
 		while(true)
 		{
+			System.out.print(">");
 			String command = input.nextLine();
 			
 			switch(command)
@@ -83,6 +97,19 @@ public class Server_Administrator extends Thread
 		{
 			return false;
 		}
+	}
+	
+	public void progressbar()
+	{
+		try 
+		{
+		    for(int i =0; i < 20; i++) { System.out.print("."); Thread.sleep(25); }
+		    System.out.println(" Done");
+		    
+		} catch (InterruptedException e) {
+			// TODO 자동 생성된 catch 블록
+			e.printStackTrace();
+		} 
 	}
 	
 	public void updatePacketSize()
