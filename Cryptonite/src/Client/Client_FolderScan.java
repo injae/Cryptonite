@@ -22,6 +22,7 @@ import java.nio.file.WatchEvent.Kind;
 public class Client_FolderScan extends Thread
 {
 	// WatchService Instance
+	private boolean _passCheck  = false;
 	private WatchService _watchService = null;
 	private WatchKey _watchKey = null;
 	private boolean _firstTime = false;
@@ -61,7 +62,7 @@ public class Client_FolderScan extends Thread
 		{
 			try 
 			{
-				sleep(10);
+				sleep(1);
 			} 
 			catch (InterruptedException e) 
 			{
