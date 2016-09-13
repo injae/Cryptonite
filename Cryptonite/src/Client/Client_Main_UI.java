@@ -105,7 +105,10 @@ public class Client_Main_UI extends JFrame
 			@Override
 			public void windowClosing(WindowEvent e){
 				dispose();
-				_cfs.stopThread();
+				while(!Client_Login._folderScanList.isEmpty())
+				{
+					Client_Login._folderScanList.remove().stopThread();
+				}
 				new Client_Logout().logout();
 				new Client_Login();
 			}
@@ -300,8 +303,12 @@ public class Client_Main_UI extends JFrame
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-						_cfs.stopThread();
+						while(!Client_Login._folderScanList.isEmpty())
+						{
+							Client_Login._folderScanList.remove().stopThread();
+						}
 						_cfs = new Client_FolderScan();
+						Client_Login._folderScanList.offer(_cfs);
 						_cfs.start();
 					}
 			}

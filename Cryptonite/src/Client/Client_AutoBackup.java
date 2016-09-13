@@ -144,6 +144,8 @@ public class Client_AutoBackup implements PacketRule
 				e.printStackTrace();
 			}
 		}
+		
+		Client_Login._autoBackupList.remove();
 	}
 	
 	private boolean extensionTokenizer()

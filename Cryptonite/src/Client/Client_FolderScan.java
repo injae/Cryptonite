@@ -57,6 +57,18 @@ public class Client_FolderScan extends Thread
 	// Methods
 	public synchronized void run()
 	{
+		while(!Client_Login._autoBackupList.isEmpty())
+		{
+			try 
+			{
+				sleep(10);
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
 		if(_firstTime)
 		{
 			try 
@@ -87,10 +99,12 @@ public class Client_FolderScan extends Thread
 			for(int i = 0; i < fileList.length; i++)
 			{
 				File temp = new File(_address + "\\" + fileList[i]);
+				Client_Login._autoBackupList.offer(temp.getAbsolutePath()); //
 				if(temp.isDirectory())
 				{
-					System.out.println("New Folder is Created >> " + _address + "\\" + fileList[i]);
-					new Client_FolderScan(_address + "\\" + fileList[i]);
+					System.out.println("New Folder is Created >> " + fileList[i]);
+					Client_FolderScan cfs = new Client_FolderScan(_address + "\\" + fileList[i]);
+					Client_Login._folderScanList.offer(cfs);
 				}
 				else if(temp.isFile())
 				{
@@ -99,7 +113,6 @@ public class Client_FolderScan extends Thread
 				_cab.autoBackup(_address + "\\" + fileList[i]);
 			}
 		
-		//try {
 			_watchService = FileSystems.getDefault().newWatchService();
 			Path directory = Paths.get(_address);
 		    directory.register(_watchService, StandardWatchEventKinds.ENTRY_CREATE);
@@ -117,12 +130,14 @@ public class Client_FolderScan extends Thread
 	        		if(kind == StandardWatchEventKinds.ENTRY_CREATE)
 	        		{
 	        			_isDirectory = new File(_address + "\\" + path.getFileName().toString());
+	        			Client_Login._autoBackupList.offer(_isDirectory.getAbsolutePath());
 	        			if(_isDirectory.isDirectory() == true) 
 	        			{
 	        				_fileName = path.getFileName().toString();
 	        				System.out.println("New Folder is Created >> " + _fileName);
 	        				_absoluteDirectory = _isDirectory.getPath();
-	        				new Client_FolderScan(_absoluteDirectory);
+	        				Client_FolderScan cfs = new Client_FolderScan(_absoluteDirectory);
+	        				Client_Login._folderScanList.offer(cfs);
 	        				_cab.autoBackup(_absoluteDirectory);
 	        			}
 	        			else
