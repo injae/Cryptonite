@@ -166,6 +166,9 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
         if((_name.length % MAX_BUTTON) == 0)
         {
         	_page = (_name.length / MAX_BUTTON);
+        	if(_name.length==0){
+        		_page=1;
+        	}
         }
         else
         {

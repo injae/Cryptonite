@@ -37,6 +37,8 @@ public class Client_Group_Main extends JFrame{
 	private BufferedImage img = null;
 	private BufferedImage img2 = null;
 
+	private JButton _Right;
+	private JButton _Left;
 	private JButton _Upload;
 	private JButton _Select;
 	private JButton _Download;
@@ -51,7 +53,9 @@ public class Client_Group_Main extends JFrame{
 
 	private ArrayList<String> _directoryArray;
 	private ArrayList<String> _nameArray;
+	private final int MAX_BUTTON = 18;
 	
+	private ArrayList<JButton> _Buttonlist;
 	private String[] _result;
 	private String[] _fileList;
 	private String[] _name;
@@ -63,6 +67,9 @@ public class Client_Group_Main extends JFrame{
 	private int _mod;
 	private int _x=0;
 	private int _y=0;
+	private int _nowPage = 0;
+	private int _page;
+	
 	private boolean _checkmod = true;
 	
 	private DefaultListModel<String> _model;
@@ -111,18 +118,30 @@ public class Client_Group_Main extends JFrame{
 		_fileList = _cfl.getFileList();
 		_directoryArray = new ArrayList<String>();
 		_nameArray = new ArrayList<String>();
+		_Buttonlist = new ArrayList<JButton>();
 		
-		
-		 _name = new String[_fileList.length];
-	        for(int i = 0; i < _fileList.length; i++)
-	        {	
-	        	StringTokenizer st=new StringTokenizer(_fileList[i], "\\");
+		_name = new String[_fileList.length];
+        for(int i = 0; i < _fileList.length; i++)
+        {	
+        	StringTokenizer st=new StringTokenizer(_fileList[i], "\\");
 
-	        	while(st.hasMoreTokens())
-	        	{
-	    			_name[i] = st.nextToken();
-	    		}
-	    	}
+        	while(st.hasMoreTokens())
+        	{
+    			_name[i] = st.nextToken();
+    		}
+    	}
+        
+        if((_name.length % MAX_BUTTON) == 0)
+        {
+        	_page = (_name.length / MAX_BUTTON);
+        	if(_name.length==0){
+        		_page=1;
+        	}
+        }
+        else
+        {
+        	_page = (_name.length / MAX_BUTTON) + 1;
+        }
 	
 		try
 		{
@@ -151,8 +170,8 @@ public class Client_Group_Main extends JFrame{
         
         try 
         {
-            img = ImageIO.read(new File("img/초대목록화면.png"));
-            img2 = ImageIO.read(new File("img/초대목록화면2.png"));
+            img = ImageIO.read(new File("img/초대목록화면re.png"));
+            img2 = ImageIO.read(new File("img/초대목록화면re2.png"));
         }
         catch (IOException e)
         {
@@ -187,6 +206,8 @@ public class Client_Group_Main extends JFrame{
         		g.setColor(Color.BLACK);
         		g.setFont(fontbt);
         		g.drawString("Group Name : " + _gpName, 230, 35);
+      			g.setFont(_precondition_font);
+      			g.drawString((_nowPage + 1) + "/" + _page, 470, 400);
         	}
         	else
         	{
@@ -194,12 +215,16 @@ public class Client_Group_Main extends JFrame{
         		g.setColor(Color.BLACK);
         		g.setFont(fontbt);
         		g.drawString("Group Name : " + _gpName, 230, 35);
+        		g.setFont(_precondition_font);
+      			g.drawString((_nowPage + 1) + "/" + _page, 470, 400);
         	}
         }
    }
 	
 	private void mod1()
 	{
+		layeredPane.add(_Left);
+		layeredPane.add(_Right);
 		layeredPane.add(Search);
     	layeredPane.add( _idField);
         layeredPane.add(OK);
@@ -212,11 +237,31 @@ public class Client_Group_Main extends JFrame{
 	private void mod2()
 	{
 		_checkmod = false;
+		layeredPane.add(_Left);
+		layeredPane.add(_Right);
     	layeredPane.remove(Delete);
     	layeredPane.add(Withdrawal);
     	layeredPane.add(panel);
         container.add(layeredPane);
 	}
+	
+	private void page()
+	{
+		int buttonCount = 0;
+		if(_nowPage + 1 == _page)
+		{
+			buttonCount = _Buttonlist.size() % MAX_BUTTON;
+		}
+		else
+		{
+			buttonCount = MAX_BUTTON;
+		}
+		
+		for(int i = 0; i < buttonCount; i++)
+		{
+			layeredPane.add(_Buttonlist.get(i + (MAX_BUTTON * _nowPage)));
+		}
+	}	
 	
 	private void allocator()
 	{
@@ -276,7 +321,7 @@ public class Client_Group_Main extends JFrame{
         
         _Select = new JButton(new ImageIcon("img/select.png"));
         _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
-        _Select.setBounds(400, 370, 80, 40);
+        _Select.setBounds(200, 370, 80, 40);
         _Select.setFocusPainted(false);
         _Select.setContentAreaFilled(false);
         _Select.setBorderPainted(false);
@@ -303,7 +348,7 @@ public class Client_Group_Main extends JFrame{
         
         _Download = new JButton(new ImageIcon("img/DOWNLOAD.png"));	
 		_Download.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
-		_Download.setBounds(200, 370, 80,40);
+		_Download.setBounds(50, 370, 80,40);
 		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
 		_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
@@ -361,8 +406,11 @@ public class Client_Group_Main extends JFrame{
          		_result=_cgs.getID();
          		if(_result.length == 0)
          		{
+         			if(_list!=null){
          			_list.setVisible(false);
+         			}
          			showMessage("ID Error","존재하는 ID가 없습니다.");
+         			
          		}
          		else
          		{
@@ -413,8 +461,8 @@ public class Client_Group_Main extends JFrame{
 
         
         
-        Withdrawal = new JButton(new ImageIcon("img/Check.png"));
-        Withdrawal.setRolloverIcon(new ImageIcon("img/Checkp.png"));
+        Withdrawal = new JButton(new ImageIcon("img/_resistor'sjoin.png"));
+        Withdrawal.setRolloverIcon(new ImageIcon("img/_resistor'sjoinpr.png"));
         Withdrawal.setBounds(685, 380, 50, 50);
         Withdrawal.setFocusPainted(false);
         Withdrawal.setContentAreaFilled(false);
@@ -442,30 +490,118 @@ public class Client_Group_Main extends JFrame{
          	}
          });
 
+        
+        _Left = new JButton(new ImageIcon("img/LEFT.png"));
+        _Left.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
+        _Left.setBounds(400, 370, 80, 40);
+        _Left.setFocusPainted(false);
+        _Left.setContentAreaFilled(false);
+        _Left.setBorderPainted(false);
+        _Left.addActionListener(new ActionListener() 
+        {     
+        	public void actionPerformed(ActionEvent arg0)
+        	{	
+        		_nowPage -= 1;
+        		if(_nowPage < 0)
+        		{
+        			_nowPage += 1;
+        			showMessage("error", "Here is the first page!");
+        		}
+        		else
+        		{   	
+					 layeredPane.removeAll();
+					 
+					 page();
+					 if(_mod == 1)
+					 {	
+						 mod1();
+					 }
+					 else
+					 {
+						 mod2();
+					 }
+					 
+					 repaint();
+        		}
+        	}
+        });
+        
+        _Right = new JButton(new ImageIcon("img/RIGHT.png"));
+        _Right.setRolloverIcon(new ImageIcon("img/RIGHTR.png"));
+        _Right.setBounds(500, 370, 80, 40);
+        _Right.setFocusPainted(false);
+        _Right.setContentAreaFilled(false);
+        _Right.setBorderPainted(false);
+        _Right.addActionListener(new ActionListener() 
+        {  	   
+        	public void actionPerformed(ActionEvent arg0)
+        	{	
+        		_nowPage += 1;
+        		if(_nowPage + 1 > _page)
+        		{
+        			_nowPage -= 1;
+        			showMessage("error", "Here is the last page!");
+        		}
+        		else
+        		{ 
+        			layeredPane.removeAll();
+        			
+        			page();
+        			if(_mod == 1)
+        			{	
+        				mod1();
+        			}
+        			else
+        			{
+        				mod2();
+        			}
+        			
+        			repaint();
+        		}	 
+        	}
+        });	
+       
 	}
+	
+	
 	private void button()
 	{
 		Button = new JButton[_name.length];
-		int number=7;
+		int number = 7;
 		for(int i = 1; i < _name.length + 1; i++)
 		{
-			if(i>6){
-				if(number==i){
-					_x=0;
-					_y+=120;
-					number+=6;
+			if(i > 6)
+			{
+				if(number == i)
+				{
+					if((i % 18) == 1)
+					{
+						_x = 0;
+						_y = 0;
+						number += 6;
+					}
+					else
+					{
+						_x = 0;
+						_y += 120;
+						number += 6;
+					}
 				}
 				else
 				{
-					_x+=105;
+					_x += 105;
 				}
 			}
 			else
 			{
-				if(i>1){_x+=105;}
+				if(i > 1)
+				{
+					_x += 105;
+				}
 			}
 
 			Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
+			_Buttonlist.add(Button[i-1]);
 			Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
 			Button[i-1].setBounds((10+_x),(70+_y),92,120);
 			Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
