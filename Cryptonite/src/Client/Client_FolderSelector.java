@@ -3,6 +3,7 @@ package Client;
 import java.io.File;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /*
  * Developer : Youn Hee Seung
@@ -38,6 +39,7 @@ public class Client_FolderSelector
 	  	catch(NullPointerException e)
 	  	{
 	  		System.out.println("폴더가 선택되지 않았습니다.");
+	  		showMessage("Error", "Folder is not selected.");
 	  		selectionEnd = true;
 	  		return false;
 	  	}
@@ -51,5 +53,10 @@ public class Client_FolderSelector
 	public boolean getSelectionEnd()
 	{
 		return selectionEnd;
+	}
+	
+	private void showMessage(String title, String message) 
+	{
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }
