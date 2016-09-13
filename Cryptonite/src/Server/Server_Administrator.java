@@ -90,14 +90,8 @@ public class Server_Administrator extends Thread
 	{
 		System.out.print("<y/n> ");
 		String ans = new Scanner(System.in).nextLine();
-		if(ans.equalsIgnoreCase("y"))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		
+		return ans.equalsIgnoreCase("y") ? true : false;
 	}
 	
 	public void progressbar()
