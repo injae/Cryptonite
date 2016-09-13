@@ -126,26 +126,18 @@ public class Client_Send_OTP extends JFrame{
         Send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean check=false;
-				//boolean progresscheck=false;
-				check=_cfs.sendFile();
-				_flag=true;
-				_checkotp=true;
-				//new Client_Progressbar();
-				//progresscheck=Client_Progressbar.Progress_Check();
-				layeredPane.removeAll();
+				check = _cfs.sendFile();
+				_cfs.start();
 				
-				layeredPane.add(Send);
-				//layeredPane.add(Select);
-				layeredPane.add(Cancel);
+				_flag = true;
+				_checkotp = true;
 				
-				layeredPane.add(panel);
-				container.add(layeredPane);
-				layeredPane.updateUI();
-				repaint();
-				if(check/*&&progresscheck*/){
+				if(check)
+				{
 					showMessage("Success", "Send Complete!");
 				}
-				else{
+				else
+				{
 					showMessage("Failed", "Send failed");
 				}
 			}

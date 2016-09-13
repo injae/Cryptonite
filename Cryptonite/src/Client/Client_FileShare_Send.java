@@ -22,10 +22,11 @@ import java.io.*;
  * 
  * */
 
-public class Client_FileShare_Send implements PacketRule
+public class Client_FileShare_Send extends Thread implements PacketRule
 {
 	// Instance
 	private String _OTP = "";
+	private boolean _finishCheck;
 	
 	private static long _filesize = 0;
 	// About Files
@@ -125,10 +126,8 @@ public class Client_FileShare_Send implements PacketRule
 				packet[1] = (byte)_fileNameArray.length;
 				packet[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
 				packet[3] = (byte)fileNameArray[i].limit();
-				//packet[3] = (byte)_fileNameArray[i].getBytes().length;
 				Function.frontInsertByte(4, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
 				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, fileNameArray[i].array(), packet);
-				//Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, _fileNameArray[i].getBytes(), packet);
 				_csc.send.setPacket(packet).write();	// event
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
@@ -141,13 +140,13 @@ public class Client_FileShare_Send implements PacketRule
 					_csc.send.setPacket(p.read().getByte()).write();
 				}
 				p.close();
-				check=true;
+				check = true;
 				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
-				for(int l=0;l<_fileSizeArray.length;l++){
-					_filesize+=_fileSizeArray[l];
+				for(int l=0; l < _fileSizeArray.length; l++)
+				{
+					_filesize += _fileSizeArray[l];
 				}
 			}
-			//_cfs.dispose();
 		}
 		catch (FileNotFoundException e) 
 		{
@@ -171,5 +170,10 @@ public class Client_FileShare_Send implements PacketRule
 			temp = _fileNameArray[i];
 			_fileNameArray[i] = _OTP + "@" + temp;
 		}
+	}
+	
+	public boolean getFinishCheck()
+	{
+		return _finishCheck;
 	}
 }
