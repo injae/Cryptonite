@@ -69,6 +69,7 @@ public class Client_Group_Main extends JFrame{
 	private int _y=0;
 	private int _nowPage = 0;
 	private int _page;
+	private int[] count;
 	
 	private boolean _checkmod = true;
 	
@@ -120,6 +121,7 @@ public class Client_Group_Main extends JFrame{
 		_nameArray = new ArrayList<String>();
 		_Buttonlist = new ArrayList<JButton>();
 		
+		
 		_name = new String[_fileList.length];
         for(int i = 0; i < _fileList.length; i++)
         {	
@@ -142,7 +144,12 @@ public class Client_Group_Main extends JFrame{
         {
         	_page = (_name.length / MAX_BUTTON) + 1;
         }
-	
+        count=new int[_name.length];
+        for(int i=0;i<_name.length;i++)
+        {
+        	count[i]=1;
+        }
+        
 		try
 		{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
@@ -612,9 +619,22 @@ public class Client_Group_Main extends JFrame{
 			Button[i-1].setContentAreaFilled(false);
 			Button[i-1].addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e)
-				{
+				{	
 					_passCheck = true;
 					int index = findIndex(e.getActionCommand());
+					
+					if((count[index]%2)==0)
+					{
+						Button[index].setIcon(new ImageIcon("gui/logo_mini.png"));
+						count[index]++;
+					}
+					else
+					{
+						Button[index].setIcon(new ImageIcon("img/logo_mini_folder.png"));
+						count[index]++;
+					}
+					
+					System.out.println(count);
 					if(!_directoryArray.isEmpty())
 					{
 						for(int j = 0; j < _directoryArray.size(); j++)
