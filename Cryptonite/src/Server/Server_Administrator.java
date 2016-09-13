@@ -55,19 +55,20 @@ public class Server_Administrator extends Thread
 			{
 			case "help":
 				System.out.println("<command>");
-				System.out.println("1. all packet size");
-				System.out.println("2. how many user");
-				System.out.println("3. running time");
-				System.out.println("4. stop");
+				System.out.println("  <command> :  <explain>");
+				System.out.println("*   size    : size of all packet");
+				System.out.println("*   user    : how many user count");
+				System.out.println("*   time    : server running time");
+				System.out.println("*   stop    : server stop");
 				break;
 				
-			case "all packet size":
+			case "size":
 				System.out.println("All Packet Size: "+allpacketlength);	 break;
 				
-			case "how many user":
+			case "user":
 				System.out.println("How many user: " +Server_Client_Manager.getInstance().HowManyClient());	 break;
 				
-			case "running time":
+			case "time":
 				long hour = timer.runningTime() / (3600 * 1000);
 				
 				long min  = timer.runningTime() / (60   * 1000);
