@@ -84,9 +84,6 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		bb.put(nameTemp);
 		bb.flip();
 		_fileName = cs.decode(bb).toString().trim();
-
-		System.out.println("파일 이름 : " + _fileName);
-		System.out.println("파일 용량 : " + _fileSize + " (Byte)");
 	}
 	
 	@Override
@@ -121,7 +118,6 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 			
 			if(count == _packetMaxCount)
 			{
-				System.out.println(_fileName + " 파일이 수신 완료되었습니다.");
 				p.close();
 			}
 		}

@@ -182,7 +182,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 				_address = new String(_activity.receive.getByte()).trim();
 				File newFolder = new File(_address);
 				newFolder.mkdir();
-				System.out.println("AUTOBACKUP COMPLETE !!");
 			}
 			else if(_checkProperty.equals("FILE"))
 			{	
@@ -190,7 +189,6 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 				
 				if(count == _packetMaxCount)
 				{
-					System.out.println("AUTOBACKUP COMPLETE !!");
 					p.close();
 				}
 			}

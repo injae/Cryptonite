@@ -39,7 +39,6 @@ public class Server_Client_Manager implements PacketRule
 		_clientList.put(usCode, _clientList.remove(acCode));
 		_clientList.get(usCode).setClientCode(usCode);
 		_code_manager.removeCode(acCode);
-		System.out.println("Login: "+usCode);
 	}
 	
 	public void logOut(String usCode)
@@ -47,14 +46,11 @@ public class Server_Client_Manager implements PacketRule
 		String code = _code_manager.getAcCode();
 		_clientList.put(code, _clientList.remove(usCode));
 		_clientList.get(code).setClientCode(code);
-		System.out.println("Logout: "+usCode);
 	}
 	
 	public void register(String code, Server_Client_Activity server_client_activity)
 	{
 		_clientList.put(code, server_client_activity);
-		System.out.println("How many Client " + _clientList.size());
-		System.out.println("New Client: "+code);
 	}
 	
 	public int HowManyClient()
@@ -85,8 +81,6 @@ public class Server_Client_Manager implements PacketRule
 				_code_manager.removeCode(code);
 			}
 			activity.close();
-			
-			System.out.println("Exit Client: "+clientCode);
 		}
 		else
 		{

@@ -104,7 +104,7 @@ public class Server_Administrator extends Thread
 	{
 		try 
 		{
-		    for(int i =0; i < 20; i++) { System.out.print("."); Thread.sleep(25); }
+		    for(int i =0; i < 29; i++) { System.out.print("."); Thread.sleep(25); }
 		    System.out.println(" Done");
 		    
 		} catch (InterruptedException e) {

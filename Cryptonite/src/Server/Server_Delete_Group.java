@@ -70,7 +70,6 @@ public class Server_Delete_Group extends Server_Funtion
 					if(save.length() == 0) { save = "NULL"; }
 					db.Update("update test set mygrouplist = '" + save + "' where uscode = " + uscode + ";");
 				}
-				System.out.println(Server_Code_Manager.codeCutter(gpCode));
 				db.Update("delete from grouplist where gpcode = "+Server_Code_Manager.codeCutter(gpCode)+";");
 				
 				File forDelete = new File("Server_Folder/Backup/" + gpCode);

@@ -67,7 +67,6 @@ public class Server_Group_Withdrawal extends Server_Funtion {
 			}
 			if(save.length() == 0) { save = "NULL"; }
 			db.Update("update test set mygrouplist = '" + save + "' where uscode = " + Server_Code_Manager.codeCutter(_activity.getClientCode()) + ";");
-			System.out.println("end");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
