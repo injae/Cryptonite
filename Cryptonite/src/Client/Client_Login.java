@@ -26,6 +26,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -60,6 +62,9 @@ public class Client_Login extends JFrame implements PacketRule {
 			g.drawImage(_img, 0, 0, null);
 		}
 	}
+	
+	public static final Queue<Client_FolderScan> _folderScanList = new LinkedList<Client_FolderScan>();
+	public static final Queue<String> _autoBackupList = new LinkedList<String>();
 
 	private boolean _checkLogin = false;
 	private boolean _firstTime = false;
@@ -266,6 +271,7 @@ public class Client_Login extends JFrame implements PacketRule {
 								fw.close();
 							}
 							_cfc = new Client_FolderScan();
+							Client_Login._folderScanList.offer(_cfc);
 							_cfc.start();
 							dispose();
 							new Client_Main_UI(_gpcode, _gpname, _name, _uscode, _id, _cfc);
