@@ -70,7 +70,7 @@ public class Server_Group_Invite extends Server_Funtion
 						_passCheck = false;
 					}
 				}
-				if(_passCheck == true)
+				if(_passCheck)
 				{
 					gplist += ":" + uscode;
 					db.Update("update grouplist set gplist = '" + gplist + "' where gpcode = " + Server_Code_Manager.codeCutter(_gpCode) + ";");
@@ -84,7 +84,7 @@ public class Server_Group_Invite extends Server_Funtion
 					}
 					else
 					{
-						mygrouplist = ":" + _gpCode;
+						mygrouplist += ":" + _gpCode;
 					}
 					db.Update("update test set mygrouplist = '" + mygrouplist + "' where uscode = " + Server_Code_Manager.codeCutter(uscode) + ";");
 					_activity.send.setPacket("TRUE".getBytes(), 100).write();
