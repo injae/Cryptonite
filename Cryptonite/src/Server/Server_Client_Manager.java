@@ -39,6 +39,7 @@ public class Server_Client_Manager implements PacketRule
 		_clientList.put(usCode, _clientList.remove(acCode));
 		_clientList.get(usCode).setClientCode(usCode);
 		_code_manager.removeCode(acCode);
+		 Server_Administrator.getInstance().userUpdate("Login : "+ usCode);
 	}
 	
 	public void logOut(String usCode)
@@ -46,6 +47,7 @@ public class Server_Client_Manager implements PacketRule
 		String code = _code_manager.getAcCode();
 		_clientList.put(code, _clientList.remove(usCode));
 		_clientList.get(code).setClientCode(code);
+		Server_Administrator.getInstance().userUpdate("Logout : "+ usCode);
 	}
 	
 	public void register(String code, Server_Client_Activity server_client_activity)

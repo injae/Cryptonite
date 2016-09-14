@@ -65,7 +65,7 @@ public class Server_Client_Activity implements PacketRule
             
             _manager = Server_Client_Manager.getInstance();
 
-            //System.out.println(_channel.toString() + "connect");
+            Server_Administrator.getInstance().userUpdate(_channel.toString() + "connect");
             
             receive = new SecurePacketProcessor(_channel, true);
             send = new SecurePacketProcessor(_channel, true); 
@@ -127,7 +127,7 @@ public class Server_Client_Activity implements PacketRule
 	
 	public void close() 
 	{
-		//System.out.println(_channel.toString() + "Stop Connect");
+		 Server_Administrator.getInstance().userUpdate(_channel.toString() + "Stop Connect");
 		try {
 			_channel.close();
 		} catch (IOException e) {
