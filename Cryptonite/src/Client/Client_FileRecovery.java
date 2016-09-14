@@ -133,7 +133,6 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	{
 		_btnList = new ArrayList<RecoveryButton>();
 		_undo = new Stack<ArrayList<RecoveryButton>>();
-		
 		while(!fileList.isEmpty())
 		{
 			_btnList.add(new RecoveryButton(fileList.remove(0)));
@@ -309,17 +308,14 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	
 	private void page()
 	{
-		/*if(_nowPage + 1 == _page)
+		int k = _nowPage;
+		for(int j = 0; j < 3; j++)
 		{
-			
-		}
-		else
-		{
-			
-		}*/
-		for(int i =0; i < _btnList.size(); i++)
-		{
-			layeredPane.add(_btnList.get(i).button);
+			for(int i = 0; i < 5; i++)
+			{		
+				layeredPane.add(_btnList.get(k * MAX_BTN + (j * 5) + i).button);
+				if(_btnList.size() - 1 <= (k * MAX_BTN + (j * 5) + i)) { return; }
+			}
 		}
 	}	
 	
