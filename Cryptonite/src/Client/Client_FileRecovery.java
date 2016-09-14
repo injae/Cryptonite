@@ -77,6 +77,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	private JButton _Download;
 	private JButton _Right;
 	private JButton _Left;
+	private JButton _Back;
 	
 	private int _nowPage = 0;
 	private int _page;
@@ -321,6 +322,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 		layeredPane.add(_Right);
 		layeredPane.add(_Download);
         layeredPane.add(_Select);
+        layeredPane.add(_Back);
         layeredPane.add(panel);
         container.add(layeredPane);
 	}
@@ -444,7 +446,28 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 				 } 
 			 }
 		 });
-
+	
+		 _Back = new JButton(new ImageIcon("img/LEFT.png"));
+		 _Back.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
+		 _Back.setBounds(700, 10, 80, 40);
+		 _Back.setFocusPainted(false);
+		 _Back.setContentAreaFilled(false);
+		 _Back.setBorderPainted(false);
+		 _Back.addActionListener(new ActionListener() 
+		 {     
+			 public void actionPerformed(ActionEvent arg0)
+			 {	
+				_btnList=_undo.pop();
+				
+				layeredPane.removeAll();
+				makeBtn();
+				pageCount();
+				page();
+				basic();
+				repaint();
+			 }
+		 });
+		 
 	}
 	
 	private void showMessage(String title, String message) 
