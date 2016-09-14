@@ -81,9 +81,7 @@ public class Server_Administrator extends Thread
 			case "stop":
 				if(YorN()){ System.exit(1); }
 			}
-		
 		}
-		
 	}
 	
 	public boolean YorN()
