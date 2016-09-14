@@ -8,6 +8,8 @@ import java.nio.file.*;
 import java.nio.*;
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 import Crypto.Crypto_Factory;
 import Crypto.aesKeyGenerator;
 
@@ -25,7 +27,7 @@ import java.io.*;
 public class Client_FileShare_Send extends Thread implements PacketRule
 {
 	// Instance
-	private String _OTP = "";
+	private String _OTP = "NULL";
 	private boolean _finishCheck;
 	
 	private static long _filesize = 0;
@@ -44,12 +46,15 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 	// Another Class Instance
 	private Client_Server_Connector _csc = null;
 	private Client_FileSelector _cfs = null;
+	private Client_Progressbar _cpb = null;
+	private Client_Send_OTP _cso = null;
 	
 	// Constructors
 	public Client_FileShare_Send()
 	{
 		_csc = Client_Server_Connector.getInstance();
 		_cfs = new Client_FileSelector();
+		_cpb = new Client_Progressbar();
 	}
 	
 	// Methods
@@ -90,6 +95,7 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 				_tempFile = new File(_filePathArray[i]);
 				_fileSizeArray[i] = _tempFile.length();
 			}
+			_finishCheck = false;
 			_cfs.dispose();
 		}
 		catch(NullPointerException e)
@@ -98,9 +104,8 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 		}
 	}
 	
-	public boolean sendFile()	// when you click send button
+	public synchronized void run()
 	{
-		boolean check=false;
 		Charset cs = Charset.forName("UTF-8");
 		ByteBuffer[] fileNameArray = new ByteBuffer[_fileNameArray.length];
 		try 
@@ -116,6 +121,8 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 			_OTP = new String(OTP_Byte).trim();
 	
 			changeFilesName();
+			
+			_cpb.UI_ON();
 			
 			for(int i = 0; i < _fileNameArray.length; i++)
 			{
@@ -140,13 +147,16 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 					_csc.send.setPacket(p.read().getByte()).write();
 				}
 				p.close();
-				check = true;
 				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
+				
 				for(int l=0; l < _fileSizeArray.length; l++)
 				{
 					_filesize += _fileSizeArray[l];
 				}
 			}
+			_finishCheck = true;
+			_cpb.UI_OFF();
+			showMessage("Notification","All files were completely sended.");
 		}
 		catch (FileNotFoundException e) 
 		{
@@ -157,7 +167,6 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 			System.exit(1);
 			e.printStackTrace();
 		}
-		return check;
 	}
 	
 	private void changeFilesName()
@@ -175,5 +184,10 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 	public boolean getFinishCheck()
 	{
 		return _finishCheck;
+	}
+	
+	private void showMessage(String title, String message) 
+	{
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }
