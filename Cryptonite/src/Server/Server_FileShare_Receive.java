@@ -89,6 +89,11 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	@Override
 	public void Checker(byte[] packet) 
 	{
+		File check = new File(_address);
+		if(!check.exists())
+		{
+			check.mkdir();
+		}
 		setFileInformation(packet);
 		_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		
