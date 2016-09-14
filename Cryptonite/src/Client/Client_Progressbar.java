@@ -54,12 +54,10 @@ public class Client_Progressbar
 		_progressBarLabel.setVisible(true);
 		_layeredPane.add(_sendingLabel);
 		_layeredPane.add(_progressBarLabel);
-		_layeredPane.setVisible(true);
 		
 		_window.getContentPane().add(_layeredPane);
 		_window.setSize(260, 120);
 		_window.setLocationRelativeTo(null);
-		_window.setVisible(true);
 	}
 	
 	// Methods
