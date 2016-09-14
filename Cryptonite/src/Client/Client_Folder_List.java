@@ -23,7 +23,7 @@ public class Client_Folder_List implements PacketRule
 	
 	// Methods
 	
-	public void running(String path)
+	public Client_Folder_List running(String path)
 	{
 		try 
 		{
@@ -34,27 +34,22 @@ public class Client_Folder_List implements PacketRule
 			Function.frontInsertByte(2, path.getBytes(), event);
 			_csc.send.setPacket(event).write();
 			
-			int fileCount = Integer.parseInt(new String(_csc.receive.setAllocate(1024).read().getByte()).trim());
+			int fileCount = Integer.parseInt(new String(_csc.receive.read().getByte()).trim());
 			
 			for(int i = 0; i < fileCount; i++)
 			{
-				_fileList.add(new String(_csc.receive.setAllocate(1024).read().getByte()).trim());
+				_fileList.add(new String(_csc.receive.read().getByte()).trim());
 			}
 		}
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
+		return this;
 	}
 	
-	public String[] getFileList()
+	public ArrayList<String> getFileList()
 	{
-		String[] temp = new String[_fileList.size()];
-		for(int i = 0; i < temp.length; i++)
-		{
-			temp[i] = _fileList.get(i);
-		}
-		
-		return temp;
+		return _fileList;
 	}
 }

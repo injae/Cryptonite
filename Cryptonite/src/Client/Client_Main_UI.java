@@ -329,6 +329,7 @@ public class Client_Main_UI extends JFrame
 				}
 				catch(IndexOutOfBoundsException e1)
 				{
+					e1.printStackTrace();
 					showMessage("ERROR","There are no backup files.");
 				}
 			}

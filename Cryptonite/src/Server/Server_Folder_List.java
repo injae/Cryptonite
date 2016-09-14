@@ -45,7 +45,6 @@ public class Server_Folder_List extends Server_Funtion {
 		{ 
 			Checker(_activity.getReceiveEvent());
 			String[] fileList = _folder.list();
-			
 			_activity.send.setPacket(String.valueOf(fileList.length).getBytes(), 1024).write();
 			
 			for(int i = 0; i < fileList.length; i++)

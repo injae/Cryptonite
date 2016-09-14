@@ -52,68 +52,95 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
+import org.omg.PortableServer._ServantActivatorStub;
+
+import com.mysql.fabric.xmlrpc.base.Array;
 
 import Client.Client_Main_UI.MyPanel;
 import Crypto.KeyReposit;
 
-public class Client_FileRecovery extends JFrame implements DropTargetListener{
-	private BufferedImage img = null;
-	private final int MAX_BUTTON = 18;
+public class Client_FileRecovery extends JFrame implements DropTargetListener
+{	
+	private BufferedImage _img = null;
+	private final int MAX_BTN = 18;
+	
+	private DropTarget _dropTarget;
 	
 	private JLabel _downloadArea;
-	private DropTarget _dropTarget;
 	private List _loadedFileList;
-	private JButton[] Button;
-	
-	private ArrayList<String> _directoryArray;
-	private ArrayList<String> _nameArray;
-	private ArrayList<JButton> _list;
-	private boolean _passCheck = true;
-	
-	private Stack<String[]> stack;
-	private String[] _fileList;
-	private String[] _name=null;
-	private int _x=0;
-	private int _y=0;
-	private int _nowPage = 0;
-	private int _page;
-	
+
 	private JButton _Select;
 	private JButton _Download;
 	private JButton _Right;
 	private JButton _Left;
-
+	
+	private int _nowPage = 0;
+	private int _page;
+	
 	private Container container;
 	private JLayeredPane layeredPane = new JLayeredPane();
-	private  MyPanel panel = new MyPanel();
-	
+
+	class MyPanel extends JPanel 
+	{
+        public void paint(Graphics g) 
+        {
+            g.drawImage(_img, 0, 0, null);
+            g.setColor(Color.BLACK);
+			g.setFont(_precondition_font);
+			g.drawString((_nowPage + 1) + "/" + _page, 705, 390);
+        }
+   }
+	private MyPanel panel = new MyPanel();
+
 	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
 	private Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
 	
-	private Client_FolderSelector _cfs = null;
-	private Client_File_Download _cfd = null;
-	private Client_Folder_List _cfl = null;
-	private String _downloadDirectory;
 	
-	private KeyReposit _reposit;
-
-	
-	public static void main(String args[])
+	public class RecoveryButton
 	{
-		new  Client_FileRecovery(null);
-	}
-
-
-	public Client_FileRecovery(String[] fileList){
+		public RecoveryButton(String fullpath)
+		{
+			fullPath = fullpath;
+			
+			StringTokenizer st = new StringTokenizer(fullpath, "\\");
+			
+			while(st.hasMoreTokens())
+			{
+				fileName = st.nextToken();
+			}
+			
+			isClick = false;
+			
+			st = new StringTokenizer(fileName, ".");
+			if(st.countTokens() == 1) { isDir = true; }
+			else 					  { isDir = false;}
+		}
 		
-		_reposit = KeyReposit.getInstance();
-		_cfs = new Client_FolderSelector();
-		_cfd = new Client_File_Download();
-		_cfl = new Client_Folder_List();
-		_directoryArray = new ArrayList<String>();
-		_nameArray = new ArrayList<String>();
-		_list = new ArrayList<JButton>();
-		_fileList = fileList;
+		public boolean isDir;
+		public JButton button;
+		public boolean isClick;
+		public String fullPath;
+		public String fileName;
+	}
+	private ArrayList<RecoveryButton> _btnList;
+	private String _downloadPath;
+	private Stack<ArrayList<RecoveryButton>> _undo;
+	
+	
+	public Client_FileRecovery(ArrayList<String> fileList) 
+	{
+		_btnList = new ArrayList<RecoveryButton>();
+		_undo = new Stack<ArrayList<RecoveryButton>>();
+		
+		while(!fileList.isEmpty())
+		{
+			_btnList.add(new RecoveryButton(fileList.remove(0)));
+		}
+
+		pageCount();
+		
 		_downloadArea = new JLabel();
 		_downloadArea.setBounds(2, 69, 800, 384);
 		_dropTarget = new DropTarget(_downloadArea, DnDConstants.ACTION_COPY_OR_MOVE, this, true, null);
@@ -134,7 +161,6 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(0,0,816,480);
-		//setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
@@ -145,7 +171,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
         
         try 
         {
-            img = ImageIO.read(new File("img/File Recovery_BG.png"));
+            _img = ImageIO.read(new File("img/File Recovery_BG.png"));
         }
         catch (IOException e)
         {
@@ -154,48 +180,131 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
         }
         
         panel.setBounds(0, 0, 816, 480);
-
-        _name = new String[_fileList.length];
-        for(int i = 0; i < _fileList.length; i++)
-        {	
-        	StringTokenizer st=new StringTokenizer(_fileList[i], "\\");
-
-        	while(st.hasMoreTokens())
-        	{
-    			_name[i] = st.nextToken();
-    		}
-    	}
-        
-        if((_name.length % MAX_BUTTON) == 0)
-        {
-        	_page = (_name.length / MAX_BUTTON);
-        	if(_name.length==0){
-        		_page=1;
-        	}
-        }
-        else
-        {
-        	_page = (_name.length / MAX_BUTTON) + 1;
-        }
-        
-		allocator();
-		button();
+		
+        allocator();
+		makeBtn();
 		page();
 		basic();
         setVisible(true);
+        
+	}
+
+	private void pageCount()
+	{
+		if((_btnList.size() % MAX_BTN) == 0)
+		{
+			_page = (_btnList.size() / MAX_BTN);
+			if(_btnList.isEmpty()) { _page  = 1;}
+		}
+		else
+		{
+			_page = (_btnList.size() / MAX_BTN) + 1;
+		}
 	}
 	
-	class MyPanel extends JPanel 
+	private void makeBtn() 
 	{
-        public void paint(Graphics g) 
-        {
-            g.drawImage(img, 0, 0, null);
-            g.setColor(Color.BLACK);
-			g.setFont(_precondition_font);
-			g.drawString((_nowPage + 1) + "/" + _page, 705, 390);
-        }
-   }
+		for(int i =0; i < _btnList.size(); i++)
+		{
+			System.out.println(_btnList.get(i).fileName);
+		}
+		
+		for(int k = 0; k < _page; k++)
+		{
+			int x = 0 , y = 0;
+			for(int j = 1; j <= 3; j++)
+			{
+				for(int i = 1; i <= 6; i++)
+				{		
+					System.out.printf("k : %d j : %d i : %d\n",k,j,i);
+					System.out.println(k * MAX_BTN + (j * i) -1);
+					System.out.println(_btnList.size());
+					System.out.println(_btnList.get(k * MAX_BTN + (j * i) -1).fileName);
+					if(_btnList.get(k * MAX_BTN + (j * i) -1).isDir)
+					{
+						makeFolder(k * MAX_BTN + (j * i) -1, x, y);
+					}
+					else
+					{
+						makeFile(k * MAX_BTN + (j * i) -1, x, y);
+					}
+					if(_btnList.size() == (k * MAX_BTN) + (j * i)) { return; }
+					x += 120;
+				}
+				y += 105;
+			}
+		}
+	}
 	
+	private void makeFile(int index, int x, int y)
+	{
+		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("img/logo_mini_folder.png"));
+		btn.setPressedIcon(new ImageIcon("gui/logo_mini.png"));
+		btn.setBounds((10+x),(70+y),92,120);
+		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btn.setVerticalAlignment(SwingConstants.TOP);
+		btn.setHorizontalTextPosition(SwingConstants.CENTER);
+		btn.setBorderPainted(false);
+		btn.setFocusPainted(false);
+		btn.setContentAreaFilled(false);
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				_btnList.get(index).isClick = true;
+				layeredPane.removeAll();
+				makeBtn();
+				page();
+				basic();
+				layeredPane.repaint();
+			}
+		});
+		_btnList.get(index).button = btn;
+	}
+	
+	private void makeFolder(int index, int x, int y)
+	{
+		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/logo_mini.png"));
+		btn.setPressedIcon(new ImageIcon("img/logo_mini_folderR.png"));
+		btn.setBounds((10+x),(70+y),92,120);
+		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btn.setVerticalAlignment(SwingConstants.TOP);
+		btn.setHorizontalTextPosition(SwingConstants.CENTER);
+		btn.setBorderPainted(false);
+		btn.setFocusPainted(false);
+		btn.setContentAreaFilled(false);
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				for(int i = 0; i < _btnList.size(); i++)
+				{
+					_btnList.get(i).isClick = false;
+				}
+				_undo.push(_btnList);
+				String fullPath = _btnList.get(index).fullPath + "\\";
+				
+				ArrayList<String> files = new Client_Folder_List().running(_btnList.get(index).fullPath).getFileList();
+				_btnList = new ArrayList<RecoveryButton>();
+				
+				for(int i =0; i < files.size(); i++)
+				{
+					_btnList.add(new RecoveryButton(fullPath + files.get(i)));
+				}
+				pageCount();
+				
+				layeredPane.removeAll();
+				makeBtn();
+				page();
+				basic();
+				layeredPane.repaint();
+				
+			}
+		});
+		_btnList.get(index).button = btn;
+	}
+	
+
 	private void basic()
 	{
 		layeredPane.add(_Left);
@@ -208,19 +317,9 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 	
 	private void page()
 	{
-		int buttonCount = 0;
-		if(_nowPage + 1 == _page)
+		for(int i =0; i < _btnList.size(); i++)
 		{
-			buttonCount = _list.size() % MAX_BUTTON;
-		}
-		else
-		{
-			buttonCount = MAX_BUTTON;
-		}
-		
-		for(int i = 0; i < buttonCount; i++)
-		{
-			layeredPane.add(_list.get(i + (MAX_BUTTON * _nowPage)));
+			layeredPane.add(_btnList.get(i).button);
 		}
 	}	
 	
@@ -236,8 +335,9 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 		 {     
 			 public void actionPerformed(ActionEvent arg0)
 			 {	
-				 _cfs.folderSelectorON();
-				 while(!_cfs.getSelectionEnd())
+				Client_FolderSelector cfs = new Client_FolderSelector();
+				cfs.folderSelectorON();
+				 while(!cfs.getSelectionEnd())
 				 {
 					 try 
 					 {
@@ -248,7 +348,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 						 e.printStackTrace();
 					 }
 				 }
-				 _downloadDirectory = _cfs.getSelectedPath();
+				 _downloadPath = cfs.getSelectedPath();
 			 }
 		 });
 
@@ -265,9 +365,12 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 		 {
 			 public void actionPerformed(ActionEvent e) 
 			 {
-				 for(int i = 0; i < _directoryArray.size(); i++)
+				 for(int i =0; i < _btnList.size(); i++)
 				 {
-					 _cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i), _reposit.get_aesKey());
+					 if(_btnList.get(i).isClick)
+					 {
+						 new Client_File_Download().requestFile(_btnList.get(i).fileName, _downloadPath + "\\" + _btnList.get(i).fileName, KeyReposit.getInstance().get_aesKey());
+					 }
 				 }
 			 }
 		 });	
@@ -329,252 +432,43 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener{
 
 	}
 	
-	
-	private void button()
-	{
-		Button = new JButton[_name.length];
-		int number = 7;
-		for(int i = 1; i < _name.length + 1; i++)
-		{
-			if(i > 6)
-			{
-				if(number == i)
-				{
-					if((i % 18) == 1)
-					{
-						_x = 0;
-						_y = 0;
-						number += 6;
-					}
-					else
-					{
-						_x = 0;
-						_y += 120;
-						number += 6;
-					}
-				}
-				else
-				{
-					_x += 105;
-				}
-			}
-			else
-			{
-				if(i > 1)
-				{
-					_x += 105;
-				}
-			}
-			
-			StringTokenizer st = new StringTokenizer(_name[i-1], ".");
-			
-			
-			if(st.countTokens() == 1)	// Folders
-			{
-				stack=new Stack<String[]>();
-				stack.push(_fileList);
-				
-				Button[i-1] = new JButton(_name[i-1],new ImageIcon("img/logo_mini_folder.png"));
-				_list.add(Button[i-1]);
-				Button[i-1].setPressedIcon(new ImageIcon("img/logo_mini_folderR.png"));
-				Button[i-1].setBounds((10+_x),(70+_y),92,120);
-				Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-				Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
-				Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
-				Button[i-1].setBorderPainted(false);
-				Button[i-1].setFocusPainted(false);
-				Button[i-1].setContentAreaFilled(false);
-				Button[i-1].addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e)
-					{
-						int index = findIndex(e.getActionCommand());
-						int number=_fileList.length;
-						
-						System.out.println(_fileList[index]);
-						_cfl.running(_fileList[index]);
-						String[] inFolder = _cfl.getFileList();
-						/*System.out.println("-----------------------------");
-						for(int k = 0; k < inFolder.length; k++)
-						{
-							System.out.println(inFolder[k]);	
-						}
-						*/
-						
-						_fileList=null;
-						_name=null;
-						/*for(int i = 0; i < number; i++){
-							
-							_fileList[i]=null;
-						}*/
-						
-						_fileList=inFolder;
-						_name=new String[_fileList.length];
-						
-						for(int i = 0; i < inFolder.length; i++)
-						{	
-							StringTokenizer st=new StringTokenizer(inFolder[i], "\\");
-							
-							while(st.hasMoreTokens())
-							{
-								_name[i] = st.nextToken();
-							}
-						}
-						
-						if((_name.length % MAX_BUTTON) == 0)
-						{
-							_page = (_name.length / MAX_BUTTON);
-							if(_name.length==0){
-								_page=1;
-							}
-						}
-						else
-						{
-							_page = (_name.length / MAX_BUTTON) + 1;
-						}
-						_nowPage=0;
-						
-						for(int i=0;i<_name.length;i++){
-							System.out.println(_name[i]);
-						}
-						
-						button();
-						layeredPane.removeAll();
-						page();
-						basic();
-						repaint();
-					}
-				});
-				
-			}
-			else{
-				
-				Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));
-				_list.add(Button[i-1]);
-				Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-				Button[i-1].setBounds((10+_x),(70+_y),92,120);
-				Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-				Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
-				Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
-				Button[i-1].setBorderPainted(false);
-				Button[i-1].setFocusPainted(false);
-				Button[i-1].setContentAreaFilled(false);
-				Button[i-1].addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e)
-					{
-						int index = findIndex(e.getActionCommand());
-						
-						_passCheck = true;
-						//int index = findIndex(e.getActionCommand());
-						if(!_directoryArray.isEmpty())
-						{
-							for(int j = 0; j < _directoryArray.size(); j++)
-							{
-								if(_fileList[index].equals(_directoryArray.get(j)))
-								{
-									_directoryArray.remove(j);
-									_nameArray.remove(j);
-									_passCheck = false;
-									break;
-								}
-							}
-							if(_passCheck)
-							{
-								_directoryArray.add(_fileList[index]);
-								_nameArray.add(e.getActionCommand());
-							}
-						}
-						else
-						{
-							_directoryArray.add(_fileList[index]);
-							_nameArray.add(e.getActionCommand());
-						}
-						Button[index].setBackground(Color.BLACK);
-						
-						
-					for(int k = 0 ; k < _directoryArray.size(); k++)
-					{
-						System.out.println(_directoryArray.get(k));
-					}
-					System.out.println("----------------------");
-					}
-				});
-			}
-		}
-	}
-	
-	
 	private void showMessage(String title, String message) 
 	{
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	private int findIndex(String text)
-	{
-		int temp = 0;
-		
-		for(int i = 0; i < _name.length; i++)
-		{
-			if(_name[i].equals(text))
-			{
-				temp = i;
-			}
-		}
-		
-		return temp;
-	}
-
-
-	@Override
-	public void dragEnter(DropTargetDragEvent dtde) 
-	{
-		//System.out.println("dropEnter");
-	}
-
-
-	@Override
-	public void dragExit(DropTargetEvent dte) 
-	{
-		//System.out.println("dragExit");
-	}
-
-
-	@Override
-	public void dragOver(DropTargetDragEvent dtde) 
-	{
-		//System.out.println("dragOver");
-	}
-
-
 	@Override
 	public void drop(DropTargetDropEvent dtde) 
 	{
-		System.out.println("dragDrop");
-		if ((dtde.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0)
-        {
-            dtde.acceptDrop(dtde.getDropAction());
-            Transferable tr = dtde.getTransferable();
-            try
-            {
-                //파일명 얻어오기
-            	_loadedFileList = (List) tr.getTransferData(DataFlavor.javaFileListFlavor);
-             
-                //파일명 출력
-                for(int i = 0; i < _loadedFileList.size(); i++)
-                {
-                	System.out.println(_loadedFileList.get(i).toString());
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
+	
 	}
 
 
 	@Override
-	public void dropActionChanged(DropTargetDragEvent dtde) 
-	{
-		//System.out.println("dragActionChanged");
+	public void dragEnter(DropTargetDragEvent arg0) {
+		// TODO 자동 생성된 메소드 스텁
+		
 	}
+
+
+	@Override
+	public void dragExit(DropTargetEvent arg0) {
+		// TODO 자동 생성된 메소드 스텁
+		
+	}
+
+
+	@Override
+	public void dragOver(DropTargetDragEvent arg0) {
+		// TODO 자동 생성된 메소드 스텁
+		
+	}
+
+
+	@Override
+	public void dropActionChanged(DropTargetDragEvent arg0) {
+		// TODO 자동 생성된 메소드 스텁
+		
+	}
+
 }
