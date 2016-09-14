@@ -65,6 +65,8 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 {	
 	private BufferedImage _img = null;
 	private final int MAX_BTN = 15;
+	private final int COLUMN = 3;
+	private final int ROW = 5;
 	
 	private DropTarget _dropTarget;
 	
@@ -199,6 +201,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 		{
 			_page = (_btnList.size() / MAX_BTN) + 1;
 		}
+		_nowPage = 0;
 	}
 	
 	private void makeBtn() 
@@ -206,20 +209,20 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 		for(int k = 0; k < _page; k++)
 		{
 			int x = 10 , y = 0;
-			for(int j = 0; j < 3; j++)
+			for(int j = 0; j < COLUMN; j++)
 			{
 				x = 15;
-				for(int i = 0; i < 5; i++)
+				for(int i = 0; i < ROW; i++)
 				{		
-					if(_btnList.get(k * MAX_BTN + (j * 5) + i).isDir)
+					if(_btnList.get(k * MAX_BTN + (j * ROW) + i).isDir)
 					{
-						makeFolder(k * MAX_BTN + (j * 5) + i, x, y);
+						makeFolder(k * MAX_BTN + (j * ROW) + i, x, y);
 					}
 					else
 					{
-						makeFile(k * MAX_BTN + (j * 5) + i, x, y);
+						makeFile(k * MAX_BTN + (j * ROW) + i, x, y);
 					}
-					if(_btnList.size() - 1 <= (k * MAX_BTN + (j * 5) + i)) { return; }
+					if(_btnList.size() - 1 <= (k * MAX_BTN + (j * ROW) + i)) { return; }
 					x += 120;
 				}
 				y += 120;
@@ -283,7 +286,6 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 					_btnList.add(new RecoveryButton(fullPath + files.get(i)));
 				}
 				pageCount();
-				
 				layeredPane.removeAll();
 				makeBtn();
 				page();
@@ -295,7 +297,6 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 		_btnList.get(index).button = btn;
 	}
 	
-
 	private void basic()
 	{
 		layeredPane.add(_Left);
@@ -309,12 +310,12 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	private void page()
 	{
 		int k = _nowPage;
-		for(int j = 0; j < 3; j++)
+		for(int j = 0; j < COLUMN; j++)
 		{
-			for(int i = 0; i < 5; i++)
+			for(int i = 0; i < ROW; i++)
 			{		
-				layeredPane.add(_btnList.get(k * MAX_BTN + (j * 5) + i).button);
-				if(_btnList.size() - 1 <= (k * MAX_BTN + (j * 5) + i)) { return; }
+				layeredPane.add(_btnList.get(k * MAX_BTN + (j * ROW) + i).button);
+				if(_btnList.size() - 1 <= (k * MAX_BTN + (j * ROW) + i)) { return; }
 			}
 		}
 	}	
