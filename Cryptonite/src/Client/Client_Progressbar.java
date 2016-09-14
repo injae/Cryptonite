@@ -21,6 +21,11 @@ public class Client_Progressbar
 	private JLayeredPane _layeredPane;
 	private JWindow _window;
 	
+	public static void main(String[] args)
+	{
+		new Client_Progressbar();
+	}
+	
 	// Constructors
 	public Client_Progressbar()
 	{

@@ -28,7 +28,6 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 {
 	// Instance
 	private String _OTP = "NULL";
-	private boolean _finishCheck;
 	
 	private static long _filesize = 0;
 	// About Files
@@ -47,7 +46,6 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 	private Client_Server_Connector _csc = null;
 	private Client_FileSelector _cfs = null;
 	private Client_Progressbar _cpb = null;
-	private Client_Send_OTP _cso = null;
 	
 	// Constructors
 	public Client_FileShare_Send()
@@ -95,7 +93,6 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 				_tempFile = new File(_filePathArray[i]);
 				_fileSizeArray[i] = _tempFile.length();
 			}
-			_finishCheck = false;
 			_cfs.dispose();
 		}
 		catch(NullPointerException e)
@@ -115,9 +112,8 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 			byte[] OTP_Packet = new byte[1024];
 			OTP_Packet[0] = MAKE_OTP;
 			_csc.send.setPacket(OTP_Packet).write();
-			_csc.send.setPacket(garbage).write();			
 			
-			byte[] OTP_Byte = _csc.receive.read().getByte();
+			byte[] OTP_Byte = _csc.receive.setAllocate(1024).read().getByte();
 			_OTP = new String(OTP_Byte).trim();
 	
 			changeFilesName();
@@ -154,7 +150,6 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 					_filesize += _fileSizeArray[l];
 				}
 			}
-			_finishCheck = true;
 			_cpb.UI_OFF();
 			showMessage("Notification","All files were completely sended.");
 		}
@@ -179,11 +174,6 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 			temp = _fileNameArray[i];
 			_fileNameArray[i] = _OTP + "@" + temp;
 		}
-	}
-	
-	public boolean getFinishCheck()
-	{
-		return _finishCheck;
 	}
 	
 	private void showMessage(String title, String message) 
