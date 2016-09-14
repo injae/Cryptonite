@@ -52,7 +52,7 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 	{
 		_csc = Client_Server_Connector.getInstance();
 		_cfs = new Client_FileSelector();
-		_cpb = new Client_Progressbar();
+		_cpb = new Client_Progressbar(1);
 	}
 	
 	// Methods

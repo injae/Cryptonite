@@ -12,8 +12,7 @@ import javax.swing.JWindow;
 public class Client_Progressbar
 {
 	// Instance
-	private Image _fileSendingImage = Toolkit.getDefaultToolkit().getImage("img/FileSending.png");
-	private Image _progressBarImage = new ImageIcon("img/progressBar.gif").getImage();
+	private Image _stateImage;
 	
 	private JLabel _sendingLabel;
 	private JLabel _progressBarLabel;
@@ -23,14 +22,29 @@ public class Client_Progressbar
 	
 	public static void main(String[] args)
 	{
-		new Client_Progressbar();
+		new Client_Progressbar(3);
 	}
 	
 	// Constructors
-	public Client_Progressbar()
+	public Client_Progressbar(int mod)	// (mod == 1) : File_Send, (mod == 2) : File_Download, (mod == 3) : File_Upload
 	{
+		switch(mod)
+		{
+		case 1:
+			_stateImage = Toolkit.getDefaultToolkit().getImage("img/FileSending.png");
+			break;
+		case 2:
+			_stateImage = Toolkit.getDefaultToolkit().getImage("img/FileDownloading.png");
+			break;
+		case 3:
+			_stateImage = Toolkit.getDefaultToolkit().getImage("img/FileUploading.png");
+			break;
+		default:
+			break;
+		}
+		
 		_layeredPane = new JLayeredPane();
-		_sendingLabel = new JLabel(new ImageIcon(_fileSendingImage));
+		_sendingLabel = new JLabel(new ImageIcon(_stateImage));
 		_progressBarLabel = new JLabel(new ImageIcon("img/progressBar.gif"));
 		_window = new JWindow();
 		
