@@ -99,6 +99,7 @@ public class Client_Receive_OTP extends JFrame{
      		public void keyReleased(KeyEvent e) 
      		{
      			OTP = OTPField.getText();
+     			_cfr.setOTP(OTP);
      		}
      		@Override
      		public void keyTyped(KeyEvent e) {}
@@ -131,10 +132,12 @@ public class Client_Receive_OTP extends JFrame{
         Check.setBorderPainted(false);
         Check.setFocusPainted(false);
         Check.setContentAreaFilled(false);
-        Check.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent arg0) {
-				 _cfr.receiveFiles(OTP);
-				 _flag=true;
+        Check.addActionListener(new ActionListener() 
+        {
+			 public void actionPerformed(ActionEvent arg0) 
+			 {
+				 _cfr.start();
+				 _flag = true;
 			 }
 		 });
         layeredPane.add(Check);
@@ -145,8 +148,10 @@ public class Client_Receive_OTP extends JFrame{
         Cancel.setBorderPainted(false);
         Cancel.setFocusPainted(false);
         Cancel.setContentAreaFilled(false);
-        Cancel.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent arg0) {
+        Cancel.addActionListener(new ActionListener() 
+        {
+			 public void actionPerformed(ActionEvent arg0) 
+			 {
 				dispose();
 			 }
 		 });

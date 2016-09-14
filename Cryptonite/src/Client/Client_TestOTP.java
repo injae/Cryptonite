@@ -106,7 +106,7 @@ public class Client_TestOTP extends JFrame{
         _OK.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
          		System.out.println("OTP : "+OTP);
-         		new Client_FileShare_Receive().receiveFiles(OTP);
+         		//new Client_FileShare_Receive().receiveFiles(OTP);
          		dispose();
          	}
         });
