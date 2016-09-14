@@ -107,8 +107,6 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 		ByteBuffer[] fileNameArray = new ByteBuffer[_fileNameArray.length];
 		try 
 		{
-			byte[] garbage = new byte[1024];
-	
 			byte[] OTP_Packet = new byte[1024];
 			OTP_Packet[0] = MAKE_OTP;
 			_csc.send.setPacket(OTP_Packet).write();
