@@ -1,21 +1,24 @@
 package Function;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
-public class Log_Tracker
+public class Logger
 {
-	private static Log_Tracker _log;
+	private LinkedList<String> _log;
 	
-	private Log_Tracker()
+	public Logger()
 	{
-		
+		_log = new LinkedList<String>();
 	}
 	
-	public void getInstance()
+	public void update(String log)
 	{
-		
+		_log.add(log);
 	}
+	
 	
 	public static void Print_cmd(String class_name ,String msg)
 	{	
