@@ -57,7 +57,7 @@ public class Client_Group_Main extends JFrame{
 	
 	private ArrayList<JButton> _Buttonlist;
 	private String[] _result;
-	private String[] _fileList;
+	private ArrayList<String> _fileList;
 	private String[] _name;
 	private String _id;
 	private String _receivedID;
@@ -116,16 +116,16 @@ public class Client_Group_Main extends JFrame{
 		_cdg = new Client_Delete_Group();
 		_cfd = new Client_File_Download();
 		_cfl = cfl;
-		_fileList = (String[])_cfl.getFileList().toArray();
+		_fileList = _cfl.getFileList();
 		_directoryArray = new ArrayList<String>();
 		_nameArray = new ArrayList<String>();
 		_Buttonlist = new ArrayList<JButton>();
 		
 		
-		_name = new String[_fileList.length];
-        for(int i = 0; i < _fileList.length; i++)
+		_name = new String[_fileList.size()];
+        for(int i = 0; i < _fileList.size(); i++)
         {	
-        	StringTokenizer st=new StringTokenizer(_fileList[i], "\\");
+        	StringTokenizer st=new StringTokenizer(_fileList.get(i), "\\");
 
         	while(st.hasMoreTokens())
         	{
@@ -282,16 +282,31 @@ public class Client_Group_Main extends JFrame{
         _Upload.addActionListener(new ActionListener() {     
         	public void actionPerformed(ActionEvent arg0)
         	{	
-        		_cfu.click(_gpCode);
+        		_cfu.setGpCode(_gpCode);
+        		_cfu.start();
+        		
+        		while(!_cfu.getCheck())
+        		{
+        			try 
+        			{
+						Thread.sleep(100);
+					} 
+        			catch (InterruptedException e)
+        			{
+						e.printStackTrace();
+					}
+        			System.out.println(_cfu.getCheck());
+        		}
+        		
         		_cfl.running((byte)1, _gpCode);
-        		_fileList = (String[])_cfl.getFileList().toArray();
+        		_fileList = _cfl.getFileList();
         		_x=0;
         		_y=0;
         		
-        		_name = new String[_fileList.length];
-    	        for(int i = 0; i < _fileList.length; i++)
+        		_name = new String[_fileList.size()];
+    	        for(int i = 0; i < _fileList.size(); i++)
     	        {	
-    	        	StringTokenizer st=new StringTokenizer(_fileList[i], "\\");
+    	        	StringTokenizer st=new StringTokenizer(_fileList.get(i), "\\");
 
     	        	while(st.hasMoreTokens())
     	        	{
@@ -301,10 +316,10 @@ public class Client_Group_Main extends JFrame{
         		
         		layeredPane.removeAll();
         		
-        		for(int i=0;i<_fileList.length;i++)
+        		for(int i=0; i < _fileList.size(); i++)
         		{
-        			System.out.println(_fileList[i]);
-        			if(_fileList.length==0)
+        			System.out.println(_fileList.get(i));
+        			if(_fileList.size() == 0)
         			{
         				System.out.println("아무것도 없습니다.");
         			}
@@ -639,7 +654,7 @@ public class Client_Group_Main extends JFrame{
 					{
 						for(int j = 0; j < _directoryArray.size(); j++)
 						{
-							if(_fileList[index].equals(_directoryArray.get(j)))
+							if(_fileList.get(index).equals(_directoryArray.get(j)))
 							{
 								_directoryArray.remove(j);
 								_nameArray.remove(j);
@@ -649,13 +664,13 @@ public class Client_Group_Main extends JFrame{
 						}
 						if(_passCheck)
 						{
-							_directoryArray.add(_fileList[index]);
+							_directoryArray.add(_fileList.get(index));
 							_nameArray.add(e.getActionCommand());
 						}
 					}
 					else
 					{
-						_directoryArray.add(_fileList[index]);
+						_directoryArray.add(_fileList.get(index));
 						_nameArray.add(e.getActionCommand());
 					}
 					Button[index].setBackground(Color.BLACK);
