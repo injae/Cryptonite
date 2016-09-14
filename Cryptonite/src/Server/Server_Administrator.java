@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
+import Function.Logger;
 import Function.Timer;
 
 public class Server_Administrator extends Thread
@@ -12,9 +13,13 @@ public class Server_Administrator extends Thread
 	private static Server_Administrator instance;
 	private int allpacketlength = 0;
 	
+	private Logger userInfo;
+	
 	private Server_Administrator() 
 	{
 		timer = new Timer();
+		userInfo = new Logger();
+		
 		Scanner input = new Scanner(System.in);
 		
 		System.out.println("<DataBase Login>");
@@ -60,6 +65,7 @@ public class Server_Administrator extends Thread
 				System.out.println("*   user    : how many user count");
 				System.out.println("*   time    : server running time");
 				System.out.println("*   stop    : server stop");
+				System.out.println("*   log -u  : users login logout log");
 				break;
 				
 			case "size":
@@ -78,10 +84,27 @@ public class Server_Administrator extends Thread
 				if(sec >= 60){ sec %= 60;}
 				
 				System.out.println("Running Time: "+hour+"h." +min + "m." + sec +"s"); break;
+				
+			case "log -u":
+				
+				System.out.println("=============================");
+				System.out.println("**           Log           **");
+				for(int i =0; i < userInfo.size(); i++)
+				{
+					System.out.println(userInfo.getLog(i));
+				}
+				System.out.println("=============================");
+				break;
+				
 			case "stop":
 				if(YorN()){ System.exit(1); }
 			}
 		}
+	}
+	
+	public void userUpdate(String str)
+	{
+		userInfo.update(str);
 	}
 	
 	public boolean YorN()
