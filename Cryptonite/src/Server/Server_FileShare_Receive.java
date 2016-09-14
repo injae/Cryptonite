@@ -97,7 +97,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		setFileInformation(packet);
 		_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		
-		System.out.println(_fileName);
+		//System.out.println(_fileName);
 		try 
 		{
 			_raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
@@ -120,7 +120,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		else
 		{
 			p.setPacket(_activity.receive.getByte()).write();
-			
+
 			if(count == _packetMaxCount)
 			{
 				p.close();
