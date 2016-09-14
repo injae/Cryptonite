@@ -80,6 +80,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	
 	private int _nowPage = 0;
 	private int _page;
+	private int[] count;
 	
 	private Container container;
 	private JLayeredPane layeredPane = new JLayeredPane();
@@ -140,6 +141,12 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 			_btnList.add(new RecoveryButton(fileList.remove(0)));
 		}
 
+		
+		count=new int[_btnList.size()];
+		for(int i=0;i<_btnList.size();i++)
+		{
+			count[i]=1;
+		}
 		pageCount();
 		
 		_downloadArea = new JLabel();
@@ -232,7 +239,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	
 	private void makeFile(int index, int x, int y)
 	{
-		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("img/logo_mini_folder.png"));
+		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/logo_mini.png"));
 		btn.setPressedIcon(new ImageIcon("gui/logo_mini.png"));
 		btn.setBounds((10+x),(70+y),92,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -251,6 +258,17 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 				page();
 				basic();
 				layeredPane.repaint();
+				
+				if((count[index]%2)==0)
+				{
+					_btnList.get(index).button.setIcon(new ImageIcon("gui/logo_mini.png"));
+					count[index]++;
+				}
+				else
+				{	
+					_btnList.get(index).button.setIcon(new ImageIcon("img/logo_mini_folder.png"));
+					count[index]++;
+				}
 			}
 		});
 		_btnList.get(index).button = btn;
@@ -258,7 +276,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	
 	private void makeFolder(int index, int x, int y)
 	{
-		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/logo_mini.png"));
+		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("img/logo_mini_folder.png"));
 		btn.setPressedIcon(new ImageIcon("img/logo_mini_folderR.png"));
 		btn.setBounds((10+x),(70+y),92,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
