@@ -64,7 +64,7 @@ import Crypto.KeyReposit;
 public class Client_FileRecovery extends JFrame implements DropTargetListener
 {	
 	private BufferedImage _img = null;
-	private final int MAX_BTN = 18;
+	private final int MAX_BTN = 15;
 	
 	private DropTarget _dropTarget;
 	
@@ -204,34 +204,26 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	
 	private void makeBtn() 
 	{
-		for(int i =0; i < _btnList.size(); i++)
-		{
-			System.out.println(_btnList.get(i).fileName);
-		}
-		
 		for(int k = 0; k < _page; k++)
 		{
-			int x = 0 , y = 0;
+			int x = 10 , y = 0;
 			for(int j = 0; j < 3; j++)
 			{
-				for(int i = 0; i < 6; i++)
+				x = 15;
+				for(int i = 0; i < 5; i++)
 				{		
-					System.out.printf("k : %d j : %d i : %d\n",k,j,i);
-					System.out.println(k * MAX_BTN + (j * 6) + i);
-					System.out.println(_btnList.size());
-					System.out.println(_btnList.get(k * MAX_BTN + (j * 6) + i).fileName);
-					if(_btnList.get(k * MAX_BTN + (j * 6) + i).isDir)
+					if(_btnList.get(k * MAX_BTN + (j * 5) + i).isDir)
 					{
-						makeFolder(k * MAX_BTN + (j * 6) + i, x, y);
+						makeFolder(k * MAX_BTN + (j * 5) + i, x, y);
 					}
 					else
 					{
-						makeFile(k * MAX_BTN + (j * 6) + i, x, y);
+						makeFile(k * MAX_BTN + (j * 5) + i, x, y);
 					}
-					if(_btnList.size() - 1 <= (k * MAX_BTN + (j * 6) + i)) { return; }
+					if(_btnList.size() - 1 <= (k * MAX_BTN + (j * 5) + i)) { return; }
 					x += 120;
 				}
-				y += 105;
+				y += 120;
 			}
 		}
 	}
@@ -317,6 +309,14 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	
 	private void page()
 	{
+		/*if(_nowPage + 1 == _page)
+		{
+			
+		}
+		else
+		{
+			
+		}*/
 		for(int i =0; i < _btnList.size(); i++)
 		{
 			layeredPane.add(_btnList.get(i).button);
