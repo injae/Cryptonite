@@ -116,7 +116,7 @@ public class Client_Group_Main extends JFrame{
 		_cdg = new Client_Delete_Group();
 		_cfd = new Client_File_Download();
 		_cfl = cfl;
-		_fileList = _cfl.getFileList();
+		_fileList = (String[])_cfl.getFileList().toArray();
 		_directoryArray = new ArrayList<String>();
 		_nameArray = new ArrayList<String>();
 		_Buttonlist = new ArrayList<JButton>();
@@ -284,7 +284,7 @@ public class Client_Group_Main extends JFrame{
         	{	
         		_cfu.click(_gpCode);
         		_cfl.running((byte)1, _gpCode);
-        		_fileList = _cfl.getFileList();
+        		_fileList = (String[])_cfl.getFileList().toArray();
         		_x=0;
         		_y=0;
         		
