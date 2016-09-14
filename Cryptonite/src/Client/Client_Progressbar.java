@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JWindow;
 
-public class Client_Progressbar extends Thread
+public class Client_Progressbar
 {
 	// Instance
 	private Image _fileSendingImage = Toolkit.getDefaultToolkit().getImage("img/FileSending.png");
@@ -20,8 +20,6 @@ public class Client_Progressbar extends Thread
 	
 	private JLayeredPane _layeredPane;
 	private JWindow _window;
-	
-	private boolean _finishCheck = true;
 	
 	// Constructors
 	public Client_Progressbar()
@@ -44,14 +42,13 @@ public class Client_Progressbar extends Thread
 	}
 	
 	// Methods
-	public void run()
+	public void UI_ON()
 	{
 		_window.setVisible(true);
 	}
 	
 	public void UI_OFF()
 	{
-		_finishCheck = false;
-		_window.dispose();
+		_window.setVisible(false);
 	}
 }
