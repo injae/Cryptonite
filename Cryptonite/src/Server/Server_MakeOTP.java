@@ -87,18 +87,21 @@ public class Server_MakeOTP extends Server_Funtion
 	@Override
 	public void Checker(byte[] packet) 
 	{
-		_packetMaxCount = 1 + 1;
+		_packetMaxCount = 1;
 	}
 
 	@Override
 	public void running(int count) throws IOException 
 	{
-		if(count == 1) { Checker(_activity.getReceiveEvent()); }
+		if(count == 1) 
+		{ 
+			Checker(_activity.getReceiveEvent());
+			makeOTP();
+			_activity.send.setPacket(_OTP.getBytes(),1024).write();
+		}
 		else
 		{
-			makeOTP();
-			_activity.receive.getByte();	// garbage delete
-			_activity.send.setPacket(_OTP.getBytes(),1024).write();
+			
 		}
 	}
 }

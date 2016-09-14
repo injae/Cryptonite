@@ -26,12 +26,8 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.border.BevelBorder;
 
-//import Client.Client_Progressbar.Task;
-
-
-
-public class Client_Send_OTP extends JFrame{
-	
+public class Client_Send_OTP extends JFrame
+{
 	private BufferedImage img = null;
 
 	private Container container;
@@ -111,26 +107,25 @@ public class Client_Send_OTP extends JFrame{
 			public void actionPerformed(ActionEvent e) 
 			{
 				_cfs.start();
-				try {
+				try 
+				{
 					Thread.sleep(100);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
+				} 
+				catch (InterruptedException e1) 
+				{
 					e1.printStackTrace();
 				}
-				System.out.println("¿ÀÆ¼ÇÇ : " + _cfs.getOTP());
+				
+				OTP = new JLabel();
+		    	OTP.setBounds(236, 248, 200, 50);
+		        OTP.setVisible(true);
+		        layeredPane.add(OTP);
 				
 				_flag = true;
 				_checkotp = true;
 			}
 		});
         layeredPane.add(Send);
-        
-        //OTP = new JLabel();
-    	//OTP.setText("283902");
-    	//OTP.setBounds(236, 248, 200, 50);
-        //OTP.setFont(font);
-        //OTP.setVisible(true);
-        //layeredPane.add(OTP);
         
         Cancel = new JButton(new ImageIcon("img/_cancel.png"));		
         Cancel.setRolloverIcon(new ImageIcon("img/_cancelR.png"));
@@ -169,6 +164,7 @@ public class Client_Send_OTP extends JFrame{
             g.drawImage(img, 0, 0, null);
             if(_checkotp)
             {
+            	g.setFont(font);
             	g.drawString(_cfs.getOTP(), 240, 280);
             }
             //g.drawString(_cfs.getOTP(), 240, 280);
