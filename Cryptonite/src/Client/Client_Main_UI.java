@@ -137,7 +137,7 @@ public class Client_Main_UI extends JFrame
         } 
         catch (IOException e) 
         {
-            System.out.println("이미지 불러오기 실패");
+            System.out.println("Image Load Failed.");
             System.exit(0);
         }
         panel.setBounds(0, 0, 900, 500);

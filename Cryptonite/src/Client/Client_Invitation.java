@@ -107,7 +107,7 @@ public class Client_Invitation extends JFrame{
             img = ImageIO.read(new File("img/초대목록.png"));
             img2 = ImageIO.read(new File("img/x.png"));
         } catch (IOException e) {
-            System.out.println("이미지 불러오기 실패");
+            System.out.println("Image Load Failed.");
             System.exit(0);
         }
         
@@ -190,7 +190,7 @@ public class Client_Invitation extends JFrame{
 				
 				if(_gpCode.equals("null"))
 				{
-					showMessage("ERROR","이미 삭제되거나, 존재하지 않는 그룹입니다.");
+					showMessage("ERROR","The group that was already either delete or doesn't exsit.");
 				}
 				else
 				{

@@ -102,11 +102,11 @@ public class Client_FileShare_Receive extends Thread implements PacketRule
 					{		
 						_csc.receive.setAllocate(500);
 						_fileName = cs.decode(_csc.receive.read().getByteBuf()).toString().trim();
-						System.out.println("파일 이름 : " + _fileName);
+						System.out.println("File Name : " + _fileName);
 						
 						_csc.receive.setAllocate(500);
 						_fileSize = Long.parseLong(new String(_csc.receive.read().getByte()).trim());
-						System.out.println("파일 사이즈 : " + _fileSize);
+						System.out.println("File Size : " + _fileSize);
 				
 						_raf = new RandomAccessFile(_downloadFolder + "\\" + _fileName, "rw");
 						
@@ -138,68 +138,4 @@ public class Client_FileShare_Receive extends Thread implements PacketRule
 	{
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
-	
-	/*public boolean receiveFiles(String OTP)
-	{
-		boolean check=false;
-		Charset cs = Charset.forName("UTF-8");
-		_OTP = OTP;
-		if(_OTP.length() != 6)
-		{
-			System.out.println("OTP length must be 6 letters.");
-		}
-		else if(_OTP.length() == 6)
-		{	
-			try 
-			{	
-				while(true)
-				{			
-					byte[] event = new byte[1024];
-					event[0] = FILE_SHARE_SEND;
-					_csc.send.setPacket(event).write();
-					_csc.send.setPacket(_OTP.getBytes(), 30).write();	// OTP Sending
-					_csc.receive.setAllocate(500);
-
-					_downloadFlag = new String(_csc.receive.read().getByte()).trim();
-					if(_downloadFlag.equals("FALSE"))
-					{
-						break;
-					}
-					else if(_downloadFlag.equals("TRUE"))
-					{		
-						_csc.receive.setAllocate(500);
-						_fileName = cs.decode(_csc.receive.read().getByteBuf()).toString().trim();
-						System.out.println("파일 이름 : " + _fileName);
-						
-						_csc.receive.setAllocate(500);
-						_fileSize = Long.parseLong(new String(_csc.receive.read().getByte()).trim());
-						System.out.println("파일 사이즈 : " + _fileSize);
-				
-						_raf = new RandomAccessFile(_downloadFolder + "\\" + _fileName, "rw");
-						
-						p = new PacketProcessor(_raf.getChannel(), false);
-						_csc.receive.setAllocate(_fileSize);
-						
-						while(!_csc.receive.isAllocatorEmpty())
-						{
-							p.setPacket(_csc.receive.read().getByte()).write();
-						}
-						p.close();
-						check=true;
-						_filesize+=_fileSize;
-					}
-				}
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
-			catch (NullPointerException e)
-			{
-				System.out.println("You does not select the folder.");
-			}
-			
-		}
-		return check;
-	}*/
 }

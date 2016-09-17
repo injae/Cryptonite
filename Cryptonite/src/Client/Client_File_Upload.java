@@ -79,7 +79,7 @@ public class Client_File_Upload extends Thread implements PacketRule
 					_csc.send.setPacket(_crypto.endecription(p.read().getByte())).write();
 				}
 				p.close();
-				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
+				System.out.println(_fileNameArray[i] + " was sent completely.");
 				_cpb.UI_OFF();
 				_check = true;
 				_cfs.dispose();

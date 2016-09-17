@@ -141,7 +141,7 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 					_csc.send.setPacket(p.read().getByte()).write();
 				}
 				p.close();
-				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
+				System.out.println(_fileNameArray[i] + " was sent completely.");
 				
 				for(int l=0; l < _fileSizeArray.length; l++)
 				{
@@ -149,7 +149,7 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 				}
 			}
 			_cpb.UI_OFF();
-			showMessage("Notification","All files were completely sended.");
+			showMessage("Notification","All files were completely sent.");
 		}
 		catch (FileNotFoundException e) 
 		{

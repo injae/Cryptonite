@@ -89,7 +89,7 @@ public class Client_Send_OTP extends JFrame
         } 
         catch (IOException e) 
         {
-            System.out.println("이미지 불러오기 실패");
+            System.out.println("Image Load Failed.");
             System.exit(0);
         }
         

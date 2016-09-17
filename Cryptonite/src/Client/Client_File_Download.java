@@ -50,11 +50,12 @@ public class Client_File_Download implements PacketRule
 			}
 			p.close();
 			
-		} catch (NumberFormatException e) {
-			// TODO 자동 생성된 catch 블록
+		} catch (NumberFormatException e) 
+		{
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO 자동 생성된 catch 블록
+		}
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
 	}
