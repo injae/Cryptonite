@@ -77,7 +77,7 @@ public class Client_Receive_OTP extends JFrame{
             img = ImageIO.read(new File("img/Filereceivebg.png"));
         } catch (IOException e) 
         {
-            System.out.println("이미지 불러오기 실패");
+            System.out.println("Image Load Failed.");
             System.exit(0);
         }
         

@@ -120,7 +120,7 @@ import Crypto.aesKeyGenerator;
 				_img = ImageIO.read(new File("gui/signup_main.png"));
 				
 			}catch(IOException e){
-				System.out.println("No Image.");
+				System.out.println("Image Load Failed.");
 				System.exit(0);
 			}
 
@@ -410,7 +410,6 @@ import Crypto.aesKeyGenerator;
 			_g.setColor(Color.BLACK);
 			_g.setFont(_precondition_font);
 			_g.drawString("->Please enter at least 5 characters.", 100, 355);
-			/*_g.drawString("->Please enter at least 3 characters.", 100, 300);*/
 		}
 	}
 }
@@ -446,9 +445,6 @@ class SHA_256 implements PacketRule
 			this._id = _id;
 			this._password = _password;
 			this._email = _email;
-/*			this._AES_Key = _AES_Key;
-		 	this._salt = _salt;
-		 	this._iteration = _iteration;*/
 
 			SHA_Encryption();
 			sendPrivacy();
@@ -485,8 +481,8 @@ class SHA_256 implements PacketRule
 					System.out.println("signUp Fail");
 					showMessage("Cryptonite", "Failed to SignUp.");
 				}
-			} catch (IOException e) {
-				// TODO 자동 생성된 catch 블록
+			} catch (IOException e) 
+			{
 				e.printStackTrace();
 			}
 		

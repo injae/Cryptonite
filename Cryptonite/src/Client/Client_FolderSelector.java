@@ -38,7 +38,6 @@ public class Client_FolderSelector
 	  	}
 	  	catch(NullPointerException e)
 	  	{
-	  		System.out.println("폴더가 선택되지 않았습니다.");
 	  		showMessage("Error", "Folder is not selected.");
 	  		selectionEnd = true;
 	  		return false;
