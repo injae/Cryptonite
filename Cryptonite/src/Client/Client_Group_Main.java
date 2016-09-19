@@ -482,7 +482,7 @@ public class Client_Group_Main extends JFrame{
         
         Withdrawal = new JButton(new ImageIcon("img/WITHDRAWAL.png"));
         Withdrawal.setRolloverIcon(new ImageIcon("img/WITHDRAWALR.png"));
-        Withdrawal.setBounds(685, 380, 80, 40);
+        Withdrawal.setBounds(685, 388, 80, 40);
         Withdrawal.setFocusPainted(false);
         Withdrawal.setContentAreaFilled(false);
         Withdrawal.setBorderPainted(false);
