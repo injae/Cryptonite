@@ -135,7 +135,7 @@ public class Client_Invitation extends JFrame{
           
            scrollPane = new JScrollPane(_list);
            scrollPane.setVisible(true);
-           scrollPane.setBounds(45, 100, 690, 300);
+           scrollPane.setBounds(45, 95, 707, 287);
 		}
         
 		allocator();
@@ -172,9 +172,9 @@ public class Client_Invitation extends JFrame{
 	}
 	public void allocator()
 	{
-		_Ok = new JButton(new ImageIcon("img/OK.png"));
-		_Ok.setPressedIcon(new ImageIcon("img/OKR.png"));
-		_Ok.setBounds(240, 400, 80,40);
+		_Ok = new JButton(new ImageIcon("img/select.png"));
+		_Ok.setRolloverIcon(new ImageIcon("img/selectR.png"));
+		_Ok.setBounds(347, 400, 80,40);
 		_Ok.setFocusPainted(false);
 		_Ok.setContentAreaFilled(false);
 		_Ok.setBorderPainted(false);
