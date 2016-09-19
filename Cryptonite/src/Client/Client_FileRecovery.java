@@ -147,13 +147,6 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 		{
 			_btnList.add(new RecoveryButton(fileList.remove(0)));
 		}
-
-		
-		count=new int[_btnList.size()];
-		for(int i=0;i<_btnList.size();i++)
-		{
-			count[i]=1;
-		}
 		pageCount();
 		
 		_downloadArea = new JLabel();
@@ -273,15 +266,13 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 				basic();
 				layeredPane.repaint();
 
-				if((count[index]%2)==0)
+				if(!_btnList.get(index).isClick)
 				{	
 					_btnList.get(index).button.setIcon(new ImageIcon("gui/logo_mini.png"));
-					count[index]++;
 				}
 				else
 				{
 					_btnList.get(index).button.setIcon(new ImageIcon("img/logo_mini_click.png"));
-					count[index]++;
 				}
 			}
 		});
@@ -306,7 +297,11 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 			{
 				for(int i = 0; i < _btnList.size(); i++)
 				{
-					_btnList.get(i).click();
+					if(_btnList.get(i).isClick)
+					{
+						_btnList.get(i).isClick=false;
+						_btnList.get(i).button.setIcon(new ImageIcon("gui/logo_mini.png"));
+					}
 				}
 				_undo.push(_btnList);
 				String fullPath = _btnList.get(index).fullPath + "\\";
