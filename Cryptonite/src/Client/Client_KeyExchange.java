@@ -36,7 +36,8 @@ public class Client_KeyExchange implements PacketRule {
         crypto = new Crypto(Crypto_Factory.create("RSA1024", Cipher.DECRYPT_MODE, _priKey));
 
         // Send public key to server
-        try {
+        try 
+        {
             byte[] event = new byte[1024];
             event[0] = KEY_EXCHANGE;
             event[1] = 2;
