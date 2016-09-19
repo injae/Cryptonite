@@ -319,7 +319,7 @@ public class Client_Group_Main extends JFrame{
         			System.out.println(_fileList.get(i));
         			if(_fileList.size() == 0)
         			{
-        				System.out.println("아무것도 없습니다.");
+        				System.out.println("There is no anything.");
         			}
         		}
         		
@@ -470,11 +470,11 @@ public class Client_Group_Main extends JFrame{
          		String check = _cgi.running(selectedID, _gpCode);
          		if(check.equals("TRUE"))
          		{
-         			showMessage("Notification","그룹원 성공적으로 추가 되었습니다.");
+         			showMessage("Notification","Member was added completely.");
          		}
          		else if(check.equals("FALSE"))
          		{
-         			showMessage("Notification","그룹원이 중복 됩니다.");
+         			showMessage("Notification","Meber was duplicated.");
          		}
          	}
          });
