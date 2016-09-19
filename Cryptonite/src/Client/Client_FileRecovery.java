@@ -146,7 +146,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 		count=new int[_btnList.size()];
 		for(int i=0;i<_btnList.size();i++)
 		{
-			count[i]=0;
+			count[i]=1;
 		}
 		pageCount();
 		
@@ -246,6 +246,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	
 	private void makeFile(int index, int x, int y)
 	{
+		if(_btnList.get(index).button!=null){return;}
 		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/logo_mini.png"));
 		btn.setPressedIcon(new ImageIcon("gui/logo_mini.png"));
 		btn.setBounds((10+x),(70+y),92,120);
@@ -268,13 +269,15 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 
 				if((count[index]%2)==0)
 				{	
+					_btnList.get(index).button.setIcon(new ImageIcon("gui/logo_mini.png"));
 					count[index]++;
 				}
 				else
 				{
+					_btnList.get(index).button.setIcon(new ImageIcon("img/logo_mini_click.png"));
 					count[index]++;
 				}
-				for(int i=0;i<count.length;i++)
+				/*for(int i=0;i<count.length;i++)
 				{
 					System.out.println(i+" : "+count[i]);
 					if((count[i]%2)==0)
@@ -285,7 +288,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 					{
 						_btnList.get(i).button.setIcon(new ImageIcon("img/logo_mini_click.png"));
 					}
-				}
+				}*/
 			}
 		});
 		_btnList.get(index).button = btn;
@@ -293,8 +296,9 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	
 	private void makeFolder(int index, int x, int y)
 	{
-		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("img/logo_mini_folder.png"));
-		btn.setPressedIcon(new ImageIcon("img/logo_mini.png"));
+		if(_btnList.get(index).button!=null){return;}
+		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("img/folder.png"));
+		btn.setPressedIcon(new ImageIcon("img/folderR.png"));
 		btn.setBounds((10+x),(70+y),92,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
