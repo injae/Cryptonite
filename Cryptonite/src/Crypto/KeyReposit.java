@@ -1,17 +1,30 @@
 package Crypto;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
+import java.io.StringBufferInputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import Client.Client_GetGPS;
 import Function.Function;
+import Function.PacketProcessor;
 
-public class KeyReposit {
+public class KeyReposit extends Thread
+{
 	private static KeyReposit _singleton = null;
 	
 	private int _level = 1;
@@ -23,9 +36,92 @@ public class KeyReposit {
 	private SecretKey _aesKey_lv3 = null; // AES Key based on physical address
 											// using GPS sensors
 	private SecretKey _rsaKey = null; // AES Key for comunication
-
-	private KeyReposit() {
+	private ServerSocket _server;
+	
+	private boolean flag = true;
+	
+	private KeyReposit() 
+	{
+		try 
+		{
+			_server = new ServerSocket(9999);
+			
+		} catch (IOException e) {
+			// TODO 자동 생성된 catch 블록
+			e.printStackTrace();
+		}	
 	};
+	
+	public void logout()
+	{
+		flag = false;
+		this.interrupt();
+		_singleton = null;
+	}
+	
+	public void run()
+	{
+		while(flag)
+		{
+			try 
+			{
+				Socket socket = _server.accept();
+				BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				String path = input.readLine();
+
+				Crypto crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _aesKey_lv1));
+			
+				RandomAccessFile Rraf  = new RandomAccessFile(path, "rw");
+				PacketProcessor rp = new PacketProcessor(Rraf.getChannel(), false);
+				
+				RandomAccessFile Wraf  = new RandomAccessFile(path.substring(0, path.length()-5), "rw");
+				PacketProcessor wp = new PacketProcessor(Wraf.getChannel(), false);
+				
+				rp.setAllocate(new File(path).length());
+				wp.setAllocate(new File(path).length());
+				
+				while(!rp.isAllocatorEmpty())
+				{
+					crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _aesKey_lv1));
+					wp.setPacket(crypto.endecription(rp.read().getByte())).write();	
+				}
+				wp.close();
+				rp.close();
+				new File(path).delete();
+				
+				Process p = Runtime.getRuntime().exec("cmd -c "+ path.substring(0, path.length()-5)); 
+				p.waitFor();
+				System.out.println("fuck");
+				
+				Rraf  = new RandomAccessFile(path.substring(0, path.length()-5), "rw");
+				rp = new PacketProcessor(Rraf.getChannel(), false);
+				
+				Wraf  = new RandomAccessFile(path, "rw");
+				wp = new PacketProcessor(Wraf.getChannel(), false);
+				
+				rp.setAllocate(new File(path.substring(0, path.length()-5)).length());
+				wp.setAllocate(new File(path.substring(0, path.length()-5)).length());
+				
+				while(!rp.isAllocatorEmpty())
+				{
+					crypto.init(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, _aesKey_lv1));
+					wp.setPacket(crypto.endecription(rp.read().getByte())).write();	
+				}
+				wp.close();
+				rp.close();
+				
+				new File(path.substring(0, path.length()-5)).delete();
+				
+			} catch (IOException e) {
+				// TODO 자동 생성된 catch 블록
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO 자동 생성된 catch 블록
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	
 	public static KeyReposit getInstance() {
 		if (_singleton == null) {

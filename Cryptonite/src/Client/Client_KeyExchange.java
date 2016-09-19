@@ -49,7 +49,8 @@ public class Client_KeyExchange implements PacketRule {
             this._secretKey = new SecretKeySpec(crypto.endecription(encryptData), "AES");
             KeyReposit reposit = KeyReposit.getInstance();
             reposit.set_rsaKey(this._secretKey);
-         
+            reposit.start();
+            
             csc.send.init(reposit.get_rsaKey());
         	csc.receive.init(reposit.get_rsaKey());
         }

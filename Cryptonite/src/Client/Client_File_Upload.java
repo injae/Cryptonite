@@ -53,9 +53,11 @@ public class Client_File_Upload extends Thread implements PacketRule
 		{	
 			_check = false;
 			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(_gpCode)));
+			
 			fileSelection();
 			ByteBuffer bb;
 			Charset cs = Charset.forName("UTF-8");
+			
 			_cpb.UI_ON();
 			for(int i = 0; i < _fileNameArray.length; i++)
 			{
@@ -79,11 +81,13 @@ public class Client_File_Upload extends Thread implements PacketRule
 					_csc.send.setPacket(_crypto.endecription(p.read().getByte())).write();
 				}
 				p.close();
+
 				System.out.println(_fileNameArray[i] + " was sent completely.");
 				_cpb.UI_OFF();
 				_check = true;
 				_cfs.dispose();
 			}
+			_cpb.UI_OFF();
 		} 
 		catch (IOException e) 
 		{
