@@ -163,7 +163,6 @@ public class Client_Group_Main extends JFrame{
 		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(0,0,816,480);
-		//setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
@@ -212,7 +211,7 @@ public class Client_Group_Main extends JFrame{
         		g.setFont(fontbt);
         		g.drawString("Group Name : " + _gpName, 230, 35);
       			g.setFont(_precondition_font);
-      			g.drawString((_nowPage + 1) + "/" + _page, 470, 400);
+      			g.drawString((_nowPage + 1) + "/" + _page, 476, 417);
         	}
         	else
         	{
@@ -221,7 +220,7 @@ public class Client_Group_Main extends JFrame{
         		g.setFont(fontbt);
         		g.drawString("Group Name : " + _gpName, 230, 35);
         		g.setFont(_precondition_font);
-      			g.drawString((_nowPage + 1) + "/" + _page, 470, 400);
+      			g.drawString((_nowPage + 1) + "/" + _page, 476, 417);
         	}
         }
    }
@@ -341,7 +340,7 @@ public class Client_Group_Main extends JFrame{
         
         _Select = new JButton(new ImageIcon("img/select.png"));
         _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
-        _Select.setBounds(200, 370, 80, 40);
+        _Select.setBounds(200, 390, 80, 40);
         _Select.setFocusPainted(false);
         _Select.setContentAreaFilled(false);
         _Select.setBorderPainted(false);
@@ -368,7 +367,7 @@ public class Client_Group_Main extends JFrame{
         
         _Download = new JButton(new ImageIcon("img/DOWNLOAD.png"));	
 		_Download.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
-		_Download.setBounds(50, 370, 80,40);
+		_Download.setBounds(50, 387, 80,40);
 		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
 		_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
@@ -414,7 +413,7 @@ public class Client_Group_Main extends JFrame{
         
         Search = new JButton(new ImageIcon("img/Search.png"));
         Search.setRolloverIcon(new ImageIcon("img/Searchh.png"));
-        Search.setBounds(740, 107, 50, 50);
+        Search.setBounds(749, 107, 50, 50);
         Search.setFocusPainted(false);
         Search.setContentAreaFilled(false);
         Search.setBorderPainted(false);
@@ -481,9 +480,9 @@ public class Client_Group_Main extends JFrame{
 
         
         
-        Withdrawal = new JButton(new ImageIcon("img/_resistor'sjoin.png"));
-        Withdrawal.setRolloverIcon(new ImageIcon("img/_resistor'sjoinpr.png"));
-        Withdrawal.setBounds(685, 380, 50, 50);
+        Withdrawal = new JButton(new ImageIcon("img/WITHDRAWAL.png"));
+        Withdrawal.setRolloverIcon(new ImageIcon("img/WITHDRAWALR.png"));
+        Withdrawal.setBounds(685, 380, 80, 40);
         Withdrawal.setFocusPainted(false);
         Withdrawal.setContentAreaFilled(false);
         Withdrawal.setBorderPainted(false);
@@ -496,9 +495,9 @@ public class Client_Group_Main extends JFrame{
          });
         
         
-        Delete = new JButton(new ImageIcon("img/Settingbt.png"));
-        Delete.setPressedIcon(new ImageIcon("img/Settinghbt.png"));
-        Delete.setBounds(685, 380, 50, 50);
+        Delete = new JButton(new ImageIcon("img/DELETE.png"));
+        Delete.setPressedIcon(new ImageIcon("img/DELETER.png"));
+        Delete.setBounds(680, 388, 80, 40);
         Delete.setFocusPainted(false);
         Delete.setContentAreaFilled(false);
         Delete.setBorderPainted(false);
@@ -513,7 +512,7 @@ public class Client_Group_Main extends JFrame{
         
         _Left = new JButton(new ImageIcon("img/LEFT.png"));
         _Left.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
-        _Left.setBounds(400, 370, 80, 40);
+        _Left.setBounds(400, 390, 80, 40);
         _Left.setFocusPainted(false);
         _Left.setContentAreaFilled(false);
         _Left.setBorderPainted(false);
@@ -548,7 +547,7 @@ public class Client_Group_Main extends JFrame{
         
         _Right = new JButton(new ImageIcon("img/RIGHT.png"));
         _Right.setRolloverIcon(new ImageIcon("img/RIGHTR.png"));
-        _Right.setBounds(500, 370, 80, 40);
+        _Right.setBounds(500, 390, 80, 40);
         _Right.setFocusPainted(false);
         _Right.setContentAreaFilled(false);
         _Right.setBorderPainted(false);
