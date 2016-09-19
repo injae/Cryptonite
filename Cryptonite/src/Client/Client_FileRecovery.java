@@ -277,18 +277,6 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 					_btnList.get(index).button.setIcon(new ImageIcon("img/logo_mini_click.png"));
 					count[index]++;
 				}
-				/*for(int i=0;i<count.length;i++)
-				{
-					System.out.println(i+" : "+count[i]);
-					if((count[i]%2)==0)
-					{	
-						_btnList.get(i).button.setIcon(new ImageIcon("gui/logo_mini.png"));
-					}
-					else
-					{
-						_btnList.get(i).button.setIcon(new ImageIcon("img/logo_mini_click.png"));
-					}
-				}*/
 			}
 		});
 		_btnList.get(index).button = btn;
