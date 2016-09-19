@@ -335,14 +335,20 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	
 	private void page()
 	{
-		int k = _nowPage;
-		for(int j = 0; j < COLUMN; j++)
+		try
 		{
-			for(int i = 0; i < ROW; i++)
-			{		
-				layeredPane.add(_btnList.get(k * MAX_BTN + (j * ROW) + i).button);
-				if(_btnList.size() - 1 <= (k * MAX_BTN + (j * ROW) + i)) { return; }
+			int k = _nowPage;
+			for(int j = 0; j < COLUMN; j++)
+			{
+				for(int i = 0; i < ROW; i++)
+				{		
+					layeredPane.add(_btnList.get(k * MAX_BTN + (j * ROW) + i).button);
+					if(_btnList.size() - 1 <= (k * MAX_BTN + (j * ROW) + i)) { return; }
+				}
 			}
+		}
+		catch(IndexOutOfBoundsException e1)
+		{
 		}
 	}	
 	
