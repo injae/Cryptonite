@@ -122,9 +122,15 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 			else 					  { isDir = false;}
 		}
 		
+		private boolean isClick;
+		public void click()
+		{
+			if(isClick)  { isClick = false; }
+			else 		 { isClick = true;  }
+		}
+		
 		public boolean isDir;
 		public JButton button;
-		public boolean isClick;
 		public String fullPath;
 		public String fileName;
 	}
@@ -260,7 +266,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				_btnList.get(index).isClick = true;
+				_btnList.get(index).click();
 				layeredPane.removeAll();
 				makeBtn();
 				page();
@@ -300,7 +306,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 			{
 				for(int i = 0; i < _btnList.size(); i++)
 				{
-					_btnList.get(i).isClick = false;
+					_btnList.get(i).click();
 				}
 				_undo.push(_btnList);
 				String fullPath = _btnList.get(index).fullPath + "\\";
