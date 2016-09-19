@@ -88,35 +88,9 @@ public class KeyReposit extends Thread
 				wp.close();
 				rp.close();
 				new File(path).delete();
-				
-				Process p = Runtime.getRuntime().exec("cmd -c "+ path.substring(0, path.length()-5)); 
-				p.waitFor();
-				System.out.println("fuck");
-				
-				Rraf  = new RandomAccessFile(path.substring(0, path.length()-5), "rw");
-				rp = new PacketProcessor(Rraf.getChannel(), false);
-				
-				Wraf  = new RandomAccessFile(path, "rw");
-				wp = new PacketProcessor(Wraf.getChannel(), false);
-				
-				rp.setAllocate(new File(path.substring(0, path.length()-5)).length());
-				wp.setAllocate(new File(path.substring(0, path.length()-5)).length());
-				
-				while(!rp.isAllocatorEmpty())
-				{
-					crypto.init(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, _aesKey_lv1));
-					wp.setPacket(crypto.endecription(rp.read().getByte())).write();	
-				}
-				wp.close();
-				rp.close();
-				
-				new File(path.substring(0, path.length()-5)).delete();
-				
-			} catch (IOException e) {
-				// TODO 자동 생성된 catch 블록
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO 자동 생성된 catch 블록
+			} 
+			catch (IOException e)
+			{
 				e.printStackTrace();
 			}
 		}
