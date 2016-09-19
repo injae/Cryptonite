@@ -22,7 +22,7 @@ public class Client_Progressbar
 	
 	public static void main(String[] args)
 	{
-		new Client_Progressbar(3);
+		new Client_Progressbar(4);
 	}
 	
 	// Constructors
@@ -38,6 +38,9 @@ public class Client_Progressbar
 			break;
 		case 3:
 			_stateImage = Toolkit.getDefaultToolkit().getImage("img/FileUploading.png");
+			break;
+		case 4:
+			_stateImage = Toolkit.getDefaultToolkit().getImage("img/FileDecrypting.png");
 			break;
 		default:
 			break;
@@ -58,6 +61,7 @@ public class Client_Progressbar
 		_window.getContentPane().add(_layeredPane);
 		_window.setSize(260, 120);
 		_window.setLocationRelativeTo(null);
+		_window.setAlwaysOnTop(true);
 	}
 	
 	// Methods

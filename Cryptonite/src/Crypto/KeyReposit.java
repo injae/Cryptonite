@@ -20,6 +20,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import Client.Client_GetGPS;
+import Client.Client_Progressbar;
 import Function.Function;
 import Function.PacketProcessor;
 
@@ -38,6 +39,8 @@ public class KeyReposit extends Thread
 	private SecretKey _rsaKey = null; // AES Key for comunication
 	private ServerSocket _server;
 	
+	private Client_Progressbar _cpb = null;
+	
 	private boolean flag = true;
 	
 	private KeyReposit() 
@@ -45,7 +48,7 @@ public class KeyReposit extends Thread
 		try 
 		{
 			_server = new ServerSocket(9999);
-			
+			_cpb = new Client_Progressbar(4);
 		} catch (IOException e) {
 			// TODO 자동 생성된 catch 블록
 			e.printStackTrace();
@@ -56,7 +59,9 @@ public class KeyReposit extends Thread
 	{
 		flag = false;
 		this.interrupt();
-		_singleton = null;
+		_aesKey_lv1 = null;
+		_aesKey_lv2 = null;
+		_aesKey_lv3 = null;
 	}
 	
 	public void run()
@@ -80,6 +85,7 @@ public class KeyReposit extends Thread
 				rp.setAllocate(new File(path).length());
 				wp.setAllocate(new File(path).length());
 				
+				_cpb.UI_ON();
 				while(!rp.isAllocatorEmpty())
 				{
 					crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _aesKey_lv1));
@@ -88,6 +94,7 @@ public class KeyReposit extends Thread
 				wp.close();
 				rp.close();
 				new File(path).delete();
+				_cpb.UI_OFF();
 			} 
 			catch (IOException e)
 			{
