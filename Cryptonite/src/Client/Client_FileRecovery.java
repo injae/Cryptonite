@@ -146,7 +146,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 		count=new int[_btnList.size()];
 		for(int i=0;i<_btnList.size();i++)
 		{
-			count[i]=1;
+			count[i]=0;
 		}
 		pageCount();
 		
@@ -265,16 +265,26 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 				page();
 				basic();
 				layeredPane.repaint();
-				
+
 				if((count[index]%2)==0)
-				{
-					_btnList.get(index).button.setIcon(new ImageIcon("gui/logo_mini.png"));
+				{	
 					count[index]++;
 				}
 				else
-				{	
-					_btnList.get(index).button.setIcon(new ImageIcon("img/logo_mini_folder.png"));
+				{
 					count[index]++;
+				}
+				for(int i=0;i<count.length;i++)
+				{
+					System.out.println(i+" : "+count[i]);
+					if((count[i]%2)==0)
+					{	
+						_btnList.get(i).button.setIcon(new ImageIcon("gui/logo_mini.png"));
+					}
+					else
+					{
+						_btnList.get(i).button.setIcon(new ImageIcon("img/logo_mini_click.png"));
+					}
 				}
 			}
 		});
@@ -284,7 +294,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	private void makeFolder(int index, int x, int y)
 	{
 		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("img/logo_mini_folder.png"));
-		btn.setPressedIcon(new ImageIcon("img/logo_mini_folderR.png"));
+		btn.setPressedIcon(new ImageIcon("img/logo_mini.png"));
 		btn.setBounds((10+x),(70+y),92,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
