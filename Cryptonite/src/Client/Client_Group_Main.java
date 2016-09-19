@@ -92,7 +92,6 @@ public class Client_Group_Main extends JFrame{
 	private Client_Delete_Group _cdg;
 	private Client_File_ListReceiver _cfl;
 	private Client_File_Download _cfd;
-	private Client_File_Upload _cfu;
 	private Client_Get_Group_Key _cggk;
 	
 	public static void main(String args[])
@@ -108,7 +107,6 @@ public class Client_Group_Main extends JFrame{
 		_gpName = gpName;
 		_mod = mod;
 		_cggk = new Client_Get_Group_Key();
-		_cfu = new Client_File_Upload();
 		_cfs = new Client_FolderSelector();
 		_cgs = new Client_Group_Search();
 		_cgi = new Client_Group_Invite();
@@ -282,6 +280,7 @@ public class Client_Group_Main extends JFrame{
         _Upload.addActionListener(new ActionListener() {     
         	public void actionPerformed(ActionEvent arg0)
         	{	
+        		Client_File_Upload _cfu = new Client_File_Upload();
         		_cfu.setGpCode(_gpCode);
         		_cfu.start();
         		
@@ -295,7 +294,6 @@ public class Client_Group_Main extends JFrame{
         			{
 						e.printStackTrace();
 					}
-        			System.out.println(_cfu.getCheck());
         		}
         		
         		_cfl.running((byte)1, _gpCode);
