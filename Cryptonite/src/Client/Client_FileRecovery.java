@@ -214,27 +214,33 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 	
 	private void makeBtn() 
 	{
-		for(int k = 0; k < _page; k++)
+		try
 		{
-			int x = 10 , y = 0;
-			for(int j = 0; j < COLUMN; j++)
+			for(int k = 0; k < _page; k++)
 			{
-				x = 15;
-				for(int i = 0; i < ROW; i++)
-				{		
-					if(_btnList.get(k * MAX_BTN + (j * ROW) + i).isDir)
-					{
-						makeFolder(k * MAX_BTN + (j * ROW) + i, x, y);
+				int x = 10 , y = 0;
+				for(int j = 0; j < COLUMN; j++)
+				{
+					x = 15;
+					for(int i = 0; i < ROW; i++)
+					{		
+						if(_btnList.get(k * MAX_BTN + (j * ROW) + i).isDir)
+						{
+							makeFolder(k * MAX_BTN + (j * ROW) + i, x, y);
+						}
+						else
+						{
+							makeFile(k * MAX_BTN + (j * ROW) + i, x, y);
+						}
+						if(_btnList.size() - 1 <= (k * MAX_BTN + (j * ROW) + i)) { return; }
+						x += 120;
 					}
-					else
-					{
-						makeFile(k * MAX_BTN + (j * ROW) + i, x, y);
-					}
-					if(_btnList.size() - 1 <= (k * MAX_BTN + (j * ROW) + i)) { return; }
-					x += 120;
+					y += 120;
 				}
-				y += 120;
 			}
+		}
+		catch(IndexOutOfBoundsException e1)
+		{
 		}
 	}
 	
