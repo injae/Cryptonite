@@ -8,67 +8,31 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.awt.BorderLayout;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
 import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
-import java.util.jar.Attributes.Name;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.plaf.synth.SynthSpinnerUI;
-
-import org.omg.PortableServer._ServantActivatorStub;
-
-import com.mysql.fabric.xmlrpc.base.Array;
-
-import Client.Client_Main_UI.MyPanel;
 import Crypto.KeyReposit;
 
-public class Client_FileRecovery extends JFrame implements DropTargetListener
+public class Client_FileRecovery extends JFrame
 {	
 	private BufferedImage _img = null;
 	private final int MAX_BTN = 15;
 	private final int COLUMN = 3;
 	private final int ROW = 5;
-	
-	private DropTarget _dropTarget;
 	
 	private JLabel _downloadArea;
 	private List _loadedFileList;
@@ -151,7 +115,7 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 		
 		_downloadArea = new JLabel();
 		_downloadArea.setBounds(2, 69, 800, 384);
-		_dropTarget = new DropTarget(_downloadArea, DnDConstants.ACTION_COPY_OR_MOVE, this, true, null);
+		
 		this.add(_downloadArea, BorderLayout.CENTER);
 		
 		try
@@ -490,38 +454,4 @@ public class Client_FileRecovery extends JFrame implements DropTargetListener
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	@Override
-	public void drop(DropTargetDropEvent dtde) 
-	{
-	
-	}
-
-
-	@Override
-	public void dragEnter(DropTargetDragEvent arg0) {
-		// TODO 자동 생성된 메소드 스텁
-		
-	}
-
-
-	@Override
-	public void dragExit(DropTargetEvent arg0) {
-		// TODO 자동 생성된 메소드 스텁
-		
-	}
-
-
-	@Override
-	public void dragOver(DropTargetDragEvent arg0) {
-		// TODO 자동 생성된 메소드 스텁
-		
-	}
-
-
-	@Override
-	public void dropActionChanged(DropTargetDragEvent arg0) {
-		// TODO 자동 생성된 메소드 스텁
-		
-	}
-
 }
