@@ -15,8 +15,8 @@ import Function.Function;
 
 public class Server_GetGPS extends Server_Funtion {
 
-	private double _xpos = 0;
-	private double _ypos = 0;
+	private double _lat = 0;
+	private double _lng = 0;
 
 	public Server_GetGPS(Server_Client_Activity activity) {
 		super(activity);
@@ -41,11 +41,10 @@ public class Server_GetGPS extends Server_Funtion {
 			try {
 				ResultSet rs = db.Query("select * from test where id like '" + id + "';");
 
-				_xpos = rs.getDouble(11);
-				_ypos = rs.getDouble(12);
-				
-				_activity.send.setPacket(Function.doubleToByteArray(_xpos));
-				_activity.send.setPacket(Function.doubleToByteArray(_ypos));
+				_lat = rs.getDouble(11);
+				_lng = rs.getDouble(12);
+				_activity.send.setPacket(Function.doubleToByteArray(_lat));
+				_activity.send.setPacket(Function.doubleToByteArray(_lng));
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
