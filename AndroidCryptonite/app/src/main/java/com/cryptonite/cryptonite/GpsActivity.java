@@ -3,6 +3,7 @@ package com.cryptonite.cryptonite;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import Function.Client_SetGPS;
 import Function.GpsInfo;
 
 public class GpsActivity extends Activity implements OnMapReadyCallback {
@@ -28,6 +30,7 @@ public class GpsActivity extends Activity implements OnMapReadyCallback {
     public GoogleMap mgoogleMap;
     private Marker marker;
     private Circle circle;
+    private LatLng loc;
 
     static final LatLng SEOUL = new LatLng(37.56, 126.97);
 
@@ -44,11 +47,12 @@ public class GpsActivity extends Activity implements OnMapReadyCallback {
 
 
 
-        // GPS 정보를 보여주기 위한 이벤트 클래스 등록
+        // send location to server
         btnSubmitLoc.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
                 gps.stopUsingGPS();
+                new Client_SetGPS().execute(loc.latitude,loc.longitude);
             }
         });
     }
@@ -72,7 +76,7 @@ public class GpsActivity extends Activity implements OnMapReadyCallback {
                 double longitude = gps.getLongitude();
                 float accuracy = gps.getAccuracy();
 
-                LatLng loc = new LatLng(latitude,longitude);
+                loc = new LatLng(latitude,longitude);
                 mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,18));
 
                 marker = mgoogleMap.addMarker(new MarkerOptions().position(loc));
