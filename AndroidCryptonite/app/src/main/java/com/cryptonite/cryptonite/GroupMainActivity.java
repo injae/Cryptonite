@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +50,7 @@ public class GroupMainActivity extends AppCompatActivity {
     ListView fileList,InviteList;
     FileListAdapter adapter;
     String gpCode;
+    boolean captain;
     GroupMainActivity activity;
     String[] filePath;
     ArrayList<String> selectPath;
@@ -69,8 +71,8 @@ public class GroupMainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         groupName = intent.getStringExtra("title");
+        captain = intent.getBooleanExtra("captain",false);
         gpCode = intent.getStringExtra("gpCode");
-
 
         TextView title = (TextView) findViewById(R.id.Group_main_title);
         title.setText(groupName);
@@ -156,6 +158,9 @@ public class GroupMainActivity extends AppCompatActivity {
         });
 
         ImageButton addUser = (ImageButton) findViewById(R.id.Add_User);
+
+        if (!captain)
+            addUser.setVisibility(View.GONE);
 
         addUser.setOnClickListener(new View.OnClickListener() {
             @Override

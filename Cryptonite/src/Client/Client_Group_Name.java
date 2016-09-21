@@ -123,7 +123,15 @@ public class Client_Group_Name extends JFrame
 	         		test[0] = _id;
 	        		String temp = Name;
 	        		
-	        		new Client_Make_Group().make(test, temp);
+	        		/*TODO
+	        		 * change
+	        		 */
+	        		boolean usegps = true; 
+	        		double lat =32.001;
+	        		double lng =127.1231;
+	        		double radius =100;
+	        		
+	        		new Client_Make_Group().make(test, temp,usegps,lat,lng,radius);
 	        		byte[] event = new Client_Receive_Event().getEvent();
 	        		byte[] buffer = new byte[1021]; 
 	        		for(int i = 0; i < buffer.length; i++)

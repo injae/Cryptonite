@@ -2,6 +2,7 @@ package Server;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,19 +25,27 @@ public class Server_Make_Group extends Server_Funtion
 	private Server_Client_Manager _manager = null;
 	private Server_DataBase _db = null;
 	private ArrayList<String> _members = null;
+	private byte _usegps;
 
 	@Override
 	public void Checker(byte[] packet) 
 	{
 		System.out.println("packet[1] : " + packet[1]);
 		_packetMaxCount = packet[1];
-		_groupMemberSize = packet[1] - 2;
+		_groupMemberSize = packet[1] - 5;
+		_usegps = packet[2];
 		
-		for(int i = 0; i < _groupMemberSize; i++)
+		
+		for(int i = 0; i < _groupMemberSize; i++)		//membername
 		{
 			_activity.receive.setAllocate(500);
 		}
-		_activity.receive.setAllocate(500);
+		_activity.receive.setAllocate(8);	//lat
+		_activity.receive.setAllocate(8);	//lng
+		_activity.receive.setAllocate(8);	//radius
+		_activity.receive.setAllocate(500);	//groupname
+
+		
 	}
 
 	@Override
@@ -45,11 +54,12 @@ public class Server_Make_Group extends Server_Funtion
 		if(count == 1) { Checker(_activity.getReceiveEvent()); }
 		else
 		{
+			System.out.println("in");
 			String gpCode = _manager._code_manager.getGpCode();
 			String memberSet = new String();
 			int code = Integer.parseInt(gpCode.substring(1));
 			int ccount = 0;
-			
+				
 			for(int i = 0; i < _groupMemberSize; i++)
 			{
 				try 
@@ -75,6 +85,15 @@ public class Server_Make_Group extends Server_Funtion
 					e.printStackTrace();
 				}
 			}
+			
+			double lat =0;
+			double lng =0;
+			double radius =0;
+
+			lat = ByteBuffer.wrap(_activity.receive.getByte()).getDouble();
+			lng = ByteBuffer.wrap(_activity.receive.getByte()).getDouble();
+			radius = ByteBuffer.wrap(_activity.receive.getByte()).getDouble();
+			
 			String gpName = new String(_activity.receive.getByte()).trim();
 			
 			aesKeyGenerator ukg = new aesKeyGenerator();
@@ -84,7 +103,7 @@ public class Server_Make_Group extends Server_Funtion
 			String salt= ukg.getSaltToString();
 			
 			
-			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"','" +aeskey+"','" + iteration +"','" + salt+"');");
+			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"','" +aeskey+"','" + iteration +"','" + salt+"','" + _usegps + "','" + lat + "','" + lng + "','" + radius +"');");
 			
 			for(int i = 0; i < _members.size(); i++)
 			{

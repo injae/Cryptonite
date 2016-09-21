@@ -87,7 +87,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		String usCode = Server_Code_Manager.getInstance().getUsCode();
 		int code = Integer.parseInt(usCode.substring(1));
 		String gpCode = "NULL";
-		result = db.Update("INSERT INTO TEST VALUES('"+name+"','"+id+"','"+password+"','"+email+"',"+count+","+code+",'"+aeskey+"','"+salt+"','"+iteration  +"','"+gpCode+"');");
+		result = db.Update("INSERT INTO TEST VALUES('"+name+"','"+id+"','"+password+"','"+email+"',"+count+","+code+",'"+aeskey+"','"+salt+"','"+iteration  +"','"+gpCode+"','" + 0 + "','" + 0 + "','" + 0 + "');");
 
 		//send result to client
 		byte[] resultPacket = new byte[1];
