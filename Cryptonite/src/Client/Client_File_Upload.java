@@ -84,7 +84,6 @@ public class Client_File_Upload extends Thread implements PacketRule
 				p.close();
 
 				System.out.println(_fileNameArray[i] + " was sent completely.");
-				_cpb.UI_OFF();
 				_check = true;
 				_cfs.dispose();
 			}
