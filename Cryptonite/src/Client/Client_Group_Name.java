@@ -144,7 +144,7 @@ public class Client_Group_Name extends JFrame
 	         		
 	        		dispose();
 	        		_cfl.running((byte)1, new String(buffer).trim());
-	        		new Client_Group_Main_Test(_id, new String(buffer).trim(), temp,  true, _cfl.getFileList());
+	        		new Client_Group_Main(_id, new String(buffer).trim(), temp,  true, _cfl.getFileList());
          		}
          	}
         });

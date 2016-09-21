@@ -111,7 +111,7 @@ public class Client_Login extends JFrame implements PacketRule {
 	Font _fontid = new Font("SansSerif", Font.BOLD, 15);
 
 	JButton _Login;
-	JButton _Resistor;
+	JButton _Registor;
 
 	private void showMessage(String title, String message) {
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
@@ -119,7 +119,7 @@ public class Client_Login extends JFrame implements PacketRule {
 
 	public Client_Login() {
 
-		// Mymouse mymouse=new Mymouse(_Login, _Resistor);
+		// Mymouse mymouse=new Mymouse(_Login, _Registor);
 		try {
 			Toolkit tk = Toolkit.getDefaultToolkit();
 			Image image = tk.getImage("gui/logo.png");
@@ -207,14 +207,12 @@ public class Client_Login extends JFrame implements PacketRule {
 		_layeredPane.add(_passwordField);
 
 		_Login = new JButton(new ImageIcon("gui/login_bt.png"));// input
-																// buttonimage
+		_Login.setRolloverIcon(new ImageIcon("gui/login_bt_hv.png"));
 		_Login.setBounds(30, 400, 400, 50);
 		_Login.setBorderPainted(false);
 		_Login.setFocusPainted(false);
 		_Login.setContentAreaFilled(false);
-		// _Login.setRolloverIcon(new ImageIcon("img/login_bt_hv.png"));//input
 		// buttonimage
-		_Login.setPressedIcon(new ImageIcon("img/login_bt_hv.png"));
 		_Login.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
@@ -293,23 +291,24 @@ public class Client_Login extends JFrame implements PacketRule {
 			}
 
 		});
-		_Resistor = new JButton(new ImageIcon("gui/register_bt.png"));
-		_Resistor.setFont(_fontjoin);
-		_Resistor.setForeground(Color.white);
-		_Resistor.setBounds(188, 480, 80, 37);
-		_Resistor.setBorderPainted(false);
-		_Resistor.setFocusPainted(false);
-		_Resistor.setContentAreaFilled(false);
-		// _Resistor.setRolloverIcon(new ImageIcon("img/_joinbtover"));
-		// _Resistor.setPressedIcon(new ImageIcon("gui/register_bt_hv.png"));
-		_Resistor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		_Registor = new JButton(new ImageIcon("gui/register_bt.png"));
+		_Registor.setRolloverIcon(new ImageIcon("gui/register_bt_hv.png"));
+		_Registor.setFont(_fontjoin);
+		_Registor.setForeground(Color.white);
+		_Registor.setBounds(188, 480, 80, 37);
+		_Registor.setBorderPainted(false);
+		_Registor.setFocusPainted(false);
+		_Registor.setContentAreaFilled(false);
+		_Registor.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
 				new Client_SignUp();
 			}
 		});
 
 		_layeredPane.add(_Login);
-		_layeredPane.add(_Resistor);
+		_layeredPane.add(_Registor);
 		_layeredPane.add(_panel);
 
 		getContentPane().add(_layeredPane);
@@ -339,8 +338,8 @@ public class Client_Login extends JFrame implements PacketRule {
 
 /*
  * class Mymouse implements MouseListener{ JButton Login; JButton Resistor;
- * public Mymouse(JButton _Login, JButton _Resistor){ this.Login=_Login;
- * this.Resistor=_Resistor; } public void mouseEntered(MouseEvent e){
+ * public Mymouse(JButton _Login, JButton _Registor){ this.Login=_Login;
+ * this.Resistor=_Registor; } public void mouseEntered(MouseEvent e){
  * if(e.getSource() ==Login ){ Login.setIcon(new
  * ImageIcon("img/login_bt_hv.png"));} if(e.getSource() == Resistor){
  * Resistor.setIcon(new ImageIcon("img/register_bt_hv.png"));} }

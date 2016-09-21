@@ -8,6 +8,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
 import javax.crypto.Cipher;
+import javax.swing.JOptionPane;
 
 import Crypto.Crypto;
 import Crypto.Crypto_Factory;
@@ -88,6 +89,7 @@ public class Client_File_Upload extends Thread implements PacketRule
 				_cfs.dispose();
 			}
 			_cpb.UI_OFF();
+			showMessage("Notification", "All Files were sent completely.");
 		} 
 		catch (IOException e) 
 		{
@@ -104,46 +106,6 @@ public class Client_File_Upload extends Thread implements PacketRule
 	{
 		return _check;
 	}
-	
-	/*public void click(String gpCode)
-	{
-		try 
-		{	
-			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(gpCode)));
-			fileSelection();
-			ByteBuffer bb;
-			Charset cs = Charset.forName("UTF-8");
-			for(int i = 0; i < _fileNameArray.length; i++)
-			{
-				bb = cs.encode(_fileNameArray[i]);
-				byte[] event = new byte[1024];
-				event[0] = FILE_UPLOAD;
-				event[1] = (byte)bb.limit();
-				event[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
-				Function.frontInsertByte(3, bb.array(), event);
-				Function.frontInsertByte(3 + bb.limit(), String.valueOf(_fileSizeArray[i]).getBytes(), event);
-				Function.frontInsertByte(800, gpCode.getBytes(), event);
-				_csc.send.setPacket(event).write();
-				
-				_raf = new RandomAccessFile(_filePathArray[i], "rw");
-				_fileChannel = _raf.getChannel();
-				PacketProcessor p = new PacketProcessor(_fileChannel, false);
-				p.setAllocate(_fileSizeArray[i]);
-				
-				while(!p.isAllocatorEmpty())
-				{
-					_csc.send.setPacket(_crypto.endecription(p.read().getByte())).write();
-				}
-				p.close();
-				System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
-				_cfs.dispose();
-			}
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-	}*/
 	
 	private void fileSelection()
 	{
@@ -174,5 +136,10 @@ public class Client_File_Upload extends Thread implements PacketRule
 			File temp = new File(_filePathArray[i]);
 			_fileSizeArray[i] = temp.length();
 		}
+	}
+	
+	private void showMessage(String title, String message) 
+	{
+		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }
