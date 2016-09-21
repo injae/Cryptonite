@@ -9,9 +9,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.io.File;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,9 +31,6 @@ public class Client_FileRecovery extends JFrame
 	private final int COLUMN = 3;
 	private final int ROW = 5;
 	
-	private JLabel _downloadArea;
-	private List _loadedFileList;
-
 	private JButton _Select;
 	private JButton _Download;
 	private JButton _Right;
@@ -45,7 +39,6 @@ public class Client_FileRecovery extends JFrame
 	
 	private int _nowPage = 0;
 	private int _page;
-	private int[] count;
 	
 	private Container container;
 	private JLayeredPane layeredPane = new JLayeredPane();
@@ -112,11 +105,6 @@ public class Client_FileRecovery extends JFrame
 			_btnList.add(new RecoveryButton(fileList.remove(0)));
 		}
 		pageCount();
-		
-		_downloadArea = new JLabel();
-		_downloadArea.setBounds(2, 69, 800, 384);
-		
-		this.add(_downloadArea, BorderLayout.CENTER);
 		
 		try
 		{
