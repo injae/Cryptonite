@@ -275,7 +275,7 @@ public class Client_Login extends JFrame implements PacketRule {
 							_cfc.start();
 							dispose();
 							new Client_Main_UI(_gpcode, _gpname, _name, _uscode, _id, _cfc);
-
+							KeyReposit.getInstance();
 							break;
 						case 3:
 							showMessage("Error", "Wrong password");

@@ -56,7 +56,8 @@ public class Client_KeyExchange implements PacketRule {
         	csc.receive.init(reposit.get_rsaKey());
         }
        
-        catch (IOException e) {
+        catch (IOException e) 
+        {
             System.out.println("key exchange failed");
             e.printStackTrace();
         }

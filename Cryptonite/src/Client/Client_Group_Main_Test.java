@@ -441,7 +441,6 @@ public class Client_Group_Main_Test extends JFrame
          		_downloadPath = cfs.getSelectedPath();
          	}
          });
-       
         
         _Download = new JButton(new ImageIcon("img/DOWNLOAD.png"));	
 		_Download.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
@@ -465,7 +464,6 @@ public class Client_Group_Main_Test extends JFrame
 			 }
 	   });
 		
-        
 		_idField = new JTextField(15);
         _idField.setBounds(640, 115, 100, 31);
         _idField.setOpaque(false);

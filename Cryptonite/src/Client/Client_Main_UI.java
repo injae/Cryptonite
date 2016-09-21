@@ -30,6 +30,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import Crypto.KeyReposit;
+
 public class Client_Main_UI extends JFrame
 {
 	private ArrayList<String> _gpCode;
@@ -111,6 +113,7 @@ public class Client_Main_UI extends JFrame
 					Client_Login._folderScanList.remove().stopThread();
 				}
 				new Client_Logout().logout();
+				KeyReposit.getInstance().logout();
 				new Client_Login();
 			}
 		};

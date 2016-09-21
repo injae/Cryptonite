@@ -57,8 +57,6 @@ public class KeyReposit extends Thread
 	
 	public void logout()
 	{
-		flag = false;
-		this.interrupt();
 		_aesKey_lv1 = null;
 		_aesKey_lv2 = null;
 		_aesKey_lv3 = null;
@@ -73,28 +71,10 @@ public class KeyReposit extends Thread
 				Socket socket = _server.accept();
 				BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				String path = input.readLine();
-
-				Crypto crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _aesKey_lv1));
-			
-				RandomAccessFile Rraf  = new RandomAccessFile(path, "rw");
-				PacketProcessor rp = new PacketProcessor(Rraf.getChannel(), false);
 				
-				RandomAccessFile Wraf  = new RandomAccessFile(path.substring(0, path.length()-5), "rw");
-				PacketProcessor wp = new PacketProcessor(Wraf.getChannel(), false);
+				if(_aesKey_lv1 == null) { continue; }
 				
-				rp.setAllocate(new File(path).length());
-				wp.setAllocate(new File(path).length());
-				
-				_cpb.UI_ON();
-				while(!rp.isAllocatorEmpty())
-				{
-					crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _aesKey_lv1));
-					wp.setPacket(crypto.endecription(rp.read().getByte())).write();	
-				}
-				wp.close();
-				rp.close();
-				new File(path).delete();
-				_cpb.UI_OFF();
+				new Decrypter(path,_aesKey_lv1).start();
 			} 
 			catch (IOException e)
 			{
