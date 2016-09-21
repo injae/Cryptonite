@@ -184,9 +184,9 @@ public class Client_FileRecovery extends JFrame
 							makeFile(k * MAX_BTN + (j * ROW) + i, x, y);
 						}
 						if(_btnList.size() - 1 <= (k * MAX_BTN + (j * ROW) + i)) { return; }
-						x += 120;
+						x += 100;
 					}
-					y += 120;
+					y += 100;
 				}
 			}
 		}
@@ -198,9 +198,9 @@ public class Client_FileRecovery extends JFrame
 	private void makeFile(int index, int x, int y)
 	{
 		if(_btnList.get(index).button!=null){return;}
-		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/logo_mini.png"));
-		btn.setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-		btn.setBounds((10+x),(70+y),92,120);
+		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file.png"));
+		btn.setPressedIcon(new ImageIcon("gui/file.png"));
+		btn.setBounds((5+x),(80+y),75,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
 		btn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -220,11 +220,11 @@ public class Client_FileRecovery extends JFrame
 
 				if(!_btnList.get(index).isClick)
 				{	
-					_btnList.get(index).button.setIcon(new ImageIcon("gui/logo_mini.png"));
+					_btnList.get(index).button.setIcon(new ImageIcon("gui/file.png"));
 				}
 				else
 				{
-					_btnList.get(index).button.setIcon(new ImageIcon("img/logo_mini_click.png"));
+					_btnList.get(index).button.setIcon(new ImageIcon("gui/file_check.png"));
 				}
 			}
 		});
@@ -234,9 +234,9 @@ public class Client_FileRecovery extends JFrame
 	private void makeFolder(int index, int x, int y)
 	{
 		if(_btnList.get(index).button!=null){return;}
-		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("img/folder.png"));
-		btn.setPressedIcon(new ImageIcon("img/folderR.png"));
-		btn.setBounds((10+x),(70+y),92,120);
+		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/_folder.png"));
+		btn.setPressedIcon(new ImageIcon("gui/_folderR.png"));
+		btn.setBounds((5+x),(80+y),75,110);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
 		btn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -252,7 +252,7 @@ public class Client_FileRecovery extends JFrame
 					if(_btnList.get(i).isClick)
 					{
 						_btnList.get(i).isClick=false;
-						_btnList.get(i).button.setIcon(new ImageIcon("gui/logo_mini.png"));
+						_btnList.get(i).button.setIcon(new ImageIcon("img/_logo_mini.png"));
 					}
 				}
 				_undo.push(_btnList);
