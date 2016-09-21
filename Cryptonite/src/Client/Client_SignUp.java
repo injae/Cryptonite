@@ -252,7 +252,7 @@ import Crypto.aesKeyGenerator;
 		_layeredpane.add(_emailField);
 
 		_same = new JButton(new ImageIcon("gui/check_bt.png"));
-		_same.setPressedIcon(new ImageIcon("img/_check_bt.png"));
+		//_same.setRolloverIcon(new ImageIcon("gui/_check_bt.png"));
 		_same.setBounds(320, 250, 80, 38);
 		_same.setBorderPainted(false);
 		_same.setFocusPainted(false);
@@ -301,7 +301,7 @@ import Crypto.aesKeyGenerator;
 		_layeredpane.add(_same);
 
 		_cancel = new JButton(new ImageIcon("gui/cancel_bt.png"));
-		_cancel.setPressedIcon(new ImageIcon("img/_cancel_hv.png"));
+		_cancel.setRolloverIcon(new ImageIcon("gui/cancel_bt_hv.png"));
 
 		_cancel.setBounds(178, 560, 90, 50);//input value
 		_cancel.setBorder(BorderFactory.createEmptyBorder());
@@ -321,7 +321,7 @@ import Crypto.aesKeyGenerator;
 		_layeredpane.add(_cancel);
 
 		_ok = new JButton(new ImageIcon("gui/signup_bt.png"));
-		_ok.setPressedIcon(new ImageIcon("img/signup_bt_hv.png"));
+		_ok.setRolloverIcon(new ImageIcon("gui/signup_bt_hv.png"));
 
 		_ok.setBounds(25, 500, 400, 50);//input value
 		_ok.setBorderPainted(false);

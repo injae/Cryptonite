@@ -1,15 +1,33 @@
 package Client;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -17,137 +35,130 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
-import javax.swing.DefaultListModel;
-import javax.swing.Icon;
+
+import Client.Client_FileRecovery.RecoveryButton;
+import Client.Client_Group_Main.MyPanel;
+import Crypto.KeyReposit;
 
 
 
-public class Client_Group_Main extends JFrame{
+public class Client_Group_Main extends JFrame
+{
+	private BufferedImage _img = null;
+	private BufferedImage _img2 = null;
 	
-	private BufferedImage img = null;
-	private BufferedImage img2 = null;
-
-	private JButton _Right;
-	private JButton _Left;
-	private JButton _Upload;
+	private final int MAX_BTN = 15;
+	private final int COLUMN = 3;
+	private final int ROW = 5;
+	
 	private JButton _Select;
 	private JButton _Download;
-	private JButton Search;
-	private JButton[] Button;
-	private JButton OK;
-	private JButton Withdrawal;
-	private JButton Delete;
+	private JButton _Right;
+	private JButton _Left;
+	private JButton _Search;
 	private JTextField _idField;
+	private JButton _OK;
+	private JButton _Withdrawal;
+	private JButton _Delete;
+	private JButton _Upload;
 	
-	private boolean _passCheck = true;
-
-	private ArrayList<String> _directoryArray;
-	private ArrayList<String> _nameArray;
-	private final int MAX_BUTTON = 18;
-	
-	private ArrayList<JButton> _Buttonlist;
-	private String[] _result;
-	private ArrayList<String> _fileList;
-	private String[] _name;
-	private String _id;
-	private String _receivedID;
-	private String _gpCode;
-	private String _gpName;
-	private String _downloadDirectory;
-	private int _mod;
-	private int _x=0;
-	private int _y=0;
 	private int _nowPage = 0;
 	private int _page;
-	private int[] count;
 	
-	private boolean _checkmod = true;
-	
-	private DefaultListModel<String> _model;
-	private JList<String> _list;
-	private JScrollPane scrollPane = null;
 	private Container container;
 	private JLayeredPane layeredPane = new JLayeredPane();
-	private MyPanel panel = new MyPanel();
 	
-	private int _count = 1;
+	public class RecoveryButton
+	{
+		public RecoveryButton(String fullpath)
+		{
+			fullPath = fullpath;
+			
+			StringTokenizer st = new StringTokenizer(fullpath, "\\");
+			
+			while(st.hasMoreTokens())
+			{
+				fileName = st.nextToken();
+			}
+			
+			isClick = false;
+			
+			st = new StringTokenizer(fileName, ".");
+			if(st.countTokens() == 1) { isDir = true; }
+			else 					  { isDir = false;}
+		}
+		
+		private boolean isClick;
+		public void click()
+		{
+			if(isClick)  { isClick = false; }
+			else 		 { isClick = true;  }
+		}
+		
+		public boolean isDir;
+		public JButton button;
+		public String fullPath;
+		public String fileName;
+	}
+	private ArrayList<RecoveryButton> _btnList;
+	
+	private String _downloadPath;
+	private Stack<ArrayList<RecoveryButton>> _undo;
 	
 	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
-	private Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
-	
-	private Client_FolderSelector _cfs;
-	private Client_Group_Search _cgs;
-	private Client_Group_Invite _cgi;
-	private Client_Group_Withdrawal _cgw;
-	private Client_Delete_Group _cdg;
-	private Client_File_ListReceiver _cfl;
-	private Client_File_Download _cfd;
-	private Client_Get_Group_Key _cggk;
-	
-	public static void main(String args[])
+	private Font precondition_font = new Font ("Dialog", Font.BOLD,20);
+
+	private boolean _mod;
+	class MyPanel extends JPanel 
 	{
-		new Client_Group_Main(null, null, null, 0, null);
-	}
-
-
-	public Client_Group_Main(String id, String gpCode, String gpName, int mod, Client_File_ListReceiver cfl){
-		
-		_receivedID = id;
+        public void paint(Graphics g) 
+        {
+        	if(_mod)
+        	{
+        		g.drawImage(_img, 0, 0, null);
+        		g.setColor(Color.BLACK);
+        		g.setFont(precondition_font);
+        		g.drawString("Group Name : " + _gpName, 230, 35);
+      			g.setFont(precondition_font);
+      			g.drawString((_nowPage + 1) + "/" + _page, 476, 417);
+        	}
+        	else
+        	{
+        		g.drawImage(_img2, 0, 0, null);
+        		g.setColor(Color.BLACK);
+        		g.setFont(fontbt);
+        		g.drawString("Group Name : " + _gpName, 230, 35);
+        		g.setFont(precondition_font);
+      			g.drawString((_nowPage + 1) + "/" + _page, 476, 417);
+        	}
+        }
+   }
+	private  MyPanel panel = new MyPanel();
+	
+	private String _gpCode;
+	private String _gpName;
+	private String _id;
+	
+	private String[] _searchList;
+	private JList<String> _list;
+	private JScrollPane scrollPane;
+	private DefaultListModel<String> _model;
+	
+	public Client_Group_Main(String id, String gpCode, String gpName, boolean mod, ArrayList<String> fileList) 
+	{
 		_gpCode = gpCode;
 		_gpName = gpName;
 		_mod = mod;
-		_cggk = new Client_Get_Group_Key();
-		_cfs = new Client_FolderSelector();
-		_cgs = new Client_Group_Search();
-		_cgi = new Client_Group_Invite();
-		_cgw = new Client_Group_Withdrawal();
-		_cdg = new Client_Delete_Group();
-		_cfd = new Client_File_Download();
-		_cfl = cfl;
-		_fileList = _cfl.getFileList();
-		_directoryArray = new ArrayList<String>();
-		_nameArray = new ArrayList<String>();
-		_Buttonlist = new ArrayList<JButton>();
 		
+		_btnList = new ArrayList<RecoveryButton>();
+		_undo = new Stack<ArrayList<RecoveryButton>>();
+		while(!fileList.isEmpty())
+		{
+			_btnList.add(new RecoveryButton(fileList.remove(0)));
+		}
+		pageCount();
 		
-		_name = new String[_fileList.size()];
-        for(int i = 0; i < _fileList.size(); i++)
-        {	
-        	StringTokenizer st=new StringTokenizer(_fileList.get(i), "\\");
-
-        	while(st.hasMoreTokens())
-        	{
-    			_name[i] = st.nextToken();
-    		}
-    	}
-        
-        if((_name.length % MAX_BUTTON) == 0)
-        {
-        	_page = (_name.length / MAX_BUTTON);
-        	if(_name.length==0){
-        		_page=1;
-        	}
-        }
-        else
-        {
-        	_page = (_name.length / MAX_BUTTON) + 1;
-        }
-        count=new int[_name.length];
-        for(int i=0;i<_name.length;i++)
-        {
-        	count[i]=1;
-        }
-        
 		try
 		{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
@@ -165,7 +176,6 @@ public class Client_Group_Main extends JFrame{
 		setBounds(0,0,816,480);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
-		
 		container.setLayout(null);
 		
 		getContentPane().setLayout(null);
@@ -174,102 +184,194 @@ public class Client_Group_Main extends JFrame{
         
         try 
         {
-            img = ImageIO.read(new File("img/초대목록화면re.png"));
-            img2 = ImageIO.read(new File("img/초대목록화면re2.png"));
+        	_img = ImageIO.read(new File("img/초대목록화면re.png"));
+            _img2 = ImageIO.read(new File("img/초대목록화면re2.png"));
         }
         catch (IOException e)
         {
-            System.out.println("이미지 불러오기 실패");
+            System.out.println("Image Load Failed.");
             System.exit(0);
         }
         
         panel.setBounds(0, 0, 816, 480);
-        
+		
         allocator();
-        button();
-       
-        if(_mod == 1)
-        {	
-        	mod1();
-        }
-        else
-        {
-        	mod2();
-        }
-        
+		makeBtn();
+		page();
+		setMod();
         setVisible(true);
 	}
-	
-	class MyPanel extends JPanel 
+
+	private void setMod()
 	{
-        public void paint(Graphics g) 
-        {
-        	if(_checkmod)
-        	{
-        		g.drawImage(img, 0, 0, null);
-        		g.setColor(Color.BLACK);
-        		g.setFont(fontbt);
-        		g.drawString("Group Name : " + _gpName, 230, 35);
-      			g.setFont(_precondition_font);
-      			g.drawString((_nowPage + 1) + "/" + _page, 476, 417);
-        	}
-        	else
-        	{
-        		g.drawImage(img2, 0, 0, null);
-        		g.setColor(Color.BLACK);
-        		g.setFont(fontbt);
-        		g.drawString("Group Name : " + _gpName, 230, 35);
-        		g.setFont(_precondition_font);
-      			g.drawString((_nowPage + 1) + "/" + _page, 476, 417);
-        	}
-        }
-   }
-	
-	private void mod1()
-	{
-		layeredPane.add(_Left);
-		layeredPane.add(_Right);
-		layeredPane.add(Search);
-    	layeredPane.add( _idField);
-        layeredPane.add(OK);
-        layeredPane.remove(Withdrawal);
-        layeredPane.add(Delete);
-    	layeredPane.add(panel);
-        container.add(layeredPane);
-	}
-	
-	private void mod2()
-	{
-		_checkmod = false;
-		layeredPane.add(_Left);
-		layeredPane.add(_Right);
-    	layeredPane.remove(Delete);
-    	layeredPane.add(Withdrawal);
-    	layeredPane.add(panel);
-        container.add(layeredPane);
-	}
-	
-	private void page()
-	{
-		int buttonCount = 0;
-		if(_nowPage + 1 == _page)
+		 layeredPane.add(_Upload);
+		 layeredPane.add(_Select);
+		 layeredPane.add(_Download);
+		 layeredPane.add(_Left);
+		 layeredPane.add(_Right);
+	     layeredPane.add(_Delete);
+	     
+		if(_mod)
 		{
-			buttonCount = _Buttonlist.size() % MAX_BUTTON;
+			
+			layeredPane.add(_Search);
+	    	layeredPane.add( _idField);
+	        layeredPane.add(_OK);
+	        layeredPane.remove(_Withdrawal);
 		}
 		else
 		{
-			buttonCount = MAX_BUTTON;
+	    	layeredPane.add(_Withdrawal);
 		}
 		
-		for(int i = 0; i < buttonCount; i++)
-		{
-			layeredPane.add(_Buttonlist.get(i + (MAX_BUTTON * _nowPage)));
-		}
-	}	
-	
-	private void allocator()
+    	layeredPane.add(panel);
+        container.add(layeredPane);
+	}
+	private void page() 
 	{
-		
+		try
+		{
+			int k = _nowPage;
+			for(int j = 0; j < COLUMN; j++)
+			{
+				for(int i = 0; i < ROW; i++)
+				{		
+					layeredPane.add(_btnList.get(k * MAX_BTN + (j * ROW) + i).button);
+					if(_btnList.size() - 1 <= (k * MAX_BTN + (j * ROW) + i)) { return; }
+				}
+			}
+		}
+		catch(IndexOutOfBoundsException e1)
+		{
+		}
+	}
+	private void pageCount()
+	{
+		if((_btnList.size() % MAX_BTN) == 0)
+		{
+			_page = (_btnList.size() / MAX_BTN);
+			if(_btnList.isEmpty()) { _page  = 1;}
+		}
+		else
+		{
+			_page = (_btnList.size() / MAX_BTN) + 1;
+		}
+		_nowPage = 0;
+	}	
+	private void makeBtn() 
+	{
+		try
+		{
+			for(int k = 0; k < _page; k++)
+			{
+				int x = 10 , y = 0;
+				for(int j = 0; j < COLUMN; j++)
+				{
+					x = 15;
+					for(int i = 0; i < ROW; i++)
+					{		
+						if(_btnList.get(k * MAX_BTN + (j * ROW) + i).isDir)
+						{
+							makeFolder(k * MAX_BTN + (j * ROW) + i, x, y);
+						}
+						else
+						{
+							makeFile(k * MAX_BTN + (j * ROW) + i, x, y);
+						}
+						if(_btnList.size() - 1 <= (k * MAX_BTN + (j * ROW) + i)) { return; }
+						x += 120;
+					}
+					y += 120;
+				}
+			}
+		}
+		catch(IndexOutOfBoundsException e1)
+		{
+		}
+	}
+
+	private void makeFolder(int index, int x, int y) 
+	{
+		if(_btnList.get(index).button!=null){return;}
+		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("img/folder.png"));
+		btn.setPressedIcon(new ImageIcon("img/folderR.png"));
+		btn.setBounds((10+x),(70+y),92,120);
+		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btn.setVerticalAlignment(SwingConstants.TOP);
+		btn.setHorizontalTextPosition(SwingConstants.CENTER);
+		btn.setBorderPainted(false);
+		btn.setFocusPainted(false);
+		btn.setContentAreaFilled(false);
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				for(int i = 0; i < _btnList.size(); i++)
+				{
+					if(_btnList.get(i).isClick)
+					{
+						_btnList.get(i).isClick=false;
+						_btnList.get(i).button.setIcon(new ImageIcon("gui/logo_mini.png"));
+					}
+				}
+				_undo.push(_btnList);
+				String fullPath = _btnList.get(index).fullPath + "\\";
+				
+				ArrayList<String> files = new Client_Folder_List().running(_btnList.get(index).fullPath).getFileList();
+				_btnList = new ArrayList<RecoveryButton>();
+				
+				for(int i =0; i < files.size(); i++)
+				{
+					_btnList.add(new RecoveryButton(fullPath + files.get(i)));
+				}
+				pageCount();
+				layeredPane.removeAll();
+				makeBtn();
+				page();
+				setMod();
+				layeredPane.repaint();
+			}
+		});
+		_btnList.get(index).button = btn;
+	}
+	private void makeFile(int index, int x, int y) 
+	{
+		if(_btnList.get(index).button!=null) {return;}
+		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/logo_mini.png"));
+		btn.setPressedIcon(new ImageIcon("gui/logo_mini.png"));
+		btn.setBounds((10+x),(70+y),92,120);
+		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btn.setVerticalAlignment(SwingConstants.TOP);
+		btn.setHorizontalTextPosition(SwingConstants.CENTER);
+		btn.setBorderPainted(false);
+		btn.setFocusPainted(false);
+		btn.setContentAreaFilled(false);
+		btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				_btnList.get(index).click();
+				layeredPane.removeAll();
+				makeBtn();
+				page();
+				setMod();
+				layeredPane.repaint();
+
+				if(!_btnList.get(index).isClick)
+				{	
+					_btnList.get(index).button.setIcon(new ImageIcon("gui/logo_mini.png"));
+				}
+				else
+				{
+					_btnList.get(index).button.setIcon(new ImageIcon("img/logo_mini_click.png"));
+				}
+			}
+		});
+		_btnList.get(index).button = btn;
+	}
+
+	private void allocator() 
+	{
 		_Upload = new JButton(new ImageIcon("img/upload.png"));
         _Upload.setRolloverIcon(new ImageIcon("img/uploadR.png"));
         _Upload.setBounds(700, 8, 80, 45);
@@ -282,61 +384,9 @@ public class Client_Group_Main extends JFrame{
         		Client_File_Upload _cfu = new Client_File_Upload();
         		_cfu.setGpCode(_gpCode);
         		_cfu.start();
-        		
-        		while(!_cfu.getCheck())
-        		{
-        			try 
-        			{
-						Thread.sleep(100);
-					} 
-        			catch (InterruptedException e)
-        			{
-						e.printStackTrace();
-					}
-        		}
-        		
-        		_cfl.running((byte)1, _gpCode);
-        		_fileList = _cfl.getFileList();
-        		_x=0;
-        		_y=0;
-        		
-        		_name = new String[_fileList.size()];
-    	        for(int i = 0; i < _fileList.size(); i++)
-    	        {	
-    	        	StringTokenizer st=new StringTokenizer(_fileList.get(i), "\\");
-
-    	        	while(st.hasMoreTokens())
-    	        	{
-    	    			_name[i] = st.nextToken();
-    	    		}
-    	    	}
-        		
-        		layeredPane.removeAll();
-        		
-        		for(int i=0; i < _fileList.size(); i++)
-        		{
-        			System.out.println(_fileList.get(i));
-        			if(_fileList.size() == 0)
-        			{
-        				System.out.println("There is no anything.");
-        			}
-        		}
-        		
-        	    allocator();
-        	    button();
-        	    
-    	        if(_mod == 1)
-    	        {	
-    	        	mod1();
-    	        }
-    	        else
-    	        {
-    	        	mod2();
-    	        }
-    	       repaint();
-         	}
+        	}
         });
-        layeredPane.add(_Upload);
+       
         
         _Select = new JButton(new ImageIcon("img/select.png"));
         _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
@@ -348,8 +398,9 @@ public class Client_Group_Main extends JFrame{
         {     
          	public void actionPerformed(ActionEvent arg0)
          	{	
-         		_cfs.folderSelectorON();
-         		while(!_cfs.getSelectionEnd())
+         		Client_FolderSelector cfs = new Client_FolderSelector();
+         		cfs.folderSelectorON();
+         		while(!cfs.getSelectionEnd())
          		{
          			try 
          			{
@@ -360,10 +411,9 @@ public class Client_Group_Main extends JFrame{
 						e.printStackTrace();
 					}
          		}
-         		_downloadDirectory = _cfs.getSelectedPath();
+         		_downloadPath = cfs.getSelectedPath();
          	}
          });
-        layeredPane.add(_Select);
         
         _Download = new JButton(new ImageIcon("img/DOWNLOAD.png"));	
 		_Download.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
@@ -374,19 +424,20 @@ public class Client_Group_Main extends JFrame{
 		_Download.setBorderPainted(false);
 		_Download.setFocusPainted(false);
 		_Download.setContentAreaFilled(false);
-		_Download.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				for(int i = 0; i < _directoryArray.size(); i++)
-				{
-					_cfd.requestFile(_directoryArray.get(i), _downloadDirectory + "\\" + _nameArray.get(i), _cggk.running(_gpCode));
-				}
-			}
-		});
-		layeredPane.add(_Download);
-        
-	    _idField = new JTextField(15);
+		_Download.addActionListener(new ActionListener(){
+			 public void actionPerformed(ActionEvent e) 
+			 {
+				 for(int i =0; i < _btnList.size(); i++)
+				 {
+					 if(_btnList.get(i).isClick)
+					 {
+						 new Client_File_Download().requestFile(_btnList.get(i).fileName, _downloadPath + "\\" + _btnList.get(i).fileName, KeyReposit.getInstance().get_aesKey());
+					 }
+				 }
+			 }
+	   });
+		
+		_idField = new JTextField(15);
         _idField.setBounds(640, 115, 100, 31);
         _idField.setOpaque(false);
         _idField.setForeground(Color.BLACK);
@@ -403,70 +454,69 @@ public class Client_Group_Main extends JFrame{
      		}
      		@Override
      		public void keyTyped(KeyEvent e) {}
-           });
-        	_idField.addMouseListener(new MouseAdapter(){
-         	public void mouseClicked(MouseEvent e){
-         		 _idField.setText("");
-         	}
-         });
+        });
+    	_idField.addMouseListener(new MouseAdapter()
+    	{
+    		public void mouseClicked(MouseEvent e){
+    			_idField.setText("");
+    		}
+    	});
+    	
+    	_Search = new JButton(new ImageIcon("img/Search.png"));
+        _Search.setRolloverIcon(new ImageIcon("img/Searchh.png"));
+        _Search.setBounds(749, 107, 50, 50);
+        _Search.setFocusPainted(false);
+        _Search.setContentAreaFilled(false);
+        _Search.setBorderPainted(false);
+        _Search.addActionListener(new ActionListener() {     
+          	public void actionPerformed(ActionEvent arg0)
+          	{	
+          		Client_Group_Search cgs = new Client_Group_Search();
+          		cgs.setDefault();
+          		cgs.search(_id);
+          		_searchList = cgs.getID();
+          		if(_searchList.length == 0)
+          		{
+          			if(_list != null)
+          			{
+          				_list.setVisible(false);
+          			}
+          			showMessage("ID Error","존재하는 ID가 없습니다.");          			
+          		}
+          		else
+          		{
+
+          			layeredPane.remove(scrollPane);
+
+          			_model = new DefaultListModel<>();
+                     for(int i=0;i<_searchList.length;i++)
+                     {
+                      	if(!_searchList[i].equals(_id))
+                      	{
+                      		_model.addElement(_searchList[i]);
+                      	}
+                     }
+                     _list = new JList<>(_model);
+                     _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                     scrollPane = new JScrollPane(_list);
+                     scrollPane.setVisible(true);
+                     scrollPane.setBounds(628, 200, 115, 150);
+                     layeredPane.add(scrollPane);
+          		}
+          	}
+          });
         
-        
-        Search = new JButton(new ImageIcon("img/Search.png"));
-        Search.setRolloverIcon(new ImageIcon("img/Searchh.png"));
-        Search.setBounds(749, 107, 50, 50);
-        Search.setFocusPainted(false);
-        Search.setContentAreaFilled(false);
-        Search.setBorderPainted(false);
-        Search.addActionListener(new ActionListener() {     
-         	public void actionPerformed(ActionEvent arg0)
-         	{	
-         		_cgs.setDefault();
-         		_cgs.search(_id);
-         		_result=_cgs.getID();
-         		if(_result.length == 0)
-         		{
-         			if(_list!=null){
-         			_list.setVisible(false);
-         			}
-         			showMessage("ID Error","존재하는 ID가 없습니다.");
-         			
-         		}
-         		else
-         		{
-         			if(_count != 1)
-         			{
-         				layeredPane.remove(scrollPane);
-         			}
-         			_count = 2;
-         			_model = new DefaultListModel<>();
-                    for(int i=0;i<_result.length;i++)
-                    {
-                     	if(!_result[i].equals(_receivedID))
-                     	{
-                     		_model.addElement(_result[i]);
-                     	}
-                    }
-                    _list = new JList<>(_model);
-                    _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                    scrollPane = new JScrollPane(_list);
-                    scrollPane.setVisible(true);
-                    scrollPane.setBounds(628, 200, 115, 150);
-                    layeredPane.add(scrollPane);
-         		}
-         	}
-         });
-        
-        OK = new JButton(new ImageIcon("img/OK.png"));
-        OK.setRolloverIcon(new ImageIcon("img/OKR.png"));
-        OK.setBounds(747, 304, 45, 45);
-        OK.setFocusPainted(false);
-        OK.setContentAreaFilled(false);
-        OK.setBorderPainted(false);
-        OK.addActionListener(new ActionListener() {     
+        _OK = new JButton(new ImageIcon("img/OK.png"));
+        _OK.setRolloverIcon(new ImageIcon("img/OKR.png"));
+        _OK.setBounds(747, 304, 45, 45);
+        _OK.setFocusPainted(false);
+        _OK.setContentAreaFilled(false);
+        _OK.setBorderPainted(false);
+        _OK.addActionListener(new ActionListener() {     
          	public void actionPerformed(ActionEvent arg0)
          	{	
          		String selectedID = _model.getElementAt(_list.getSelectedIndex());
-         		String check = _cgi.running(selectedID, _gpCode);
+         		String check = new Client_Group_Invite().running(selectedID, _gpCode);
          		if(check.equals("TRUE"))
          		{
          			showMessage("Notification","Member was added completely.");
@@ -477,228 +527,94 @@ public class Client_Group_Main extends JFrame{
          		}
          	}
          });
-
-        Withdrawal = new JButton(new ImageIcon("img/WITHDRAWAL.png"));
-        Withdrawal.setRolloverIcon(new ImageIcon("img/WITHDRAWALR.png"));
-        Withdrawal.setBounds(685, 388, 80, 40);
-        Withdrawal.setFocusPainted(false);
-        Withdrawal.setContentAreaFilled(false);
-        Withdrawal.setBorderPainted(false);
-        Withdrawal.addActionListener(new ActionListener() {     
+        
+        _Withdrawal = new JButton(new ImageIcon("img/WITHDRAWAL.png"));
+        _Withdrawal.setRolloverIcon(new ImageIcon("img/WITHDRAWALR.png"));
+        _Withdrawal.setBounds(685, 388, 80, 40);
+        _Withdrawal.setFocusPainted(false);
+        _Withdrawal.setContentAreaFilled(false);
+        _Withdrawal.setBorderPainted(false);
+        _Withdrawal.addActionListener(new ActionListener() {     
          	public void actionPerformed(ActionEvent arg0)
          	{
-         		_cgw.running(_gpCode);
+         		new Client_Group_Withdrawal().running(_gpCode);
          		dispose();
          	}
          });
         
-        
-        Delete = new JButton(new ImageIcon("img/DELETE.png"));
-        Delete.setPressedIcon(new ImageIcon("img/DELETER.png"));
-        Delete.setBounds(680, 388, 80, 40);
-        Delete.setFocusPainted(false);
-        Delete.setContentAreaFilled(false);
-        Delete.setBorderPainted(false);
-        Delete.addActionListener(new ActionListener() {     
+        _Delete = new JButton(new ImageIcon("img/DELETE.png"));
+        _Delete.setPressedIcon(new ImageIcon("img/DELETER.png"));
+        _Delete.setBounds(680, 388, 80, 40);
+        _Delete.setFocusPainted(false);
+        _Delete.setContentAreaFilled(false);
+        _Delete.setBorderPainted(false);
+        _Delete.addActionListener(new ActionListener() {     
          	public void actionPerformed(ActionEvent arg0)
          	{
-         		_cdg.deleteGroup(_gpCode);
+         		new Client_Delete_Group().deleteGroup(_gpCode);
          		dispose();
          	}
          });
-
         
         _Left = new JButton(new ImageIcon("img/LEFT.png"));
-        _Left.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
-        _Left.setBounds(400, 390, 80, 40);
-        _Left.setFocusPainted(false);
-        _Left.setContentAreaFilled(false);
-        _Left.setBorderPainted(false);
-        _Left.addActionListener(new ActionListener() 
-        {     
-        	public void actionPerformed(ActionEvent arg0)
-        	{	
-        		_nowPage -= 1;
-        		if(_nowPage < 0)
-        		{
-        			_nowPage += 1;
-        			showMessage("error", "Here is the first page!");
-        		}
-        		else
-        		{   	
+		_Left.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
+		_Left.setBounds(400, 390, 80, 40);
+		_Left.setFocusPainted(false);
+		_Left.setContentAreaFilled(false);
+		_Left.setBorderPainted(false);
+		_Left.addActionListener(new ActionListener() 
+		 {     
+			 public void actionPerformed(ActionEvent arg0)
+			 {	
+				 _nowPage -= 1;
+				 if(_nowPage < 0)
+				 {
+					 _nowPage += 1;
+					 showMessage("error", "Here is the first page!");
+				 }
+				 else
+				 {   	
 					 layeredPane.removeAll();
-					 
-					 page();
-					 if(_mod == 1)
-					 {	
-						 mod1();
-					 }
-					 else
-					 {
-						 mod2();
-					 }
-					 
-					 repaint();
-        		}
-        	}
-        });
-        
-        _Right = new JButton(new ImageIcon("img/RIGHT.png"));
-        _Right.setRolloverIcon(new ImageIcon("img/RIGHTR.png"));
-        _Right.setBounds(500, 390, 80, 40);
-        _Right.setFocusPainted(false);
-        _Right.setContentAreaFilled(false);
-        _Right.setBorderPainted(false);
-        _Right.addActionListener(new ActionListener() 
-        {  	   
-        	public void actionPerformed(ActionEvent arg0)
-        	{	
-        		_nowPage += 1;
-        		if(_nowPage + 1 > _page)
-        		{
-        			_nowPage -= 1;
-        			showMessage("error", "Here is the last page!");
-        		}
-        		else
-        		{ 
-        			layeredPane.removeAll();
-        			
-        			page();
-        			if(_mod == 1)
-        			{	
-        				mod1();
-        			}
-        			else
-        			{
-        				mod2();
-        			}
-        			
-        			repaint();
-        		}	 
-        	}
-        });	
-       
-	}
-	
-	
-	private void button()
-	{
-		Button = new JButton[_name.length];
-		int number = 7;
-		for(int i = 1; i < _name.length + 1; i++)
-		{
-			if(i > 6)
-			{
-				if(number == i)
-				{
-					if((i % 18) == 1)
-					{
-						_x = 0;
-						_y = 0;
-						number += 6;
-					}
-					else
-					{
-						_x = 0;
-						_y += 120;
-						number += 6;
-					}
-				}
-				else
-				{
-					_x += 105;
-				}
-			}
-			else
-			{
-				if(i > 1)
-				{
-					_x += 105;
-				}
-			}
 
-			Button[i-1] = new JButton(_name[i-1],new ImageIcon("gui/logo_mini.png"));		
-			_Buttonlist.add(Button[i-1]);
-			Button[i-1].setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-			Button[i-1].setBounds((10+_x),(70+_y),92,120);
-			Button[i-1].setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
-			Button[i-1].setVerticalAlignment    ( SwingConstants.TOP ) ;
-			Button[i-1].setHorizontalTextPosition( SwingConstants.CENTER ) ;
-			Button[i-1].setBorderPainted(false);
-			Button[i-1].setFocusPainted(false);
-			Button[i-1].setContentAreaFilled(false);
-			Button[i-1].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e)
-				{	
-					_passCheck = true;
-					int index = findIndex(e.getActionCommand());
-					
-					if((count[index]%2)==0)
-					{
-						Button[index].setIcon(new ImageIcon("gui/logo_mini.png"));
-						count[index]++;
-					}
-					else
-					{
-						Button[index].setIcon(new ImageIcon("img/logo_mini_folder.png"));
-						count[index]++;
-					}
-					
-					System.out.println(count);
-					if(!_directoryArray.isEmpty())
-					{
-						for(int j = 0; j < _directoryArray.size(); j++)
-						{
-							if(_fileList.get(index).equals(_directoryArray.get(j)))
-							{
-								_directoryArray.remove(j);
-								_nameArray.remove(j);
-								_passCheck = false;
-								break;
-							}
-						}
-						if(_passCheck)
-						{
-							_directoryArray.add(_fileList.get(index));
-							_nameArray.add(e.getActionCommand());
-						}
-					}
-					else
-					{
-						_directoryArray.add(_fileList.get(index));
-						_nameArray.add(e.getActionCommand());
-					}
-					Button[index].setBackground(Color.BLACK);
-					
-					for(int k = 0 ; k < _directoryArray.size(); k++)
-					{
-						System.out.println(_directoryArray.get(k));
-					}
-					System.out.println("----------------------");
-				}
-			});
-			layeredPane.add(Button[i-1]);
-		}
-		
-        
+					 page();
+					 setMod();
+					 repaint();
+				 }
+			 }
+		 });
+		 
+		_Right = new JButton(new ImageIcon("img/RIGHT.png"));
+		_Right.setRolloverIcon(new ImageIcon("img/RIGHTR.png"));
+		_Right.setBounds(500, 390, 80, 40);
+		_Right.setFocusPainted(false);
+		_Right.setContentAreaFilled(false);
+		_Right.setBorderPainted(false);
+		_Right.addActionListener(new ActionListener() 
+		{     
+			 public void actionPerformed(ActionEvent arg0)
+			 {	
+				 _nowPage += 1;
+				 if(_nowPage + 1 > _page)
+				 {
+					 _nowPage -= 1;
+					 showMessage("error", "Here is the last page!");
+				 }
+				 else
+				 { 
+					 layeredPane.removeAll();
+			         		
+					 page();
+					 setMod();
+					 repaint();
+				 } 
+			 }
+		 });
+ 
 	}
+	
 	private void showMessage(String title, String message) 
 	{
 		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	private int findIndex(String text)
-	{
-		int temp = 0;
-		
-		for(int i = 0; i < _name.length; i++)
-		{
-			if(_name[i].equals(text))
-			{
-				temp = i;
-			}
-		}
-		
-		return temp;
-	}
 }
