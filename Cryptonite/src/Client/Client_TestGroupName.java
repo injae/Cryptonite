@@ -108,7 +108,12 @@ public class Client_TestGroupName extends JFrame{
         		test[1] = "b";
         		test[2] = "c";
         		String temp = Name;
-        		new Client_Make_Group().make(test, temp);
+        		boolean usegps = true; 
+        		double lat =32.001;
+        		double lng =127.1231;
+        		double radius =100;
+        		
+        		new Client_Make_Group().make(test, temp,usegps,lat,lng,radius);
         		byte[] event = new Client_Receive_Event().getEvent();
         		byte[] buffer = new byte[1021]; 
         		for(int i = 0; i < buffer.length; i++)

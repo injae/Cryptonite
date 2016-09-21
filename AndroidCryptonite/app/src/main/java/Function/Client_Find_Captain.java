@@ -66,12 +66,13 @@ public class Client_Find_Captain extends AsyncTask<String,String,Void> implement
                 break;
             default:
                 StringTokenizer st = new StringTokenizer(values[0],":");
-                st.nextToken();
+                boolean Captain = st.nextToken().equals("CAPTAIN");
                 String gpCode= st.nextToken();
 
 
                 Intent intent = new Intent(_context, GroupMainActivity.class);
                 intent.putExtra("title",_gpname);
+                intent.putExtra("captain",Captain);
                 intent.putExtra("gpCode",gpCode);
                 _context.startActivity(intent);
             case "2":
