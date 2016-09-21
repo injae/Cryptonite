@@ -197,12 +197,12 @@ public class Client_Invitation extends JFrame{
 					if(_choice.equals("TRUE"))
 					{
 						_cfl.running((byte)1, _gpCode);
-						new Client_Group_Main(_id, _gpCode, _selectedGroup, 1, _cfl);
+						new Client_Group_Main_Test(_id, _gpCode, _selectedGroup, true, _cfl.getFileList());
 					}
 					else
 					{
 						_cfl.running((byte)1, _gpCode);
-						new Client_Group_Main(_id, _gpCode, _selectedGroup, 2, _cfl);
+						new Client_Group_Main_Test(_id, _gpCode, _selectedGroup, false, _cfl.getFileList());
 					}
 				}
 			}

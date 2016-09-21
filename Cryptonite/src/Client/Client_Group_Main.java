@@ -78,7 +78,7 @@ public class Client_Group_Main extends JFrame{
 	private JScrollPane scrollPane = null;
 	private Container container;
 	private JLayeredPane layeredPane = new JLayeredPane();
-	private  MyPanel panel = new MyPanel();
+	private MyPanel panel = new MyPanel();
 	
 	private int _count = 1;
 	
@@ -478,8 +478,6 @@ public class Client_Group_Main extends JFrame{
          	}
          });
 
-        
-        
         Withdrawal = new JButton(new ImageIcon("img/WITHDRAWAL.png"));
         Withdrawal.setRolloverIcon(new ImageIcon("img/WITHDRAWALR.png"));
         Withdrawal.setBounds(685, 388, 80, 40);
@@ -703,6 +701,4 @@ public class Client_Group_Main extends JFrame{
 		
 		return temp;
 	}
-
-
 }
