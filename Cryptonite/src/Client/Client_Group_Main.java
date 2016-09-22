@@ -95,6 +95,7 @@ public class Client_Group_Main extends JFrame
 			if(isClick)  { isClick = false; }
 			else 		 { isClick = true;  }
 		}
+		public String noExtensionName() { return fileName.substring(0, fileName.length() - 5); }
 		
 		public boolean isDir;
 		public JButton button;
@@ -106,7 +107,7 @@ public class Client_Group_Main extends JFrame
 	private String _downloadPath;
 	private Stack<ArrayList<RecoveryButton>> _undo;
 	
-	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
+	private Font fontbt = new Font("SansSerif", Font.BOLD,10);
 	private Font precondition_font = new Font ("Dialog", Font.BOLD,20);
 
 	private boolean _mod;
@@ -293,7 +294,9 @@ public class Client_Group_Main extends JFrame
 	private void makeFolder(int index, int x, int y) 
 	{
 		if(_btnList.get(index).button!=null){return;}
-		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("img/folder.png"));
+		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/_folder.png"));
+		btn.setFont(fontbt);
+		btn.setToolTipText(_btnList.get(index).fileName);
 		btn.setPressedIcon(new ImageIcon("img/folderR.png"));
 		btn.setBounds((10+x),(70+y),92,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -337,7 +340,9 @@ public class Client_Group_Main extends JFrame
 	private void makeFile(int index, int x, int y) 
 	{
 		if(_btnList.get(index).button!=null) {return;}
-		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/logo_mini.png"));
+		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file.png"));
+		btn.setFont(fontbt);
+		btn.setToolTipText(_btnList.get(index).noExtensionName());
 		btn.setPressedIcon(new ImageIcon("gui/logo_mini.png"));
 		btn.setBounds((10+x),(70+y),92,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -359,11 +364,11 @@ public class Client_Group_Main extends JFrame
 
 				if(!_btnList.get(index).isClick)
 				{	
-					_btnList.get(index).button.setIcon(new ImageIcon("gui/logo_mini.png"));
+					_btnList.get(index).button.setIcon(new ImageIcon("gui/file.png"));
 				}
 				else
 				{
-					_btnList.get(index).button.setIcon(new ImageIcon("img/logo_mini_click.png"));
+					_btnList.get(index).button.setIcon(new ImageIcon("gui/file_check.png"));
 				}
 			}
 		});
