@@ -50,13 +50,13 @@ public class Client_FileRecovery extends JFrame
             g.drawImage(_img, 0, 0, null);
             g.setColor(Color.BLACK);
 			g.setFont(_precondition_font);
-			g.drawString((_nowPage + 1) + "/" + _page, 705, 390);
+			g.drawString((_nowPage + 1) + "/" + _page, 307, 406);
         }
    }
 	private MyPanel panel = new MyPanel();
 
 	private Font fontbt = new Font("SansSerif", Font.BOLD,10);
-	private Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
+	private Font _precondition_font = new Font ("Dialog", Font.BOLD,15);
 	
 	
 	public class RecoveryButton
@@ -121,18 +121,18 @@ public class Client_FileRecovery extends JFrame
 		container=getContentPane();
 		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
-		setBounds(0,0,816,480);
+		setBounds(0,0,656,480);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
 		container.setLayout(null);
 		
-        layeredPane.setBounds(0, 0, 816, 480);
+        layeredPane.setBounds(0, 0, 656, 480);
         layeredPane.setLayout(null);
         
         try 
         {
-            _img = ImageIO.read(new File("img/File Recovery_BG.png"));
+            _img = ImageIO.read(new File("gui/File Recovery_BG.png"));
         }
         catch (IOException e)
         {
@@ -140,7 +140,7 @@ public class Client_FileRecovery extends JFrame
             System.exit(0);
         }
         
-        panel.setBounds(0, 0, 816, 480);
+        panel.setBounds(0, 0, 656, 480);
 		
         allocator();
 		makeBtn();
@@ -203,7 +203,7 @@ public class Client_FileRecovery extends JFrame
 		btn.setFont(fontbt);
 		btn.setToolTipText(_btnList.get(index).noExtensionName());
 		btn.setPressedIcon(new ImageIcon("gui/file.png"));
-		btn.setBounds((5+x),(80+y),80,120);
+		btn.setBounds((7+x),(80+y),80,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
 		btn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -241,7 +241,7 @@ public class Client_FileRecovery extends JFrame
 		btn.setPressedIcon(new ImageIcon("gui/_folderR.png"));
 		btn.setToolTipText(_btnList.get(index).fileName);
 		btn.setFont(fontbt);
-		btn.setBounds((5+x),(80+y),75,110);
+		btn.setBounds((7+x),(80+y),75,110);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
 		btn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -287,7 +287,7 @@ public class Client_FileRecovery extends JFrame
 		layeredPane.add(_Left);
 		layeredPane.add(_Right);
 		layeredPane.add(_Download);
-        layeredPane.add(_Select);
+       // layeredPane.add(_Select);
         layeredPane.add(_Back);
         layeredPane.add(panel);
         container.add(layeredPane);
@@ -316,7 +316,7 @@ public class Client_FileRecovery extends JFrame
 	{
 		 _Select = new JButton(new ImageIcon("img/select.png"));
 		 _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
-		 _Select.setBounds(680, 120, 80, 40);
+		 _Select.setBounds(400, 10, 80, 40);
 		 _Select.setFocusPainted(false);
 		 _Select.setContentAreaFilled(false);
 		 _Select.setBorderPainted(false);
@@ -341,9 +341,9 @@ public class Client_FileRecovery extends JFrame
 			 }
 		 });
 
-		 _Download = new JButton(new ImageIcon("img/DOWNLOAD.png"));	
-		 _Download.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
-		 _Download.setBounds(680, 250, 80,45);
+		 _Download = new JButton(new ImageIcon("gui/download_icon.png"));	
+		 _Download.setRolloverIcon(new ImageIcon("gui/download_iconR.png"));
+		 _Download.setBounds(490, 10, 70,70);
 		 _Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 		 _Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
 		 _Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
@@ -365,9 +365,9 @@ public class Client_FileRecovery extends JFrame
 		 });	
 				
 		 
-		 _Left = new JButton(new ImageIcon("img/LEFT.png"));
-		 _Left.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
-		 _Left.setBounds(635, 362, 80, 40);
+		 _Left = new JButton(new ImageIcon("gui/Left.png"));
+		 _Left.setRolloverIcon(new ImageIcon("gui/LeftR.png"));
+		 _Left.setBounds(250, 380, 80, 40);
 		 _Left.setFocusPainted(false);
 		 _Left.setContentAreaFilled(false);
 		 _Left.setBorderPainted(false);
@@ -392,9 +392,9 @@ public class Client_FileRecovery extends JFrame
 			 }
 		 });
 		 
-		 _Right = new JButton(new ImageIcon("img/RIGHT.png"));
-		 _Right.setRolloverIcon(new ImageIcon("img/RIGHTR.png"));
-		 _Right.setBounds(724, 362, 80, 40);
+		 _Right = new JButton(new ImageIcon("gui/Right.png"));
+		 _Right.setRolloverIcon(new ImageIcon("gui/RightR.png"));
+		 _Right.setBounds(305, 380, 80, 40);
 		 _Right.setFocusPainted(false);
 		 _Right.setContentAreaFilled(false);
 		 _Right.setBorderPainted(false);
@@ -418,10 +418,10 @@ public class Client_FileRecovery extends JFrame
 				 } 
 			 }
 		 });
-	
-		 _Back = new JButton(new ImageIcon("img/LEFT.png"));
-		 _Back.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
-		 _Back.setBounds(700, 10, 80, 40);
+
+		 _Back = new JButton(new ImageIcon("gui/back_icon.png"));
+		 _Back.setRolloverIcon(new ImageIcon("gui/back_iconR.png"));
+		 _Back.setBounds(550, 10, 80, 40);
 		 _Back.setFocusPainted(false);
 		 _Back.setContentAreaFilled(false);
 		 _Back.setBorderPainted(false);
