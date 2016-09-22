@@ -24,23 +24,23 @@ public class Server_PacketProcessor extends SecurePacketProcessor {
 		_buffer.flip();
 		while(_buffer.hasRemaining())
 		{
-			Server_Administrator.getInstance().updatePacketSize(_output.write(_buffer));
+			Server_Administrator.getInstance().packetSizeUpdate(_output.write(_buffer));
 		}
 	}
 	@Override
 	public PacketProcessor read() throws IOException 
 	{
 		allocate(LIMIT_SIZE);
-		Server_Administrator.getInstance().updatePacketSize(_input.read(_buffer));
+		Server_Administrator.getInstance().packetSizeUpdate(_input.read(_buffer));
 		while(_buffer.hasRemaining())
 		{
-			Server_Administrator.getInstance().updatePacketSize(_input.read(_buffer));
+			Server_Administrator.getInstance().packetSizeUpdate(_input.read(_buffer));
 			if(_buffer.remaining() == _buffer.limit())
 			{
 				System.out.println("This packet is wrong packet"); break;
 			}
 		}
-		Server_Administrator.getInstance().inoutUpdate("read : " + _buffer);	//socket test line
+		Server_Administrator.getInstance().inoutUpdate("read  : " + _buffer);	//socket test line
 		_buffer.flip();
 		
 		byte[] array = new byte[_buffer.remaining()];
