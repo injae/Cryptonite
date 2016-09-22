@@ -117,13 +117,13 @@ public class Client_Main_UI extends JFrame
 		setTitle("Cryptonite");
 		addWindowListener(exitLitsener);
 		setResizable(false);
-		setBounds(0,0,1100,700);
+		setBounds(0, 0, 645, 480);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
 		container.setLayout(null);
 		
-        layeredPane.setBounds(0, 0, 1100, 700);
+        layeredPane.setBounds(0, 0, 645, 480);
         layeredPane.setLayout(null);
         
         try 
@@ -135,7 +135,7 @@ public class Client_Main_UI extends JFrame
             System.out.println("Image Load Failed.");
             System.exit(0);
         }
-        panel.setBounds(0, 0, 1100, 700);
+        panel.setBounds(0, 0, 645, 480);
        
         allocator();
         setFirst();
@@ -162,7 +162,7 @@ public class Client_Main_UI extends JFrame
         
         ProtectedFolderOpenbt = new JButton(new ImageIcon("img/protectedFolderOpen.png"));
         ProtectedFolderOpenbt.setRolloverIcon(new ImageIcon("img/protectedFolderOpenR.png"));
-        ProtectedFolderOpenbt.setBounds(950, 85, 30, 30);
+        ProtectedFolderOpenbt.setBounds(560, 45, 30, 30);
         ProtectedFolderOpenbt.setFocusPainted(false);
         ProtectedFolderOpenbt.setContentAreaFilled(false);
         ProtectedFolderOpenbt.setBorderPainted(false);
@@ -191,7 +191,7 @@ public class Client_Main_UI extends JFrame
         
         Developersbt = new JButton(new ImageIcon("img/Developers.png"));
         Developersbt.setRolloverIcon(new ImageIcon("img/DevelopersR.png"));
-        Developersbt.setBounds(900, 85, 30, 30);
+        Developersbt.setBounds(510, 45, 30, 30);
         Developersbt.setFocusPainted(false);
         Developersbt.setContentAreaFilled(false);
         Developersbt.setBorderPainted(false);
@@ -209,7 +209,7 @@ public class Client_Main_UI extends JFrame
         
         Sendbt = new JButton(new ImageIcon("img/FileSend.png"));		
         Sendbt.setRolloverIcon(new ImageIcon("img/FileSendR.png"));
-        Sendbt.setBounds(119, 133, 242, 242);
+        Sendbt.setBounds(50, 88, 160, 160);
         Sendbt.setBorderPainted(false);
         Sendbt.setFocusPainted(false);
         Sendbt.setContentAreaFilled(false);
@@ -223,7 +223,7 @@ public class Client_Main_UI extends JFrame
         
         Receivebt = new JButton(new ImageIcon("img/FileReceive.png"));
         Receivebt.setRolloverIcon(new ImageIcon("img/FileReceiveR.png"));
-        Receivebt.setBounds(385, 133, 242, 242);
+        Receivebt.setBounds(222, 88, 160, 160);
         Receivebt.setFocusPainted(false);
         Receivebt.setContentAreaFilled(false);
         Receivebt.setBorderPainted(false);
@@ -237,7 +237,7 @@ public class Client_Main_UI extends JFrame
         
         ProtectedFolderbt = new JButton(new ImageIcon("img/ProtectedFolder.png"));
         ProtectedFolderbt.setRolloverIcon(new ImageIcon("img/ProtectedFolderR.png"));
-        ProtectedFolderbt.setBounds(119, 404, 242, 242);
+        ProtectedFolderbt.setBounds(50, 260, 160, 160);
         ProtectedFolderbt.setFocusPainted(false);
         ProtectedFolderbt.setContentAreaFilled(false);
         ProtectedFolderbt.setBorderPainted(false);
@@ -283,7 +283,7 @@ public class Client_Main_UI extends JFrame
         
         FileRecoverybt = new JButton(new ImageIcon("img/FileRecovery.png"));
         FileRecoverybt.setRolloverIcon(new ImageIcon("img/FileRecoveryR.png"));
-        FileRecoverybt.setBounds(385, 403, 242, 242);
+        FileRecoverybt.setBounds(222, 260, 160, 160);
         FileRecoverybt.setFocusPainted(false);
         FileRecoverybt.setBorderPainted(false);
         FileRecoverybt.setContentAreaFilled(false);
@@ -306,7 +306,7 @@ public class Client_Main_UI extends JFrame
 		
 		Create = new JButton(new ImageIcon("img/CreateGroup.png"));
  		Create.setRolloverIcon(new ImageIcon("img/CreateGroupR.png"));
- 		Create.setBounds(740, 133, 242, 242);
+ 		Create.setBounds(428, 88, 160, 160);
  		Create.setBorderPainted(false);
  		Create.setFocusPainted(false);
  		Create.setContentAreaFilled(false);
@@ -320,7 +320,7 @@ public class Client_Main_UI extends JFrame
  		
  	    Participate = new JButton(new ImageIcon("img/Participate.png"));
  	    Participate.setRolloverIcon(new ImageIcon("img/ParticipateR.png"));
- 	    Participate.setBounds(740, 403, 242, 242);
+ 	    Participate.setBounds(428, 260, 160, 160);
  	    Participate.setBorderPainted(false);
  	    Participate.setFocusPainted(false);
  	    Participate.setContentAreaFilled(false);
