@@ -40,9 +40,6 @@ public class Server_SetGPS extends Server_Funtion implements PacketRule {
 			
 			Server_Administrator.getInstance().userUpdate("GPS : user - "+_activity.getClientCode() + " lat : "+ lat + " lng : " + lng + "  Updated!");
 		}
-		
-		
-		
 	}
 	
 }

@@ -12,7 +12,7 @@ public class Server_File_Download extends Server_Funtion
 {
 	private long _fileSize;
 	private PacketProcessor _ps;
-	
+	RandomAccessFile raf;
 	public Server_File_Download(Server_Client_Activity activity) {
 		super(activity);
 	}
@@ -39,26 +39,30 @@ public class Server_File_Download extends Server_Funtion
 			_fileSize = file.length();
 			
 			_activity.send.setPacket(String.valueOf(_fileSize).getBytes(),500).write();
-			RandomAccessFile raf = new RandomAccessFile(file, "rw");
+			raf = new RandomAccessFile(file, "rw");
 			_ps = new PacketProcessor(raf.getChannel(), false);
 			_ps.setAllocate(_fileSize);
-			new File_Send().start();
-		}
-	}
-	
-	class File_Send extends Thread
-	{
-		public void run()
-		{
-			while(!_ps.isAllocatorEmpty())
-			{
-				try {
+
+			Server_Thread_Manager.getInstance().register(new Server_Funtion_Thread(_activity) 
+			{		
+				@Override
+				public void loop() throws Exception 
+				{
 					_activity.send.setPacket(_ps.read().getByte()).write();
-				} catch (IOException e) {
-					e.printStackTrace();
 				}
-			}
-			_ps.close();
+				
+				@Override
+				public void delete() 
+				{
+					_ps.close();
+				}
+				
+				@Override
+				public boolean breakPoint() 
+				{
+					return !_ps.isAllocatorEmpty();
+				}
+			});
 		}
 	}
 }

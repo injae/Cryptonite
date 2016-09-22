@@ -25,9 +25,8 @@ public class SecurePacketProcessor extends PacketProcessor {
 	}
 	
 	@Override
-	public PacketProcessor setAllocate(long size) {
-		// TODO Auto-generated method stub
-		
+	public PacketProcessor setAllocate(long size) 
+	{
 		return super.setAllocate(size);
 	}
 

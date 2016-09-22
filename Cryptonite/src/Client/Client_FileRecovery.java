@@ -353,7 +353,7 @@ public class Client_FileRecovery extends JFrame
 				 {
 					 if(_btnList.get(i).isClick)
 					 {
-						 new Client_File_Download().requestFile(_btnList.get(i).fileName, _downloadPath + "\\" + _btnList.get(i).fileName, KeyReposit.getInstance().get_aesKey());
+						 new Client_File_Download().requestFile(_btnList.get(i).fullPath, _downloadPath + "\\" + _btnList.get(i).fileName, KeyReposit.getInstance().get_aesKey());
 					 }
 				 }
 			 }
