@@ -40,6 +40,7 @@ public class Server_Client_Manager implements PacketRule
 		_clientList.get(usCode).setClientCode(usCode);
 		_code_manager.removeCode(acCode);
 		 Server_Administrator.getInstance().userUpdate("Login : "+ usCode);
+		 Server_Administrator.getInstance().addAcus();
 	}
 	
 	public void logOut(String usCode)
