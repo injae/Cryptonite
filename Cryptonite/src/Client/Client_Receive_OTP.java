@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -63,7 +64,7 @@ public class Client_Receive_OTP extends JFrame{
 		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
-		setBounds(500,300,460,550);
+		setBounds(500,300,448,530);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -164,15 +165,17 @@ public class Client_Receive_OTP extends JFrame{
         
         
 	}
-	public static boolean send_flag(){
+	public static boolean send_flag()
+	{
 		return _flag;
 	}
 	
-	class MyPanel extends JPanel {
-        public void paint(Graphics g) {
+	class MyPanel extends JPanel 
+	{
+        public void paint(Graphics g) 
+        {
             g.drawImage(img, 0, 0, null);
        }
-   }
-	
+	}
 }
 
