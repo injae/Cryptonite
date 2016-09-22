@@ -1,6 +1,7 @@
 package Server;
 
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
@@ -17,17 +18,19 @@ public class Server_Administrator extends Thread
 	private Logger errorInfo;
 	private Logger inoutInfo;
 	
+	private String id;
+	
 	private Server_Administrator() 
 	{
 		timer = new Timer();
-		userInfo = new Logger();
-		errorInfo = new Logger();
-		inoutInfo = new Logger();
+		userInfo = new Logger("User Log");
+		errorInfo = new Logger("Error Log");
+		inoutInfo = new Logger("Input Output Log");
 		
 		Scanner input = new Scanner(System.in);
 		
 		System.out.println("<DataBase Login>");
-		System.out.print("id : "); String id  	 = input.nextLine();
+		System.out.print("id : ");       id = input.nextLine();
 		System.out.print("password : "); String password = input.nextLine();
 		
 		Server_DataBase db=Server_DataBase.getInstance();
@@ -57,25 +60,40 @@ public class Server_Administrator extends Thread
 		
 		while(true)
 		{
-			System.out.print(">");
-			String command = input.nextLine();
+			System.out.print("["+ id +"]"+" >");
+			StringTokenizer command = new StringTokenizer(input.nextLine(), " ");
 			
-			switch(command)
+			switch(command.nextToken())
 			{
 			case "help":
-				System.out.println("<command>");
-				System.out.println("  <command> :  <explain>");
-				System.out.println("*   size    : size of all packet");
-				System.out.println("*   user    : how many user count");
-				System.out.println("*   time    : server running time");
-				System.out.println("*   stop    : server stop");
-				System.out.println("*   log -u  : users login logout log");
-				System.out.println("*   log -e  : error  log");
-				System.out.println("*   log -p  : packet input outpur log");
+				if(command.hasMoreTokens())
+				{
+					String query = command.nextToken();
+					
+					switch(query)
+					{
+					case "-log":
+						System.out.println("* -u         : User log");
+						System.out.println("* -e         : Error log");
+						System.out.println("* -p         : input output log");
+						System.out.println("* -w  <path> : make log file -> path");
+						System.out.println("* -b         : print log dos ps. this is default print");
+						break;
+					}
+				}
+				else
+				{
+					System.out.println("  <command> :  <explain>");
+					System.out.println("*   size    : size of all packet");
+					System.out.println("*   user    : how many user count");
+					System.out.println("*   time    : server running time");
+					System.out.println("*   stop    : server stop");
+					System.out.println("*   log     : print log, more info command > help -log ");
+				}
 				break;
 				
 			case "size":
-				System.out.println("All Packet Size: "+allpacketlength);	 break;
+				System.out.println("All Packet Size: "+allpacketlength +" byte");	 break;
 				
 			case "user":
 				System.out.println("How many user: " +Server_Client_Manager.getInstance().HowManyClient());	 break;
@@ -91,35 +109,33 @@ public class Server_Administrator extends Thread
 				
 				System.out.println("Running Time: "+hour+"h." +min + "m." + sec +"s"); break;
 				
-			case "log -u":
-				
-				System.out.println("=============================");
-				System.out.println("**           Log           **");
-				for(int i =0; i < userInfo.size(); i++)
+			case "log":
+				Logger log = null;
+				while(command.hasMoreTokens())
 				{
-					System.out.println(userInfo.getLog(i));
+					String query = command.nextToken();
+					switch(query)
+					{
+					case "-u":
+					case "-p":
+					case "-e":
+						if(log != null) 			 { log.printLogtoDos(); }
+						
+						log = selectLog(query); 
+						
+						if(!command.hasMoreTokens()) { log.printLogtoDos(); }
+						break;
+					case "-w":
+						if(log == null || !command.hasMoreTokens()) break;						
+						query = command.nextToken();
+						log.printLogTextFile(query);
+						break;
+						
+					case "-d":
+						if(log == null) break;		
+						log.printLogtoDos();
+					}
 				}
-				System.out.println("=============================");
-				break;
-				
-			case "log -e":
-				System.out.println("=============================");
-				System.out.println("**           Log           **");
-				for(int i =0; i < errorInfo.size(); i++)
-				{
-					System.out.println(errorInfo.getLog(i));
-				}
-				System.out.println("=============================");
-				break;
-				
-			case "log -p":
-				System.out.println("=============================");
-				System.out.println("**           Log           **");
-				for(int i =0; i < inoutInfo.size(); i++)
-				{
-					System.out.println(inoutInfo.getLog(i));
-				}
-				System.out.println("=============================");
 				break;
 				
 			case "stop":
@@ -128,20 +144,26 @@ public class Server_Administrator extends Thread
 		}
 	}
 	
-	public void inoutUpdate(String str)
+	private Logger selectLog(String command)
 	{
-		inoutInfo.update(str);
+		switch(command)
+		{
+		case "-u":
+			return userInfo;
+		case "-e":
+			return errorInfo;
+		case "-p":
+			return inoutInfo;
+		default:
+			return new Logger("");
+		}
 	}
 	
-	public void errorUpdate(String str)
-	{
-		errorInfo.update(str);
-	}
+	public void inoutUpdate(String str) { inoutInfo.update(str); }
 	
-	public void userUpdate(String str)
-	{
-		userInfo.update(str);
-	}
+	public void errorUpdate(String str) { errorInfo.update(str); }
+	
+	public void userUpdate(String str)  { userInfo.update(str); }
 	
 	public boolean YorN()
 	{
@@ -164,7 +186,7 @@ public class Server_Administrator extends Thread
 		} 
 	}
 	
-	public void updatePacketSize(int size)
+	public void packetSizeUpdate(int size)
 	{
 		allpacketlength+= size;
 	}
