@@ -48,10 +48,11 @@ public class Client_Group_Main extends JFrame
 	private BufferedImage _img = null;
 	private BufferedImage _img2 = null;
 	
-	private final int MAX_BTN = 15;
+	private final int MAX_BTN = 18;
 	private final int COLUMN = 3;
-	private final int ROW = 5;
+	private final int ROW = 6;
 	
+	private JButton _Back;
 	private JButton _Select;
 	private JButton _Download;
 	private JButton _Right;
@@ -122,7 +123,7 @@ public class Client_Group_Main extends JFrame
         		g.setFont(precondition_font);
         		g.drawString("Group Name : " + _gpName, 230, 35);
       			g.setFont(precondition_font);
-      			g.drawString((_nowPage + 1) + "/" + _page, 476, 417);
+      			g.drawString((_nowPage + 1) + "/" + _page, 300, 428);
         	}
         	else
         	{
@@ -131,7 +132,7 @@ public class Client_Group_Main extends JFrame
         		g.setFont(fontbt);
         		g.drawString("Group Name : " + _gpName, 230, 35);
         		g.setFont(precondition_font);
-      			g.drawString((_nowPage + 1) + "/" + _page, 476, 417);
+      			g.drawString((_nowPage + 1) + "/" + _page, 476, 428);
         	}
         }
    }
@@ -185,7 +186,7 @@ public class Client_Group_Main extends JFrame
         
         try 
         {
-        	_img = ImageIO.read(new File("img/초대목록화면re.png"));
+        	_img = ImageIO.read(new File("gui/초대목록화면re.png"));
             _img2 = ImageIO.read(new File("img/초대목록화면re2.png"));
         }
         catch (IOException e)
@@ -206,11 +207,12 @@ public class Client_Group_Main extends JFrame
 	private void setMod()
 	{
 		 layeredPane.add(_Upload);
-		 layeredPane.add(_Select);
+		// layeredPane.add(_Select);
 		 layeredPane.add(_Download);
 		 layeredPane.add(_Left);
 		 layeredPane.add(_Right);
 	     layeredPane.add(_Delete);
+	     layeredPane.add(_Back);
 	     
 		if(_mod)
 		{
@@ -280,9 +282,9 @@ public class Client_Group_Main extends JFrame
 							makeFile(k * MAX_BTN + (j * ROW) + i, x, y);
 						}
 						if(_btnList.size() - 1 <= (k * MAX_BTN + (j * ROW) + i)) { return; }
-						x += 120;
+						x += 100;
 					}
-					y += 120;
+					y += 100;
 				}
 			}
 		}
@@ -297,8 +299,8 @@ public class Client_Group_Main extends JFrame
 		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/_folder.png"));
 		btn.setFont(fontbt);
 		btn.setToolTipText(_btnList.get(index).fileName);
-		btn.setPressedIcon(new ImageIcon("img/folderR.png"));
-		btn.setBounds((10+x),(70+y),92,120);
+		btn.setPressedIcon(new ImageIcon("gui/_folder.png"));
+		btn.setBounds((6+x),(75+y),92,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
 		btn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -314,7 +316,7 @@ public class Client_Group_Main extends JFrame
 					if(_btnList.get(i).isClick)
 					{
 						_btnList.get(i).isClick=false;
-						_btnList.get(i).button.setIcon(new ImageIcon("gui/logo_mini.png"));
+						_btnList.get(i).button.setIcon(new ImageIcon("gui/file.png"));
 					}
 				}
 				_undo.push(_btnList);
@@ -343,8 +345,8 @@ public class Client_Group_Main extends JFrame
 		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file.png"));
 		btn.setFont(fontbt);
 		btn.setToolTipText(_btnList.get(index).noExtensionName());
-		btn.setPressedIcon(new ImageIcon("gui/logo_mini.png"));
-		btn.setBounds((10+x),(70+y),92,120);
+		btn.setPressedIcon(new ImageIcon("gui/file.png"));
+		btn.setBounds((6+x),(75+y),92,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
 		btn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -377,9 +379,9 @@ public class Client_Group_Main extends JFrame
 
 	private void allocator() 
 	{
-		_Upload = new JButton(new ImageIcon("img/upload.png"));
-        _Upload.setRolloverIcon(new ImageIcon("img/uploadR.png"));
-        _Upload.setBounds(700, 8, 80, 45);
+		_Upload = new JButton(new ImageIcon("gui/upload.png"));
+        _Upload.setRolloverIcon(new ImageIcon("gui/uploadR.png"));
+        _Upload.setBounds(650, 9, 80, 45);
         _Upload.setFocusPainted(false);
         _Upload.setContentAreaFilled(false);
         _Upload.setBorderPainted(false);
@@ -389,6 +391,13 @@ public class Client_Group_Main extends JFrame
         		Client_File_Upload _cfu = new Client_File_Upload();
         		_cfu.setGpCode(_gpCode);
         		_cfu.start();
+
+        		//pageCount();
+        		//layeredPane.removeAll();
+				//makeBtn();
+				//page();
+				//setMod();
+				//layeredPane.repaint();
         	}
         });
        
@@ -420,9 +429,9 @@ public class Client_Group_Main extends JFrame
          	}
          });
         
-        _Download = new JButton(new ImageIcon("img/DOWNLOAD.png"));	
-		_Download.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
-		_Download.setBounds(50, 387, 80,40);
+        _Download = new JButton(new ImageIcon("gui/download.png"));	
+		_Download.setRolloverIcon(new ImageIcon("gui/downloadR.png"));
+		_Download.setBounds(600, 8, 80, 45);
 		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
 		_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
@@ -442,8 +451,31 @@ public class Client_Group_Main extends JFrame
 			 }
 	   });
 		
+
+		 _Back = new JButton(new ImageIcon("gui/back_icon.png"));
+		 _Back.setRolloverIcon(new ImageIcon("gui/back_iconR.png"));
+		 _Back.setBounds(740, 8, 60, 40);
+		 _Back.setFocusPainted(false);
+		 _Back.setContentAreaFilled(false);
+		 _Back.setBorderPainted(false);
+		 _Back.addActionListener(new ActionListener() 
+		 {     
+			 public void actionPerformed(ActionEvent arg0)
+			 {	
+				 if(_undo.isEmpty()) return;
+				_btnList=_undo.pop();
+				
+				layeredPane.removeAll();
+				makeBtn();
+				page();
+				setMod();
+				layeredPane.repaint();
+			 }
+		 });
+		 
+		
 		_idField = new JTextField(15);
-        _idField.setBounds(640, 115, 100, 31);
+        _idField.setBounds(653, 115, 85, 31);
         _idField.setOpaque(false);
         _idField.setForeground(Color.BLACK);
         _idField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -467,9 +499,9 @@ public class Client_Group_Main extends JFrame
     		}
     	});
     	
-    	_Search = new JButton(new ImageIcon("img/Search.png"));
-        _Search.setRolloverIcon(new ImageIcon("img/Searchh.png"));
-        _Search.setBounds(749, 107, 50, 50);
+    	_Search = new JButton(new ImageIcon("gui/search.png"));
+        _Search.setPressedIcon(new ImageIcon("gui/searchR.png"));
+        _Search.setBounds(755, 113, 35, 35);
         _Search.setFocusPainted(false);
         _Search.setContentAreaFilled(false);
         _Search.setBorderPainted(false);
@@ -511,8 +543,8 @@ public class Client_Group_Main extends JFrame
           	}
           });
         
-        _OK = new JButton(new ImageIcon("img/OK.png"));
-        _OK.setRolloverIcon(new ImageIcon("img/OKR.png"));
+        _OK = new JButton(new ImageIcon("gui/check.png"));
+        _OK.setRolloverIcon(new ImageIcon("gui/checkR.png"));
         _OK.setBounds(747, 304, 45, 45);
         _OK.setFocusPainted(false);
         _OK.setContentAreaFilled(false);
@@ -533,8 +565,8 @@ public class Client_Group_Main extends JFrame
          	}
          });
         
-        _Withdrawal = new JButton(new ImageIcon("img/WITHDRAWAL.png"));
-        _Withdrawal.setRolloverIcon(new ImageIcon("img/WITHDRAWALR.png"));
+        _Withdrawal = new JButton(new ImageIcon("gui/delete_me.png"));
+        _Withdrawal.setRolloverIcon(new ImageIcon("gui/delete_meR.png"));
         _Withdrawal.setBounds(685, 388, 80, 40);
         _Withdrawal.setFocusPainted(false);
         _Withdrawal.setContentAreaFilled(false);
@@ -547,9 +579,9 @@ public class Client_Group_Main extends JFrame
          	}
          });
         
-        _Delete = new JButton(new ImageIcon("img/DELETE.png"));
-        _Delete.setPressedIcon(new ImageIcon("img/DELETER.png"));
-        _Delete.setBounds(680, 388, 80, 40);
+        _Delete = new JButton(new ImageIcon("gui/group_delete.png"));
+        _Delete.setRolloverIcon(new ImageIcon("gui/group_deleteR.png"));
+        _Delete.setBounds(670, 398, 80, 40);
         _Delete.setFocusPainted(false);
         _Delete.setContentAreaFilled(false);
         _Delete.setBorderPainted(false);
@@ -561,9 +593,9 @@ public class Client_Group_Main extends JFrame
          	}
          });
         
-        _Left = new JButton(new ImageIcon("img/LEFT.png"));
-		_Left.setRolloverIcon(new ImageIcon("img/LEFTR.png"));
-		_Left.setBounds(400, 390, 80, 40);
+        _Left = new JButton(new ImageIcon("gui/Left.png"));
+		_Left.setRolloverIcon(new ImageIcon("gui/LeftR.png"));
+		_Left.setBounds(244, 400, 80, 40);
 		_Left.setFocusPainted(false);
 		_Left.setContentAreaFilled(false);
 		_Left.setBorderPainted(false);
@@ -588,9 +620,9 @@ public class Client_Group_Main extends JFrame
 			 }
 		 });
 		 
-		_Right = new JButton(new ImageIcon("img/RIGHT.png"));
-		_Right.setRolloverIcon(new ImageIcon("img/RIGHTR.png"));
-		_Right.setBounds(500, 390, 80, 40);
+		_Right = new JButton(new ImageIcon("gui/Right.png"));
+		_Right.setRolloverIcon(new ImageIcon("gui/RightR.png"));
+		_Right.setBounds(304, 400, 80, 40);
 		_Right.setFocusPainted(false);
 		_Right.setContentAreaFilled(false);
 		_Right.setBorderPainted(false);

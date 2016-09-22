@@ -330,8 +330,8 @@ public class Client_FileRecovery extends JFrame
 	
 	private void allocator()
 	{
-		 _Download = new JButton(new ImageIcon("gui/download_icon.png"));	
-		 _Download.setRolloverIcon(new ImageIcon("gui/download_iconR.png"));
+		 _Download = new JButton(new ImageIcon("gui/download.png"));	
+		 _Download.setRolloverIcon(new ImageIcon("gui/downloadR.png"));
 		 _Download.setBounds(490, 10, 70,70);
 		 _Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 		 _Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
