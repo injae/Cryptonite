@@ -14,11 +14,15 @@ public class Server_Administrator extends Thread
 	private int allpacketlength = 0;
 	
 	private Logger userInfo;
+	private Logger errorInfo;
+	private Logger inoutInfo;
 	
 	private Server_Administrator() 
 	{
 		timer = new Timer();
 		userInfo = new Logger();
+		errorInfo = new Logger();
+		inoutInfo = new Logger();
 		
 		Scanner input = new Scanner(System.in);
 		
@@ -66,6 +70,8 @@ public class Server_Administrator extends Thread
 				System.out.println("*   time    : server running time");
 				System.out.println("*   stop    : server stop");
 				System.out.println("*   log -u  : users login logout log");
+				System.out.println("*   log -e  : error  log");
+				System.out.println("*   log -p  : packet input outpur log");
 				break;
 				
 			case "size":
@@ -96,10 +102,40 @@ public class Server_Administrator extends Thread
 				System.out.println("=============================");
 				break;
 				
+			case "log -e":
+				System.out.println("=============================");
+				System.out.println("**           Log           **");
+				for(int i =0; i < errorInfo.size(); i++)
+				{
+					System.out.println(errorInfo.getLog(i));
+				}
+				System.out.println("=============================");
+				break;
+				
+			case "log -p":
+				System.out.println("=============================");
+				System.out.println("**           Log           **");
+				for(int i =0; i < inoutInfo.size(); i++)
+				{
+					System.out.println(inoutInfo.getLog(i));
+				}
+				System.out.println("=============================");
+				break;
+				
 			case "stop":
 				if(YorN()){ System.exit(1); }
 			}
 		}
+	}
+	
+	public void inoutUpdate(String str)
+	{
+		inoutInfo.update(str);
+	}
+	
+	public void errorUpdate(String str)
+	{
+		errorInfo.update(str);
 	}
 	
 	public void userUpdate(String str)
@@ -128,8 +164,8 @@ public class Server_Administrator extends Thread
 		} 
 	}
 	
-	public void updatePacketSize()
+	public void updatePacketSize(int size)
 	{
-		allpacketlength++;
+		allpacketlength+= size;
 	}
 }

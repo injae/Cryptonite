@@ -43,7 +43,62 @@ public class Server_File_ListSender extends Server_Funtion
 		if(count == 1) 
 		{
 			Checker(_activity.getReceiveEvent());
-			new ListSender().start();
+			
+			Server_Thread_Manager.getInstance().register(new Server_Funtion_Thread(_activity)
+			{	
+				private int _fileCount = 0;
+				Charset cs = Charset.forName("UTF-8");
+				{
+					searchFolder();
+					try
+					{
+						readFolder(_folderName);
+						_fileCount = _fileList.size();
+					}
+					catch(NullPointerException e)
+					{
+						_fileCount = 0;
+					}
+					_activity.send.setPacket(String.valueOf(_fileCount).getBytes(), 100).write();
+				}
+				@Override
+				public boolean breakPoint() throws Exception 
+				{
+					return !_fileList.isEmpty() && _fileCount != 0;
+				}
+					
+				@Override
+				public void loop() throws Exception 
+				{
+					_activity.send.setPacket(cs.encode(_fileList.remove()).array(), 1024).write();
+				}
+				
+				@Override
+				public void delete() throws Exception {
+					// TODO 자동 생성된 메소드 스텁
+					
+				}
+				
+				private void readFolder(String path)
+				{
+					File _myFolder = new File(path);
+					
+					File[] fileList = _myFolder.listFiles();
+					
+					for(int i =0; i < fileList.length; i++)
+					{
+						if(fileList[i].isFile())
+						{
+							_fileList.add(fileList[i].getPath());
+						}
+						else if(fileList[i].isDirectory())
+						{
+							_fileList.add(fileList[i].getPath());
+							//readFolder(fileList[i].getPath());
+						}
+					}
+				}
+			});
 		}
 		else
 		{
@@ -63,59 +118,4 @@ public class Server_File_ListSender extends Server_Funtion
 			break;
 		}
 	}
-	
-	class ListSender extends Thread
-	{
-		private int _fileCount = 0;
-		
-		public void run()
-		{
-			Charset cs = Charset.forName("UTF-8");
-			searchFolder();
-			try
-			{
-				readFolder(_folderName);
-				_fileCount = _fileList.size();
-			}
-			catch(NullPointerException e)
-			{
-				_fileCount = 0;
-			}
-			
-			try 
-			{
-				_activity.send.setPacket(String.valueOf(_fileCount).getBytes(), 100).write();
-				while(!_fileList.isEmpty() && _fileCount != 0)
-				{
-					_activity.send.setPacket(cs.encode(_fileList.remove()).array(), 1024).write();
-				}
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
-		}
-	
-		private void readFolder(String path)
-		{
-			File _myFolder = new File(path);
-			
-			File[] fileList = _myFolder.listFiles();
-			
-			for(int i =0; i < fileList.length; i++)
-			{
-				if(fileList[i].isFile())
-				{
-					_fileList.add(fileList[i].getPath());
-				}
-				else if(fileList[i].isDirectory())
-				{
-					_fileList.add(fileList[i].getPath());
-					//readFolder(fileList[i].getPath());
-				}
-			}
-		}
-	}
-	
-	
 }

@@ -67,8 +67,8 @@ public class Server_Client_Activity implements PacketRule
 
             Server_Administrator.getInstance().userUpdate(_channel.toString() + "connect");
             
-            receive = new SecurePacketProcessor(_channel, true);
-            send = new SecurePacketProcessor(_channel, true); 
+            receive = new Server_PacketProcessor(_channel, true);
+            send = new Server_PacketProcessor(_channel, true); 
             
 		} 
 		catch (IOException e) 
@@ -85,6 +85,11 @@ public class Server_Client_Activity implements PacketRule
 	public int getPakcetCount()
 	{
 		return _packetCount;
+	}
+	
+	public void addPacketCount()
+	{
+		_packetCount++;
 	}
 	
 	public void Receiver() throws Exception 

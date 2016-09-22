@@ -50,6 +50,8 @@ public class Client_File_Download implements PacketRule
 			}
 			p.close();
 			
+			System.out.println("´Ù¹ÞÀ½");
+			
 		} catch (NumberFormatException e) 
 		{
 			e.printStackTrace();

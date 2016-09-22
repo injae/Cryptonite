@@ -5,6 +5,8 @@ import java.net.InetSocketAddress;
 import java.nio.channels.*;
 import java.util.*;
 
+import javax.swing.JComboBox.KeySelectionManager;
+
 import Function.Timer;
 
 /*
@@ -30,6 +32,7 @@ public class Server_Client_Accepter extends Thread
 	        
 			Server_Administrator.getInstance().start();
 	        _manager = Server_Client_Manager.getInstance();
+	        Server_Thread_Manager.getInstance().start();
  		 }
 		 catch (IOException e)
 		 {
@@ -45,6 +48,7 @@ public class Server_Client_Accepter extends Thread
 		{	
 			try 
 			{
+			    _manager.run();	
 				if(_selector.selectNow() == 0) continue;
 			    Iterator<SelectionKey> keys = _selector.selectedKeys().iterator();	
 			    
@@ -64,15 +68,13 @@ public class Server_Client_Accepter extends Thread
 				        {			        	
 				        	Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
 				        	activity.Receiver();	
-				        	Server_Administrator.getInstance().updatePacketSize();
 				        }
 			        }
 			    }	
-			    _manager.run();	
 			}
 			catch (Exception e) 
 			{
-				//e.printStackTrace();
+				Server_Administrator.getInstance().errorUpdate(e.getMessage());
 				Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
 				_manager.stopManaging(activity.getClientCode());
 				key.cancel();

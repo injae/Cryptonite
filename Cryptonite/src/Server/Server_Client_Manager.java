@@ -17,7 +17,7 @@ public class Server_Client_Manager implements PacketRule
 	
 	private HashMap<String ,Server_Client_Activity> _clientList;	
 	private Queue<String> _runningQueue;
-
+	
 	private Server_Client_Manager() 
 	{
 		_clientList = new HashMap<String, Server_Client_Activity>();
@@ -97,25 +97,17 @@ public class Server_Client_Manager implements PacketRule
 			_clientList.get(target)._eventQueue.offer(event);
 		}
 		System.out.println("event -> "+target);
-
 	}
 	
-	public void run()
+	public void run() throws IOException
 	{	
 		Server_Client_Activity activity = null;
-		try 
+
+		while(!_runningQueue.isEmpty())
 		{
-			while(!_runningQueue.isEmpty())
-			{
-				activity = _clientList.get(_runningQueue.remove());	
-				activity._funtionList.getFirst().running(activity.getPakcetCount());
-				activity.finishCheck();
-			}
-		} 
-		catch (IOException e) 
-		{
-			stopManaging(activity.getClientCode());
-			e.printStackTrace();
+			activity = _clientList.get(_runningQueue.remove());	
+			activity._funtionList.getFirst().running(activity.getPakcetCount());
+			activity.finishCheck();
 		}
 	}
 }

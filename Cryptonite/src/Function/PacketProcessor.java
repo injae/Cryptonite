@@ -14,14 +14,14 @@ import com.mysql.jdbc.Buffer;
 
 public class PacketProcessor 
 {
-	private Queue<byte[]> _queue;
-	private Queue<Integer> _allocator;
+	protected Queue<byte[]> _queue;
+	protected Queue<Integer> _allocator;
 	
-	private GatheringByteChannel _output;
-	private ScatteringByteChannel _input;
+	protected GatheringByteChannel _output;
+	protected ScatteringByteChannel _input;
 	
-	private final int LIMIT_SIZE = 1024;
-	private ByteBuffer _buffer;
+	protected final int LIMIT_SIZE = 1024;
+	protected ByteBuffer _buffer;
 	
 	public PacketProcessor(Object channel, boolean blocking)
 	{
@@ -65,7 +65,7 @@ public class PacketProcessor
 		return this;
 	}
 	
-	private void allocate(int size)
+	protected void allocate(int size)
 	{
 		_buffer.clear();
 		if(_allocator.isEmpty())
