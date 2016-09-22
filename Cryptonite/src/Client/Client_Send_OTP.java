@@ -72,7 +72,7 @@ public class Client_Send_OTP extends JFrame
 		container=getContentPane();
 		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
-		setBounds(500,300,460,550);
+		setBounds(500,300,448,530);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
