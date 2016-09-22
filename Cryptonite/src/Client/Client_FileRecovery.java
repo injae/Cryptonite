@@ -27,9 +27,9 @@ import Crypto.KeyReposit;
 public class Client_FileRecovery extends JFrame
 {	
 	private BufferedImage _img = null;
-	private final int MAX_BTN = 15;
+	private final int MAX_BTN = 18;
 	private final int COLUMN = 3;
-	private final int ROW = 5;
+	private final int ROW = 6;
 	
 	private JButton _Select;
 	private JButton _Download;
@@ -55,7 +55,7 @@ public class Client_FileRecovery extends JFrame
    }
 	private MyPanel panel = new MyPanel();
 
-	private Font fontbt = new Font("SansSerif", Font.BOLD,24);
+	private Font fontbt = new Font("SansSerif", Font.BOLD,10);
 	private Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
 	
 	
@@ -85,6 +85,7 @@ public class Client_FileRecovery extends JFrame
 			if(isClick)  { isClick = false; }
 			else 		 { isClick = true;  }
 		}
+		public String noExtensionName() { return fileName.substring(0, fileName.length() - 5); }
 		
 		public boolean isDir;
 		public JButton button;
@@ -197,10 +198,12 @@ public class Client_FileRecovery extends JFrame
 	
 	private void makeFile(int index, int x, int y)
 	{
-		if(_btnList.get(index).button!=null){return;}
+		if(_btnList.get(index).button!=null) { return; }
 		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file.png"));
+		btn.setFont(fontbt);
+		btn.setToolTipText(_btnList.get(index).noExtensionName());
 		btn.setPressedIcon(new ImageIcon("gui/file.png"));
-		btn.setBounds((5+x),(80+y),75,120);
+		btn.setBounds((5+x),(80+y),80,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
 		btn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -236,6 +239,8 @@ public class Client_FileRecovery extends JFrame
 		if(_btnList.get(index).button!=null){return;}
 		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/_folder.png"));
 		btn.setPressedIcon(new ImageIcon("gui/_folderR.png"));
+		btn.setToolTipText(_btnList.get(index).fileName);
+		btn.setFont(fontbt);
 		btn.setBounds((5+x),(80+y),75,110);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
@@ -252,7 +257,7 @@ public class Client_FileRecovery extends JFrame
 					if(_btnList.get(i).isClick)
 					{
 						_btnList.get(i).isClick=false;
-						_btnList.get(i).button.setIcon(new ImageIcon("img/_logo_mini.png"));
+						_btnList.get(i).button.setIcon(new ImageIcon("gui/file.png"));
 					}
 				}
 				_undo.push(_btnList);
@@ -424,6 +429,7 @@ public class Client_FileRecovery extends JFrame
 		 {     
 			 public void actionPerformed(ActionEvent arg0)
 			 {	
+				 if(_undo.isEmpty()) return;
 				_btnList=_undo.pop();
 				
 				layeredPane.removeAll();
