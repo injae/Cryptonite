@@ -31,7 +31,6 @@ public class Client_FileRecovery extends JFrame
 	private final int COLUMN = 3;
 	private final int ROW = 6;
 	
-	private JButton _Select;
 	private JButton _Download;
 	private JButton _Right;
 	private JButton _Left;
@@ -142,12 +141,12 @@ public class Client_FileRecovery extends JFrame
         
         panel.setBounds(0, 0, 656, 480);
 		
+        selectFolder();
         allocator();
 		makeBtn();
 		page();
 		basic();
         setVisible(true);
-        
 	}
 
 	private void pageCount()
@@ -287,7 +286,6 @@ public class Client_FileRecovery extends JFrame
 		layeredPane.add(_Left);
 		layeredPane.add(_Right);
 		layeredPane.add(_Download);
-       // layeredPane.add(_Select);
         layeredPane.add(_Back);
         layeredPane.add(panel);
         container.add(layeredPane);
@@ -310,37 +308,28 @@ public class Client_FileRecovery extends JFrame
 		catch(IndexOutOfBoundsException e1)
 		{
 		}
-	}	
+	}
+	
+	private void selectFolder()
+	{
+		Client_FolderSelector cfs = new Client_FolderSelector();
+		cfs.folderSelectorON();
+		 while(!cfs.getSelectionEnd())
+		 {
+			 try 
+			 {
+				 Thread.sleep(1);
+			 }	
+			 catch (InterruptedException e)
+			 {
+				 e.printStackTrace();
+			 }
+		 }
+		 _downloadPath = cfs.getSelectedPath();
+	}
 	
 	private void allocator()
 	{
-		 _Select = new JButton(new ImageIcon("img/select.png"));
-		 _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
-		 _Select.setBounds(400, 10, 80, 40);
-		 _Select.setFocusPainted(false);
-		 _Select.setContentAreaFilled(false);
-		 _Select.setBorderPainted(false);
-		 _Select.addActionListener(new ActionListener() 
-		 {     
-			 public void actionPerformed(ActionEvent arg0)
-			 {	
-				Client_FolderSelector cfs = new Client_FolderSelector();
-				cfs.folderSelectorON();
-				 while(!cfs.getSelectionEnd())
-				 {
-					 try 
-					 {
-						 Thread.sleep(1);
-					 }	
-					 catch (InterruptedException e)
-					 {
-						 e.printStackTrace();
-					 }
-				 }
-				 _downloadPath = cfs.getSelectedPath();
-			 }
-		 });
-
 		 _Download = new JButton(new ImageIcon("gui/download_icon.png"));	
 		 _Download.setRolloverIcon(new ImageIcon("gui/download_iconR.png"));
 		 _Download.setBounds(490, 10, 70,70);
