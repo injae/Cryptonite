@@ -32,7 +32,6 @@ public class Client_Receive_OTP extends JFrame{
 	private BufferedImage img = null;
 	
 	private JTextField OTPField;
-	private JButton Select;
 	private JButton Check;
 	private JButton Cancel;
 	private Font font = new Font ("SansSerif", Font.BOLD,20);
@@ -48,7 +47,8 @@ public class Client_Receive_OTP extends JFrame{
 	}
 
 	
-	public  Client_Receive_OTP(){
+	public  Client_Receive_OTP()
+	{
 		
 		_cfr = new Client_FileShare_Receive();
 		
@@ -64,7 +64,7 @@ public class Client_Receive_OTP extends JFrame{
 		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
-		setBounds(500,300,448,530);
+		setBounds(500, 300, 448, 358);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -82,12 +82,14 @@ public class Client_Receive_OTP extends JFrame{
             System.exit(0);
         }
         
+        _cfr.folderSelect();
+        
         MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 460, 500);
         
         OTPField = new JTextField();
         OTPField.setText("Type otp number");
-        OTPField.setBounds(140, 244, 254, 50);
+        OTPField.setBounds(142, 157, 254, 50);
         OTPField.setForeground(Color.black);        
         OTPField.setFont(font);
         OTPField.setOpaque(false);
@@ -112,24 +114,9 @@ public class Client_Receive_OTP extends JFrame{
          });
         layeredPane.add(OTPField);
         
-        
-        Select = new JButton(new ImageIcon("img/select.png"));		
-        Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
-        Select.setBounds(324, 328, 80, 40);
-        Select.setBorderPainted(false);
-        Select.setFocusPainted(false);
-        Select.setContentAreaFilled(false);
-        Select.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent arg0) 
-			 {
-				_cfr.folderSelect();
-			 }
-		 });
-        layeredPane.add(Select);
-        
         Check = new JButton(new ImageIcon("img/DOWNLOAD.png"));		
         Check.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
-        Check.setBounds(116, 410, 80, 40);
+        Check.setBounds(116, 250, 80, 40);
         Check.setBorderPainted(false);
         Check.setFocusPainted(false);
         Check.setContentAreaFilled(false);
@@ -145,7 +132,7 @@ public class Client_Receive_OTP extends JFrame{
         
         Cancel = new JButton(new ImageIcon("img/_cancel.png"));		
         Cancel.setRolloverIcon(new ImageIcon("img/_cancelR.png"));
-        Cancel.setBounds(254, 410, 80,40);
+        Cancel.setBounds(254, 250, 80,40);
         Cancel.setBorderPainted(false);
         Cancel.setFocusPainted(false);
         Cancel.setContentAreaFilled(false);
