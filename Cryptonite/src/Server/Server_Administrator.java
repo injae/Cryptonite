@@ -11,16 +11,16 @@ import Function.Timer;
 
 public class Server_Administrator extends Thread
 {
-	private Timer timer;
-	private static Server_Administrator instance;
-	private long allpacketlength = 0;
-	
 	private Logger userInfo;
 	private Logger errorInfo;
 	private Logger inoutInfo;
 	
 	private String id;
+	private long allpacketlength = 0;
+	private Timer timer;
+	private long accumulateUser = 0;
 	
+	private static Server_Administrator instance;
 	private Server_Administrator() 
 	{
 		timer = new Timer();
@@ -39,7 +39,6 @@ public class Server_Administrator extends Thread
 	    progressbar();
 	    db.connect();
 	}
-	
 	public static Server_Administrator getInstance()
 	{
 		if(instance == null)
@@ -69,8 +68,7 @@ public class Server_Administrator extends Thread
 			case "help":
 				if(command.hasMoreTokens())
 				{
-					String query = command.nextToken();
-					
+					String query = command.nextToken();					
 					switch(query)
 					{
 					case "-log":
@@ -83,6 +81,7 @@ public class Server_Administrator extends Thread
 					case "-size":
 						System.out.println("* -p         : input packet size");
 						System.out.println("* -f         : server file size");
+						break;
 					}
 				}
 				else
@@ -108,8 +107,8 @@ public class Server_Administrator extends Thread
 						System.out.print("All file Size: "); convertByteUnit(folderSize("Server_Folder")); break;						
 					}		
 				}
-				
 				break;
+				
 			case "user":
 				System.out.println("How many user: " +Server_Client_Manager.getInstance().HowManyClient());	 break;
 				
@@ -154,7 +153,7 @@ public class Server_Administrator extends Thread
 				break;
 				
 			case "stop":
-				if(YorN()){ System.exit(1); }
+				if(YorN()){ System.exit(1); } break;
 			}
 		}
 	}
@@ -200,6 +199,7 @@ public class Server_Administrator extends Thread
 			return new Logger("");
 		}
 	}
+	public void addAcus() { accumulateUser++; }
 	
 	public void inoutUpdate(String str) { inoutInfo.update(str); }
 	
