@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.File;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -12,7 +13,7 @@ public class Server_Administrator extends Thread
 {
 	private Timer timer;
 	private static Server_Administrator instance;
-	private int allpacketlength = 0;
+	private long allpacketlength = 0;
 	
 	private Logger userInfo;
 	private Logger errorInfo;
@@ -73,28 +74,42 @@ public class Server_Administrator extends Thread
 					switch(query)
 					{
 					case "-log":
-						System.out.println("* -u         : User log");
-						System.out.println("* -e         : Error log");
-						System.out.println("* -p         : input output log");
-						System.out.println("* -w  <path> : make log file -> path");
-						System.out.println("* -b         : print log dos ps. this is default print");
+						System.out.println("* -u   <>      	  : User log");
+						System.out.println("* -e   <>     	  : Error log");
+						System.out.println("* -p   <>		  : input output log");
+						System.out.println("* <>   -w  <path> : make log file -> path");
+						System.out.println("* <>   -b         : print log dos ps. this is default print");
 						break;
+					case "-size":
+						System.out.println("* -p         : input packet size");
+						System.out.println("* -f         : server file size");
 					}
 				}
 				else
 				{
 					System.out.println("  <command> :  <explain>");
-					System.out.println("*   size    : size of all packet");
+					System.out.println("*   size    : size of all packet,  More info command > help -size ");
 					System.out.println("*   user    : how many user count");
 					System.out.println("*   time    : server running time");
 					System.out.println("*   stop    : server stop");
-					System.out.println("*   log     : print log, more info command > help -log ");
+					System.out.println("*   log     : print log, 		   More info command > help -log  ");
 				}
 				break;
 				
 			case "size":
-				System.out.println("All Packet Size: "+allpacketlength +" byte");	 break;
+				while(command.hasMoreTokens())
+				{
+					String query = command.nextToken();
+					switch(query)
+					{
+					case "-p":
+						System.out.print("All Packet Size: "); convertByteUnit(allpacketlength); break;
+					case "-f":					
+						System.out.print("All file Size: "); convertByteUnit(folderSize("Server_Folder")); break;						
+					}		
+				}
 				
+				break;
 			case "user":
 				System.out.println("How many user: " +Server_Client_Manager.getInstance().HowManyClient());	 break;
 				
@@ -142,6 +157,33 @@ public class Server_Administrator extends Thread
 				if(YorN()){ System.exit(1); }
 			}
 		}
+	}
+	
+	private long folderSize(String path)
+	{
+		long fullsize = 0;
+		
+		File dir = new File(path);
+		File[] files = dir.listFiles();
+		
+		for(int i =0; i < files.length; i++)
+		{
+			if(files[i].isDirectory()) { fullsize += folderSize(files[i].getPath()); }
+			else { fullsize += files[i].length();}
+		}
+		
+		return fullsize;
+	}
+	
+	private void convertByteUnit(long bytesize)
+	{
+		long remain;
+		long gb = bytesize / (1024 * 1024 * 1024); remain = bytesize % (1024 * 1024 * 1024);
+		long mb = remain / (1024 * 1024);	remain %= (1024 * 1024);
+		long kb = remain / 1024;	remain %= 1024;
+		long  b = remain; 		
+		
+		System.out.println(gb+"GB, "+ mb +"MB ,"+ kb+"KB, "+b+"Byte");
 	}
 	
 	private Logger selectLog(String command)

@@ -52,13 +52,13 @@ public class Server_File_Download extends Server_Funtion
 				}
 				
 				@Override
-				public void delete() 
+				public void delete() throws Exception
 				{
 					_ps.close();
 				}
 				
 				@Override
-				public boolean breakPoint() 
+				public boolean breakPoint() throws Exception
 				{
 					return !_ps.isAllocatorEmpty();
 				}
