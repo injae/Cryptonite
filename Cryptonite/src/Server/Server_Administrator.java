@@ -60,7 +60,7 @@ public class Server_Administrator extends Thread
 		
 		while(true)
 		{
-			System.out.print("["+ id +"]"+" >");
+			System.out.print("["+ id +"]"+" > ");
 			StringTokenizer command = new StringTokenizer(input.nextLine(), " ");
 			
 			switch(command.nextToken())
