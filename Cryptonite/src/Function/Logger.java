@@ -39,12 +39,12 @@ public class Logger
 	public void printLogtoDos()
 	{
 		System.out.println("\n < Title: "+_title +" >");
-		System.out.println("忙式式式式式式式式式式式式式式式式式式式式式式式式式式式忖");
+		System.out.println("忙式式式式式式式式式式式式式式忖");
 		for(int i =0; i < size(); i++)
 		{
 			System.out.println("弛" +getLog(i));
 		}
-		System.out.println("戌式式式式式式式式式式式式式式式式式式式式式式式式式式式戎\n");
+		System.out.println("戌式式式式式式式式式式式式式式戎\n");
 	}
 	
 	public void printLogTextFile(String path)
@@ -69,7 +69,7 @@ public class Logger
 		} 
 		catch (IOException e) 
 		{
-			e.printStackTrace();
+			System.out.println("no path or no file name");
 		}
 
 		
