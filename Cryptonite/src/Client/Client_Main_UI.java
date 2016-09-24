@@ -314,7 +314,7 @@ public class Client_Main_UI extends JFrame
  		{
         	public void actionPerformed(ActionEvent arg0)
         	{
-        		new Client_Group_Name(_id);
+        		new GoogleMaps(_id);
         	}
         });
  		

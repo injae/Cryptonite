@@ -523,7 +523,8 @@ public class Client_Group_Main extends JFrame
           		else
           		{
 
-          			layeredPane.remove(scrollPane);
+          			if (scrollPane!=null)
+          				layeredPane.remove(scrollPane);
 
           			_model = new DefaultListModel<>();
                      for(int i=0;i<_searchList.length;i++)
