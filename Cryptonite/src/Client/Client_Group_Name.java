@@ -45,7 +45,7 @@ public class Client_Group_Name extends JFrame
 	
 	Client_Main_UI main;
 	
-	static String Name;
+	static String Name = "";
 	
 	public Client_Group_Name(String id)
 	{
@@ -113,7 +113,7 @@ public class Client_Group_Name extends JFrame
         //_create.setPressedIcon(new ImageIcon("gui/create.png"));
         _create.addMouseListener(new MouseAdapter(){
          	public void mouseClicked(MouseEvent e){
-         		if(Name=="")
+         		if(Name.equals(""))
          		{
          			showMessage("ERROR", "Please insert GroupName!");
          		}
