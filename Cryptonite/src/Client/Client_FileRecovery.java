@@ -92,7 +92,7 @@ public class Client_FileRecovery extends JFrame
 		public String fileName;
 	}
 	private ArrayList<RecoveryButton> _btnList;
-	private String _downloadPath;
+	private String _downloadPath = "NULL";
 	private Stack<ArrayList<RecoveryButton>> _undo;
 	
 	
@@ -141,7 +141,6 @@ public class Client_FileRecovery extends JFrame
         
         panel.setBounds(0, 0, 656, 480);
 		
-        selectFolder();
         allocator();
 		makeBtn();
 		page();
@@ -343,12 +342,16 @@ public class Client_FileRecovery extends JFrame
 		 {
 			 public void actionPerformed(ActionEvent e) 
 			 {
-				 for(int i =0; i < _btnList.size(); i++)
+				 selectFolder();
+				 if(_downloadPath != null)
 				 {
-					 if(_btnList.get(i).isClick)
+					 for(int i =0; i < _btnList.size(); i++)
 					 {
-						 new Client_File_Download().requestFile(_btnList.get(i).fullPath, _downloadPath + "\\" + _btnList.get(i).fileName, KeyReposit.getInstance().get_aesKey());
-					 }
+						 if(_btnList.get(i).isClick)
+						 {
+							 new Client_File_Download().requestFile(_btnList.get(i).fullPath, _downloadPath + "\\" + _btnList.get(i).fileName, KeyReposit.getInstance().get_aesKey());
+						 }
+					 } 
 				 }
 			 }
 		 });	

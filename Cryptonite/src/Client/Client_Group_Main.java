@@ -53,7 +53,6 @@ public class Client_Group_Main extends JFrame
 	private final int ROW = 6;
 	
 	private JButton _Back;
-	private JButton _Select;
 	private JButton _Download;
 	private JButton _Right;
 	private JButton _Left;
@@ -105,7 +104,7 @@ public class Client_Group_Main extends JFrame
 	}
 	private ArrayList<RecoveryButton> _btnList;
 	
-	private String _downloadPath;
+	private String _downloadPath = "NULL";
 	private Stack<ArrayList<RecoveryButton>> _undo;
 	
 	private Font fontbt = new Font("SansSerif", Font.BOLD,10);
@@ -207,7 +206,6 @@ public class Client_Group_Main extends JFrame
 	private void setMod()
 	{
 		 layeredPane.add(_Upload);
-		// layeredPane.add(_Select);
 		 layeredPane.add(_Download);
 		 layeredPane.add(_Left);
 		 layeredPane.add(_Right);
@@ -400,34 +398,6 @@ public class Client_Group_Main extends JFrame
 				//layeredPane.repaint();
         	}
         });
-       
-        
-        _Select = new JButton(new ImageIcon("img/select.png"));
-        _Select.setRolloverIcon(new ImageIcon("img/selectR.png"));
-        _Select.setBounds(200, 390, 80, 40);
-        _Select.setFocusPainted(false);
-        _Select.setContentAreaFilled(false);
-        _Select.setBorderPainted(false);
-        _Select.addActionListener(new ActionListener() 
-        {     
-         	public void actionPerformed(ActionEvent arg0)
-         	{	
-         		Client_FolderSelector cfs = new Client_FolderSelector();
-         		cfs.folderSelectorON();
-         		while(!cfs.getSelectionEnd())
-         		{
-         			try 
-         			{
-						Thread.sleep(1);
-					}
-         			catch (InterruptedException e)
-         			{
-						e.printStackTrace();
-					}
-         		}
-         		_downloadPath = cfs.getSelectedPath();
-         	}
-         });
         
         _Download = new JButton(new ImageIcon("gui/download.png"));	
 		_Download.setRolloverIcon(new ImageIcon("gui/downloadR.png"));
@@ -438,16 +408,21 @@ public class Client_Group_Main extends JFrame
 		_Download.setBorderPainted(false);
 		_Download.setFocusPainted(false);
 		_Download.setContentAreaFilled(false);
-		_Download.addActionListener(new ActionListener(){
+		_Download.addActionListener(new ActionListener()
+		{
 			 public void actionPerformed(ActionEvent e) 
 			 {
-				 for(int i =0; i < _btnList.size(); i++)
-				 {
-					 if(_btnList.get(i).isClick)
+				selectFolder();
+	         	if(_downloadPath != null)
+	         	{
+	         		for(int i =0; i < _btnList.size(); i++)
 					 {
-						 new Client_File_Download().requestFile(_btnList.get(i).fileName, _downloadPath + "\\" + _btnList.get(i).fileName, KeyReposit.getInstance().get_aesKey());
+						 if(_btnList.get(i).isClick)
+						 {
+							 new Client_File_Download().requestFile(_btnList.get(i).fileName, _downloadPath + "\\" + _btnList.get(i).fileName, KeyReposit.getInstance().get_aesKey());
+						 }
 					 }
-				 }
+	         	}
 			 }
 	   });
 		
@@ -500,7 +475,7 @@ public class Client_Group_Main extends JFrame
     	});
     	
     	_Search = new JButton(new ImageIcon("gui/search.png"));
-        _Search.setPressedIcon(new ImageIcon("gui/searchR.png"));
+        _Search.setRolloverIcon(new ImageIcon("gui/searchR.png"));
         _Search.setBounds(755, 113, 35, 35);
         _Search.setFocusPainted(false);
         _Search.setContentAreaFilled(false);
@@ -648,6 +623,24 @@ public class Client_Group_Main extends JFrame
 			 }
 		 });
  
+	}
+	
+	private void selectFolder()
+	{
+		Client_FolderSelector cfs = new Client_FolderSelector();
+     	cfs.folderSelectorON();
+     	while(!cfs.getSelectionEnd())
+     	{
+     		try 
+     		{
+				Thread.sleep(1);
+			}
+    		catch (InterruptedException e1)
+     		{
+				e1.printStackTrace();
+			}
+     	}
+     	_downloadPath = cfs.getSelectedPath();
 	}
 	
 	private void showMessage(String title, String message) 
