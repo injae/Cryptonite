@@ -25,7 +25,6 @@ public class Client_File_Download implements PacketRule
 			Charset cs = Charset.forName("UTF-8");
 			
 			targetpath = targetpath.substring(0,targetpath.length() - 5);
-			System.out.println(targetpath);
 			_reposit = KeyReposit.getInstance();
 			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
 			_crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
@@ -49,10 +48,8 @@ public class Client_File_Download implements PacketRule
 				p.setPacket(_crypto.endecription(csc.receive.read().getByte())).write();
 			}
 			p.close();
-			
-			System.out.println("´Ù¹ÞÀ½");
-			
-		} catch (NumberFormatException e) 
+		}
+		catch (NumberFormatException e) 
 		{
 			e.printStackTrace();
 		}

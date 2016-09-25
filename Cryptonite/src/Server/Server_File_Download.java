@@ -13,14 +13,15 @@ public class Server_File_Download extends Server_Funtion
 	private long _fileSize;
 	private PacketProcessor _ps;
 	RandomAccessFile raf;
-	public Server_File_Download(Server_Client_Activity activity) {
+	public Server_File_Download(Server_Client_Activity activity) 
+	{
 		super(activity);
 	}
 
 	@Override
 	public void Checker(byte[] packet) 
 	{
-		_packetMaxCount = 1+1;
+		_packetMaxCount = 1 + 1;
 		_cutSize = 1;
 		_activity.receive.setAllocate(500);
 	}
@@ -34,11 +35,13 @@ public class Server_File_Download extends Server_Funtion
 			Charset cs = Charset.forName("UTF-8");
 			
 			ByteBuffer bb = ByteBuffer.allocate(500);
-			bb.put(_activity.receive.getByte()); bb.flip();
+			bb.put(_activity.receive.getByte()); 
+			bb.flip();
 			File file = new File(cs.decode(bb).toString().trim());
 			_fileSize = file.length();
 			
 			_activity.send.setPacket(String.valueOf(_fileSize).getBytes(),500).write();
+			
 			raf = new RandomAccessFile(file, "rw");
 			_ps = new PacketProcessor(raf.getChannel(), false);
 			_ps.setAllocate(_fileSize);
