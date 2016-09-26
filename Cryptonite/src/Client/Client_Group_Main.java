@@ -401,7 +401,7 @@ public class Client_Group_Main extends JFrame
         
         _Download = new JButton(new ImageIcon("gui/download.png"));	
 		_Download.setRolloverIcon(new ImageIcon("gui/downloadR.png"));
-		_Download.setBounds(600, 8, 80, 45);
+		_Download.setBounds(600, 7, 80, 45);
 		_Download.setVerticalTextPosition ( SwingConstants.BOTTOM ) ;
 		_Download.setVerticalAlignment    ( SwingConstants.TOP ) ;
 		_Download.setHorizontalTextPosition( SwingConstants.CENTER ) ;
