@@ -74,10 +74,11 @@ public class Server_Administrator extends Thread
 					case "-log":
 						System.out.println("* -u   <>      	  : User log");
 						System.out.println("* -e   <>     	  : Error log");
-						System.out.println("* -p   <>		  : input output log");
+						System.out.println("* -p   <>  		  : input output log");
 						System.out.println("* <>   -w  <path> : make log file -> path");
 						System.out.println("* <>   -b         : print log dos ps. this is default print");
 						break;
+						
 					case "-size":
 						System.out.println("* -p         : input packet size");
 						System.out.println("* -f         : server file size");
