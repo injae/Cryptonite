@@ -419,7 +419,7 @@ public class Client_Group_Main extends JFrame
 					 {
 						 if(_btnList.get(i).isClick)
 						 {
-							 new Client_File_Download().requestFile(_btnList.get(i).fileName, _downloadPath + "\\" + _btnList.get(i).fileName, KeyReposit.getInstance().get_aesKey());
+							 new Client_File_Download().requestFile(_btnList.get(i).fullPath, _downloadPath + "\\" + _btnList.get(i).fileName, new Client_Get_Group_Key().running(_gpCode));
 						 }
 					 }
 	         	}
