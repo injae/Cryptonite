@@ -17,14 +17,32 @@ namespace ConsoleApplication15
             timer = new Timer();
             io = new IOmanger();
 
-            id = io.Command("id")[0];
+            RequestId();
             if (!id.Equals("NULL")) { return; }
 
+            while (!Login()) { }
+
+            RequestId();
+        }
+
+        private void RequestId()
+        {
+            id = io.Command("id")[0];
+        }
+
+        private Boolean Login()
+        {
             Console.WriteLine("<DataBase Login>");
             Console.Write("id : ");       io.Command(Console.ReadLine());
             Console.Write("password : "); io.Command(Console.ReadLine());
-
-            id = io.Command("id")[0];
+            
+            string msg = io.Command("Event")[0];
+            Console.WriteLine(msg);
+            switch(msg)
+            {
+                case "Done": return true;
+                default    : return false;
+            }
         }
 
         public void Run()

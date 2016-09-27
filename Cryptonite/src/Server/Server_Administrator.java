@@ -42,12 +42,25 @@ public class Server_Administrator extends Thread
 		
 		Server_DataBase db=Server_DataBase.getInstance();
 	    db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", id, password);
-
+	    
+	    if(sdm.receive().equals("Event"))
+	    {
+	    	sdm.send("1");
+		    switch(db.connect())
+		    {
+		    case 0:
+		    	sdm.send("Done"); break;
+		    case 1:
+		    	sdm.send("ERROR: can't connect jdbc"); break;
+		    case 2:
+		    	sdm.send("ERROR: can't connect database"); break;
+		    }
+	    }
 	    progressbar();
-	    db.connect();
-
+	
 	    sdm.sendId(id);
 	}
+	
 	public static Server_Administrator getInstance()
 	{
 		if(instance == null)
