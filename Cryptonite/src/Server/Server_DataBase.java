@@ -68,7 +68,7 @@ public class Server_DataBase
 		_passowrd = password;
 	}
 	
-	public void connect()
+	public int connect()
 	{
 		try 
 		{
@@ -79,13 +79,14 @@ public class Server_DataBase
 		catch (ClassNotFoundException e) 
 		{ 
 			System.out.println("ERROR: can't connect jdbc");	 // e.printStackTrace();
-			System.exit(1);
+			return 1;
 		} 
 		catch (SQLException e)
 		{
 			System.out.println("ERROR: can't connect database"); // e.printStackTrace();
-			System.exit(1);
+			return 2;
 		}
+		return 0;
 	}
 	
 	public static Server_DataBase getInstance()
