@@ -3,6 +3,8 @@ package Function;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 
 import Crypto.Crypto;
 import Crypto.Crypto_Factory;
@@ -18,7 +21,7 @@ import Crypto.KeyReposit;
 import Function.PacketProcessor;
 import Function.PacketRule;
 
-public class Client_File_Download extends AsyncTask<ArrayList<String>,Integer,Void> implements PacketRule
+public class Client_File_Download extends AsyncTask<ArrayList<String>,Integer,Integer> implements PacketRule
 {
     Crypto _crypto;
     KeyReposit _reposit;
@@ -26,23 +29,22 @@ public class Client_File_Download extends AsyncTask<ArrayList<String>,Integer,Vo
     ProgressDialog progressDialog;
     long fileSize;
     long downSize;
+    String _gpCode;
 
 
-    public Client_File_Download(Context context, ProgressDialog progressDialog){
+    public Client_File_Download(Context context, ProgressDialog progressDialog,String gpCode){
         this.context = context;
         this.progressDialog = progressDialog;
+        _gpCode = gpCode;
     }
 
     @Override
-    protected Void doInBackground(ArrayList<String>... arr) { //download file path
+    protected Integer doInBackground(ArrayList<String>... arr) { //download file path, localPath
         try
         {
-/*            targetpath = targetpath.substring(0,targetpath.length() - 5);
-            System.out.println(targetpath);
-            _reposit = KeyReposit.getInstance();
-
-            _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _reposit.get_aesKey()));
-            _crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, _reposit.get_aesKey()));*/
+            SecretKey key = new Client_Get_Group_Key().running(_gpCode);
+            _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
+            _crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
 
             Client_Server_Connector csc = Client_Server_Connector.getInstance();
             Charset cs = Charset.forName("UTF-8");
@@ -55,20 +57,32 @@ public class Client_File_Download extends AsyncTask<ArrayList<String>,Integer,Vo
 
                 csc.send.setPacket(cs.encode(arr[0].get(i)).array(), 500).write();
 
-                fileSize = Long.parseLong(new String(csc.receive.setAllocate(500).read().getByte()).trim());
+                String tmpfileSize = new String(csc.receive.setAllocate(500).read().getByte()).trim();
+                if (tmpfileSize.equals("distance"))
+                {
+                    publishProgress(3);
+                    return 1;
+                }
+                else if(tmpfileSize.equals("timeover"))
+                {
+                    publishProgress(4);
+                    return 2;
+                }
+
+                fileSize = Long.parseLong(tmpfileSize);
                 csc.receive.setAllocate(fileSize);
 
                 StringTokenizer st = new StringTokenizer(arr[0].get(i),"\\");
                 while(st.hasMoreTokens())
                     arr[0].set(i,st.nextToken());
 
-                RandomAccessFile raf = new RandomAccessFile(arr[1].get(0).concat("/" + arr[0].get(i)), "rw");
+                String localpath = arr[1].get(0).concat("/" + arr[0].get(i));
+                RandomAccessFile raf = new RandomAccessFile(localpath.substring(0,localpath.length()-5), "rw");
                 PacketProcessor p = new PacketProcessor(raf.getChannel(), false);
 
                 p.setAllocate(fileSize);
                 while (!csc.receive.isAllocatorEmpty()) {
-//                    p.setPacket(_crypto.endecription(csc.receive.read().getByte())).write();
-                    p.setPacket(csc.receive.read().getByte()).write();
+                    p.setPacket(_crypto.endecription(csc.receive.read().getByte())).write();
                     publishProgress(1);
                 }
                 p.close();
@@ -82,7 +96,12 @@ public class Client_File_Download extends AsyncTask<ArrayList<String>,Integer,Vo
             e.printStackTrace();
         }
         publishProgress(2);
-        return null;
+        return 0;
+    }
+
+    @Override
+    protected void onPostExecute(Integer integer) {
+        super.onPostExecute(integer);
     }
 
     @Override
@@ -99,6 +118,14 @@ public class Client_File_Download extends AsyncTask<ArrayList<String>,Integer,Vo
                 break;
             case 2:
                 progressDialog.dismiss();
+                break;
+            case 3:
+                progressDialog.dismiss();
+                new C_Toast(context).showToast("Please send your loaction.", Toast.LENGTH_LONG);
+                break;
+            case 4:
+                progressDialog.dismiss();
+                new C_Toast(context).showToast("Please resend your loaction.\n (10 minutes after the last location has passed.)",Toast.LENGTH_LONG);
                 break;
         }
     }

@@ -95,7 +95,6 @@ public class Client_FileShare_Receive extends AsyncTask<String,Integer,Integer> 
         {
             try
             {
-
                 _downloadFolder = strings[0];
 
                 while(true)
@@ -103,10 +102,9 @@ public class Client_FileShare_Receive extends AsyncTask<String,Integer,Integer> 
                     byte[] event = new byte[1024];
                     event[0] = FILE_SHARE_SEND;
                     _csc.send.setPacket(event).write();
-
                     _csc.send.setPacket(_OTP.getBytes(), 30).write();	// OTP Sending
-
                     _csc.receive.setAllocate(500);
+
                     _downloadFlag = new String(_csc.receive.read().getByte()).trim();
 
                     if(_downloadFlag.equals("FALSE"))

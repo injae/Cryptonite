@@ -33,11 +33,20 @@ public class Server_File_Download extends Server_Funtion
 		else
 		{
 			Charset cs = Charset.forName("UTF-8");
-			
 			ByteBuffer bb = ByteBuffer.allocate(500);
 			bb.put(_activity.receive.getByte()); 
 			bb.flip();
-			File file = new File(cs.decode(bb).toString().trim());
+			String filename = cs.decode(bb).toString().trim();
+			
+			if (filename.contains("$"))	//group file download
+			{
+				boolean check = new Server_Check_GPS().check(filename, _activity);
+				if (check == false)
+					return;
+			}
+			
+			File file = new File(filename);
+			
 			_fileSize = file.length();
 			
 			_activity.send.setPacket(String.valueOf(_fileSize).getBytes(),500).write();

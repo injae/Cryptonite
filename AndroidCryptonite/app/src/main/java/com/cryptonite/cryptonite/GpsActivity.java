@@ -52,7 +52,7 @@ public class GpsActivity extends Activity implements OnMapReadyCallback {
 
             public void onClick(View arg0) {
                 gps.stopUsingGPS();
-                new Client_SetGPS().execute(loc.latitude,loc.longitude);
+                new Client_SetGPS(getApplicationContext()).execute(loc.latitude,loc.longitude);
             }
         });
     }

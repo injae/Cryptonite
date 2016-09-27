@@ -81,12 +81,9 @@ public class Client_FileShare_Send extends AsyncTask<String,Integer,Boolean> imp
 
         try
         {
-            byte[] garbage = new byte[1024];
-
             byte[] OTP_Packet = new byte[1024];
             OTP_Packet[0] = MAKE_OTP;
             _csc.send.setPacket(OTP_Packet).write();
-            _csc.send.setPacket(garbage).write();
 
             byte[] OTP_Byte = _csc.receive.read().getByte();
             _OTP = new String(OTP_Byte).trim();
