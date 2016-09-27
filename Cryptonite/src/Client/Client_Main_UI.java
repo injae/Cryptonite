@@ -44,6 +44,7 @@ public class Client_Main_UI extends JFrame
 	private Client_FolderSelector cfs = null;
 	private Client_Show_Group _csg = null;
 	private Client_File_ListReceiver _cfl = null;
+	private Client_Developers_Introduce _cdi = null;
 	
 	private BufferedImage _backGroundImg = null;
 	
@@ -78,6 +79,7 @@ public class Client_Main_UI extends JFrame
 		_cfs = cfs;
 		_cfl = new Client_File_ListReceiver();
 		_csg = new Client_Show_Group();
+		_cdi = new Client_Developers_Introduce();
 		main = this;
 		_gpCode = gpCode;
 		_gpName = gpname;
@@ -189,8 +191,8 @@ public class Client_Main_UI extends JFrame
    			}
    		});
         
-        Developersbt = new JButton(new ImageIcon("img/Developers.png"));
-        Developersbt.setRolloverIcon(new ImageIcon("img/DevelopersR.png"));
+        Developersbt = new JButton(new ImageIcon("img/Developersbt.png"));
+        Developersbt.setRolloverIcon(new ImageIcon("img/DevelopersRbt.png"));
         Developersbt.setBounds(510, 45, 30, 30);
         Developersbt.setFocusPainted(false);
         Developersbt.setContentAreaFilled(false);
@@ -199,10 +201,9 @@ public class Client_Main_UI extends JFrame
         {
    			public void actionPerformed(ActionEvent e) 
    			{
-   				
+   				_cdi.UI_ON();
    			}
    		});
-        //
         
         //-------------------------------------------------
         
