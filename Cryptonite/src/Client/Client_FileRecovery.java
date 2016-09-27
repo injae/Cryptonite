@@ -121,6 +121,7 @@ public class Client_FileRecovery extends JFrame
 		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
 		setBounds(0,0,656,480);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		

@@ -176,6 +176,7 @@ public class Client_Group_Main extends JFrame
 		container=getContentPane();
 		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
+		setResizable(false);
 		setBounds(0,0,816,480);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);

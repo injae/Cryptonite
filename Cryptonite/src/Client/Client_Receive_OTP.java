@@ -114,8 +114,8 @@ public class Client_Receive_OTP extends JFrame{
          });
         layeredPane.add(OTPField);
         
-        Check = new JButton(new ImageIcon("img/DOWNLOAD.png"));		
-        Check.setRolloverIcon(new ImageIcon("img/DOWNLOADR.png"));
+        Check = new JButton(new ImageIcon("gui/download.png"));		
+        Check.setRolloverIcon(new ImageIcon("gui/downloadR.png"));
         Check.setBounds(116, 250, 80, 40);
         Check.setBorderPainted(false);
         Check.setFocusPainted(false);
@@ -130,8 +130,8 @@ public class Client_Receive_OTP extends JFrame{
 		 });
         layeredPane.add(Check);
         
-        Cancel = new JButton(new ImageIcon("img/_cancel.png"));		
-        Cancel.setRolloverIcon(new ImageIcon("img/_cancelR.png"));
+        Cancel = new JButton(new ImageIcon("img/cancel.png"));		
+        Cancel.setRolloverIcon(new ImageIcon("img/cancelR.png"));
         Cancel.setBounds(254, 250, 80,40);
         Cancel.setBorderPainted(false);
         Cancel.setFocusPainted(false);
