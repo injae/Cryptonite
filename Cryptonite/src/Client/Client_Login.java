@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -44,6 +45,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import com.mysql.jdbc.log.Log;
 
 import Crypto.Base64Coder;
 import Crypto.KeyReposit;
@@ -160,6 +163,10 @@ public class Client_Login extends JFrame implements PacketRule {
 		_idField.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
+				 if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				 {
+					 LoginButton();
+				 }
 			}
 
 			@Override
@@ -193,6 +200,10 @@ public class Client_Login extends JFrame implements PacketRule {
 		_passwordField.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
+				 if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				 {
+					 LoginButton();
+				 }
 			}
 
 			@Override
@@ -212,82 +223,26 @@ public class Client_Login extends JFrame implements PacketRule {
 		_Login.setBorderPainted(false);
 		_Login.setFocusPainted(false);
 		_Login.setContentAreaFilled(false);
-		// buttonimage
+		_Login.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				 if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				 {
+					 LoginButton();
+				 }
+			}
+		});
 		_Login.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
-				if (!_id.equals("") && !_password.equals("")) {
-					try {
-						byte size = 3;
-						byte[] event = new byte[1024];
-						event[0] = LOGIN;
-						event[1] = size;
-						_csc.send.setPacket(event).write();
-						_csc.send.setPacket(_id.getBytes(), 500).write();// 수정
-						_password = Encode_password(_password);
-						_csc.send.setPacket(_password.getBytes(), 500).write();
-
-						System.out.println(_id + "\t" + _password);
-
-						byte[] checkLogin = _csc.receive.read().getByte();
-						switch (checkLogin[0]) {
-						case 1:
-							showMessage("Error", "No id");
-							_checkLogin = false;
-							break;
-						case 2:
-							showMessage("LOGIN", "Welcome,\t" + _id);
-
-							_gpcount = _csc.receive.setAllocate(100).read().getByte();
-
-							_name = _csc.receive.setAllocate(500).read().getByte().toString().trim();
-
-							_aeskey = _csc.receive.setAllocate(32).read().getByte();
-							(KeyReposit.getInstance()).set_aesKey(new SecretKeySpec(_aeskey, "AES"));
-
-							for (int i = 0; i < _gpcount[0]; i++) {
-								_gpcode.add(new String(_csc.receive.setAllocate(100).read().getByte()).trim());
-								_gpname.add(new String(_csc.receive.setAllocate(500).read().getByte()).trim());
-							}
-
-							if (checkLogin[1] == 1)// count 1일때
-							{
-								showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
-								_cfs = new Client_FolderSelector();
-								_cfs.folderSelectorON();
-								while (!_cfs.getSelectionEnd()) {
-									try {
-										Thread.sleep(1);
-									} catch (InterruptedException e1) {
-										e1.printStackTrace();
-									}
-								}
-								_address = _cfs.getSelectedPath();
-								File save = new File("Cryptonite_Client/log/protectedlog.ser");
-								FileWriter fw = new FileWriter(save);
-								fw.write(_address);
-								fw.close();
-							}
-							_cfc = new Client_FolderScan();
-							Client_Login._folderScanList.offer(_cfc);
-							_cfc.start();
-							dispose();
-							new Client_Main_UI(_gpcode, _gpname, _name, _uscode, _id, _cfc);
-							KeyReposit.getInstance();
-							break;
-						case 3:
-							showMessage("Error", "Wrong password");
-							_checkLogin = false;
-							break;
-						}
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				} else {
-					showMessage("Login", "Please insert id or password");
-
-				}
-
+				LoginButton();
 			}
 
 		});
@@ -333,6 +288,82 @@ public class Client_Login extends JFrame implements PacketRule {
 	public String getID()
 	{
 		return _id;
+	}
+	
+	public void LoginButton()
+	{
+		if (!_id.equals("") && !_password.equals("")) {
+			try {
+				byte size = 3;
+				byte[] event = new byte[1024];
+				event[0] = LOGIN;
+				event[1] = size;
+				_csc.send.setPacket(event).write();
+				_csc.send.setPacket(_id.getBytes(), 500).write();// 수정
+				_password = Encode_password(_password);
+				_csc.send.setPacket(_password.getBytes(), 500).write();
+
+				System.out.println(_id + "\t" + _password);
+
+				byte[] checkLogin = _csc.receive.read().getByte();
+				switch (checkLogin[0]) {
+				case 1:
+					showMessage("Error", "No id");
+					_checkLogin = false;
+					break;
+				case 2:
+					showMessage("LOGIN", "Welcome,\t" + _id);
+
+					_gpcount = _csc.receive.setAllocate(100).read().getByte();
+
+					_name = _csc.receive.setAllocate(500).read().getByte().toString().trim();
+
+					_aeskey = _csc.receive.setAllocate(32).read().getByte();
+					(KeyReposit.getInstance()).set_aesKey(new SecretKeySpec(_aeskey, "AES"));
+
+					for (int i = 0; i < _gpcount[0]; i++) {
+						_gpcode.add(new String(_csc.receive.setAllocate(100).read().getByte()).trim());
+						_gpname.add(new String(_csc.receive.setAllocate(500).read().getByte()).trim());
+					}
+
+					if (checkLogin[1] == 1)// count 1일때
+					{
+						showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
+						_cfs = new Client_FolderSelector();
+						_cfs.folderSelectorON();
+						while (!_cfs.getSelectionEnd()) {
+							try {
+								Thread.sleep(1);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+						}
+						_address = _cfs.getSelectedPath();
+						File save = new File("Cryptonite_Client/log/protectedlog.ser");
+						FileWriter fw = new FileWriter(save);
+						fw.write(_address);
+						fw.close();
+					}
+					_cfc = new Client_FolderScan();
+					Client_Login._folderScanList.offer(_cfc);
+					_cfc.start();
+					dispose();
+					new Client_Main_UI(_gpcode, _gpname, _name, _uscode, _id, _cfc);
+					KeyReposit.getInstance();
+					break;
+				case 3:
+					showMessage("Error", "Wrong password");
+					_checkLogin = false;
+					break;
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} else {
+			showMessage("Login", "Please insert id or password");
+
+		}
+
 	}
 }
 
