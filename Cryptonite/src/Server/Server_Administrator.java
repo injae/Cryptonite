@@ -35,7 +35,16 @@ public class Server_Administrator extends Thread
 		Scanner input = new Scanner(System.in);
 		
 		sdm = new Server_DosManager("NULL");
-		
+
+		while(!dbLogin()) { }
+	    
+	    progressbar();
+	
+	    sdm.sendId(id);
+	}
+	
+	public boolean dbLogin() throws IOException
+	{
 		System.out.println("<DataBase Login>");
 		System.out.print("id : ");       id = sdm.receive(); sdm.send("0");
 		System.out.print("password : "); String password = sdm.receive(); sdm.send("0");
@@ -49,16 +58,14 @@ public class Server_Administrator extends Thread
 		    switch(db.connect())
 		    {
 		    case 0:
-		    	sdm.send("Done"); break;
+		    	sdm.send("Done"); return true;
 		    case 1:
-		    	sdm.send("ERROR: can't connect jdbc"); break;
+		    	sdm.send("ERROR: can't connect jdbc"); return false;
 		    case 2:
-		    	sdm.send("ERROR: can't connect database"); break;
+		    	sdm.send("ERROR: can't connect database"); return false;
 		    }
 	    }
-	    progressbar();
-	
-	    sdm.sendId(id);
+		return false;
 	}
 	
 	public static Server_Administrator getInstance()
@@ -153,18 +160,25 @@ public class Server_Administrator extends Thread
 					break;
 					
 				case "size":
-					while(command.hasMoreTokens())
+					if(command.hasMoreTokens())
 					{
-						String query = command.nextToken();
-						switch(query)
+						while(command.hasMoreTokens())
 						{
-						case "-p":
-							sdm.send("1");
-							print("All Packet Size: " + convertByteUnit(allpacketlength)); break;
-						case "-f":		
-							sdm.send("1");
-							print("All file Size: " + convertByteUnit(folderSize("Server_Folder"))); break;						
-						}		
+							String query = command.nextToken();
+							switch(query)
+							{
+							case "-p":
+								sdm.send("1");
+								print("All Packet Size: " + convertByteUnit(allpacketlength)); break;
+							case "-f":		
+								sdm.send("1");
+								print("All file Size: " + convertByteUnit(folderSize("Server_Folder"))); break;						
+							}		
+						}
+					}
+					else
+					{
+						sdm.send("0");
 					}
 					break;
 					
@@ -186,35 +200,44 @@ public class Server_Administrator extends Thread
 					
 				case "log":
 					Logger log = null;
-					while(command.hasMoreTokens())
+					if(command.hasMoreTokens())
 					{
-						String query = command.nextToken();
-						switch(query)
+						while(command.hasMoreTokens())
 						{
-						case "-u":
-						case "-p":
-						case "-e":
-							if(log != null) 			 { log.printLogtoDos(); }
+							String query = command.nextToken();
 							
-							log = selectLog(query); 
-							
-							if(!command.hasMoreTokens()) { log.printLogtoDos(); }
-							break;
-						case "-w":
-							if(log == null || !command.hasMoreTokens()) break;						
-							query = command.nextToken();
-							log.printLogTextFile(query);
-							break;
-							
-						case "-d":
-							if(log == null) break;		
-							log.printLogtoDos();
+							switch(query)
+							{
+							case "-u":
+							case "-p":
+							case "-e":
+								if(log != null) 			 { log.printLogtoDos(); }
+								
+								log = selectLog(query); 
+								
+								if(!command.hasMoreTokens()) { log.printLogtoDos(); }
+								break;
+							case "-w":
+								if(log == null || !command.hasMoreTokens()) break;						
+								query = command.nextToken();
+								log.printLogTextFile(query);
+								break;
+								
+							case "-d":
+								if(log == null) break;		
+								log.printLogtoDos();
+							}
 						}
+					}
+					else
+					{
+						sdm.send("0");
 					}
 					break;
 					
 				case "stop":
-					if(YorN()){ System.exit(1); } break;
+					if(YorN()){ System.exit(1); } 
+					break;
 					
 				default:
 					sdm.send("0");
@@ -285,7 +308,8 @@ public class Server_Administrator extends Thread
 			
 			ans = sdm.receive();	
 			System.out.println(ans);
-			sdm.send("0");
+			sdm.send("1");
+			sdm.send("--yid");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

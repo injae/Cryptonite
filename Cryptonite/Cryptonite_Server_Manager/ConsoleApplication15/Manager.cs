@@ -56,15 +56,15 @@ namespace ConsoleApplication15
                 bool exitFlag = false;
                 while (true)
                 {
-                    if (!exitFlag) { Console.Write("[" + id + "]" + " > "); }
+                    if (!exitFlag) { Console.Write("\n[" + id + "]" + " > "); }
                     else { exitFlag = false; }
 
                     String query = Console.ReadLine();                    
                     if (query.Length < 1) continue;
 
                     string[] result = io.Command(query);
-                    if (query.Equals("y")) Environment.Exit(1);
                     if (result == null) { continue; }
+                    else if (result[0].Equals("--yid")) { Environment.Exit(1); }
 
                     foreach (string msg in result)
                     {
@@ -73,7 +73,6 @@ namespace ConsoleApplication15
                         if (msg.Equals("<y/n> : ")) { exitFlag = true; }
                         else { Console.WriteLine(); }
                     }
-
                 }
             }
             catch (Exception e)
