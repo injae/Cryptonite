@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.swing.JOptionPane;
 
 import Crypto.Crypto;
 import Crypto.Crypto_Factory;
@@ -36,7 +37,20 @@ public class Client_File_Download implements PacketRule
 			
 			csc.send.setPacket(cs.encode(path).array(), 500).write();
 			
-			long fileSize =  Long.parseLong(new String(csc.receive.setAllocate(500).read().getByte()).trim());
+			String tmpfileSize = new String(csc.receive.setAllocate(500).read().getByte()).trim();
+			
+			if (tmpfileSize.equals("distance"))	//GPS return value
+			{
+				JOptionPane.showMessageDialog(null, "Please send your loaction using AndroidCryptonite.", "Fail", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			else if(tmpfileSize.equals("timeover"))	//GPS return value
+			{
+				JOptionPane.showMessageDialog(null, "Please resend your loaction.\n (10 minutes after the last location has passed.)", "Fail", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			
+			long fileSize = Long.parseLong(tmpfileSize);
 			csc.receive.setAllocate(fileSize);
 			
 			RandomAccessFile raf  = new RandomAccessFile(targetpath, "rw");

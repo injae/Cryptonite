@@ -197,7 +197,7 @@ public class GroupMainActivity extends AppCompatActivity {
                                 ArrayList<String> localPath = new ArrayList<String>();
                                 localPath.add(files[0]);
                                 progressDialog.show();
-                                new Client_File_Download(getApplicationContext(),progressDialog).execute(selectPath,localPath);
+                                new Client_File_Download(getApplicationContext(),progressDialog,gpCode).execute(selectPath,localPath);
                             }
                         }
                     });

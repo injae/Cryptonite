@@ -1,7 +1,9 @@
 package Function;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -12,8 +14,9 @@ import java.nio.ByteBuffer;
 public class Client_SetGPS extends AsyncTask<Double,Void,Void> implements PacketRule {
 
     Client_Server_Connector css;
-
-    public Client_SetGPS() {
+    Context context;
+    public Client_SetGPS(Context context) {
+        this.context = context;
         css = Client_Server_Connector.getInstance();    //get SocketChannel
     }
 
@@ -41,8 +44,12 @@ public class Client_SetGPS extends AsyncTask<Double,Void,Void> implements Packet
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        new C_Toast(context).showToast("Loaction Sent", Toast.LENGTH_SHORT);
     }
 }

@@ -15,6 +15,10 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.StringTokenizer;
 
+import javax.crypto.Cipher;
+
+import Crypto.Crypto;
+import Crypto.Crypto_Factory;
 import Function.PacketRule;
 import Function.Function;
 import Function.PacketProcessor;
@@ -33,6 +37,7 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
 
     private RandomAccessFile _raf = null;
     private FileChannel _fileChannel = null;
+    private Crypto _crypto;
 
     // Another Class
     private Client_Server_Connector _csc = null;
@@ -50,6 +55,7 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
     protected Void doInBackground(String... strings) { //gpCode
         try
         {
+            _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(strings[0])));
 
             ByteBuffer[] bb = new ByteBuffer[_fileNameArray.length];
             Charset cs = Charset.forName("UTF-8");
@@ -73,7 +79,7 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
                 publishProgress(new Long(0),new Long(_fileSizeArray[i]));
                 while(!p.isAllocatorEmpty())
                 {
-                    _csc.send.setPacket(p.read().getByte()).write();
+                    _csc.send.setPacket(_crypto.endecription(p.read().getByte())).write();
                     publishProgress(new Long(1));
                 }
                 p.close();
@@ -125,6 +131,7 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
             {
                 _fileNameArray[i] = st.nextToken();
             }
+            _fileNameArray[i] = _fileNameArray[i].concat(".cnec");
         }
 
         _fileSizeArray = new long[_filePathArray.length];
