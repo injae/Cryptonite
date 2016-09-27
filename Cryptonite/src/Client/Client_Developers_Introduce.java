@@ -63,7 +63,6 @@ public class Client_Developers_Introduce
 	
 	private void UI_OFF()
 	{
-		_window.setVisible(false);
 		_window.dispose();
 	}
 }
