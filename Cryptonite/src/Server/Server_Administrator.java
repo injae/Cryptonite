@@ -25,7 +25,7 @@ public class Server_Administrator extends Thread
 	public Server_DosManager sdm;
 	
 	private static Server_Administrator instance;
-	private Server_Administrator() 
+	private Server_Administrator() throws IOException 
 	{
 		timer = new Timer();
 		userInfo = new Logger("User Log");
@@ -34,23 +34,30 @@ public class Server_Administrator extends Thread
 
 		Scanner input = new Scanner(System.in);
 		
+		sdm = new Server_DosManager("NULL");
+		
 		System.out.println("<DataBase Login>");
-		System.out.print("id : ");       id = input.nextLine();
-		System.out.print("password : "); String password = input.nextLine();
+		System.out.print("id : ");       id = sdm.receive(); sdm.send("0");
+		System.out.print("password : "); String password = sdm.receive(); sdm.send("0");
 		
 		Server_DataBase db=Server_DataBase.getInstance();
 	    db.Init_DB("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/"+"cryptonite", id, password);
-	    
-		sdm = new Server_DosManager(id);
-		
+
 	    progressbar();
 	    db.connect();
+
+	    sdm.sendId(id);
 	}
 	public static Server_Administrator getInstance()
 	{
 		if(instance == null)
 		{
-			instance = new Server_Administrator();
+			try {
+				instance = new Server_Administrator();
+			} catch (IOException e) {
+				// TODO 자동 생성된 catch 블록
+				e.printStackTrace();
+			}
 		}
 		return instance;
 	}
@@ -257,8 +264,18 @@ public class Server_Administrator extends Thread
 	
 	public boolean YorN()
 	{
-		System.out.print("<y/n> ");
-		String ans = new Scanner(System.in).nextLine();
+		String ans = null;
+		try 
+		{
+			sdm.send("1");
+			print("<y/n> : ");
+			
+			ans = sdm.receive();	
+			System.out.println(ans);
+			sdm.send("0");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		return ans.equalsIgnoreCase("y") ? true : false;
 	}

@@ -42,6 +42,16 @@ public class Server_DosManager
 		}
 	}
 	
+	public void sendId(String id) throws IOException
+	{
+		_id = id;
+		if(receive().equals("id"));
+		{
+			send("1");
+			send(_id);
+		}
+	}
+	
 	public String receive() throws IOException
 	{
 		byte[] lenBytes = new byte[4];
@@ -79,7 +89,7 @@ public class Server_DosManager
 	{
 		try 
 		{
-			String path  = "\"" + "C:\\Users\\user\\git\\Cryptonite\\Cryptonite\\Cryptonite_Server_Manager\\ConsoleApplication15\\bin\\Debug\\ConsoleApplication15.exe" + "\"";
+			String path  = "\"" + "Cryptonite_Server_Manager\\ConsoleApplication15\\bin\\Debug\\ConsoleApplication15.exe" + "\"";
 			Runtime.getRuntime().exec("explorer.exe " + path);
 		} catch (IOException e) {
 			// TODO 자동 생성된 catch 블록
