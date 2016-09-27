@@ -96,8 +96,8 @@ public class Client_Send_OTP extends JFrame
         MyPanel panel = new MyPanel();
         panel.setBounds(0, 0, 460, 500);
         
-        Send = new JButton(new ImageIcon("img/SENDP.png"));		
-        Send.setRolloverIcon(new ImageIcon("img/SENDR.png"));
+        Send = new JButton(new ImageIcon("gui/upload.png"));		
+        Send.setRolloverIcon(new ImageIcon("gui/uploadR.png"));
         Send.setBounds(121, 400, 80, 40);
         Send.setBorderPainted(false);
         Send.setFocusPainted(false);
@@ -127,8 +127,8 @@ public class Client_Send_OTP extends JFrame
 		});
         layeredPane.add(Send);
         
-        Cancel = new JButton(new ImageIcon("img/_cancel.png"));		
-        Cancel.setRolloverIcon(new ImageIcon("img/_cancelR.png"));
+        Cancel = new JButton(new ImageIcon("img/cancel.png"));		
+        Cancel.setRolloverIcon(new ImageIcon("img/cancelR.png"));
         Cancel.setBounds(251, 400, 80,40);
         Cancel.setBorderPainted(false);
         Cancel.setFocusPainted(false);
