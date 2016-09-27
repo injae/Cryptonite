@@ -92,14 +92,14 @@ public class Client_Invitation extends JFrame{
 		container=getContentPane();
 		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
-		setBounds(500,300,816,480);
+		setBounds(500,300,800,480);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
 		container.setLayout(null);
 		
-        layeredPane.setBounds(0, 0, 816, 480);
+        layeredPane.setBounds(0, 0, 800, 480);
         layeredPane.setLayout(null);
         
         try 
@@ -111,7 +111,7 @@ public class Client_Invitation extends JFrame{
             System.exit(0);
         }
         
-        panel.setBounds(0, 0, 900, 500);
+        panel.setBounds(0, 0, 890, 500);
         
         _groupname = _csg.getGroupName();
          
