@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Server_Main 
 {
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
 	{
 		new Server_Client_Accepter("localhost", 4444).start();
 	}

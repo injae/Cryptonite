@@ -1,0 +1,12 @@
+c:\users\user\documents\visual studio 2015\Projects\ConsoleApplication15\ConsoleApplication15\bin\Debug\ConsoleApplication15.exe.config
+c:\users\user\documents\visual studio 2015\Projects\ConsoleApplication15\ConsoleApplication15\bin\Debug\ConsoleApplication15.exe
+c:\users\user\documents\visual studio 2015\Projects\ConsoleApplication15\ConsoleApplication15\bin\Debug\ConsoleApplication15.pdb
+c:\users\user\documents\visual studio 2015\Projects\ConsoleApplication15\ConsoleApplication15\obj\Debug\ConsoleApplication15.csprojResolveAssemblyReference.cache
+c:\users\user\documents\visual studio 2015\Projects\ConsoleApplication15\ConsoleApplication15\obj\Debug\ConsoleApplication15.exe
+c:\users\user\documents\visual studio 2015\Projects\ConsoleApplication15\ConsoleApplication15\obj\Debug\ConsoleApplication15.pdb
+C:\Users\user\git\Cryptonite\Cryptonite\Cryptonite_Server_Manager\ConsoleApplication15\bin\Debug\ConsoleApplication15.exe.config
+C:\Users\user\git\Cryptonite\Cryptonite\Cryptonite_Server_Manager\ConsoleApplication15\obj\Debug\ConsoleApplication15.exe
+C:\Users\user\git\Cryptonite\Cryptonite\Cryptonite_Server_Manager\ConsoleApplication15\obj\Debug\ConsoleApplication15.pdb
+C:\Users\user\git\Cryptonite\Cryptonite\Cryptonite_Server_Manager\ConsoleApplication15\bin\Debug\ConsoleApplication15.exe
+C:\Users\user\git\Cryptonite\Cryptonite\Cryptonite_Server_Manager\ConsoleApplication15\obj\Debug\ConsoleApplication15.csprojResolveAssemblyReference.cache
+C:\Users\user\git\Cryptonite\Cryptonite\Cryptonite_Server_Manager\ConsoleApplication15\bin\Debug\ConsoleApplication15.pdb

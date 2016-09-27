@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
+
+import Server.Server_Administrator;
 
 public class Logger
 {
@@ -22,8 +25,8 @@ public class Logger
 	
 	public void update(String log)
 	{
-		String time = new SimpleDateFormat().format(_now);
-		_log.add("[Time]: " + time + "弛 " +log);
+		String time = new SimpleDateFormat("EEEE dd MMM yyyy",Locale.US).format(_now);
+		_log.add("[Time]: " + time + " " +log);
 	}
 	
 	public int size()
@@ -36,15 +39,14 @@ public class Logger
 		return _log.get(index);
 	}
 	
-	public void printLogtoDos()
+	public void printLogtoDos() throws IOException
 	{
-		System.out.println("\n < Title: "+_title +" >");
-		System.out.println("忙式式式式式式式式式式式式式式忖");
+		Server_Administrator.getInstance().sdm.send(new String(Integer.toString(size() + 1)));
+		Server_Administrator.getInstance().print("\n < Title: "+_title +" >");
 		for(int i =0; i < size(); i++)
 		{
-			System.out.println("弛" +getLog(i));
+			Server_Administrator.getInstance().print(getLog(i));
 		}
-		System.out.println("戌式式式式式式式式式式式式式式戎\n");
 	}
 	
 	public void printLogTextFile(String path)

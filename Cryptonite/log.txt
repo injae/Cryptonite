@@ -1,0 +1,16 @@
+ < Title: Input Output Log > 
+-16. 9. 22 오후 12:30-
+┌──────────────┐
+│[Time]: 16. 9. 22 오후 12:30│ read  : java.nio.DirectByteBuffer[pos=1024 lim=1024 cap=1024]
+│[Time]: 16. 9. 22 오후 12:30│ read  : java.nio.DirectByteBuffer[pos=162 lim=162 cap=1024]
+│[Time]: 16. 9. 22 오후 12:30│ write : java.nio.DirectByteBuffer[pos=128 lim=128 cap=1024]
+│[Time]: 16. 9. 22 오후 12:30│ read  : java.nio.DirectByteBuffer[pos=1024 lim=1024 cap=1024]
+│[Time]: 16. 9. 22 오후 12:30│ read  : java.nio.DirectByteBuffer[pos=500 lim=500 cap=1024]
+│[Time]: 16. 9. 22 오후 12:30│ read  : java.nio.DirectByteBuffer[pos=500 lim=500 cap=1024]
+│[Time]: 16. 9. 22 오후 12:30│ write : java.nio.DirectByteBuffer[pos=1024 lim=1024 cap=1024]
+│[Time]: 16. 9. 22 오후 12:30│ write : java.nio.DirectByteBuffer[pos=100 lim=100 cap=1024]
+│[Time]: 16. 9. 22 오후 12:30│ write : java.nio.DirectByteBuffer[pos=500 lim=500 cap=1024]
+│[Time]: 16. 9. 22 오후 12:30│ write : java.nio.DirectByteBuffer[pos=32 lim=32 cap=1024]
+│[Time]: 16. 9. 22 오후 12:30│ write : java.nio.DirectByteBuffer[pos=100 lim=100 cap=1024]
+│[Time]: 16. 9. 22 오후 12:30│ write : java.nio.DirectByteBuffer[pos=500 lim=500 cap=1024]
+└──────────────┘
