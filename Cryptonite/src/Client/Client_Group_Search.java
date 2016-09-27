@@ -28,7 +28,6 @@ public class Client_Group_Search implements PacketRule
 	public void search(String id)
 	{
 		_searchID = id;
-		//_searchID = Client_Group_Main.givename();
 		
 		try 
 		{

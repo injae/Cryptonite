@@ -140,6 +140,7 @@ public class Client_Group_Main extends JFrame
 	private String _gpCode;
 	private String _gpName;
 	private String _id;
+	private String _searchID;
 	
 	private String[] _searchList;
 	private JList<String> _list;
@@ -151,6 +152,7 @@ public class Client_Group_Main extends JFrame
 		_gpCode = gpCode;
 		_gpName = gpName;
 		_mod = mod;
+		_id = id;
 		
 		_btnList = new ArrayList<RecoveryButton>();
 		_undo = new Stack<ArrayList<RecoveryButton>>();
@@ -462,14 +464,15 @@ public class Client_Group_Main extends JFrame
      		@Override
      		public void keyReleased(KeyEvent e) 
      		{
-     			_id = _idField.getText();
+     			_searchID = _idField.getText();
      		}
      		@Override
      		public void keyTyped(KeyEvent e) {}
         });
     	_idField.addMouseListener(new MouseAdapter()
     	{
-    		public void mouseClicked(MouseEvent e){
+    		public void mouseClicked(MouseEvent e)
+    		{
     			_idField.setText("");
     		}
     	});
@@ -485,7 +488,7 @@ public class Client_Group_Main extends JFrame
           	{	
           		Client_Group_Search cgs = new Client_Group_Search();
           		cgs.setDefault();
-          		cgs.search(_id);
+          		cgs.search(_searchID);
           		_searchList = cgs.getID();
           		if(_searchList.length == 0)
           		{
@@ -497,12 +500,13 @@ public class Client_Group_Main extends JFrame
           		}
           		else
           		{
-
-          			if (scrollPane!=null)
+          			if(scrollPane!=null)
+          			{
           				layeredPane.remove(scrollPane);
+          			}
 
           			_model = new DefaultListModel<>();
-                     for(int i=0;i<_searchList.length;i++)
+                     for(int i = 0; i < _searchList.length; i++)
                      {
                       	if(!_searchList[i].equals(_id))
                       	{
@@ -513,7 +517,7 @@ public class Client_Group_Main extends JFrame
                      _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                      scrollPane = new JScrollPane(_list);
                      scrollPane.setVisible(true);
-                     scrollPane.setBounds(628, 200, 115, 150);
+                     scrollPane.setBounds(636, 200, 115, 150);
                      layeredPane.add(scrollPane);
           		}
           	}
@@ -521,7 +525,7 @@ public class Client_Group_Main extends JFrame
         
         _OK = new JButton(new ImageIcon("gui/check.png"));
         _OK.setRolloverIcon(new ImageIcon("gui/checkR.png"));
-        _OK.setBounds(747, 304, 45, 45);
+        _OK.setBounds(750, 310, 45, 45);
         _OK.setFocusPainted(false);
         _OK.setContentAreaFilled(false);
         _OK.setBorderPainted(false);
