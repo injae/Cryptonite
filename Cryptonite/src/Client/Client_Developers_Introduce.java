@@ -46,8 +46,8 @@ public class Client_Developers_Introduce
  	       	}
  	    });
 		
-		_layeredPane.add(_background);
 		_layeredPane.add(_close);
+		_layeredPane.add(_background);
 		
 		_window.getContentPane().add(_layeredPane);
 		_window.setSize(800, 448);
