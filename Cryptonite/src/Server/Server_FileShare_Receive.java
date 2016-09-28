@@ -78,12 +78,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		{
 			nameTemp[i] = packet[i + end + 1];
 		}
-		
-		Charset cs = Charset.forName("UTF-8");
-		ByteBuffer bb = ByteBuffer.allocate(nameTemp.length);
-		bb.put(nameTemp);
-		bb.flip();
-		_fileName = cs.decode(bb).toString().trim();
+		_fileName = new String(nameTemp).trim();
 	}
 	
 	@Override
@@ -97,7 +92,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		setFileInformation(packet);
 		_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		
-		//System.out.println(_fileName);
+		System.out.println(_fileName);
 		try 
 		{
 			_raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");

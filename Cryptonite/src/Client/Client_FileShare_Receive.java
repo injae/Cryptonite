@@ -101,7 +101,8 @@ public class Client_FileShare_Receive extends Thread implements PacketRule
 					else if(_downloadFlag.equals("TRUE"))
 					{		
 						_csc.receive.setAllocate(500);
-						_fileName = cs.decode(_csc.receive.read().getByteBuf()).toString().trim();
+						//_fileName = cs.decode(_csc.receive.read().getByteBuf()).toString().trim();
+						_fileName = new String(_csc.receive.read().getByte()).trim();
 						System.out.println("File Name : " + _fileName);
 						
 						_csc.receive.setAllocate(500);
