@@ -55,7 +55,7 @@ public class Client_File_Upload extends Thread implements PacketRule
 			_check = false;
 			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(_gpCode)));
 			
-			fileSelection();
+			if(!fileSelection()) { return; }
 			ByteBuffer bb;
 			Charset cs = Charset.forName("UTF-8");
 			
@@ -106,7 +106,7 @@ public class Client_File_Upload extends Thread implements PacketRule
 		return _check;
 	}
 	
-	private void fileSelection()
+	private boolean fileSelection()
 	{
 		Charset cs = Charset.forName("UTF-8");
 		_cfs.fileFinderON();
@@ -124,6 +124,8 @@ public class Client_File_Upload extends Thread implements PacketRule
 		_fileNameArray = _cfs.getFileNames();
 		_filePathArray = _cfs.getFilePaths();
 		
+		if(_fileNameArray == null) { return false; }
+		
 		for(int i = 0; i < _fileNameArray.length; i++)
 		{
 			_fileNameArray[i] += ".cnec";
@@ -135,6 +137,8 @@ public class Client_File_Upload extends Thread implements PacketRule
 			File temp = new File(_filePathArray[i]);
 			_fileSizeArray[i] = temp.length();
 		}
+
+		return true;
 	}
 	
 	private void showMessage(String title, String message) 

@@ -87,7 +87,7 @@ public class Server_Administrator extends Thread
 		try 
 		{
 			sdm.send(msg);
-			System.out.println(msg);
+			//System.out.println(msg);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -322,8 +322,7 @@ public class Server_Administrator extends Thread
 		try 
 		{
 		    for(int i =0; i < 29; i++) { System.out.print("."); Thread.sleep(25); }
-		    System.out.println(" Done");
-		    
+		    System.out.println(" Done"); 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} 

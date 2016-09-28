@@ -74,6 +74,7 @@ public class Server_Client_Accepter extends Thread
 			}
 			catch (Exception e) 
 			{
+				e.printStackTrace();
 				Server_Administrator.getInstance().errorUpdate(e.getMessage());
 				Server_Client_Activity activity = (Server_Client_Activity)key.attachment();
 				_manager.stopManaging(activity.getClientCode());

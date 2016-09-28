@@ -23,7 +23,7 @@ public class Client_File_Download implements PacketRule
 	{
 		try 
 		{
-			Charset cs = Charset.forName("UTF-8");
+			System.out.println("FileName ::::: " + path);
 			
 			targetpath = targetpath.substring(0,targetpath.length() - 5);
 			_reposit = KeyReposit.getInstance();
@@ -35,10 +35,10 @@ public class Client_File_Download implements PacketRule
 			event[0] = FILE_DOWNLOAD;
 			csc.send.setPacket(event).write();
 			
-			csc.send.setPacket(cs.encode(path).array(), 500).write();
+			csc.send.setPacket(path.getBytes(), 500).write();
 			
 			String tmpfileSize = new String(csc.receive.setAllocate(500).read().getByte()).trim();
-			
+			System.out.println(tmpfileSize);
 			if (tmpfileSize.equals("distance"))	//GPS return value
 			{
 				JOptionPane.showMessageDialog(null, "Please send your loaction using AndroidCryptonite.", "Fail", JOptionPane.INFORMATION_MESSAGE);

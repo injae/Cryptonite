@@ -100,7 +100,7 @@ public class Server_Client_Manager implements PacketRule
 		System.out.println("event -> "+target);
 	}
 	
-	public void run() throws IOException
+	public void run() throws Exception
 	{	
 		Server_Client_Activity activity = null;
 

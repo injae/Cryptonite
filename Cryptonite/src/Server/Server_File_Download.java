@@ -32,17 +32,11 @@ public class Server_File_Download extends Server_Funtion
 		if(count == 1) { Checker(_activity.getReceiveEvent()); }
 		else
 		{
-			Charset cs = Charset.forName("UTF-8");
-			ByteBuffer bb = ByteBuffer.allocate(500);
-			bb.put(_activity.receive.getByte()); 
-			bb.flip();
-			String filename = cs.decode(bb).toString().trim();
-			
+			String filename = new String(_activity.receive.getByte()).trim();
 			if (filename.contains("$"))	//group file download
 			{
 				boolean check = new Server_Check_GPS().check(filename, _activity);
-				if (check == false)
-					return;
+				if (check == false) {return;}
 			}
 			
 			File file = new File(filename);
@@ -54,7 +48,7 @@ public class Server_File_Download extends Server_Funtion
 			raf = new RandomAccessFile(file, "rw");
 			_ps = new PacketProcessor(raf.getChannel(), false);
 			_ps.setAllocate(_fileSize);
-
+			
 			Server_Thread_Manager.getInstance().register(new Server_Funtion_Thread(_activity) 
 			{		
 				@Override

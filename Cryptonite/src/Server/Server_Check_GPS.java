@@ -13,6 +13,7 @@ public class Server_Check_GPS {
 		try {
 			
 			Server_DataBase db = Server_DataBase.getInstance();
+			System.out.println("FIleName " + filename);
 			StringTokenizer st = new StringTokenizer(filename, "\\");
 			st.nextToken();	st.nextToken();
 			

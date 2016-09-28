@@ -161,5 +161,4 @@ public class Server_Code_Manager
 	  double meterConversion = 1609.00;
 	  return dist * meterConversion;
 	}
-	
 }
