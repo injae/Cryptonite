@@ -22,7 +22,7 @@ public class Server_FileShare_Send extends Server_Funtion
 {
 	public Server_FileShare_Send(Server_Client_Activity activity) {
 		super(activity);
-		// TODO ÀÚµ¿ »ý¼ºµÈ »ý¼ºÀÚ ½ºÅÓ
+		// TODO ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	}
 
 	// OTP Instance
@@ -102,8 +102,8 @@ public class Server_FileShare_Send extends Server_Funtion
 					}
 					_fileSize =  sendingFile.length();
 					
-					_activity.send.setPacket(cs.encode(_fileName).array(), 500).write();
-					//_activity.send.setPacket(_fileName.getBytes(), 500).write();
+					//_activity.send.setPacket(cs.encode(_fileName).array(), 500).write();
+					_activity.send.setPacket(_fileName.getBytes(), 500).write();
 					
 					_activity.send.setPacket(String.valueOf(_fileSize).getBytes(), 500).write();
 					

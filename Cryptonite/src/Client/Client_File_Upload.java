@@ -56,19 +56,16 @@ public class Client_File_Upload extends Thread implements PacketRule
 			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(_gpCode)));
 			
 			if(!fileSelection()) { return; }
-			ByteBuffer bb;
-			Charset cs = Charset.forName("UTF-8");
 			
 			_cpb.UI_ON();
 			for(int i = 0; i < _fileNameArray.length; i++)
 			{
-				bb = cs.encode(_fileNameArray[i]);
 				byte[] event = new byte[1024];
 				event[0] = FILE_UPLOAD;
-				event[1] = (byte)bb.limit();
+				event[1] = (byte)_fileNameArray[i].getBytes().length;
 				event[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
-				Function.frontInsertByte(3, bb.array(), event);
-				Function.frontInsertByte(3 + bb.limit(), String.valueOf(_fileSizeArray[i]).getBytes(), event);
+				Function.frontInsertByte(3, _fileNameArray[i].getBytes(), event);
+				Function.frontInsertByte(3 + _fileNameArray[i].getBytes().length, String.valueOf(_fileSizeArray[i]).getBytes(), event);
 				Function.frontInsertByte(800, _gpCode.getBytes(), event);
 				_csc.send.setPacket(event).write();
 				

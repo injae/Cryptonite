@@ -103,8 +103,6 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 	
 	public synchronized void run()
 	{
-		Charset cs = Charset.forName("UTF-8");
-		ByteBuffer[] fileNameArray = new ByteBuffer[_fileNameArray.length];
 		try 
 		{
 			byte[] OTP_Packet = new byte[1024];
@@ -120,15 +118,15 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 			
 			for(int i = 0; i < _fileNameArray.length; i++)
 			{
-				fileNameArray[i] = cs.encode(_fileNameArray[i]);
+				//fileNameArray[i] = cs.encode(_fileNameArray[i]);
 				
 				byte[] packet = new byte[1024];
 				packet[0] = FILE_SHARE_RECEIVE;
 				packet[1] = (byte)_fileNameArray.length;
 				packet[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
-				packet[3] = (byte)fileNameArray[i].limit();
+				packet[3] = (byte)_fileNameArray[i].getBytes().length;
 				Function.frontInsertByte(4, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
-				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, fileNameArray[i].array(), packet);
+				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, _fileNameArray[i].getBytes(), packet);
 				_csc.send.setPacket(packet).write();	// event
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
@@ -164,8 +162,6 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 	
 	private void changeFilesName()
 	{
-		Charset cs = Charset.forName("UTF-8");
-		
 		String temp = "";
 		for(int i = 0; i < _fileNameArray.length; i++)
 		{
