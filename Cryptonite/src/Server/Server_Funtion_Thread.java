@@ -8,6 +8,7 @@ public abstract class Server_Funtion_Thread
 	{
 		_activity = activity;
 		_activity.addPacketCount();
+		System.out.println("regist" + _activity.getPakcetCount() + " " + _activity._funtionList.getFirst()._packetMaxCount);
 	}
 
 	final public void start()
@@ -16,20 +17,21 @@ public abstract class Server_Funtion_Thread
 		{
 			if(breakPoint()) 
 			{
-				_activity._funtionList.getFirst()._packetMaxCount++;
 				_activity.addPacketCount();
 				loop();
 				Server_Thread_Manager.getInstance().register(this);
 			}
 			else 
 			{
-				_activity._funtionList.getFirst()._packetMaxCount++;
+				_activity._funtionList.getFirst()._packetMaxCount = _activity.getPakcetCount();
 				delete(); 
+				System.out.println("thread");
 				_activity.finishCheck();
 			}
 			
 		} catch (Exception e) 
 		{
+			e.printStackTrace();
 			Server_Administrator.getInstance().errorUpdate(e.getMessage());
 			Server_Client_Manager.getInstance().stopManaging(_activity.getClientCode());
 		}

@@ -11,6 +11,8 @@ public class Server_Function_Factory implements PacketRule
 {
 	public static Server_Funtion create(byte mode, Server_Client_Activity activity) 
 	{
+		System.out.println("Mode ->" +mode);
+		
 		switch(mode)
 		{			
 		case AUTOBACKUP:

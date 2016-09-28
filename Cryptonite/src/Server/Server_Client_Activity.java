@@ -118,11 +118,16 @@ public class Server_Client_Activity implements PacketRule
 
 	}
 	
-	public void finishCheck()
+	public void finishCheck() throws Exception 
 	{
 		if(_packetCount == _funtionList.getFirst()._packetMaxCount)
 		{
+			System.out.println("Finish: "+ _packetCount + " " + _funtionList.getFirst()._packetMaxCount);
+			
+			System.out.print("Finish ->");
+			System.out.print(_funtionList.getFirst().toString());
 			_funtionList.removeFirst();
+			System.out.println(" , "+_funtionList.size());
 			_packetCount = 0;
 		}
 	}

@@ -94,20 +94,20 @@ public class Client_Login extends JFrame implements PacketRule {
 	/*
 	 * //private Client_FolderChooser_UI fc = null;
 	 * 
-	 * // ·Î±×ÀÎ Ä«¿îÅÍ ÀĞ¾îÁÖ±â À§ÇÑ °Í private FileReader fr = null; private String
+	 * // ï¿½Î±ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½Ğ¾ï¿½ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ private FileReader fr = null; private String
 	 * loginCount = null; private StringTokenizer st = null;
 	 * 
-	 * // ·Î±×ÀÎ È½¼ö°¡ 2¹øÀÌ»óÀÏ °æ¿ì ¿©±â¼­ ½º·¹µå ½ÇÇà private Client_FolderScan cfs = null;
+	 * // ï¿½Î±ï¿½ï¿½ï¿½ È½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ï¿½Ì»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ private Client_FolderScan cfs = null;
 	 * private Client_SendFiles csf = null; private Client_checkEncryptionAnime
 	 * cea = null; private Client_FileShare_Send cfss = null;
 	 * 
-	 * // ¸ŞÀÎ ÇÁ·¹ÀÓ UI private boolean mainFrameFlag = false; private
+	 * // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ UI private boolean mainFrameFlag = false; private
 	 * Client_MainFrame_UI cmfu = null;
 	 * 
-	 * // AES_Key ÃßÃâ °ü·Ã private User loginedUser = null; private byte[] AES_Key
+	 * // AES_Key ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ private User loginedUser = null; private byte[] AES_Key
 	 * = null;
 	 */
-	// ¸Æ ¾îµå·¹½º ÃßÃâ
+	// ï¿½ï¿½ ï¿½ï¿½å·¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	Font _font1 = new Font("SansSerif", Font.BOLD, 25);
 	Font _fontjoin = new Font("SansSerif", Font.BOLD, 13);
@@ -194,7 +194,7 @@ public class Client_Login extends JFrame implements PacketRule {
 		// _passwordField.setText("PASSWORD");
 		_passwordField.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent fe) {
-				_passwordField.setEchoChar('¡Ü');
+				_passwordField.setEchoChar('â—');
 			}
 		});
 		_passwordField.addKeyListener(new KeyListener() {
@@ -299,7 +299,7 @@ public class Client_Login extends JFrame implements PacketRule {
 				event[0] = LOGIN;
 				event[1] = size;
 				_csc.send.setPacket(event).write();
-				_csc.send.setPacket(_id.getBytes(), 500).write();// ¼öÁ¤
+				_csc.send.setPacket(_id.getBytes(), 500).write();// ï¿½ï¿½ï¿½ï¿½
 				_password = Encode_password(_password);
 				_csc.send.setPacket(_password.getBytes(), 500).write();
 
@@ -326,7 +326,7 @@ public class Client_Login extends JFrame implements PacketRule {
 						_gpname.add(new String(_csc.receive.setAllocate(500).read().getByte()).trim());
 					}
 
-					if (checkLogin[1] == 1)// count 1ÀÏ¶§
+					if (checkLogin[1] == 1)// count 1ï¿½Ï¶ï¿½
 					{
 						showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
 						_cfs = new Client_FolderSelector();

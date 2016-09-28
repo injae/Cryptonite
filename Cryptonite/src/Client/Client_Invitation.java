@@ -104,7 +104,7 @@ public class Client_Invitation extends JFrame{
         
         try 
         {
-            img = ImageIO.read(new File("img/ÃÊ´ë¸ñ·Ï.png"));
+            img = ImageIO.read(new File("img/ì´ˆëŒ€ëª©ë¡.png"));
             img2 = ImageIO.read(new File("img/x.png"));
         } catch (IOException e) {
             System.out.println("Image Load Failed.");

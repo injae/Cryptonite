@@ -188,8 +188,8 @@ public class Client_Group_Main extends JFrame
         
         try 
         {
-        	_img = ImageIO.read(new File("gui/ÃÊ´ë¸ñ·ÏÈ­¸ére.png"));
-            _img2 = ImageIO.read(new File("img/ÃÊ´ë¸ñ·ÏÈ­¸ére2.png"));
+        	_img = ImageIO.read(new File("gui/ì´ˆëŒ€ëª©ë¡í™”ë©´re.png"));
+            _img2 = ImageIO.read(new File("img/ì´ˆëŒ€ëª©ë¡í™”ë©´re2.png"));
         }
         catch (IOException e)
         {
@@ -497,7 +497,7 @@ public class Client_Group_Main extends JFrame
           			{
           				_list.setVisible(false);
           			}
-          			showMessage("ID Error","Á¸ÀçÇÏ´Â ID°¡ ¾ø½À´Ï´Ù.");          			
+          			showMessage("ID Error","There is no ID which exists.");          			
           		}
           		else
           		{

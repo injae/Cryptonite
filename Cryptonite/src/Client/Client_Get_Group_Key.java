@@ -32,13 +32,16 @@ public class Client_Get_Group_Key implements PacketRule
 		event[0] = GET_GROUP_KEY;
 		Function.frontInsertByte(1, groupCode.getBytes(), event);
 		
+		System.out.println("get Key");
+		
 		SecretKey GpKey = null;
 		try 
 		{
 			csc.send.setPacket(event).write();
 			GpKey = new SecretKeySpec(crypto.endecription(csc.receive.setAllocate(32).read().getByte()), "AES");
-		} catch (IOException e) {
-			// TODO 자동 생성된 catch 블록
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 		

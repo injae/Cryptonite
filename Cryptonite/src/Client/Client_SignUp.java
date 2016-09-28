@@ -184,7 +184,7 @@ import Crypto.aesKeyGenerator;
 			_passwdField = new JPasswordField();
 			_passwdField.setBounds(170, 313, 160, 20);//input value
 			_passwdField.setFont(_font);
-			_passwdField.setEchoChar('°‹');
+			_passwdField.setEchoChar('‚óè');
 			_passwdField.setBorder(BorderFactory.createEmptyBorder());
 			_passwdField.setForeground(Color.BLACK);
 			_passwdField.setOpaque(false);
@@ -207,7 +207,7 @@ import Crypto.aesKeyGenerator;
 			_passwdCorrectField = new JPasswordField(15);
 			_passwdCorrectField.setBounds(170, 370, 160, 20);//input value
 			_passwdCorrectField.setFont(_font);
-			_passwdCorrectField.setEchoChar('°‹');
+			_passwdCorrectField.setEchoChar('‚óè');
 			_passwdCorrectField.setBorder(BorderFactory.createEmptyBorder());
 			_passwdCorrectField.setForeground(Color.BLACK);
 			_passwdCorrectField.setOpaque(false);
