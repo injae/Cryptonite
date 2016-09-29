@@ -50,11 +50,6 @@ public class Client_Send_OTP extends JFrame
 	{
 		new Client_Send_OTP();
 	}
-
-	 private void showMessage(String title, String message) 
-	 {
-			JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
-	 }
 	
 	public Client_Send_OTP()
 	{
@@ -167,13 +162,6 @@ public class Client_Send_OTP extends JFrame
             	g.setFont(font);
             	g.drawString(_cfs.getOTP(), 240, 280);
             }
-            //g.drawString(_cfs.getOTP(), 240, 280);
-            /*if(_checkotp)
-            {
-            	g.setColor(Color.BLACK);
-            	g.setFont(_precondition_font);
-            	g.drawString(_cfs.getOTP(), 240, 280);
-            }*/
        }
    }
 

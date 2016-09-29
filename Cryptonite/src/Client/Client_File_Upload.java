@@ -1,5 +1,6 @@
 package Client;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -8,6 +9,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
 import javax.crypto.Cipher;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import Crypto.Crypto;
@@ -140,6 +142,9 @@ public class Client_File_Upload extends Thread implements PacketRule
 	
 	private void showMessage(String title, String message) 
 	{
-		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+		Font fontbt = new Font("SansSerif", Font.BOLD,24);
+		JLabel input = new JLabel(message);
+		input.setFont(fontbt);
+		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }

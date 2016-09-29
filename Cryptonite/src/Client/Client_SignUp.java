@@ -65,9 +65,12 @@ import Crypto.aesKeyGenerator;
 			return _goFolderScan;
 		}	
 		
-		private void showMessage(String _title, String _message) 
+		private void showMessage(String title, String message) 
 		{
-			JOptionPane.showMessageDialog(null, _message, _title, JOptionPane.INFORMATION_MESSAGE);
+			Font fontbt = new Font("SansSerif", Font.BOLD,24);
+			JLabel input = new JLabel(message);
+			input.setFont(fontbt);
+			JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 		JTextField _nameField;
