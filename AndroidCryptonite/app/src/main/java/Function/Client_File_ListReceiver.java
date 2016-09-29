@@ -1,6 +1,5 @@
 package Function;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -9,7 +8,6 @@ import com.cryptonite.cryptonite.GroupMainActivity;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 
@@ -89,7 +87,7 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
     private String nameTokenizer(String target)
     {
         StringTokenizer st = new StringTokenizer(target, "\\");
-        String temp = null;;
+        String temp = null;
 
         while(st.hasMoreTokens())
         {
