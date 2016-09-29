@@ -66,7 +66,7 @@ public class Client_Find_Captain extends AsyncTask<String,String,Void> implement
                 break;
             default:
                 StringTokenizer st = new StringTokenizer(values[0],":");
-                boolean Captain = st.nextToken().equals("CAPTAIN");
+                boolean Captain = st.nextToken().equals("TRUE");
                 String gpCode= st.nextToken();
 
 

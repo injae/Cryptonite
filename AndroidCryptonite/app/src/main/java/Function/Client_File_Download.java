@@ -118,6 +118,7 @@ public class Client_File_Download extends AsyncTask<ArrayList<String>,Integer,In
                 break;
             case 2:
                 progressDialog.dismiss();
+                new C_Toast(context).showToast("Download complete!",Toast.LENGTH_LONG);
                 break;
             case 3:
                 progressDialog.dismiss();
