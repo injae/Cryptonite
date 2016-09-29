@@ -107,7 +107,7 @@ public class Client_Group_Main extends JFrame
 	private String _downloadPath = "NULL";
 	private Stack<ArrayList<RecoveryButton>> _undo;
 	
-	private Font fontbt = new Font("SansSerif", Font.BOLD,10);
+	private Font fontbt = new Font("SansSerif", Font.BOLD,14);
 	private Font precondition_font = new Font ("Dialog", Font.BOLD,20);
 
 	private boolean _mod;
@@ -515,6 +515,7 @@ public class Client_Group_Main extends JFrame
                       	}
                      }
                      _list = new JList<>(_model);
+                     _list.setFont(fontbt);
                      _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                      scrollPane = new JScrollPane(_list);
                      scrollPane.setVisible(true);

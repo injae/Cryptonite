@@ -131,6 +131,7 @@ public class Client_Invitation extends JFrame{
 			}
 		
            _list = new JList<>(_model);
+           _list.setFont(fontbt);
            _list.setBounds(100, 100, 100, 100);
            _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
           
