@@ -110,16 +110,16 @@ public class Client_Login extends JFrame implements PacketRule {
 	 */
 	// �� ��巹�� ����
 
-	Font _font1 = new Font("SansSerif", Font.BOLD, 25);
-	Font _fontjoin = new Font("SansSerif", Font.BOLD, 13);
-	Font _fontid = new Font("SansSerif", Font.BOLD, 15);
+	Font _font1 = new Font("SansSerif", Font.BOLD, 23);
+	Font _fontjoin = new Font("SansSerif", Font.BOLD, 23);
+	Font _fontid = new Font("SansSerif", Font.PLAIN, 23);
 
 	JButton _Login;
 	JButton _Registor;
 
 	private void showMessage(String title, String message) 
 	{
-		Font fontbt = new Font("SansSerif", Font.BOLD,24);
+		Font fontbt = new Font("SansSerif", Font.BOLD,25);
 		JLabel input = new JLabel(message);
 		input.setFont(fontbt);
 		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
@@ -159,7 +159,8 @@ public class Client_Login extends JFrame implements PacketRule {
 		_panel.setBounds(0, 0, 470, 700);
 
 		_idField = new JTextField(15);
-		_idField.setBounds(140, 255, 200, 31);
+		_idField.setBounds(140, 250, 200, 31);
+		_idField.setFont(_fontid);
 		_layeredPane.add(_idField);
 		_idField.setOpaque(false);
 		_idField.setForeground(Color.BLACK);
