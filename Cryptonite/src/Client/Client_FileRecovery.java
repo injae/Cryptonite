@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.io.File;
@@ -438,7 +440,10 @@ public class Client_FileRecovery extends JFrame
 	
 	private void showMessage(String title, String message) 
 	{
-		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+		Font fontbt = new Font("SansSerif", Font.BOLD,24);
+		JLabel input = new JLabel(message);
+		input.setFont(fontbt);
+		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 }

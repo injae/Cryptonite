@@ -1,8 +1,11 @@
 package Client;
 
 import java.awt.FileDialog;
+import java.awt.Font;
 import java.awt.Frame;
 import java.io.File;
+
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /*
@@ -21,7 +24,7 @@ public class Client_FileSelector extends Frame
 	private String[] _fileNames = null;
 	private String[] _filePaths = null;
 	private boolean _selectionFinish = false;
-	//private Button b1 = new Button("ÆÄÀÏ ¿­±â");
+	//private Button b1 = new Button("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 	
 	// Constructors
 	public Client_FileSelector() { }
@@ -32,10 +35,10 @@ public class Client_FileSelector extends Frame
 	// Methods
 	public void fileFinderON()
 	{
-		  FileDialog fd = new FileDialog( this, "ÆÄÀÏ ¼±ÅÃ", FileDialog.LOAD);
+		  FileDialog fd = new FileDialog( this, "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", FileDialog.LOAD);
 		  fd.setMultipleMode(true);
 		  fd.setVisible(true);
-		  _selectedFiles = fd.getFiles();					// ÆÄÀÏ°´Ã¼ ¹Þ¾Æ¿À´Â°Í
+		  _selectedFiles = fd.getFiles();					// ï¿½ï¿½ï¿½Ï°ï¿½Ã¼ ï¿½Þ¾Æ¿ï¿½ï¿½Â°ï¿½
 		  
 		  if(_selectedFiles.length == 0)
 		  {
@@ -43,7 +46,7 @@ public class Client_FileSelector extends Frame
 		  }
 		  else
 		  {
-			  _fileNames = new String[_selectedFiles.length];		// ÆÄÀÏÀÌ¸§ ½ºÆ®¸µ¹è¿­ »ý¼º
+			  _fileNames = new String[_selectedFiles.length];		// ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½
 			  _filePaths = new String[_selectedFiles.length];
 			  
 			  for(int i = 0; i < _selectedFiles.length; i++)
@@ -76,6 +79,9 @@ public class Client_FileSelector extends Frame
 			 
 	private void showMessage(String title, String message) 
 	{
-		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+		Font fontbt = new Font("SansSerif", Font.BOLD,24);
+		JLabel input = new JLabel(message);
+		input.setFont(fontbt);
+		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }

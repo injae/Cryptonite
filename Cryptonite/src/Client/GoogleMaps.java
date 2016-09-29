@@ -1,10 +1,12 @@
 package Client;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import org.eclipse.swt.SWT;
@@ -275,8 +277,11 @@ public class GoogleMaps {
 		return Name;
 	}
 	
-	
-	 private void showMessage(String title, String message) {
-			JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+	private void showMessage(String title, String message) 
+	{
+		Font fontbt = new Font("SansSerif", Font.BOLD,24);
+		JLabel input = new JLabel(message);
+		input.setFont(fontbt);
+		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }

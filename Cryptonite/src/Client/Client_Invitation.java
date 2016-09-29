@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -222,10 +223,13 @@ public class Client_Invitation extends JFrame{
 		//----------------------------------------------------------------------indivial
 	}
 	
-	 private void showMessage(String title, String message) 
-	 {
-			JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
-	 }
+	private void showMessage(String title, String message) 
+	{
+		Font fontbt = new Font("SansSerif", Font.BOLD,24);
+		JLabel input = new JLabel(message);
+		input.setFont(fontbt);
+		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
+	}
 	
 	class MyPanel extends JPanel 
 	{

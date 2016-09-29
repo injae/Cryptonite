@@ -3,9 +3,11 @@ package Client;
 import Function.PacketProcessor;
 import Function.PacketRule;
 
+import java.awt.Font;
 import java.io.*;
 import java.nio.charset.Charset;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /*
@@ -123,6 +125,7 @@ public class Client_FileShare_Receive extends Thread implements PacketRule
 					}
 				}
 				_cpb.UI_OFF();
+				showMessage("Notification", "All files were completely received.");
 			} 
 			catch (IOException e) 
 			{
@@ -137,6 +140,9 @@ public class Client_FileShare_Receive extends Thread implements PacketRule
 	
 	private void showMessage(String title, String message) 
 	{
-		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+		Font fontbt = new Font("SansSerif", Font.BOLD,24);
+		JLabel input = new JLabel(message);
+		input.setFont(fontbt);
+		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }

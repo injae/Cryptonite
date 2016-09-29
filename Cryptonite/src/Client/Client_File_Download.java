@@ -1,5 +1,6 @@
 package Client;
 
+import java.awt.Font;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
@@ -7,6 +8,7 @@ import java.util.StringTokenizer;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import Crypto.Crypto;
@@ -41,12 +43,12 @@ public class Client_File_Download implements PacketRule
 			System.out.println(tmpfileSize);
 			if (tmpfileSize.equals("distance"))	//GPS return value
 			{
-				JOptionPane.showMessageDialog(null, "Please send your loaction using AndroidCryptonite.", "Fail", JOptionPane.INFORMATION_MESSAGE);
+				showMessage("Fail", "Please Send your location using Android Cryptonite.");
 				return;
 			}
 			else if(tmpfileSize.equals("timeover"))	//GPS return value
 			{
-				JOptionPane.showMessageDialog(null, "Please resend your loaction.\n (10 minutes after the last location has passed.)", "Fail", JOptionPane.INFORMATION_MESSAGE);
+				showMessage("Fail", "Please resend your location.\n(10 minutes after the last location has passed.)");
 				return;
 			}
 			
@@ -71,5 +73,13 @@ public class Client_File_Download implements PacketRule
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	private void showMessage(String title, String message) 
+	{
+		Font fontbt = new Font("SansSerif", Font.BOLD,24);
+		JLabel input = new JLabel(message);
+		input.setFont(fontbt);
+		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }

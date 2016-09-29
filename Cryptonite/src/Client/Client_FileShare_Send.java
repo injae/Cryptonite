@@ -8,11 +8,13 @@ import java.nio.file.*;
 import java.nio.*;
 import java.util.*;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import Crypto.Crypto_Factory;
 import Crypto.aesKeyGenerator;
 
+import java.awt.Font;
 import java.io.*;
 
 /*
@@ -172,6 +174,9 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 	
 	private void showMessage(String title, String message) 
 	{
-		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+		Font fontbt = new Font("SansSerif", Font.BOLD,24);
+		JLabel input = new JLabel(message);
+		input.setFont(fontbt);
+		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }
