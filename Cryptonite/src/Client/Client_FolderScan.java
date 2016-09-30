@@ -2,8 +2,10 @@ package Client;
 
 import java.util.*;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import java.awt.Font;
 import java.io.*;
 import java.lang.*;
 import java.nio.file.*;
@@ -228,6 +230,9 @@ public class Client_FolderScan extends Thread
 	
 	private void showMessage(String title, String message) 
 	{
-		JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+		Font fontbt = new Font("SansSerif", Font.BOLD,24);
+		JLabel input = new JLabel(message);
+		input.setFont(fontbt);
+		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 }

@@ -54,15 +54,19 @@ import Crypto.KeyReposit;
 import Function.PacketRule;
 import Server.Server_DataBase;
 
-public class Client_Login extends JFrame implements PacketRule {
-	public static void main(String[] args) {
+public class Client_Login extends JFrame implements PacketRule 
+{
+	public static void main(String[] args) 
+	{
 		new Client_Login();
 	}
 
 	BufferedImage _img = null;
 
-	class MyPanel extends JPanel {
-		public void paint(Graphics g) {
+	class MyPanel extends JPanel 
+	{
+		public void paint(Graphics g) 
+		{
 			g.drawImage(_img, 0, 0, null);
 		}
 	}
@@ -92,23 +96,6 @@ public class Client_Login extends JFrame implements PacketRule {
 
 	private ArrayList<String> _gpcode = new ArrayList<String>();
 	private ArrayList<String> _gpname = new ArrayList<String>();
-	/*
-	 * //private Client_FolderChooser_UI fc = null;
-	 * 
-	 * // �α��� ī���� �о��ֱ� ���� �� private FileReader fr = null; private String
-	 * loginCount = null; private StringTokenizer st = null;
-	 * 
-	 * // �α��� Ƚ���� 2���̻��� ��� ���⼭ ������ ���� private Client_FolderScan cfs = null;
-	 * private Client_SendFiles csf = null; private Client_checkEncryptionAnime
-	 * cea = null; private Client_FileShare_Send cfss = null;
-	 * 
-	 * // ���� ������ UI private boolean mainFrameFlag = false; private
-	 * Client_MainFrame_UI cmfu = null;
-	 * 
-	 * // AES_Key ���� ���� private User loginedUser = null; private byte[] AES_Key
-	 * = null;
-	 */
-	// �� ��巹�� ����
 
 	Font _font1 = new Font("SansSerif", Font.BOLD, 23);
 	Font _fontjoin = new Font("SansSerif", Font.BOLD, 23);
@@ -125,14 +112,16 @@ public class Client_Login extends JFrame implements PacketRule {
 		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public Client_Login() {
-
-		// Mymouse mymouse=new Mymouse(_Login, _Registor);
-		try {
+	public Client_Login() 
+	{
+		try 
+		{
 			Toolkit tk = Toolkit.getDefaultToolkit();
 			Image image = tk.getImage("gui/logo.png");
 			this.setIconImage(image);
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			System.out.println("Appilcation icon not found");
 		}
 
@@ -157,10 +146,9 @@ public class Client_Login extends JFrame implements PacketRule {
 
 		MyPanel _panel = new MyPanel();
 		_panel.setBounds(0, 0, 470, 700);
-
 		_idField = new JTextField(15);
-		_idField.setBounds(140, 250, 200, 31);
-		_idField.setFont(_fontid);
+		_idField.setFont(_font1);
+		_idField.setBounds(136, 245, 200, 31);
 		_layeredPane.add(_idField);
 		_idField.setOpaque(false);
 		_idField.setForeground(Color.BLACK);
@@ -190,7 +178,8 @@ public class Client_Login extends JFrame implements PacketRule {
 		});
 
 		_passwordField = new JPasswordField(15);
-		_passwordField.setBounds(140, 315, 200, 20);
+		_passwordField.setBounds(138, 310, 200, 20);
+		_passwordField.setFont(_font1);
 		_passwordField.setOpaque(false);
 		_passwordField.setForeground(Color.BLACK);
 		_passwordField.setFont(_fontid);
