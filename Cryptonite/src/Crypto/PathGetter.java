@@ -1,55 +1,45 @@
-package Server;
+package Crypto;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server_DosManager
-{
+public class PathGetter {
+
 	private ServerSocket server;
  	private Socket socket;
 	
 	private InputStream is;
 	private OutputStream os;
-	
-	private String _id;
-	
-	public Server_DosManager(String id) 
-	{	
+
+	public PathGetter() 
+	{
 		try 
 		{
-			server = new ServerSocket(7007);
-			programRun();
-			socket = server.accept();
-
-			System.out.println("����");
-			is = socket.getInputStream();
-			os = socket.getOutputStream();
+			server = new ServerSocket(9999);			
 			
-			_id = id;
-			if(receive().equals("id"));
-			{
-				send("1");
-				send(_id);
-			}
-		} 
-		catch (IOException e) {
+		} catch (IOException e) {
+			// TODO 자동 생성된 catch 블록
 			e.printStackTrace();
 		}
 	}
 	
-	public void sendId(String id) throws IOException
+	public void accept()
 	{
-		_id = id;
-		if(receive().equals("id"));
+		try 
 		{
-			send("1");
-			send(_id);
+			socket = server.accept();
+
+			is = socket.getInputStream();
+			os = socket.getOutputStream();
+			
+		} catch (IOException e) {
+			// TODO 자동 생성된 catch 블록
+			e.printStackTrace();
 		}
+		
 	}
 	
 	public String receive() throws IOException
@@ -63,7 +53,7 @@ public class Server_DosManager
         is.read(receivedBytes, 0, len);
         return new String(receivedBytes, 0, len);
 	}
-	
+
 	public void send(String msg) throws IOException
 	{
         byte[] toSendBytes = msg.getBytes();
@@ -79,53 +69,15 @@ public class Server_DosManager
         os.write(toSendBytes);
 	}
 
-
 	public boolean isClosed()
 	{
 		return socket.isClosed();
 	}
 	
-	private void programRun()
-	{
-		try 
-		{
-			String path  = "\"" + "Cryptonite_Server_Manager\\ConsoleApplication15\\bin\\Debug\\ConsoleApplication15.exe" + "\"";
-			Runtime.getRuntime().exec("explorer.exe " + path);
-		} catch (IOException e) {
-			// TODO �ڵ� ������ catch ���
-			e.printStackTrace();
-		}
-	}
-	
-	public void reConnect()
-	{
-		try 
-		{
-			programRun();
-			Socket bsocket = server.accept();
-			
-			socket.close();
-			socket = bsocket;
-			
-			is = socket.getInputStream();
-			os = socket.getOutputStream();
-			
-			if(receive().equals("id"));
-			{
-				send("1");
-				send(_id);
-			}
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public void close() throws IOException
 	{
 		socket.close();
 		server.close();
 	}
-	
-	
 }

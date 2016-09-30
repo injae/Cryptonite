@@ -37,7 +37,6 @@ public class KeyReposit extends Thread
 	private SecretKey _aesKey_lv3 = null; // AES Key based on physical address
 											// using GPS sensors
 	private SecretKey _rsaKey = null; // AES Key for comunication
-	private ServerSocket _server;
 	
 	private Client_Progressbar _cpb = null;
 	
@@ -45,14 +44,7 @@ public class KeyReposit extends Thread
 	
 	private KeyReposit() 
 	{
-		try 
-		{
-			_server = new ServerSocket(9999);
-			_cpb = new Client_Progressbar(4);
-		} catch (IOException e) {
-			// TODO 자동 생성된 catch 블록
-			e.printStackTrace();
-		}	
+		_cpb = new Client_Progressbar(4);
 	};
 	
 	public void logout()
@@ -64,13 +56,13 @@ public class KeyReposit extends Thread
 	
 	public void run()
 	{
+		PathGetter pg = new PathGetter();
 		while(flag)
 		{
 			try 
 			{
-				Socket socket = _server.accept();
-				BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				String path = input.readLine();
+				pg.accept();
+				String path = pg.receive();
 				
 				if(_aesKey_lv1 == null) { continue; }
 				
