@@ -87,7 +87,35 @@ public class Client_FolderScan extends Thread
 			} 
 			catch (FileNotFoundException e1) 
 			{
-				e1.printStackTrace();
+				showMessage("Error", "protected folder log was deleted.");
+				Client_FolderSelector cfs = new Client_FolderSelector();
+				cfs.folderSelectorON();
+				while (!cfs.getSelectionEnd()) 
+				{
+					try 
+					{
+						Thread.sleep(1);
+					}
+					catch (InterruptedException e2) 
+					{
+						e2.printStackTrace();
+					}
+				}
+				_address = cfs.getSelectedPath();
+				File save = new File("Cryptonite_Client/log/protectedlog.ser");
+				FileWriter fw;
+				try 
+				{
+					fw = new FileWriter(save);
+					fw.write(_address);
+					fw.close();
+				} 
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}
+				showMessage("Notification", "Please restart the Cryptonite.");
+				System.exit(0);
 			}
 			catch (IOException e) 
 			{
@@ -185,7 +213,7 @@ public class Client_FolderScan extends Thread
 		}
 		catch(NullPointerException e)
 		{
-			showMessage("ERROR","Protected Folder Was deleted.");
+			showMessage("ERROR","Protected Folder was deleted.");
 			_cfs = new Client_FolderSelector();
 			_cfs.folderSelectorON();
 			while (!_cfs.getSelectionEnd()) 
