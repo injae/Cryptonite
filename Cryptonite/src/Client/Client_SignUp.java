@@ -37,7 +37,7 @@ import Crypto.Crypto;
 import Crypto.aesKeyGenerator;
 
 	public class Client_SignUp extends JFrame implements PacketRule //Create new account
-	//Create new page
+	//Create new page//
 	
 	{											
 		BufferedImage _img=null;
