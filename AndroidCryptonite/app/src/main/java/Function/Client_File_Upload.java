@@ -35,10 +35,6 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
     private long _sendFileSize=0;
     private GroupMainActivity activity;
 
-    private RandomAccessFile _raf = null;
-    private FileChannel _fileChannel = null;
-    private Crypto _crypto;
-
     // Another Class
     private Client_Server_Connector _csc = null;
 
@@ -55,7 +51,7 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
     protected Void doInBackground(String... strings) { //gpCode
         try
         {
-            _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(strings[0])));
+            Crypto _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(strings[0])));
 
             ByteBuffer[] bb = new ByteBuffer[_fileNameArray.length];
             Charset cs = Charset.forName("UTF-8");
@@ -71,16 +67,16 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
                 Function.frontInsertByte(800, strings[0].getBytes(), event);
                 _csc.send.setPacket(event).write();
 
-                _raf = new RandomAccessFile(_filePathArray[i], "rw");
-                _fileChannel = _raf.getChannel();
+                RandomAccessFile _raf = new RandomAccessFile(_filePathArray[i], "rw");
+                FileChannel _fileChannel = _raf.getChannel();
                 PacketProcessor p = new PacketProcessor(_fileChannel, false);
                 p.setAllocate(_fileSizeArray[i]);
 
-                publishProgress(new Long(0),new Long(_fileSizeArray[i]));
+                publishProgress(0L, _fileSizeArray[i]);
                 while(!p.isAllocatorEmpty())
                 {
                     _csc.send.setPacket(_crypto.endecription(p.read().getByte())).write();
-                    publishProgress(new Long(1));
+                    publishProgress(1L);
                 }
                 p.close();
                 System.out.println(_fileNameArray[i] + " 파일이 전송이 완료되었습니다.");
@@ -91,7 +87,7 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
             e.printStackTrace();
         }
 
-        publishProgress(new Long(2));
+        publishProgress(5L);
         return null;
     }
 
