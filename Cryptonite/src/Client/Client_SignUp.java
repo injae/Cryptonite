@@ -93,6 +93,7 @@ import Crypto.aesKeyGenerator;
 		JButton _cancel;
 
 		 Font _font = new Font ("SansSerif", Font.BOLD,17);
+		 Font _font1 = new Font("SansSerif", Font.BOLD, 25);
 		 Font _precondition_font = new Font ("Dialog", Font.BOLD,16);
 	
 		Client_Server_Connector _css;
@@ -135,8 +136,8 @@ import Crypto.aesKeyGenerator;
 			_panel.setBounds(0,0,490,655);
 
 			_nameField = new JTextField();
-			_nameField.setBounds(170, 200, 160, 21);
-			_nameField.setFont(_font);
+			_nameField.setBounds(170, 190, 160, 30);
+			_nameField.setFont(_font1);
 			_nameField.setBorder(BorderFactory.createEmptyBorder());
 			_nameField.setForeground(Color.BLACK);
 			_nameField.setOpaque(false); 
@@ -161,8 +162,8 @@ import Crypto.aesKeyGenerator;
 			_layeredpane.add(_nameField);
 
 			_idField = new JTextField();
-			_idField.setBounds(170, 257, 160, 20);//input value
-			_idField.setFont(_font);
+			_idField.setBounds(165, 245, 160, 32);//input value
+			_idField.setFont(_font1);
 			_idField.setForeground(Color.BLACK);
 			_idField.setBorder(BorderFactory.createEmptyBorder());
 			_idField.setOpaque(false);
@@ -185,8 +186,8 @@ import Crypto.aesKeyGenerator;
 			_layeredpane.add(_idField);
 			
 			_passwdField = new JPasswordField();
-			_passwdField.setBounds(170, 313, 160, 20);//input value
-			_passwdField.setFont(_font);
+			_passwdField.setBounds(170, 305, 160, 20);//input value
+			_passwdField.setFont(_font1);
 			_passwdField.setEchoChar('●');
 			_passwdField.setBorder(BorderFactory.createEmptyBorder());
 			_passwdField.setForeground(Color.BLACK);
@@ -208,8 +209,8 @@ import Crypto.aesKeyGenerator;
 			_layeredpane.add(_passwdField);
 
 			_passwdCorrectField = new JPasswordField(15);
-			_passwdCorrectField.setBounds(170, 370, 160, 20);//input value
-			_passwdCorrectField.setFont(_font);
+			_passwdCorrectField.setBounds(170, 362, 160, 20);//input value
+			_passwdCorrectField.setFont(_font1);
 			_passwdCorrectField.setEchoChar('●');
 			_passwdCorrectField.setBorder(BorderFactory.createEmptyBorder());
 			_passwdCorrectField.setForeground(Color.BLACK);
@@ -233,7 +234,8 @@ import Crypto.aesKeyGenerator;
 		_layeredpane.add( _passwdCorrectField);
 
 		_emailField = new JTextField();
-		_emailField.setBounds(170, 424, 140, 20);//input value
+		_emailField.setBounds(160, 418, 235, 30);//input value
+		_emailField.setFont(_font);
 		_emailField.setBorder(BorderFactory.createEmptyBorder());
 		_emailField.setForeground(Color.BLACK);
 		_emailField.setOpaque(false);
@@ -255,7 +257,6 @@ import Crypto.aesKeyGenerator;
 		_layeredpane.add(_emailField);
 
 		_same = new JButton(new ImageIcon("gui/check_bt.png"));
-		//_same.setRolloverIcon(new ImageIcon("gui/_check_bt.png"));
 		_same.setBounds(320, 250, 80, 38);
 		_same.setBorderPainted(false);
 		_same.setFocusPainted(false);
@@ -348,7 +349,7 @@ import Crypto.aesKeyGenerator;
 				{
 					_checkPassword = true;
 				}
-				else /*if( _passwdCorrectField.equals(_password) == false ||  _passwdCorrectField.equals(null) == false)*/
+				else
 				{
 					_checkPassword = false;
 				}
@@ -381,10 +382,8 @@ import Crypto.aesKeyGenerator;
 				}
 				else{ showMessage("ERROR", "Please fill in all the blanks.");}
 
-				if(_goSignUP){
-
-					/*userKeyGenerator _ukg = new userKeyGenerator();
-					_ukg.init();*/
+				if(_goSignUP)
+				{
 					_sha = new SHA_256(_name,_id,_password,_email);
 					
 					int result=_sha.result[0];
@@ -506,9 +505,12 @@ class SHA_256 implements PacketRule
 			}
 		}	
 		
-		private void showMessage(String _title, String _message) 
+		private void showMessage(String title, String message) 
 		{
-			JOptionPane.showMessageDialog(null, _message, _title, JOptionPane.INFORMATION_MESSAGE);
+			Font fontbt = new Font("SansSerif", Font.BOLD,24);
+			JLabel input = new JLabel(message);
+			input.setFont(fontbt);
+			JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 		}
 
 	
