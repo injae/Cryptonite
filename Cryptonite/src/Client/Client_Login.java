@@ -326,10 +326,14 @@ public class Client_Login extends JFrame implements PacketRule
 						showMessage("FIRST LOGIN", "CONGURATULATION! FIRST LOGIN!");
 						_cfs = new Client_FolderSelector();
 						_cfs.folderSelectorON();
-						while (!_cfs.getSelectionEnd()) {
-							try {
+						while (!_cfs.getSelectionEnd()) 
+						{
+							try 
+							{
 								Thread.sleep(1);
-							} catch (InterruptedException e1) {
+							}
+							catch (InterruptedException e1) 
+							{
 								e1.printStackTrace();
 							}
 						}
