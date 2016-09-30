@@ -9,13 +9,13 @@ namespace ConsoleApplication15
     class Manager
     {
         private Timer timer;
-        private IOmanger io;
+        private IOmanager io;
         private string id;
 
         public Manager()
         {
             timer = new Timer();
-            io = new IOmanger();
+            io = new IOmanager();
 
             RequestId();
             if (!id.Equals("NULL")) { return; }
