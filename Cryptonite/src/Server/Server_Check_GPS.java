@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.StringTokenizer;
 
+import Function.Function;
+
 public class Server_Check_GPS {
 
 	
@@ -36,7 +38,7 @@ public class Server_Check_GPS {
 				
 				if(System.currentTimeMillis() < effectiveTime)	//less than 10 minutes after the last registration gps.
 				{
-					double distance = Server_Code_Manager.getInstance().distance(lat, lng, gplat, gplng);
+					double distance = Function.distance(lat, lng, gplat, gplng);
 					
 					if (distance > gpradius)	// Out of the range
 					{
