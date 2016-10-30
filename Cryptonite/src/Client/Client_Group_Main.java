@@ -52,7 +52,11 @@ public class Client_Group_Main extends JFrame
 	private final int COLUMN = 3;
 	private final int ROW = 6;
 	
-	private JButton _Back;
+	private Client_File_ListReceiver _cfl = null;
+	
+	private ArrayList<String> _fileList;
+	
+	private JButton _Refresh;
 	private JButton _Download;
 	private JButton _Right;
 	private JButton _Left;
@@ -153,12 +157,13 @@ public class Client_Group_Main extends JFrame
 		_gpName = gpName;
 		_mod = mod;
 		_id = id;
+		_fileList=fileList;
 		
 		_btnList = new ArrayList<RecoveryButton>();
 		_undo = new Stack<ArrayList<RecoveryButton>>();
-		while(!fileList.isEmpty())
+		while(!_fileList.isEmpty())
 		{
-			_btnList.add(new RecoveryButton(fileList.remove(0)));
+			_btnList.add(new RecoveryButton(_fileList.remove(0)));
 		}
 		pageCount();
 		
@@ -213,7 +218,7 @@ public class Client_Group_Main extends JFrame
 		 layeredPane.add(_Left);
 		 layeredPane.add(_Right);
 	     layeredPane.add(_Delete);
-	     layeredPane.add(_Back);
+	     layeredPane.add(_Refresh);
 	     
 		if(_mod)
 		{
@@ -399,6 +404,22 @@ public class Client_Group_Main extends JFrame
 				//page();
 				//setMod();
 				//layeredPane.repaint();
+        		 /*_fileList.clear();
+				 _btnList.clear();
+				 _cfl = new Client_File_ListReceiver();
+				 _cfl.running((byte)1, _gpCode);
+				 _fileList=_cfl.getFileList();
+				while(!_fileList.isEmpty())
+				{
+					_btnList.add(new RecoveryButton(_fileList.remove(0)));
+				}
+				pageCount();
+				 
+				layeredPane.removeAll();
+				makeBtn();
+				page();
+				setMod();
+				layeredPane.repaint();*/
         	}
         });
         
@@ -430,19 +451,29 @@ public class Client_Group_Main extends JFrame
 	   });
 		
 
-		 _Back = new JButton(new ImageIcon("gui/back_icon.png"));
-		 _Back.setRolloverIcon(new ImageIcon("gui/back_iconR.png"));
-		 _Back.setBounds(740, 8, 60, 40);
-		 _Back.setFocusPainted(false);
-		 _Back.setContentAreaFilled(false);
-		 _Back.setBorderPainted(false);
-		 _Back.addActionListener(new ActionListener() 
+		 _Refresh = new JButton(new ImageIcon("img/refresh_icon2.png"));
+		 _Refresh.setRolloverIcon(new ImageIcon("img/refresh_icon2R.png"));
+		 _Refresh.setBounds(736, 11, 60, 40);
+		 _Refresh.setFocusPainted(false);
+		 _Refresh.setContentAreaFilled(false);
+		 _Refresh.setBorderPainted(false);
+		 _Refresh.addActionListener(new ActionListener() 
 		 {     
 			 public void actionPerformed(ActionEvent arg0)
 			 {	
-				 if(_undo.isEmpty()) return;
-				_btnList=_undo.pop();
-				
+				/* if(_undo.isEmpty()) return;
+				_btnList=_undo.pop();*/
+				 _fileList.clear();
+				 _btnList.clear();
+				 _cfl = new Client_File_ListReceiver();
+				 _cfl.running((byte)1, _gpCode);
+				 _fileList=_cfl.getFileList();
+				while(!_fileList.isEmpty())
+				{
+					_btnList.add(new RecoveryButton(_fileList.remove(0)));
+				}
+				pageCount();
+				 
 				layeredPane.removeAll();
 				makeBtn();
 				page();
