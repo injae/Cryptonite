@@ -55,7 +55,8 @@ public class Server_Delete_Group extends Server_Funtion
 					rs2.next();
 					StringTokenizer st2 = new StringTokenizer(rs2.getString(10), ":");
 					String save = "";
-					for(int i = 0; i < st2.countTokens(); i++)
+					int count1 = st2.countTokens();
+					for(int i = 0; i < count1; i++)
 					{
 						String temp = st2.nextToken();
 						if(!temp.equals(gpCode))
@@ -68,6 +69,8 @@ public class Server_Delete_Group extends Server_Funtion
 						}
 					}
 					if(save.length() == 0) { save = "NULL"; }
+					else if (save.charAt(save.length()-1)==':') save = save.substring(0, save.length()-1);
+					
 					db.Update("update test set mygrouplist = '" + save + "' where uscode = " + uscode + ";");
 				}
 				db.Update("delete from grouplist where gpcode = "+Server_Code_Manager.codeCutter(gpCode)+";");
