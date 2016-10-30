@@ -46,6 +46,8 @@ public class Decrypter extends Thread
 			}
 			wp.close();
 			rp.close();
+			Rraf.close();
+			Wraf.close();
 			new File(path).delete();
 			cpb.UI_OFF();
 		} 

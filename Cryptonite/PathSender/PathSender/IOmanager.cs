@@ -37,9 +37,9 @@ namespace PathSender
 
             byte[] rcvBytes = new byte[rcvLen];
             socket.Receive(rcvBytes);
+            socket.Close();
 
             String rcvString = System.Text.Encoding.UTF8.GetString(rcvBytes);
-
             return rcvString;
         }
 
@@ -51,6 +51,7 @@ namespace PathSender
 
             byte[] toSendBytes = System.Text.Encoding.UTF8.GetBytes(sendMsg);
             socket.Send(toSendBytes);
+            socket.Close();
         }
     }
 }

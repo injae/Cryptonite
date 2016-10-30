@@ -1,10 +1,16 @@
 package Crypto;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 public class PathGetter {
 
@@ -13,12 +19,13 @@ public class PathGetter {
 	
 	private InputStream is;
 	private OutputStream os;
+	
 
 	public PathGetter() 
 	{
 		try 
 		{
-			server = new ServerSocket(9999);			
+			server = new ServerSocket(9999);	
 			
 		} catch (IOException e) {
 			// TODO 자동 생성된 catch 블록
@@ -51,6 +58,7 @@ public class PathGetter {
         
         byte[] receivedBytes = new byte[len];
         is.read(receivedBytes, 0, len);
+        socket.close();
         return new String(receivedBytes, 0, len);
 	}
 
