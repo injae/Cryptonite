@@ -45,7 +45,7 @@ public class KeyReposit extends Thread
 	private KeyReposit() 
 	{
 		_cpb = new Client_Progressbar(4);
-	};
+	}
 	
 	public void logout()
 	{
@@ -89,7 +89,7 @@ public class KeyReposit extends Thread
 
 	public void set_aesKey(SecretKey aesKey) {
 		this._aesKey_lv1 = aesKey;
-		cgp = new Client_GetGPS();
+		//cgp = new Client_GetGPS();
 	}
 
 	public void set_rsaKey(SecretKey rsaKey) {
