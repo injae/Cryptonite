@@ -24,6 +24,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
+import Client.Client_Group_Main.RecoveryButton;
 import Crypto.KeyReposit;
 
 public class Client_FileRecovery extends JFrame
@@ -33,7 +35,12 @@ public class Client_FileRecovery extends JFrame
 	private final int COLUMN = 3;
 	private final int ROW = 6;
 	
+	private Client_File_ListReceiver _cfl = null;
+	
+	private ArrayList<String> _fileList;
+	
 	private JButton _Download;
+	private JButton _Refresh;
 	private JButton _Right;
 	private JButton _Left;
 	private JButton _Back;
@@ -102,6 +109,7 @@ public class Client_FileRecovery extends JFrame
 	{
 		_btnList = new ArrayList<RecoveryButton>();
 		_undo = new Stack<ArrayList<RecoveryButton>>();
+		_fileList=fileList;
 		while(!fileList.isEmpty())
 		{
 			_btnList.add(new RecoveryButton(fileList.remove(0)));
@@ -288,7 +296,8 @@ public class Client_FileRecovery extends JFrame
 		layeredPane.add(_Left);
 		layeredPane.add(_Right);
 		layeredPane.add(_Download);
-        layeredPane.add(_Back);
+        layeredPane.add(_Back);  
+        layeredPane.add(_Refresh);
         layeredPane.add(panel);
         container.add(layeredPane);
 	}
@@ -427,6 +436,38 @@ public class Client_FileRecovery extends JFrame
 				 if(_undo.isEmpty()) return;
 				_btnList=_undo.pop();
 				
+				layeredPane.removeAll();
+				makeBtn();
+				pageCount();
+				page();
+				basic();
+				repaint();
+			 }
+		 });
+		 
+		 _Refresh = new JButton(new ImageIcon("img/refresh_icon2.png"));
+		 _Refresh.setRolloverIcon(new ImageIcon("img/refresh_icon2R.png"));
+		 _Refresh.setBounds(155, 11, 80, 40);
+		 _Refresh.setFocusPainted(false);
+		 _Refresh.setContentAreaFilled(false);
+		 _Refresh.setBorderPainted(false);
+		 _Refresh.addActionListener(new ActionListener() 
+		 {     
+			 public void actionPerformed(ActionEvent arg0)
+			 {	
+				/* if(_undo.isEmpty()) return;
+				_btnList=_undo.pop();*/
+				 _fileList.clear();
+				 _btnList.clear();
+				 _cfl = new Client_File_ListReceiver();
+				 _cfl.running((byte)2, null);
+				 _fileList=_cfl.getFileList();
+				while(!_fileList.isEmpty())
+				{
+					_btnList.add(new RecoveryButton(_fileList.remove(0)));
+				}
+				pageCount();
+				 
 				layeredPane.removeAll();
 				makeBtn();
 				pageCount();
