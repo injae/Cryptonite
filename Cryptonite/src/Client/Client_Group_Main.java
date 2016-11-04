@@ -230,6 +230,7 @@ public class Client_Group_Main extends JFrame
 		}
 		else
 		{
+			layeredPane.remove(_Delete);
 	    	layeredPane.add(_Withdrawal);
 		}
 		
