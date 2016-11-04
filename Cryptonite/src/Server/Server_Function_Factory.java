@@ -61,6 +61,8 @@ public class Server_Function_Factory implements PacketRule
 			return new Server_Folder_List(activity);
 		case SET_GPS:
 			return new Server_SetGPS(activity);
+		case GET_PBKDF2:
+			return new Server_SendPBKDF2(activity);
 		default:
 		//	System.out.println("Server Funtion Factory: "+ mode);
 			return	new Server_ImDie(activity);

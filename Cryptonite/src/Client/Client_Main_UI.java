@@ -46,11 +46,13 @@ public class Client_Main_UI extends JFrame
 	private Client_Show_Group _csg = null;
 	private Client_File_ListReceiver _cfl = null;
 	private Client_Developers_Introduce _cdi = null;
+	private Client_Setting _cst = null;
 	
 	private BufferedImage _backGroundImg = null;
 	
 	private JButton ProtectedFolderOpenbt;
 	private JButton Developersbt;
+	private JButton Setting;
 	
 	private JButton Sendbt;
 	private JButton Receivebt;
@@ -80,6 +82,7 @@ public class Client_Main_UI extends JFrame
 		_cfs = cfs;
 		_cfl = new Client_File_ListReceiver();
 		_csg = new Client_Show_Group();
+		_cst = new Client_Setting();
 		_cdi = new Client_Developers_Introduce();
 		main = this;
 		_gpCode = gpCode;
@@ -148,6 +151,7 @@ public class Client_Main_UI extends JFrame
 	private void setFirst()
 	{
 		layeredPane.add(ProtectedFolderOpenbt);
+		layeredPane.add(Setting);
 		layeredPane.add(Developersbt);
 		layeredPane.add(Sendbt);
 		layeredPane.add(Receivebt);
@@ -191,6 +195,20 @@ public class Client_Main_UI extends JFrame
 				}
    			}
    		});
+        
+        Setting = new JButton(new ImageIcon("img/Settingbt.png"));
+        Setting.setRolloverIcon(new ImageIcon("img/Settinghbt.png"));
+        Setting.setBounds(470,45,30,30);
+        Setting.setFocusPainted(false);
+        Setting.setContentAreaFilled(false);
+        Setting.setBorderPainted(false);
+        Setting.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO 자동 생성된 메소드 스텁
+				_cst.UI_ON();
+			}
+		});
         
         Developersbt = new JButton(new ImageIcon("img/Developersbt.png"));
         Developersbt.setRolloverIcon(new ImageIcon("img/DevelopersRbt.png"));
