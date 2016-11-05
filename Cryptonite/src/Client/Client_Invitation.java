@@ -207,6 +207,7 @@ public class Client_Invitation extends JFrame{
 						new Client_Group_Main(_id, _gpCode, _selectedGroup, false, _cfl.getFileList());
 					}
 				}
+				close();
 			}
 		});
 	        
@@ -230,6 +231,11 @@ public class Client_Invitation extends JFrame{
 		JLabel input = new JLabel(message);
 		input.setFont(fontbt);
 		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	private void close()
+	{
+		this.dispose();
 	}
 	
 	class MyPanel extends JPanel 

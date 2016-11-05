@@ -125,7 +125,6 @@ public class Client_FileShare_Receive extends Thread implements PacketRule
 					}
 				}
 				_cpb.UI_OFF();
-				showMessage("Notification", "All files were completely received.");
 			} 
 			catch (IOException e) 
 			{
@@ -135,6 +134,10 @@ public class Client_FileShare_Receive extends Thread implements PacketRule
 			{
 				System.out.println("You does not select the folder.");
 			}
+			if (_raf != null)
+				showMessage("Notification", "All files were completely received.");
+			else
+				showMessage("Error", "Incorrect OTP!!");
 		}
 	}
 	
