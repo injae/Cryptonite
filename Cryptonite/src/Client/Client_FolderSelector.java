@@ -2,6 +2,7 @@ package Client;
 
 import java.awt.Font;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -43,7 +44,11 @@ public class Client_FolderSelector
 	  		showMessage("Error", "Folder is not selected.");
 	  		selectionEnd = true;
 	  		return false;
-	  	}
+	  	} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public String getSelectedPath()

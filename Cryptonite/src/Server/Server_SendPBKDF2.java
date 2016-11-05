@@ -34,7 +34,7 @@ public class Server_SendPBKDF2 extends Server_Funtion {
 				
 				System.out.println("Send : " + salt + iteration);
 				System.out.println(salt.getBytes().length);
-				_activity.send.setPacket(salt.getBytes(),16).write();
+				_activity.send.setPacket(salt.getBytes(),32).write();
 				_activity.send.setPacket(intToByteArray(iteration),4).write();
 				
 				
