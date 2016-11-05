@@ -283,6 +283,12 @@ public class Client_Main_UI extends JFrame
 						
 						File save = new File("Cryptonite_Client/log/protectedlog.ser");
 						try {
+							FileReader fr = new FileReader(save);
+							BufferedReader br = new BufferedReader(fr);
+							Client_Icon_Change.change(_address);
+							Client_Icon_Change.restore(br.readLine());
+							br.close();
+							fr.close();
 							
 							FileWriter fw = new FileWriter(save);
 							fw.write(_address);

@@ -16,7 +16,15 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
+import java.util.Base64;
+
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,8 +35,9 @@ import javax.swing.SwingConstants;
 
 import Client.Client_Group_Main.RecoveryButton;
 import Crypto.KeyReposit;
+import Function.PacketRule;
 
-public class Client_FileRecovery extends JFrame
+public class Client_FileRecovery extends JFrame implements PacketRule
 {	
 	private BufferedImage _img = null;
 	private final int MAX_BTN = 18;
@@ -94,6 +103,8 @@ public class Client_FileRecovery extends JFrame
 			else 		 { isClick = true;  }
 		}
 		public String noExtensionName() { return fileName.substring(0, fileName.length() - 5); }
+		public String ExtensionName() { return fileName;}
+		public String Extension() {return fileName.substring(fileName.length()-4,fileName.length());}
 		
 		public boolean isDir;
 		public JButton button;
@@ -207,11 +218,18 @@ public class Client_FileRecovery extends JFrame
 	
 	private void makeFile(int index, int x, int y)
 	{
+		JButton btn = null;
 		if(_btnList.get(index).button!=null) { return; }
-		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file.png"));
+		if (_btnList.get(index).fileName.substring(_btnList.get(index).fileName.length()-4, _btnList.get(index).fileName.length()).equals("cnmc"))
+			btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file_cnmc.png"));
+		else 
+			btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file.png"));
 		btn.setFont(fontbt);
-		btn.setToolTipText(_btnList.get(index).noExtensionName());
-		btn.setPressedIcon(new ImageIcon("gui/file.png"));
+		btn.setToolTipText(_btnList.get(index).ExtensionName());
+		if (_btnList.get(index).fileName.substring(_btnList.get(index).fileName.length()-4, _btnList.get(index).fileName.length()).equals("cnmc"))
+			btn.setPressedIcon(new ImageIcon("gui/file_cnmc.png"));
+		else
+			btn.setPressedIcon(new ImageIcon("gui/file.png"));
 		btn.setBounds((7+x),(80+y),80,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
@@ -232,11 +250,17 @@ public class Client_FileRecovery extends JFrame
 
 				if(!_btnList.get(index).isClick)
 				{	
-					_btnList.get(index).button.setIcon(new ImageIcon("gui/file.png"));
+					if (_btnList.get(index).fileName.substring(_btnList.get(index).fileName.length()-4, _btnList.get(index).fileName.length()).equals("cnmc"))
+						_btnList.get(index).button.setIcon(new ImageIcon("gui/file_cnmc.png"));
+					else 
+						_btnList.get(index).button.setIcon(new ImageIcon("gui/file.png"));
 				}
 				else
 				{
-					_btnList.get(index).button.setIcon(new ImageIcon("gui/file_check.png"));
+					if (_btnList.get(index).fileName.substring(_btnList.get(index).fileName.length()-4, _btnList.get(index).fileName.length()).equals("cnmc"))
+						_btnList.get(index).button.setIcon(new ImageIcon("gui/file_cnmc_check.png"));
+					else
+						_btnList.get(index).button.setIcon(new ImageIcon("gui/file_check.png"));
 				}
 			}
 		});
@@ -357,11 +381,26 @@ public class Client_FileRecovery extends JFrame
 				 selectFolder();
 				 if(_downloadPath != null)
 				 {
+					 SecretKey key = null;
 					 for(int i =0; i < _btnList.size(); i++)
 					 {
 						 if(_btnList.get(i).isClick)
 						 {
-							 new Client_File_Download().requestFile(_btnList.get(i).fullPath, _downloadPath + "\\" + _btnList.get(i).fileName, KeyReposit.getInstance().get_aesKey());
+							 if (_btnList.get(i).Extension().equals("cnmc"))
+							 {
+								 String temp = getPassword(_btnList.get(i).noExtensionName());
+								 if (temp==null)
+								 {
+									 JOptionPane.showConfirmDialog(null, _btnList.get(i).noExtensionName() + " download Canceled!");
+									 continue;
+								 }
+								 String pbk = getPBK(temp);
+								 
+								 key = new SecretKeySpec(pbk.concat("0000").getBytes(),"AES");
+							 }
+							 else
+								 key = KeyReposit.getInstance().get_aesKey();
+							 new Client_File_Download().requestFile(_btnList.get(i).fullPath, _downloadPath + "\\" + _btnList.get(i).fileName, key);
 						 }
 					 } 
 				 }
@@ -487,4 +526,48 @@ public class Client_FileRecovery extends JFrame
 		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	private String getPBK (String password)
+	{
+		Client_Server_Connector _css = Client_Server_Connector.getInstance();
+		byte[] op = new byte[1024];
+		String salt = null;
+		int iteration = 0;
+		byte size =1;
+		try {
+			op[0]=GET_PBKDF2;
+			op[1]=size;
+			_css.send.setPacket(op).write();
+			
+			salt = new String(_css.receive.setAllocate(32).read().getByte());
+			iteration = byteArrayToInt(_css.receive.setAllocate(4).read().getByte());
+			
+			System.out.println(salt +"  " + iteration);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return pbkdf2(password,salt,iteration);
+		
+	}
+	public  int byteArrayToInt(byte bytes[]) {
+		return ((((int)bytes[0] & 0xff) << 24) |
+				(((int)bytes[1] & 0xff) << 16) |
+				(((int)bytes[2] & 0xff) << 8) |
+				(((int)bytes[3] & 0xff)));
+	} 
+    public String pbkdf2(String password, String salt, int iterations) {
+        try {
+            PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), iterations, 20*8);
+            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            byte[] hash = skf.generateSecret(spec).getEncoded();
+            return new String(Base64.getEncoder().encode(hash));
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException("error on pbkdf2", e);
+        }
+    }
+    
+	private String getPassword(String name) {
+		// TODO 자동 생성된 메소드 스텁
+		return (String) JOptionPane.showInputDialog(null, "Input "+name+" Password", "Password", JOptionPane.PLAIN_MESSAGE, null, null, null);
+	}
 }

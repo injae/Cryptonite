@@ -18,6 +18,7 @@ import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
+import java.util.StringTokenizer;
 import java.awt.Dialog;
 
 import javax.crypto.Cipher;
@@ -77,12 +78,21 @@ public class KeyReposit extends Thread implements PacketRule
 				pg.accept();
 				String path = pg.receive();
 				
+				StringTokenizer st = new StringTokenizer(path, "\\");
+				String fileName = null;
+				while(st.hasMoreTokens())
+				{
+					fileName = st.nextToken();
+				}
+				
 				if(_aesKey_lv1 == null) { continue; }
-				if(path.substring(path.length()-4, path.length()).contains("cnec"))
+				if(path.substring(path.length()-4, path.length()).contains("cnmc"))
 				{
 
-					password = getPassword();
+					password = getPassword(fileName);
 					//System.out.println(getPBK(password) + " " + getPBK(password).length());
+					if (password == null)
+						continue;
 					makeLv2Key(password);
 					
 					new Decrypter(path,_aesKey_lv2).start();
@@ -99,9 +109,9 @@ public class KeyReposit extends Thread implements PacketRule
 	}
 	
 	
-	private String getPassword() {
+	private String getPassword(String name) {
 		// TODO 자동 생성된 메소드 스텁
-		return (String) JOptionPane.showInputDialog(null, "Input Password", "Password", JOptionPane.PLAIN_MESSAGE, null, null, null);
+		return (String) JOptionPane.showInputDialog(null, "Input "+ name + " Password", "Password", JOptionPane.PLAIN_MESSAGE, null, null, null);
 	}
 
 	public static KeyReposit getInstance() {
@@ -198,7 +208,7 @@ public class KeyReposit extends Thread implements PacketRule
 			op[1]=size;
 			_css.send.setPacket(op).write();
 			
-			salt = new String(_css.receive.setAllocate(16).read().getByte());
+			salt = new String(_css.receive.setAllocate(32).read().getByte());
 			iteration = byteArrayToInt(_css.receive.setAllocate(4).read().getByte());
 			
 			System.out.println(salt +"  " + iteration);
