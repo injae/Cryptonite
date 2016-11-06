@@ -9,6 +9,7 @@ This is personal & group information security program
   - In real time, detects a specific folder, file encryption and automatic backup.
     - Double click to decryption (only logged in )
     - Backup encrypted file in server 
+    - You can set a password for each file to protect it. (PBKDF2)
   - Create group, group members can sharing files (with gps authentication)
     - Group delete, invite, withdrawal
 
