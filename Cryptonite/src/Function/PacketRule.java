@@ -29,6 +29,7 @@ public interface PacketRule
 	byte FOLDER_LIST = 22;
 	byte SET_GPS = 23;
 	byte GET_PBKDF2 = 24;
+	byte GET_FILE_SHA_HEADER = 25;
 	//---------------------------------------
 	
 	// AUTOBACKUP(1) AUTOBACKUP EVENT

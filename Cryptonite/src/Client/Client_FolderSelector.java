@@ -44,11 +44,7 @@ public class Client_FolderSelector
 	  		showMessage("Error", "Folder is not selected.");
 	  		selectionEnd = true;
 	  		return false;
-	  	} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
+	  	}
 	}
 	
 	public String getSelectedPath()

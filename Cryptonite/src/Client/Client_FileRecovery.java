@@ -16,6 +16,7 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 import java.io.File;
 import java.io.IOException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import javax.swing.SwingConstants;
 
 import Client.Client_Group_Main.RecoveryButton;
 import Crypto.KeyReposit;
+import Function.Function;
 import Function.PacketRule;
 
 public class Client_FileRecovery extends JFrame implements PacketRule
@@ -396,6 +398,14 @@ public class Client_FileRecovery extends JFrame implements PacketRule
 								 }
 								 String pbk = getPBK(temp);
 								 
+								 String sha = SHA(pbk.concat("0000"));
+								 
+								 if (!sha.equals(getFileSHA(_btnList.get(i).fullPath)))
+								 {
+									 JOptionPane.showMessageDialog(null, "The password is incorrect.\n"+_btnList.get(i).fileName+" download canceled!!","Error",JOptionPane.OK_OPTION);
+									 continue;
+								 }
+								 
 								 key = new SecretKeySpec(pbk.concat("0000").getBytes(),"AES");
 							 }
 							 else
@@ -518,6 +528,30 @@ public class Client_FileRecovery extends JFrame implements PacketRule
 		 
 	}
 	
+	private String getFileSHA(String path) {
+		Client_Server_Connector css = Client_Server_Connector.getInstance();
+		
+		byte[] op = new byte[1024];
+		byte size =1;
+		String sha = null;
+		try {
+			op[0]=GET_FILE_SHA_HEADER;
+			op[1]=size;
+			op[2] = (byte)String.valueOf(path).getBytes().length;
+			Function.frontInsertByte(3, String.valueOf(path).getBytes(), op);
+			
+			css.send.setPacket(op).write();
+			
+			
+			sha = new String(css.receive.setAllocate(64).read().getByte());
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return sha;
+	}
+
 	private void showMessage(String title, String message) 
 	{
 		Font fontbt = new Font("SansSerif", Font.BOLD,24);
@@ -565,7 +599,23 @@ public class Client_FileRecovery extends JFrame implements PacketRule
             throw new RuntimeException("error on pbkdf2", e);
         }
     }
-    
+    public String SHA(String str)
+    {
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e2) {
+			e2.printStackTrace();
+		} 
+        md.update(str.getBytes()); 
+        byte byteData[] = md.digest();
+        
+        StringBuffer sb = new StringBuffer(); 
+        for(int i=0; i<byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i]&0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
+    }
 	private String getPassword(String name) {
 		// TODO 자동 생성된 메소드 스텁
 		return (String) JOptionPane.showInputDialog(null, "Input "+name+" Password", "Password", JOptionPane.PLAIN_MESSAGE, null, null, null);

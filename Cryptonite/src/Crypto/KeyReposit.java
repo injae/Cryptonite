@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
@@ -15,6 +16,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
@@ -93,9 +95,23 @@ public class KeyReposit extends Thread implements PacketRule
 					//System.out.println(getPBK(password) + " " + getPBK(password).length());
 					if (password == null)
 						continue;
+					
+					String temp = SHA(getPBK(password).concat("0000"));
+					char[] temp2 = new char[64];
+					FileReader fr = new FileReader(new File(path));
+					BufferedReader br = new BufferedReader(fr);
+					br.read(temp2, 0, 64);
+					br.close();
+					System.out.println(String.valueOf(temp2));
+					if (!temp.equals(String.valueOf(temp2)))
+					{
+						JOptionPane.showMessageDialog(null, "Password is incorrect or account is different.","Error!", JOptionPane.OK_OPTION);
+						continue;
+					}
+					
 					makeLv2Key(password);
 					
-					new Decrypter(path,_aesKey_lv2).start();
+					new Decrypter(path,_aesKey_lv2,1).start();
 					
 				}
 				else
@@ -225,6 +241,23 @@ public class KeyReposit extends Thread implements PacketRule
 				(((int)bytes[2] & 0xff) << 8) |
 				(((int)bytes[3] & 0xff)));
 	} 
+	public String SHA(String str)
+    {
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e2) {
+			e2.printStackTrace();
+		} 
+        md.update(str.getBytes()); 
+        byte byteData[] = md.digest();
+        
+        StringBuffer sb = new StringBuffer(); 
+        for(int i=0; i<byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i]&0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
+    }
     public String pbkdf2(String password, String salt, int iterations) {
         try {
             PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), iterations, 20*8);

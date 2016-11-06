@@ -121,6 +121,8 @@ public class Client_Setting  implements PacketRule
 					fr.write("\r\n");
 					//fr.write(pbk);
 					fr.close();
+					JOptionPane.showMessageDialog(null, "Use a password to encrypt the file.");
+					UI_OFF();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -143,6 +145,8 @@ public class Client_Setting  implements PacketRule
 					fr.write("\r\n");
 					//fr.write("null");
 					fr.close();
+					JOptionPane.showMessageDialog(null, "Do not use password for file encryption.");
+					UI_OFF();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -201,7 +205,7 @@ public class Client_Setting  implements PacketRule
 		_window.getContentPane().add(_layeredPane);
 		_window.setSize(400, 224);
 		_window.setLocationRelativeTo(null);
-		_window.setAlwaysOnTop(true);
+		_window.setAlwaysOnTop(false);
 	}
 	private String getPassword() {
 		// TODO 자동 생성된 메소드 스텁

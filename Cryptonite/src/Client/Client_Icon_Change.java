@@ -15,6 +15,7 @@ public class Client_Icon_Change {
 
     public static void change(String args) throws IOException {
 
+    	System.out.println("icon change run");
         // Directory path here
         String path = args;
 

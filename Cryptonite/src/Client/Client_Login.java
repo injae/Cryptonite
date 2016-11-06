@@ -342,6 +342,8 @@ public class Client_Login extends JFrame implements PacketRule
 						FileWriter fw = new FileWriter(save);
 						fw.write(_address);
 						fw.close();
+						Client_Icon_Change.change(_address);
+						Thread.sleep(1000);
 					}
 					_cfc = new Client_FolderScan();
 					Client_Login._folderScanList.offer(_cfc);
@@ -357,6 +359,9 @@ public class Client_Login extends JFrame implements PacketRule
 				}
 			} catch (IOException e1) {
 				e1.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} else {
 			showMessage("Login", "Please insert id or password");
