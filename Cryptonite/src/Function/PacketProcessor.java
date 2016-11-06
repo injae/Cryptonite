@@ -129,6 +129,11 @@ public class PacketProcessor
 		return _queue.remove();
 	}
 	
+	public void flush()
+	{
+		_queue.clear();
+	}
+	
 	public PacketProcessor read() throws IOException
 	{
 		allocate(LIMIT_SIZE);

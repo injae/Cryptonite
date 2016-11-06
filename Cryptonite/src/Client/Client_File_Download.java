@@ -26,7 +26,7 @@ public class Client_File_Download implements PacketRule
 		try 
 		{
 			System.out.println("FileName ::::: " + path);
-			
+			String extension = path.substring(path.length()-5,path.length());
 			targetpath = targetpath.substring(0,targetpath.length() - 5);
 			_reposit = KeyReposit.getInstance();
 			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
@@ -53,12 +53,24 @@ public class Client_File_Download implements PacketRule
 			}
 			
 			long fileSize = Long.parseLong(tmpfileSize);
-			csc.receive.setAllocate(fileSize);
+			
 			
 			RandomAccessFile raf  = new RandomAccessFile(targetpath, "rw");
 			PacketProcessor p = new PacketProcessor(raf.getChannel(), false);
 			
-			p.setAllocate(fileSize);
+			if (extension.equals(".cnmc"))
+			{
+				csc.receive.setAllocate(64);
+				while (!csc.receive.isAllocatorEmpty())
+					csc.receive.read().getByte();
+				csc.receive.setAllocate(fileSize-64);
+				p.setAllocate(fileSize-64);
+			}
+			else
+			{
+				csc.receive.setAllocate(fileSize);
+				p.setAllocate(fileSize);
+			}
 			while(!csc.receive.isAllocatorEmpty())
 			{	
 				p.setPacket(_crypto.endecription(csc.receive.read().getByte())).write();

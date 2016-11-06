@@ -1,6 +1,7 @@
 package Client;
 
 import java.nio.channels.*;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.Ref;
@@ -106,6 +107,7 @@ public class Client_AutoBackup implements PacketRule
 						try
 						{
 							String extention = new String(".cnec");
+							String pbk = null;
 							
 							File setting = new File("Cryptonite_Client/log/setting.ser");
 							
@@ -121,10 +123,10 @@ public class Client_AutoBackup implements PacketRule
 									{
 										br.close();
 										fr.close();
-										JOptionPane.showConfirmDialog(null, "Autobackup Canceled!","Cancel!",JOptionPane.OK_OPTION);
+										JOptionPane.showMessageDialog(null, "Autobackup Canceled!","Cancel!",JOptionPane.OK_OPTION);
 										return;
 									}
-									String pbk = getPBK(temp);
+									pbk = getPBK(temp);
 									key = new SecretKeySpec(pbk.concat("0000").getBytes(), "AES"); 
 									extention = new String(".cnmc");
 								}
@@ -155,17 +157,56 @@ public class Client_AutoBackup implements PacketRule
 							byte[] temp = new byte[1024];
 							temp[0] = AUTOBACKUP;
 							temp[1] = FILE;
-							temp[2] = (byte)String.valueOf(_fileSize).getBytes().length;
+							
+							if (extention.equals(".cnmc"))
+								temp[2] = (byte)String.valueOf(_fileSize+64).getBytes().length;
+							else
+								temp[2] = (byte)String.valueOf(_fileSize).getBytes().length;
+							
 							temp[3] = (byte)(absoluteDirectory + extention).getBytes().length;
 							temp[4] = (byte)_protectedFolderName.getBytes().length;
-							Function.frontInsertByte(5, String.valueOf(_fileSize).getBytes(), temp);
-							Function.frontInsertByte(5 + String.valueOf(_fileSize).getBytes().length, (_absoluteDirectory+extention).getBytes(), temp);
+							if (extention.equals(".cnmc"))
+							{
+								Function.frontInsertByte(5, String.valueOf(_fileSize+64).getBytes(), temp);
+								Function.frontInsertByte(5 + String.valueOf(_fileSize+64).getBytes().length, (_absoluteDirectory+extention).getBytes(), temp);
+							}
+							else
+							{
+								Function.frontInsertByte(5, String.valueOf(_fileSize).getBytes(), temp);
+								Function.frontInsertByte(5 + String.valueOf(_fileSize).getBytes().length, (_absoluteDirectory+extention).getBytes(), temp);
+							}
 							Function.frontInsertByte(900, _protectedFolderName.getBytes(), temp);
 							
 							_csc.send.setPacket(temp).write();
-							pw.setAllocate(_fileSize);
+							//pw.setAllocate(_fileSize);
+							if (extention.equals(".cnmc"))
+							{
+								pw.setAllocate(64);
+								pw.setAllocate(_fileSize);
+							}
+							else
+							{
+								pw.setAllocate(_fileSize);
+							}
 							pr.setAllocate(_fileSize);
-							_csc.send.setAllocate(_fileSize); // 
+							
+							if (extention.equals(".cnmc"))
+							{
+								_csc.send.setAllocate(64);
+								_csc.send.setAllocate(_fileSize);
+							}
+							else
+							{
+								_csc.send.setAllocate(_fileSize);
+							}
+							
+							if (extention.equals(".cnmc"))
+							{
+								pw.setPacket(SHA(pbk.concat("0000")).getBytes(),64).write();
+								_csc.send.setPacket(SHA(pbk.concat("0000")).getBytes(),64).write();
+							}
+
+							
 							while(!pr.isAllocatorEmpty())
 							{
 								_crypto.init(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, key));
@@ -328,6 +369,24 @@ public class Client_AutoBackup implements PacketRule
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException("error on pbkdf2", e);
         }
+    }
+    
+    public String SHA(String str)
+    {
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e2) {
+			e2.printStackTrace();
+		} 
+        md.update(str.getBytes()); 
+        byte byteData[] = md.digest();
+        
+        StringBuffer sb = new StringBuffer(); 
+        for(int i=0; i<byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i]&0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
     }
     
 	public String getProtectedName()

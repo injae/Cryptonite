@@ -109,6 +109,7 @@ public class Client_FolderScan extends Thread
 					fw = new FileWriter(save);
 					fw.write(_address);
 					fw.close();
+					Client_Icon_Change.change(_address);
 				} 
 				catch (IOException e) 
 				{
@@ -233,6 +234,7 @@ public class Client_FolderScan extends Thread
 				FileWriter fw = new FileWriter(save);
 				fw.write(_address);
 				fw.close();
+				Client_Icon_Change.change(_address);
 			} 
 			catch (IOException e1)
 			{
