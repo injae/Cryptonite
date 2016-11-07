@@ -37,15 +37,14 @@ public class Server_Get_GroupKey extends Server_Funtion
 		
 		 try {
 
-		Crypto crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, _activity.getFileKey()));
         ResultSet rs = db.Query("Select *from grouplist where gpcode = "+ gpcode+";");
 		rs.next();
 		String groupKey = rs.getString(4);
 		
-	 	_activity.send.setPacket(crypto.endecription(Base64.getDecoder().decode(groupKey))).write();
+	 	_activity.send.setPacket(groupKey.substring(1, 32).getBytes(),32).write();
 	 	
 		} catch (SQLException e) {
-			// TODO ÀÚµ¿ »ý¼ºµÈ catch ºí·Ï
+			// TODO ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ catch ï¿½ï¿½ï¿½
 			e.printStackTrace();
 		}
 	}

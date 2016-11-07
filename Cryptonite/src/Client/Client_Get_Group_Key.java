@@ -26,7 +26,7 @@ public class Client_Get_Group_Key implements PacketRule
 		Client_Server_Connector csc = Client_Server_Connector.getInstance();
 		KeyReposit reposit = KeyReposit.getInstance();
 		System.out.println(Base64.getEncoder().encodeToString(reposit.get_aesKey().getEncoded()));
-		Crypto crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, reposit.get_aesKey()));
+		//Crypto crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, reposit.get_aesKey()));
 		
 		byte[] event = new byte[1024];
 		event[0] = GET_GROUP_KEY;
@@ -38,7 +38,7 @@ public class Client_Get_Group_Key implements PacketRule
 		try 
 		{
 			csc.send.setPacket(event).write();
-			GpKey = new SecretKeySpec(crypto.endecription(csc.receive.setAllocate(32).read().getByte()), "AES");
+			GpKey = new SecretKeySpec(csc.receive.setAllocate(32).read().getByte(), "AES");
 		}
 		catch (IOException e)
 		{

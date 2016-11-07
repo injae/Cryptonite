@@ -163,7 +163,7 @@ public class Client_AutoBackup implements PacketRule
 							else
 								temp[2] = (byte)String.valueOf(_fileSize).getBytes().length;
 							
-							temp[3] = (byte)(absoluteDirectory + extention).getBytes().length;
+							temp[3] = (byte)(_absoluteDirectory + extention).getBytes().length;
 							temp[4] = (byte)_protectedFolderName.getBytes().length;
 							if (extention.equals(".cnmc"))
 							{

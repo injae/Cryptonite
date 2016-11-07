@@ -185,6 +185,7 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			}
 			else if(_checkProperty.equals("FILE"))
 			{	
+				
 				p.setPacket(_activity.receive.getByte()).write();
 				
 				if(count == _packetMaxCount)

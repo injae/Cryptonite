@@ -30,7 +30,7 @@ public class Client_File_Download implements PacketRule
 			targetpath = targetpath.substring(0,targetpath.length() - 5);
 			_reposit = KeyReposit.getInstance();
 			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
-			_crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
+			//_crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
 			
 			Client_Server_Connector csc = Client_Server_Connector.getInstance();
 			byte[] event = new byte[1024];
@@ -74,6 +74,8 @@ public class Client_File_Download implements PacketRule
 			while(!csc.receive.isAllocatorEmpty())
 			{	
 				p.setPacket(_crypto.endecription(csc.receive.read().getByte())).write();
+		//		p.setPacket(csc.receive.read().getByte()).write();
+
 			}
 			p.close();
 		}

@@ -17,11 +17,19 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -40,10 +48,12 @@ import javax.swing.SwingConstants;
 import Client.Client_FileRecovery.RecoveryButton;
 import Client.Client_Group_Main.MyPanel;
 import Crypto.KeyReposit;
+import Function.Function;
+import Function.PacketRule;
 
 
 
-public class Client_Group_Main extends JFrame
+public class Client_Group_Main extends JFrame implements PacketRule
 {
 	private BufferedImage _img = null;
 	private BufferedImage _img2 = null;
@@ -100,6 +110,7 @@ public class Client_Group_Main extends JFrame
 			else 		 { isClick = true;  }
 		}
 		public String noExtensionName() { return fileName.substring(0, fileName.length() - 5); }
+		public String Extension() {return fileName.substring(fileName.length()-5, fileName.length());}
 		
 		public boolean isDir;
 		public JButton button;
@@ -348,11 +359,21 @@ public class Client_Group_Main extends JFrame
 	}
 	private void makeFile(int index, int x, int y) 
 	{
+		JButton btn = null;
 		if(_btnList.get(index).button!=null) {return;}
-		JButton btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file.png"));
+		if (_btnList.get(index).Extension().equals(".cnmc"))
+			btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file_cnmc.png"));
+		else
+			btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file.png"));
+
 		btn.setFont(fontbt);
 		btn.setToolTipText(_btnList.get(index).noExtensionName());
-		btn.setPressedIcon(new ImageIcon("gui/file.png"));
+		
+		if (_btnList.get(index).Extension().equals(".cnmc"))
+			btn.setPressedIcon(new ImageIcon("gui/file_cnmc.png"));
+		else
+			btn.setPressedIcon(new ImageIcon("gui/file.png"));
+
 		btn.setBounds((6+x),(75+y),92,120);
 		btn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btn.setVerticalAlignment(SwingConstants.TOP);
@@ -373,11 +394,19 @@ public class Client_Group_Main extends JFrame
 
 				if(!_btnList.get(index).isClick)
 				{	
-					_btnList.get(index).button.setIcon(new ImageIcon("gui/file.png"));
+					if (_btnList.get(index).Extension().equals(".cnmc"))
+						_btnList.get(index).button.setIcon(new ImageIcon("gui/file_cnmc.png"));
+					else
+						_btnList.get(index).button.setIcon(new ImageIcon("gui/file.png"));
+
 				}
 				else
 				{
-					_btnList.get(index).button.setIcon(new ImageIcon("gui/file_check.png"));
+					if (_btnList.get(index).Extension().equals(".cnmc"))
+						_btnList.get(index).button.setIcon(new ImageIcon("gui/file_cnmc_check.png"));
+					else
+						_btnList.get(index).button.setIcon(new ImageIcon("gui/file_check.png"));
+
 				}
 			}
 		});
@@ -444,7 +473,37 @@ public class Client_Group_Main extends JFrame
 					 {
 						 if(_btnList.get(i).isClick)
 						 {
-							 new Client_File_Download().requestFile(_btnList.get(i).fullPath, _downloadPath + "\\" + _btnList.get(i).fileName, new Client_Get_Group_Key().running(_gpCode));
+							 SecretKey key = null;
+							 if (_btnList.get(i).Extension().equals(".cnmc"))
+							 {
+								 String password = getPassword(_btnList.get(i).fileName);
+								 
+								 if (password == null)
+								 {
+									 JOptionPane.showMessageDialog(null, _btnList.get(i).fileName + " download canceled!!");
+									 continue;
+								 }
+								 
+								 String pbk = getPBK(password,Integer.parseInt(_gpCode.substring(1)));
+								 
+								 String sha = SHA(pbk.concat("0000"));
+								 
+								 String filesha = getFileSHA(_btnList.get(i).fullPath);
+								 
+								 if (!sha.equals(filesha))
+								 {
+									 JOptionPane.showMessageDialog(null, _btnList.get(i).fileName+" password incorrect!!", "Error", JOptionPane.OK_OPTION);
+									 continue;
+								 }
+								 
+								 key = new SecretKeySpec(pbk.concat("0000").getBytes(),"AES");
+							 }
+							 else
+							 {
+								 key = new Client_Get_Group_Key().running(_gpCode);
+							 }
+							 
+							 new Client_File_Download().requestFile(_btnList.get(i).fullPath, _downloadPath + "\\" + _btnList.get(i).fileName, key);
 						 }
 					 }
 	         	}
@@ -689,4 +748,94 @@ public class Client_Group_Main extends JFrame
 		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	public  int byteArrayToInt(byte bytes[]) {
+		return ((((int)bytes[0] & 0xff) << 24) |
+				(((int)bytes[1] & 0xff) << 16) |
+				(((int)bytes[2] & 0xff) << 8) |
+				(((int)bytes[3] & 0xff)));
+	} 
+    public String pbkdf2(String password, String salt, int iterations) {
+        try {
+            PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), iterations, 20*8);
+            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            byte[] hash = skf.generateSecret(spec).getEncoded();
+            return new String(Base64.getEncoder().encode(hash));
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException("error on pbkdf2", e);
+        }
+    }
+    
+    public String SHA(String str)
+    {
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e2) {
+			e2.printStackTrace();
+		} 
+        md.update(str.getBytes()); 
+        byte byteData[] = md.digest();
+        
+        StringBuffer sb = new StringBuffer(); 
+        for(int i=0; i<byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i]&0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
+    }
+    
+	private String getPassword(String name) {
+		// TODO 자동 생성된 메소드 스텁
+		return (String) JOptionPane.showInputDialog(null, "Input "+ name + " Password\nWarning!!\nIf you forget your password, you will not be able to decrypt the file.", "Password", JOptionPane.PLAIN_MESSAGE, null, null, null);
+	}
+	
+	private String getPBK (String password, int gpCode)
+	{
+		Client_Server_Connector _csc = Client_Server_Connector.getInstance();
+		
+		byte[] op = new byte[1024];
+		String salt = null;
+		int iteration = 0;
+		byte size =1;
+		try {
+			op[0]=GET_PBKDF2_GROUP;
+			op[1]=size;
+			op[2]=(byte) gpCode;
+			_csc.send.setPacket(op).write();
+			
+			salt = new String(_csc.receive.setAllocate(32).read().getByte());
+			iteration = byteArrayToInt(_csc.receive.setAllocate(4).read().getByte());
+			
+			System.out.println("Group: " +salt +"  " + iteration);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return pbkdf2(password,salt,iteration);
+		
+	}
+	
+	private String getFileSHA(String path) {
+		Client_Server_Connector css = Client_Server_Connector.getInstance();
+		
+		byte[] op = new byte[1024];
+		byte size =1;
+		String sha = null;
+		try {
+			op[0]=GET_FILE_SHA_HEADER;
+			op[1]=size;
+			op[2] = (byte)String.valueOf(path).getBytes().length;
+			Function.frontInsertByte(3, String.valueOf(path).getBytes(), op);
+			
+			css.send.setPacket(op).write();
+			
+			
+			sha = new String(css.receive.setAllocate(64).read().getByte());
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return sha;
+	}
+
 }

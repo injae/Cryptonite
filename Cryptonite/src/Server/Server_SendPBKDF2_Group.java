@@ -4,29 +4,31 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Server_SendPBKDF2 extends Server_Funtion {
+public class Server_SendPBKDF2_Group extends Server_Funtion {
 
-	public Server_SendPBKDF2(Server_Client_Activity activity) {
+	public Server_SendPBKDF2_Group(Server_Client_Activity activity) {
 		super(activity);
 	}
 
 	Server_DataBase db = Server_DataBase.getInstance();
+	String gpCode = null;
 	
 	@Override
 	public void Checker(byte[] packet) {
 		_packetMaxCount = 1;
-
+		gpCode = String.valueOf(packet[2]);
+		System.out.println("Receive gpCode: " + gpCode);
 	}
 
 	@Override
 	public void running(int count) throws IOException {
 			try {
 				Checker(_activity.getReceiveEvent());
-				ResultSet rs = db.Query("select * from test where uscode like '" +Server_Code_Manager.codeCutter(_activity.getClientCode()) + "';");
+				ResultSet rs = db.Query("select * from grouplist where gpcode like '" +gpCode + "';");
 				rs.next();
 				
-				String salt = rs.getString(8);
-				int iteration = rs.getInt(9);
+				String salt = rs.getString(6);
+				int iteration = rs.getInt(5);
 				
 				_activity.send.setPacket(salt.getBytes(),32).write();
 				_activity.send.setPacket(intToByteArray(iteration),4).write();
