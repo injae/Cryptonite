@@ -1,0 +1,5 @@
+c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\bin\Release\allo.exe.config
+c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\bin\Release\allo.exe
+c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\bin\Release\allo.pdb
+c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\obj\Release\allo.exe
+c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\obj\Release\allo.pdb
