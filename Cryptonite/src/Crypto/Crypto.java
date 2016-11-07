@@ -16,7 +16,7 @@ public class Crypto {
 	public void init(Cipher cipher) {
 		_cipher = cipher;
 	}
-
+	
 	// Execute Function
 	public byte[] endecription(byte[] target) {
 		try {

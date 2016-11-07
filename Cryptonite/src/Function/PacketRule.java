@@ -30,6 +30,7 @@ public interface PacketRule
 	byte SET_GPS = 23;
 	byte GET_PBKDF2 = 24;
 	byte GET_FILE_SHA_HEADER = 25;
+	byte GET_PBKDF2_GROUP = 26;
 	//---------------------------------------
 	
 	// AUTOBACKUP(1) AUTOBACKUP EVENT

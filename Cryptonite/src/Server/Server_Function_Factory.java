@@ -65,6 +65,8 @@ public class Server_Function_Factory implements PacketRule
 			return new Server_SendPBKDF2(activity);
 		case GET_FILE_SHA_HEADER:
 			return new Server_Get_File_SHA(activity);
+		case GET_PBKDF2_GROUP:
+			return new Server_SendPBKDF2_Group(activity);
 		default:
 		//	System.out.println("Server Funtion Factory: "+ mode);
 			return	new Server_ImDie(activity);

@@ -15,7 +15,6 @@ public class Server_SendPBKDF2 extends Server_Funtion {
 	@Override
 	public void Checker(byte[] packet) {
 		_packetMaxCount = 1;
-		System.out.println("00000");
 
 	}
 
@@ -23,17 +22,12 @@ public class Server_SendPBKDF2 extends Server_Funtion {
 	public void running(int count) throws IOException {
 			try {
 				Checker(_activity.getReceiveEvent());
-				System.out.println("22222");
 				ResultSet rs = db.Query("select * from test where uscode like '" +Server_Code_Manager.codeCutter(_activity.getClientCode()) + "';");
 				rs.next();
-				
-				System.out.println("11111");
 				
 				String salt = rs.getString(8);
 				int iteration = rs.getInt(9);
 				
-				System.out.println("Send : " + salt + iteration);
-				System.out.println(salt.getBytes().length);
 				_activity.send.setPacket(salt.getBytes(),32).write();
 				_activity.send.setPacket(intToByteArray(iteration),4).write();
 				

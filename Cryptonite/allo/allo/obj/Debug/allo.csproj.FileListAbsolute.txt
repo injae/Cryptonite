@@ -1,0 +1,6 @@
+c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\bin\Debug\allo.exe.config
+c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\bin\Debug\allo.exe
+c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\bin\Debug\allo.pdb
+c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\obj\Debug\allo.csprojResolveAssemblyReference.cache
+c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\obj\Debug\allo.exe
+c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\obj\Debug\allo.pdb

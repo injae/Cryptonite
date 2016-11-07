@@ -47,7 +47,12 @@ public class Server_File_Download extends Server_Funtion
 			
 			raf = new RandomAccessFile(file, "rw");
 			_ps = new PacketProcessor(raf.getChannel(), false);
-			_ps.setAllocate(_fileSize);
+			
+			
+			if(filename.substring(filename.length()-5, filename.length()).equals(".cnmc"))
+				_ps.setAllocate(64).setAllocate(_fileSize-64);
+			else
+				_ps.setAllocate(_fileSize);
 			
 			Server_Thread_Manager.getInstance().register(new Server_Funtion_Thread(_activity) 
 			{		
