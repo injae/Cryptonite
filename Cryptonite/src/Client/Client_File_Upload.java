@@ -64,6 +64,7 @@ public class Client_File_Upload extends Thread implements PacketRule
 	
 	private Crypto _crypto = null;
 	private KeyReposit _reposit = null;
+	private SecretKey key = null;
 	
 	// Constructors
 	public Client_File_Upload()
@@ -102,12 +103,17 @@ public class Client_File_Upload extends Thread implements PacketRule
 			_cpb.UI_ON();
 			
 			if (_mod == 0)
-				_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(_gpCode)));
+			{
+				key = new Client_Get_Group_Key().running(_gpCode);
+				_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, key));
+			}
 			else
 			{
 				pbk = getPBK(password, Integer.parseInt(_gpCode.substring(1)));
-				SecretKey key = new SecretKeySpec(pbk.concat("0000").getBytes(), "AES");
+				key = new SecretKeySpec(pbk.concat("0000").getBytes(), "AES");
 				_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, key));
+				System.out.println(pbk.length());
+				System.out.println(_gpCode);
 			}
 			
 			
@@ -132,6 +138,7 @@ public class Client_File_Upload extends Thread implements PacketRule
 					Function.frontInsertByte(3 + _fileNameArray[i].getBytes().length, String.valueOf(_fileSizeArray[i]+64).getBytes(), event);
 
 				Function.frontInsertByte(800, _gpCode.getBytes(), event);
+				
 				_csc.send.setPacket(event).write();
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
@@ -144,13 +151,15 @@ public class Client_File_Upload extends Thread implements PacketRule
 			
 				if (_mod == 1)
 				{
-					_csc.send.setAllocate(64);
+					_csc.send.setAllocate(_fileSizeArray[i]+64);
 					_csc.send.setPacket(SHA(pbk.concat("0000")).getBytes(),64).write();
 				}
-
-				_csc.send.setAllocate(_fileSizeArray[i]);
+				else
+					_csc.send.setAllocate(_fileSizeArray[i]);
+				
 				while(!p.isAllocatorEmpty())
 				{
+					_crypto.init(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, key));
 					_csc.send.setPacket(_crypto.endecription(p.read().getByte())).write();
 				//	_csc.send.setPacket(p.read().getByte()).write();
 				}

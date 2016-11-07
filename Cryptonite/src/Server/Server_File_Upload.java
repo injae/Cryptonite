@@ -75,7 +75,7 @@ public class Server_File_Upload extends Server_Funtion implements PacketRule
 		setFileInformation(packet);
 		
 		if (_fileName.substring(_fileName.length()-5,_fileName.length()).equals(".cnmc"))
-			_packetMaxCount = 1 + 1 + sendPacketSize(_fileSize);
+			_packetMaxCount = 1 + 1 + sendPacketSize(_fileSize-64);
 		else
 			_packetMaxCount = 1 + sendPacketSize(_fileSize);
 		
@@ -90,12 +90,11 @@ public class Server_File_Upload extends Server_Funtion implements PacketRule
 			e.printStackTrace();
 		}
 		
-/*		if (_fileName.substring(_fileName.length()-5, _fileName.length()).equals(".cnmc"))
+		if (_fileName.substring(_fileName.length()-5, _fileName.length()).equals(".cnmc"))
 		{
-			_activity.receive.setAllocate(64);
-			_activity.receive.setAllocate(_fileSize-64);
-		}*/
-		//else
+			_activity.receive.setAllocate(64).setAllocate(_fileSize-64);
+		}
+		else
 			_activity.receive.setAllocate(_fileSize);
 		
 		_p = new PacketProcessor(_fileChannel, false);

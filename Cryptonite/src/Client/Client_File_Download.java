@@ -60,9 +60,7 @@ public class Client_File_Download implements PacketRule
 			
 			if (extension.equals(".cnmc"))
 			{
-				csc.receive.setAllocate(64);
-				while (!csc.receive.isAllocatorEmpty())
-					csc.receive.read().getByte();
+				csc.receive.setAllocate(64).read().getByte();
 				csc.receive.setAllocate(fileSize-64);
 				p.setAllocate(fileSize-64);
 			}

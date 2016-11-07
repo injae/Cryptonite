@@ -134,11 +134,19 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		{
 			_checkProperty = "DIRECTORY";
 			_packetMaxCount = 1 + 1;
+			try {
+				_activity.send.setPacket(_address.getBytes(),500).write();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		else if(packet[1] == FILE)
 		{
 			setFileInformation(packet);
-			_packetMaxCount = 1 + sendPacketSize(_fileSize);
+			if (_address.substring(_address.length()-5,_address.length()).equals(".cnmc"))
+				_packetMaxCount = 1 + 1 + sendPacketSize(_fileSize-64);
+			else
+				_packetMaxCount = 1 + sendPacketSize(_fileSize);
 			
 			try 
 			{
@@ -154,6 +162,11 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 			{
 				e.printStackTrace();
 			}
+			
+			if (_address.substring(_address.length()-5,_address.length()).equals(".cnmc"))
+				_activity.receive.setAllocate(64).setAllocate(_fileSize-64);
+			else
+				_activity.receive.setAllocate(_fileSize);
 
 			p = new PacketProcessor(_fileChannel, false);
 			_cutSize = 1;
@@ -166,14 +179,14 @@ public class Server_AutoBackup extends Server_Funtion implements PacketRule
 		if(count == 1) 
 		{ 
 			Checker(_activity.getReceiveEvent());
-			if(_checkProperty.equals("DIRECTORY"))
+/*			if(_checkProperty.equals("DIRECTORY"))
 			{
 				_activity.send.setPacket(_address.getBytes(), 500).write();
 			}
 			else if(_checkProperty.equals("FILE"))
 			{
 				_activity.receive.setAllocate(_fileSize);
-			}
+			}*/
 		}
 		else
 		{
