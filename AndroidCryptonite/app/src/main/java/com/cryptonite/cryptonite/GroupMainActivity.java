@@ -13,8 +13,10 @@ import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -27,6 +29,7 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.github.angads25.filepicker.controller.DialogSelectionListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
@@ -38,6 +41,7 @@ import Function.Client_File_ListReceiver;
 import Function.Client_File_Upload;
 import Function.Client_Group_Invite;
 import Function.Client_Group_Search_Invite;
+import Function.Client_Info;
 import Function.FileListAdapter;
 import Function.GroupInviteAdapter;
 import Function.PathPicker;
