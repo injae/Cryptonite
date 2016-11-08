@@ -3,3 +3,9 @@ c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\bin\Release\a
 c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\bin\Release\allo.pdb
 c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\obj\Release\allo.exe
 c:\users\전용범\documents\visual studio 2015\Projects\allo\allo\obj\Release\allo.pdb
+D:\느시\Cryptonite\Cryptonite\allo\allo\bin\Release\allo.exe.config
+D:\느시\Cryptonite\Cryptonite\allo\allo\obj\Release\allo.exe
+D:\느시\Cryptonite\Cryptonite\allo\allo\obj\Release\allo.pdb
+D:\느시\Cryptonite\Cryptonite\allo\allo\bin\Release\allo.exe
+D:\느시\Cryptonite\Cryptonite\allo\allo\bin\Release\allo.pdb
+D:\느시\Cryptonite\Cryptonite\allo\allo\obj\Release\allo.csprojResolveAssemblyReference.cache
