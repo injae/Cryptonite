@@ -349,7 +349,7 @@ public class Client_Login extends JFrame implements PacketRule
 					Client_Login._folderScanList.offer(_cfc);
 					_cfc.start();
 					dispose();
-					new Client_Main_UI(_gpcode, _gpname, _name, _uscode, _id, _cfc);
+					new Client_Main_UI(_gpcode, _gpname, _name, _uscode, _id,_password, _cfc);
 					KeyReposit.getInstance();
 					break;
 				case 3:
