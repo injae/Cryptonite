@@ -54,12 +54,14 @@ public class Client_Main_UI extends JFrame {
 	private Client_File_ListReceiver _cfl = null;
 	private Client_Developers_Introduce _cdi = null;
 	private Client_Setting _cst = null;
+	private Client_USB_UI _usbui=null;
 
 	private BufferedImage _backGroundImg = null;
 
 	private JButton ProtectedFolderOpenbt;
 	private JButton Developersbt;
 	private JButton Setting;
+	private JButton USB;
 
 	private JButton Sendbt;
 	private JButton Receivebt;
@@ -90,6 +92,7 @@ public class Client_Main_UI extends JFrame {
 		_cfl = new Client_File_ListReceiver();
 		_csg = new Client_Show_Group();
 		_cst = new Client_Setting();
+		_usbui= new Client_USB_UI();
 		_cdi = new Client_Developers_Introduce();
 		main = this;
 		_gpCode = gpCode;
@@ -151,6 +154,7 @@ public class Client_Main_UI extends JFrame {
 	private void setFirst() {
 		layeredPane.add(ProtectedFolderOpenbt);
 		layeredPane.add(Setting);
+		layeredPane.add(USB);
 		layeredPane.add(Developersbt);
 		layeredPane.add(Sendbt);
 		layeredPane.add(Receivebt);
@@ -164,6 +168,20 @@ public class Client_Main_UI extends JFrame {
 	}
 
 	public void allocator() {
+		
+		USB = new JButton(new ImageIcon("img/USB.png"));
+		USB.setRolloverIcon(new ImageIcon("img/USBbt.png"));
+		USB.setBounds(230, 30, 30, 30);
+		USB.setFocusPainted(false);
+		USB.setContentAreaFilled(false);
+		USB.setBorderPainted(false);
+		USB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO 자동 생성된 메소드 스텁
+				_usbui.UI_ON();
+			}
+		});
 
 		ProtectedFolderOpenbt = new JButton(new ImageIcon("img/protectedFolderOpen.png"));
 		ProtectedFolderOpenbt.setRolloverIcon(new ImageIcon("img/protectedFolderOpenR.png"));
@@ -212,7 +230,7 @@ public class Client_Main_UI extends JFrame {
 				_cdi.UI_ON();
 			}
 		});
-
+		
 		// -------------------------------------------------
 
 		Sendbt = new JButton(new ImageIcon("img/FileSend.png"));
