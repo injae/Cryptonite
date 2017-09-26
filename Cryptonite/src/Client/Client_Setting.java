@@ -200,8 +200,6 @@ public class Client_Setting  implements PacketRule
 			e.printStackTrace();
 		}
 		
-		
-		
 		_window.getContentPane().add(_layeredPane);
 		_window.setSize(400, 224);
 		_window.setLocationRelativeTo(null);
