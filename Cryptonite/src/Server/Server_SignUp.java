@@ -3,17 +3,24 @@ package Server;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 
 import Crypto.aesKeyGenerator;
+import Crypto.rsaKeyGenerator;
 import Function.PacketRule;
 
 public class Server_SignUp extends Server_Funtion  implements PacketRule
 {
 	public Server_SignUp(Server_Client_Activity activity) {
 		super(activity);
-		// TODO ÀÚµ¿ »ý¼ºµÈ »ý¼ºÀÚ ½ºÅÓ
+		// TODO ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	}
 
 	Server_DataBase db=Server_DataBase.getInstance();
@@ -29,7 +36,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	}
 
 	@Override
-	public void running(int count) throws IOException 
+	public void running(int count) throws IOException, NoSuchAlgorithmException 
 	{		
 		if(count == 1) { Checker(_activity.getReceiveEvent()); }
 		else
@@ -64,7 +71,7 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 	    }   
 	}
 	
-	private void sign_up() throws IOException
+	private void sign_up() throws IOException, NoSuchAlgorithmException
 	{
 		int count=1;
 		boolean result;
@@ -87,7 +94,25 @@ public class Server_SignUp extends Server_Funtion  implements PacketRule
 		String usCode = Server_Code_Manager.getInstance().getUsCode();
 		int code = Integer.parseInt(usCode.substring(1));
 		String gpCode = "NULL";
-		result = db.Update("INSERT INTO TEST VALUES('"+name+"','"+id+"','"+password+"','"+email+"',"+count+","+code+",'"+aeskey+"','"+salt+"','"+iteration  +"','"+gpCode+"','" + 0 + "','" + 0 + "','" + 0 + "');");
+		
+		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+		generator.initialize(1024);
+		KeyPair pair = generator.generateKeyPair();
+
+/*		Key publickeytemp = pair.getPublic().toString();
+		PrivateKey secretkeytemp = (PrivateKey) generator.get_priKey();
+		*/
+		byte[] publickeytemp = pair.getPublic().getEncoded();
+		byte[] secretkeytemp = pair.getPrivate().getEncoded();
+
+		String publickey = Base64.getEncoder().encodeToString(publickeytemp);
+		String secretkey = Base64.getEncoder().encodeToString(secretkeytemp);
+		
+		
+		System.out.println(publickey.length());
+		System.out.println(secretkey.length());
+		
+		result = db.Update("INSERT INTO TEST VALUES('"+name+"','"+id+"','"+password+"','"+email+"',"+count+","+code+",'"+aeskey+"','"+salt+"','"+iteration  +"','"+gpCode+"','" + 0 + "','" + 0 + "','" + 0 + "','"+publickey+"','"+secretkey+"');");
 
 		//send result to client
 		byte[] resultPacket = new byte[1];

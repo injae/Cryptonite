@@ -43,7 +43,7 @@ import org.eclipse.swt.events.DisposeEvent;
 
 import Client.Client_Receive_OTP.MyPanel;
 
-public class Client_USB_register extends JFrame{
+public class Client_USB_Mount extends JFrame{
 	
 	private JLabel _background;
 
@@ -62,20 +62,21 @@ public class Client_USB_register extends JFrame{
 	private JButton _close;
 	private JButton _ok;
 	private boolean mb = true;
+	private String _mounted;
 	
 	private String size;
 	private File[] oldListRoot = File.listRoots();
-	public Thread t;
+	private Thread t;
 	
 	private String[] items = null;
 	public static void main(String[] args)
 	{
-		new Client_USB_register();
+		new Client_USB_Mount();
 	}
-	public Client_USB_register()
+	public Client_USB_Mount()
 	{
 		
-	    _list = new JList();
+	    
 		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
@@ -88,6 +89,13 @@ public class Client_USB_register extends JFrame{
         JLayeredPane _layeredPane = new JLayeredPane();
         _layeredPane.setBounds(0, 0, 400, 224);
         _layeredPane.setLayout(null);
+        
+	    _list = new JList();
+		_list.setBounds(20, 20, 170, 130);
+		_list.setVisible(true);
+		
+		_layeredPane.add(_list);
+        
         
         try {
             img = ImageIO.read(new File("img/Setting.png"));
@@ -114,7 +122,6 @@ public class Client_USB_register extends JFrame{
  	    {
  	       	public void actionPerformed(ActionEvent arg0) 
  	       	{
- 	       		t.interrupt();
  	       		dispose();
  	       	}
  	    });
@@ -130,11 +137,6 @@ public class Client_USB_register extends JFrame{
  	    {
  	       	public void actionPerformed(ActionEvent arg0) 
  	       	{
- 	       		if (_size.getText().equals(""))
- 	       		{
- 	       			JOptionPane.showMessageDialog(null, "크기를 입력해 주세요");
- 	       			return;
- 	       		}
  	       		if (_pswd.getText().equals(""))
  	       		{
  	       			JOptionPane.showMessageDialog(null, "비밀번호를 입력해 주세요");
@@ -142,31 +144,30 @@ public class Client_USB_register extends JFrame{
  	       		}
  	       		if (_list.getSelectedValue() == null)
  	       		{
- 	       			JOptionPane.showMessageDialog(null, "보호할 USB를 선택해 주세요.");
+ 	       			JOptionPane.showMessageDialog(null, "보호된 USB를 선택해 주세요.");
  	       			return;
  	       		}
  	       	String currentDir = System.getProperty("user.dir");
  	       		Runtime rt = Runtime.getRuntime();
- 	       		int bytes = Integer.parseInt(_size.getText());
- 	       		if (mb)
- 	       		{
- 	       			bytes *= 1024*1024;
- 	       		} else
- 	       		{
- 	       			bytes *= 1024*1024*1024;
- 	       		}
- 	       		
+
  	       		try {
-					Process process = rt.exec(new String[]{currentDir+"\\CryptoniteFormat.exe", _list.getSelectedValue() + ":\\Cryptonite", String.valueOf(bytes), _pswd.getText()});
+ 	       			System.out.println(currentDir);
+ 	       			System.out.println(_pswd.getText());
+ 	       			_mounted = (String) _list.getSelectedValue();
+					Process process = rt.exec(new String[]{currentDir+"\\CryptoniteMount.exe", "mount", _list.getSelectedValue() + ":\\Cryptonite", _pswd.getText()});
+					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
- 	       	t.interrupt();
+ 	       	//t.interrupt();
  	       	dispose();
  	       	}
  	    });
 		_layeredPane.add(_ok);
+		
+
+
 		
 	    // Get the index of all the selected items
 	    int[] selectedIx = _list.getSelectedIndices();
@@ -179,11 +180,6 @@ public class Client_USB_register extends JFrame{
 	    // Get the index of the first selected item
 	    int firstSelIx = _list.getSelectedIndex();
 
-	 
-		_list.setBounds(20, 20, 170, 130);
-		_list.setVisible(true);
-		
-		_layeredPane.add(_list);
 		
 		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
 		DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
@@ -222,7 +218,7 @@ public class Client_USB_register extends JFrame{
 	         	}
 	         });
 	     
-	    _layeredPane.add(_size);
+	    //_layeredPane.add(_size);
 	    
 	    rdbtnMB = new JRadioButton("MB");
 	    rdbtnMB.setBackground(SystemColor.control);
@@ -234,7 +230,7 @@ public class Client_USB_register extends JFrame{
 					mb = true;
 			}
 		});
-		_layeredPane.add(rdbtnMB);
+		//_layeredPane.add(rdbtnMB);
 		
 	    
 	    rdbtnGB = new JRadioButton("GB");
@@ -247,7 +243,7 @@ public class Client_USB_register extends JFrame{
 					mb = false;
 			}
 		});
-		_layeredPane.add(rdbtnGB);
+		//_layeredPane.add(rdbtnGB);
 		
 		bg = new ButtonGroup();
 		bg.add(rdbtnMB);
@@ -272,7 +268,7 @@ public class Client_USB_register extends JFrame{
 	    _sizelabel= new JLabel("SIZE : ");
 	    _sizelabel.setBounds(210, 30, 35, 20);
 	    
-	    _layeredPane.add(_sizelabel);
+	    //_layeredPane.add(_sizelabel);
 	    
 	    _pswdlabel= new JLabel("PW : ");
 	    _pswdlabel.setBounds(210, 100, 35, 20);
@@ -349,14 +345,32 @@ public class Client_USB_register extends JFrame{
 
 	                    oldListRoot = File.listRoots();
 	                    tmp = new ArrayList<>();
+	                    boolean dismount = true;
 	    	        	for (int i = 0; i < File.listRoots().length ; i++)
 	    	        	{
 	    	        		System.out.println(File.listRoots()[i].toString().substring(0, 1));
+	    	        		if (File.listRoots()[i].toString().substring(0, 1).equals(_mounted))
+	    	        		{
+	    	        			dismount = false;
+	    	        		}
 	    	        		tmp.add(File.listRoots()[i].toString().substring(0, 1));
 	    	        	}
 	    	        	temp = new String[File.listRoots().length];
 	    	        	temp = tmp.toArray(temp);
 	    	        	_list.setListData(temp);
+	    	        	
+	    	        	if (dismount == true)
+	    	        	{
+	    	        		Runtime rt = Runtime.getRuntime();
+	    	        		String currentDir = System.getProperty("user.dir");
+	    					try {
+								Process process = rt.exec(new String[]{currentDir+"\\CryptoniteMount.exe", "dismount"});
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+	    	        	}
 
 	                }
 

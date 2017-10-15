@@ -4,6 +4,7 @@
 package Server;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /*
  * @author In Jae Lee
@@ -30,5 +31,5 @@ public abstract class Server_Funtion
 	
 	public int _packetMaxCount = 0;
 	public abstract void Checker(byte[] packet);
-	public abstract void running(int count) throws IOException;
+	public abstract void running(int count) throws IOException, NoSuchAlgorithmException;
 }
