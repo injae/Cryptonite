@@ -6,6 +6,12 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
@@ -155,10 +161,33 @@ public class Server_Client_Activity implements PacketRule
 			rs.next();
 			aeskey = rs.getString(7);
 		} catch (SQLException e) {
-			// TODO ÀÚµ¿ »ý¼ºµÈ catch ºí·Ï
+			// TODO ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ catch ï¿½ï¿½ï¿½
 			e.printStackTrace();
 		}
 		return new SecretKeySpec(Base64.getDecoder().decode(aeskey), "AES");
+	}
+	
+	public PublicKey getPublicKey()
+	{
+		PublicKey publicKey = null;
+		Server_DataBase db = Server_DataBase.getInstance();
+		
+		ResultSet rs = db.Query("Select *from test where uscode = "+ Server_Code_Manager.codeCutter(getClientCode())+";");
+		String publickey = null;
+		try {
+			rs.next();
+			publickey = rs.getString(14);
+			publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(publickey)));
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return publicKey;
 	}
 	
 	public void setKey(SecretKey key){

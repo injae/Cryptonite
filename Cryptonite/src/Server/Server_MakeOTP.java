@@ -1,13 +1,22 @@
 package Server;
 
 import java.util.*;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 
 public class Server_MakeOTP extends Server_Funtion
 {
 	public Server_MakeOTP(Server_Client_Activity activity) {
 		super(activity);
-		// TODO ÀÚµ¿ »ý¼ºµÈ »ý¼ºÀÚ ½ºÅÓ
+		// TODO ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	}
 
 	// OTP Instance
@@ -51,9 +60,10 @@ public class Server_MakeOTP extends Server_Funtion
 				}
 				_checkOTP = true;
 				
+				
 				for(int j = 0; j < _OTP_List.size(); j++)
 				{
-					if(_OTP.equals(_OTP_List.get(j)))
+					if(new String(encrypt(_activity.getPublicKey(), _OTP.getBytes())).concat("@" + Integer.toString(Server_Code_Manager.codeCutter(_activity.getClientCode()))).equals(_OTP_List.get(j)))
 					{
 						_checkOTP = false;
 						break;
@@ -103,5 +113,33 @@ public class Server_MakeOTP extends Server_Funtion
 		{
 			
 		}
+	}
+	public byte[] encrypt(PublicKey key, byte[] plaintext)
+	{
+	    Cipher cipher;
+		try {
+			cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
+ 
+			cipher.init(Cipher.ENCRYPT_MODE, key);  
+
+			return cipher.doFinal(plaintext);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		return null;
+	    
 	}
 }

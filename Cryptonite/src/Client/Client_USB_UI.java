@@ -46,7 +46,7 @@ public class Client_USB_UI {
  	       	public void actionPerformed(ActionEvent arg0) 
  	       	{
  	       		new Client_USB_register();
- 	       		
+ 	       		UI_OFF();
  	       		
  	       	}
  	    });
@@ -62,6 +62,8 @@ public class Client_USB_UI {
  	    {
  	       	public void actionPerformed(ActionEvent arg0) 
  	       	{
+ 	       		new Client_USB_Mount();
+ 	       		UI_OFF();
  	       		//mount+check 후 폴더 열기
  	       	}
  	    });

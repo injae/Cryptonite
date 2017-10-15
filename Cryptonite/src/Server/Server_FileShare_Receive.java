@@ -3,11 +3,28 @@ package Server;
 import java.nio.*;
 import java.nio.channels.*;
 import java.nio.charset.Charset;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Base64;
 import java.util.Vector;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
+import Crypto.Base64Coder;
+
 import java.io.*;
+import java.net.URLEncoder;
+
 import Function.PacketRule;
 import Function.PacketProcessor;
 
@@ -34,6 +51,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	private int _fileCount = 0;
 	private String _fileName = null;
 	private long _fileSize = 0;
+	private String _userId = null;
 	
 	// OTP Instance
 	private int _oneTime = 1;
@@ -60,6 +78,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		return remainder;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void setFileInformation(byte[] packet)
 	{
 		_fileCount = packet[1];
@@ -78,7 +97,53 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		{
 			nameTemp[i] = packet[i + end + 1];
 		}
+		byte[] userIdtemp = new byte[packet[500]];
+		for(int i=0;i<userIdtemp.length;i++)
+		{
+			userIdtemp[i] = packet[i+550];
+		}
+
+		Server_DataBase db = Server_DataBase.getInstance();
+		ResultSet rs = null;
+		String publickey = null;
+		PublicKey pk = null;
+		int us = 0;
+		_userId = new String (userIdtemp).trim();
 		_fileName = new String(nameTemp).trim();
+		_OTP = _fileName.substring(0, 6);
+		System.out.println(_OTP);
+		
+		rs = db.Query("SELECT uscode, publickey from test WHERE id ='" +_userId+ "';");
+		try {
+			while(rs.next())
+			{
+				System.out.println("있어!!!!");
+				us = rs.getInt(1);
+				publickey = rs.getString(2).trim();
+				pk = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(publickey)));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println(us);
+		System.out.println(pk.getFormat());
+		System.out.println(pk.getAlgorithm()+ "\n\n\n");
+		System.out.println(pk.getEncoded());
+		System.out.println("\n\n\n\n");
+		System.out.println(publickey);
+		_fileName = _fileName.substring(6);
+		_fileName =URLEncoder.encode(Base64.getEncoder().encodeToString(encrypt(pk, _OTP.getBytes()))).concat("@" +us).concat(_fileName);
+
+		System.out.println(_fileName);
 	}
 	
 	@Override
@@ -121,5 +186,34 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 				p.close();
 			}
 		}
+	}
+	
+	public byte[] encrypt(PublicKey key, byte[] plaintext)
+	{
+	    Cipher cipher;
+		try {
+			cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
+ 
+			cipher.init(Cipher.ENCRYPT_MODE, key);  
+
+			return cipher.doFinal(plaintext);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		return null;
+	    
 	}
 }
