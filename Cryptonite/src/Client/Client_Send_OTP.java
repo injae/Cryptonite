@@ -98,7 +98,7 @@ public class Client_Send_OTP extends JFrame
         Send.setBorderPainted(false);
         Send.setFocusPainted(false);
         Send.setContentAreaFilled(false);
-        Send.addActionListener(new ActionListener() 
+        Send.addActionListener(new ActionListener()
         {
 			public void actionPerformed(ActionEvent e) 
 			{

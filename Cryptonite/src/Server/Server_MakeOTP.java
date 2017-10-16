@@ -7,10 +7,19 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import Crypto.Base64Coder;
+
 import java.io.*;
+import java.net.URLEncoder;
 import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Server_MakeOTP extends Server_Funtion
 {
@@ -28,6 +37,8 @@ public class Server_MakeOTP extends Server_Funtion
 	private ObjectOutputStream _oos = null;
 	
 	private int _oneTime = 1;
+	private String _userId = null;
+	private int us = 0;
 
 	private void makeOTP()
 	{
@@ -35,6 +46,20 @@ public class Server_MakeOTP extends Server_Funtion
 		
 		try 
 		{
+			Server_DataBase db = Server_DataBase.getInstance();
+			ResultSet rs = null;
+
+			
+			rs = db.Query("SELECT id, uscode from test where id='"+_userId+"';");
+			if (rs == null)
+				System.out.println("Daodjawdpaw");
+			
+			if (rs.next())
+				us = rs.getInt(2);
+			else
+				us = 0;
+			
+			
 			if(_oneTime == 1)
 			{
 				_OTP_List = new ArrayList<String>();
@@ -63,7 +88,7 @@ public class Server_MakeOTP extends Server_Funtion
 				
 				for(int j = 0; j < _OTP_List.size(); j++)
 				{
-					if(new String(encrypt(_activity.getPublicKey(), _OTP.getBytes())).concat("@" + Integer.toString(Server_Code_Manager.codeCutter(_activity.getClientCode()))).equals(_OTP_List.get(j)))
+					if(md5((_userId + _OTP).getBytes()).equals(_OTP_List.get(j)))
 					{
 						_checkOTP = false;
 						break;
@@ -72,7 +97,7 @@ public class Server_MakeOTP extends Server_Funtion
 				
 			} while(!_checkOTP);
 			
-			_OTP_List.add(_OTP);
+			_OTP_List.add(md5((_userId + _OTP).getBytes()));
 			/*fos = new FileOutputStream("C:\\Server\\OTP\\OTP_List.ser");
 			oos = new ObjectOutputStream(fos);*/
 			_oos.writeObject(_OTP_List);
@@ -91,12 +116,21 @@ public class Server_MakeOTP extends Server_Funtion
 		catch (ClassNotFoundException e) 
 		{
 			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void Checker(byte[] packet) 
 	{
+		byte[] userIdtemp = new byte[packet[500]];
+		for(int i=0;i<userIdtemp.length;i++)
+		{
+			userIdtemp[i] = packet[i+550];
+		}
+		_userId = new String (userIdtemp).trim();
 		_packetMaxCount = 1;
 	}
 
@@ -107,7 +141,10 @@ public class Server_MakeOTP extends Server_Funtion
 		{ 
 			Checker(_activity.getReceiveEvent());
 			makeOTP();
-			_activity.send.setPacket(_OTP.getBytes(),1024).write();
+			if (us == 0)
+				_activity.send.setPacket(new String("0").getBytes(),1024).write();
+			else
+				_activity.send.setPacket(_OTP.getBytes(),1024).write();
 		}
 		else
 		{
@@ -141,5 +178,20 @@ public class Server_MakeOTP extends Server_Funtion
 		}  
 		return null;
 	    
+	}
+	
+	@SuppressWarnings("deprecation")
+	public String md5(byte[] _password) {
+		MessageDigest _md = null;
+		try {
+			_md = MessageDigest.getInstance("MD5");
+			byte[] temp = _password;
+			_md.update(temp);
+			return URLEncoder.encode(new String(Base64Coder.encode(_md.digest())));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

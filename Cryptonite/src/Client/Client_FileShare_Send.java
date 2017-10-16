@@ -110,11 +110,18 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 		{
 			byte[] OTP_Packet = new byte[1024];
 			OTP_Packet[0] = MAKE_OTP;
+			OTP_Packet[500] =  (byte) _userId.length();
+			Function.frontInsertByte(550, _userId.getBytes(), OTP_Packet);
 			_csc.send.setPacket(OTP_Packet).write();
 			
 			byte[] OTP_Byte = _csc.receive.setAllocate(1024).read().getByte();
 			_OTP = new String(OTP_Byte).trim();
 	
+			if (_OTP.equals("0"))
+			{
+				showMessage("ERROR", "Please Check Receiver ID.");
+				return;
+			}
 			changeFilesName();
 			
 			_cpb.UI_ON();

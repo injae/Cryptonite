@@ -5,6 +5,7 @@ import java.nio.channels.*;
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
@@ -18,6 +19,8 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import Crypto.Base64Coder;
@@ -26,6 +29,7 @@ import java.io.*;
 import java.net.URLEncoder;
 
 import Function.PacketRule;
+import Function.SecurePacketProcessor;
 import Function.PacketProcessor;
 
 /*
@@ -52,6 +56,8 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	private String _fileName = null;
 	private long _fileSize = 0;
 	private String _userId = null;
+	private SecretKey key = null;
+	private String hash = null;
 	
 	// OTP Instance
 	private int _oneTime = 1;
@@ -64,7 +70,7 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 	// FileChannel and RandomAccessFile
 	private RandomAccessFile _raf = null;
 	private FileChannel _fileChannel = null;
-	PacketProcessor p = null;
+	SecurePacketProcessor p = null;
 	
 	// Methods
 	private int sendPacketSize(long fileSize)
@@ -78,7 +84,6 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		return remainder;
 	}
 	
-	@SuppressWarnings("deprecation")
 	private void setFileInformation(byte[] packet)
 	{
 		_fileCount = packet[1];
@@ -105,14 +110,32 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 
 		Server_DataBase db = Server_DataBase.getInstance();
 		ResultSet rs = null;
-		String publickey = null;
-		PublicKey pk = null;
-		int us = 0;
 		_userId = new String (userIdtemp).trim();
 		_fileName = new String(nameTemp).trim();
 		_OTP = _fileName.substring(0, 6);
-		System.out.println(_OTP);
+		_fileName = _fileName.substring(6);
+		System.out.println(_userId + _OTP);
 		
+		hash = md5(_userId.concat(_OTP).getBytes());
+		_fileName = hash.concat(_fileName);
+		
+		rs = db.Query("SELECT aeskey from test where id='" + _userId +"';");
+		try {
+			rs.next();
+			System.out.println(Base64.getDecoder().decode(rs.getString(1).getBytes()));
+			System.out.println(Base64.getDecoder().decode(rs.getString(1).getBytes()).length);
+			key = new SecretKeySpec(Base64.getDecoder().decode(rs.getString(1).getBytes()),"AES");
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/*String publickey = null;
+		PublicKey pk = null;
+		int us = 0;
+
 		rs = db.Query("SELECT uscode, publickey from test WHERE id ='" +_userId+ "';");
 		try {
 			while(rs.next())
@@ -140,10 +163,12 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		System.out.println(pk.getEncoded());
 		System.out.println("\n\n\n\n");
 		System.out.println(publickey);
-		_fileName = _fileName.substring(6);
-		_fileName =URLEncoder.encode(Base64.getEncoder().encodeToString(encrypt(pk, _OTP.getBytes()))).concat("@" +us).concat(_fileName);
-
-		System.out.println(_fileName);
+		String hash = md5(encrypt(pk, _OTP.getBytes()));*/
+		/*_fileName = _fileName.substring(6);
+		_fileName =hash.concat(_fileName);
+		
+		db.Update("INSERT INTO files VALUES('"+ us +"','" +hash + "','" + Base64.getEncoder().encodeToString(encrypt(pk, _OTP.getBytes())).trim()+ "');");
+		System.out.println(_fileName);*/
 	}
 	
 	@Override
@@ -169,7 +194,9 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		}
 		_activity.receive.setAllocate(_fileSize);
 		
-		p = new PacketProcessor(_fileChannel, false);
+		p = new SecurePacketProcessor(_fileChannel, false);
+		p.init(key);
+		
 		_cutSize = 1;
 	}
 
@@ -215,5 +242,20 @@ public class Server_FileShare_Receive extends Server_Funtion implements PacketRu
 		}  
 		return null;
 	    
+	}
+	
+	@SuppressWarnings("deprecation")
+	public String md5(byte[] _password) {
+		MessageDigest _md = null;
+		try {
+			_md = MessageDigest.getInstance("MD5");
+			byte[] temp = _password;
+			_md.update(temp);
+			return URLEncoder.encode(new String(Base64Coder.encode(_md.digest())));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

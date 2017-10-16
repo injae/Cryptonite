@@ -167,6 +167,22 @@ public class Server_Client_Activity implements PacketRule
 		return new SecretKeySpec(Base64.getDecoder().decode(aeskey), "AES");
 	}
 	
+	public String getUserId()
+	{
+		Server_DataBase db = Server_DataBase.getInstance();
+		
+		ResultSet rs = db.Query("Select id from test where uscode = "+ Server_Code_Manager.codeCutter(getClientCode())+";");
+		String id = null;
+		try {
+			rs.next();
+			id = rs.getString(1);
+		} catch (SQLException e) {
+			// TODO �ڵ� ������ catch ���
+			e.printStackTrace();
+		}
+		return id;
+	}
+	
 	public PublicKey getPublicKey()
 	{
 		PublicKey publicKey = null;
