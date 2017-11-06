@@ -31,6 +31,7 @@ public interface PacketRule
 	byte GET_PBKDF2 = 24;
 	byte GET_FILE_SHA_HEADER = 25;
 	byte GET_PBKDF2_GROUP = 26;
+	byte GET_GROUP_PRIKEY = 27;
 	//---------------------------------------
 	
 	// AUTOBACKUP(1) AUTOBACKUP EVENT

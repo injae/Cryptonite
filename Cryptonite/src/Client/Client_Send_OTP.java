@@ -36,13 +36,14 @@ public class Client_Send_OTP extends JFrame
 	private JButton Cancel;
 	private JLabel OTP;
 	
-	private String UserID;
+	private String UserID = "";
 	private String Otp;
 	private boolean _checkotp = false;
 	private static boolean _flag = false;
 	
 	private JLayeredPane layeredPane = new JLayeredPane();
 	private Client_FileShare_Send _cfs = null;
+	public Client_Send_OTP frame = null;
 	
 	Font font = new Font ("SansSerif", Font.BOLD,20);
 	Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
@@ -54,6 +55,7 @@ public class Client_Send_OTP extends JFrame
 	
 	public Client_Send_OTP()
 	{
+		frame = this;
 		try
 		{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
@@ -102,7 +104,7 @@ public class Client_Send_OTP extends JFrame
         {
 			public void actionPerformed(ActionEvent e) 
 			{
-				if (UserID.equals(""))
+				if (UserID.equals("") || UserID == null)
 				{
 					showMessage("에러", "받는사람 이름을 입력해 주세요.");
 					return;
@@ -130,7 +132,7 @@ public class Client_Send_OTP extends JFrame
         layeredPane.add(Send);
         
         OTPField = new JTextField();
-        OTPField.setText("Type otp number");
+        OTPField.setText("Please input receiver ID");
         OTPField.setBounds(142, 190, 254, 50);
         OTPField.setForeground(Color.black);        
         OTPField.setFont(font);
@@ -195,6 +197,10 @@ public class Client_Send_OTP extends JFrame
             {
             	g.setFont(font);
             	g.drawString(_cfs.getOTP(), 240, 280);
+            	if (_cfs.getOTP().equals("0"))
+            		{
+            			frame.dispose();
+            		}
             }
        }
    }
