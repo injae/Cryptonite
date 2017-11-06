@@ -4,8 +4,11 @@ import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 public class rsaKeyGenerator
 {
@@ -20,11 +23,12 @@ public class rsaKeyGenerator
 		KeyPairGenerator generator = null;
 		try {
 			generator = KeyPairGenerator.getInstance("RSA");
-			generator.initialize(1024);
+			SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+			generator.initialize(1024,random);
 			KeyPair pair = generator.generateKeyPair();
 			_pubKey = pair.getPublic();
 			_priKey = pair.getPrivate();
-		} catch (NoSuchAlgorithmException e) {
+		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
 			e.printStackTrace();
 		}
 	}
@@ -34,6 +38,14 @@ public class rsaKeyGenerator
 	}
 	public Key get_priKey(){
 		return _priKey;
+	}
+	
+	public String get_PubKeyToString(){
+		return Base64.getEncoder().encodeToString(get_pubKeybytes());
+	}
+	
+	public String get_PriKeyToString(){
+		return Base64.getEncoder().encodeToString(get_priKeybytes());
 	}
 	
 	public byte[] get_pubKeybytes(){

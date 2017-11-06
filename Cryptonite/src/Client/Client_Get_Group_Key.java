@@ -21,11 +21,10 @@ public class Client_Get_Group_Key implements PacketRule
 
 	}
 	
-	public SecretKey running(String groupCode)
+	public String running(String groupCode)
 	{
 		Client_Server_Connector csc = Client_Server_Connector.getInstance();
 		KeyReposit reposit = KeyReposit.getInstance();
-		System.out.println(Base64.getEncoder().encodeToString(reposit.get_aesKey().getEncoded()));
 		//Crypto crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, reposit.get_aesKey()));
 		
 		byte[] event = new byte[1024];
@@ -34,11 +33,11 @@ public class Client_Get_Group_Key implements PacketRule
 		
 		System.out.println("get Key");
 		
-		SecretKey GpKey = null;
+		String GpKey = null;
 		try 
 		{
 			csc.send.setPacket(event).write();
-			GpKey = new SecretKeySpec(csc.receive.setAllocate(32).read().getByte(), "AES");
+			GpKey = new String(csc.receive.setAllocate(172).read().getByte());
 		}
 		catch (IOException e)
 		{

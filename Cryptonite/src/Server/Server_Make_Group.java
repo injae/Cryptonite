@@ -3,13 +3,22 @@ package Server;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.security.Key;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 
 import org.omg.stub.java.rmi._Remote_Stub;
 
+import Crypto.Crypto_Factory;
+import Crypto.KeyReposit;
 import Crypto.aesKeyGenerator;
+import Crypto.rsaKeyGenerator;
 import Function.PacketProcessor;
 
 public class Server_Make_Group extends Server_Funtion
@@ -97,13 +106,31 @@ public class Server_Make_Group extends Server_Funtion
 			String gpName = new String(_activity.receive.getByte()).trim();
 			
 			aesKeyGenerator ukg = new aesKeyGenerator();
+			rsaKeyGenerator rkg = new rsaKeyGenerator();
 			ukg.init();
+			rkg.init();
 			String aeskey= ukg.getAesKeyToString();
+			byte[] encaeskey = null;
 			String iteration= ukg.getIterationCountToString();
 			String salt= ukg.getSaltToString();
+			try {
+				encaeskey = Crypto_Factory.create("RSA1024", Cipher.ENCRYPT_MODE, rkg.get_pubKey()).doFinal(aeskey.getBytes());
+			} catch (IllegalBlockSizeException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (BadPaddingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			System.out.println("aeskey len : " + aeskey.length());
+			System.out.println(Base64.getDecoder().decode(aeskey.getBytes()).length);
+			System.out.println("base64 encaeskey len : " + Base64.getEncoder().encodeToString(encaeskey).length());
+			String pk = rkg.get_PubKeyToString();
+			String sk = rkg.get_PriKeyToString();
 			
-			
-			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"','" +aeskey+"','" + iteration +"','" + salt+"','" + _usegps + "','" + lat + "','" + lng + "','" + radius +"');");
+			System.out.println(rkg.get_pubKeybytes().length);
+			System.out.println(rkg.get_priKeybytes().length);
+			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"','" + Base64.getEncoder().encodeToString(encaeskey)+"','" + iteration +"','" + salt+"','" + _usegps + "','" + lat + "','" + lng + "','" + radius +"','" + pk + "','" + sk + "');");
 			
 			for(int i = 0; i < _members.size(); i++)
 			{
