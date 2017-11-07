@@ -50,9 +50,7 @@ public class Client_Get_Group_priKey implements PacketRule{
 		{
 			csc.send.setPacket(event).write();
 			int len = Function.byteArrayToInt(csc.receive.setAllocate(4).read().getByte());
-			System.out.println("zzzzz" + len);
 			GpKey = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(csc.receive.setAllocate(len).read().getByte()));
-			System.out.println("recevie pri");
 		}
 		catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException e)
 		{

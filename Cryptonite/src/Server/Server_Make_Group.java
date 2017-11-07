@@ -122,14 +122,9 @@ public class Server_Make_Group extends Server_Funtion
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			System.out.println("aeskey len : " + aeskey.length());
-			System.out.println(Base64.getDecoder().decode(aeskey.getBytes()).length);
-			System.out.println("base64 encaeskey len : " + Base64.getEncoder().encodeToString(encaeskey).length());
 			String pk = rkg.get_PubKeyToString();
 			String sk = rkg.get_PriKeyToString();
 			
-			System.out.println(rkg.get_pubKeybytes().length);
-			System.out.println(rkg.get_priKeybytes().length);
 			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"','" + Base64.getEncoder().encodeToString(encaeskey)+"','" + iteration +"','" + salt+"','" + _usegps + "','" + lat + "','" + lng + "','" + radius +"','" + pk + "','" + sk + "');");
 			
 			for(int i = 0; i < _members.size(); i++)
