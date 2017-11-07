@@ -1,7 +1,7 @@
 # Cryptonite
 This is personal & group information security program
 
-![Cryptonite](https://www.dropbox.com/s/yrbielxctzxhapy/no-title.png?raw=1)
+![Cryptonite](https://github.com/INJAE/Cryptonite/blob/master/Cryptonite.png?raw=true)
 
 # Features
   - 1:1 file share using OTP
