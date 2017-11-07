@@ -112,12 +112,12 @@ public class Client_File_Upload extends Thread implements PacketRule
 			{
 				encaeskey = new Client_Get_Group_Key().running(_gpCode);
 				byte[] aesKey = Base64.getDecoder().decode(encaeskey);
-				System.out.println("eeee : " + aesKey.length);
+
 				prikey = new Client_Get_Group_priKey().running(_gpCode);
 				byte[] aeskey1 = new Crypto(Crypto_Factory.create("RSA1024", Cipher.DECRYPT_MODE, prikey)).endecription(aesKey);
 				aeskey1 = Base64.getDecoder().decode(aeskey1);
 				aeskey = new SecretKeySpec(aeskey1,"AES");
-				System.out.println("aeskey secret key len : " + aeskey.getEncoded().length);
+
 				_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new SecretKeySpec(aeskey1,"AES")));
 			}
 			else
@@ -164,7 +164,8 @@ public class Client_File_Upload extends Thread implements PacketRule
 			
 				if (_mod == 1)
 				{
-					_csc.send.setAllocate(_fileSizeArray[i]+64);
+					_csc.send.setAllocate(64);
+					_csc.send.setAllocate(_fileSizeArray[i]);
 					_csc.send.setPacket(SHA(pbk.concat("0000")).getBytes(),64).write();
 				}
 				else

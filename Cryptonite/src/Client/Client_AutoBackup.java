@@ -181,7 +181,8 @@ public class Client_AutoBackup implements PacketRule
 							//pw.setAllocate(_fileSize);
 							if (extention.equals(".cnmc"))
 							{
-								pw.setAllocate(_fileSize+64);
+								pw.setAllocate(64);
+								pw.setAllocate(_fileSize);
 							}
 							else
 							{
@@ -191,7 +192,8 @@ public class Client_AutoBackup implements PacketRule
 							
 							if (extention.equals(".cnmc"))
 							{
-								_csc.send.setAllocate(_fileSize+64);
+								_csc.send.setAllocate(64);
+								_csc.send.setAllocate(_fileSize);
 							}
 							else
 							{
