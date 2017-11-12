@@ -112,17 +112,18 @@ public class Client_Group_Main extends JFrame implements PacketRule
 		}
 		public String noExtensionName() { 
 			if(!fileName.endsWith(".cnmc")){
-				System.out.println("fileName : "+fileName+"/n");
+//				System.out.println("fileName : "+fileName+"/n");
 				StringTokenizer st2 = new StringTokenizer(fileName, "#");
 				String filename = "";
-				st2.nextToken();
+				keynum = Integer.parseInt(st2.nextToken());
 				while(st2.hasMoreTokens())
 				{
-					filename +=st2.nextToken();
+					filename = filename + st2.nextToken() + "#";
 				}
+				filename.substring(0, filename.length()-1);			//마지막 # 떼어냄
 				fileName=filename;
 			}
-			System.out.println("filename2222222 : "+fileName+"/n");
+//			System.out.println("filename2222222 : "+fileName+"/n");
 			
 			return fileName.substring(0, fileName.length() - 5); 
 		}
@@ -132,6 +133,7 @@ public class Client_Group_Main extends JFrame implements PacketRule
 		public JButton button;
 		public String fullPath;
 		public String fileName ="";
+		public int keynum = 0;
 	}
 	private ArrayList<RecoveryButton> _btnList;
 	
@@ -527,7 +529,7 @@ public class Client_Group_Main extends JFrame implements PacketRule
 							 }
 							 else
 							 {
-								 key = new Client_Get_Group_Key().running(_gpCode);
+								 key = new Client_Get_Group_Key().running(_gpCode,_btnList.get(i).keynum);
 							 }
 							 
 							 new Client_File_Download().requestFile(_btnList.get(i).fullPath, _downloadPath + "\\" + _btnList.get(i).fileName, key);
