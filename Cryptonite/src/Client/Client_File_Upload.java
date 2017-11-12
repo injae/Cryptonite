@@ -104,7 +104,7 @@ public class Client_File_Upload extends Thread implements PacketRule
 			
 			if (_mod == 0)
 			{
-				key = new Client_Get_Group_Key().running(_gpCode);
+				key = new Client_Get_Group_Key().running(_gpCode,0);
 				_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, key));
 			}
 			else

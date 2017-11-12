@@ -17,11 +17,17 @@ public class test {
 	{
 		try{
 			
-			String q = "C5lUH+jiwyiyUhzRxwdcelmQI6r3eCp6d9356qvpySVXO8Od74Qndc/GnJ6uiSX4Gn6Y/Smv8w1yLak8u4H5Mg9T6LvEH+QwVx8DFfTIyx/4iI04oqv8GSpQm3jY/zFhC6g+p+dnqRu00RIYJ0EDtBeoBsJus95x0O27C1OTLSI=";
+			String q = "cDpm3T1BdccR9YII14iOW/Gp25qDlCtHCziV3zzGb8yISGrxNSa/+a9nnNb3EuDRr4Oewwlk5WQ2zVRGV2dm04AiNzCwAL0uAa8DGXJnMGI2F+6zpFcjcNIUZP/xXzY7kneRBArC786y/SKpelGOQ8wgxCEsvRsDuMJJ2VWqSHo=";
 			byte[] w = Base64.getDecoder().decode(q);
 			
-			String sk = "MIICdAIBADANBgkqhkiG9w0BAQEFAASCAl4wggJaAgEAAoGBAKbGXfgDm4stDOz6KBP9ul8ZeFiD/Kwc4aUqz438IImcjLy/afTQE8lA+tXnN97dWAJw3JYF3l+cPOvobc+UFGPB9skJqsdnUAV9vw+nTLbYRHEW7Ld1ChyWfmQd5eJnMAZkzB4kaMabLkUQ7BrlJVxlrBjFIbpuzEL7Izmug4o7AgMBAAECgYBEsA6jx1iYycU5FQ7MrQPFh0f5rOK0QHDvBeLWJ7F+++s7Edsh6VE84nZtAv4P3DoTR0iSwXgFCOROhTw08lgy07Iow4bxnOLHfnvb4GsPzM/vbBkD9QcXX2e67CbQ/IsYWZp6OwVbpbDpwp9AXyO9FwC/wZQsgmA1DOVKu6Q8AQJBANXcU2xEm5m1zZONP6sFQffZaMlLO1veTLKPge7HvPe7L/cKIU/XNeYYu/kgil1PfYjnJ4IX+HCDJdjpdP4F+aECQQDHoupBcTMz1uBYB2BVcQia63KQn6nLEUpKOGI5Hd6wSk00EQMm0f7FqEgcafY3rFPCO9lqTcJi7RVsB3eXnQ5bAj8P30pRvsXNorCfQtx21O0QeBJO3kaJivYmSoBaOHjN6halPxs50b8uVKee1ctvIXcvsfg8r4rAzvsAHlOQhuECQBCv13Dc63C710jEZRL/Pb7lS1A3aFPnABSwHdW0X3bQ3x8pBOBr0SXoaQ6m9MO2jdHAeu3dzg/CzXWYMjDkGd0CQDoWQf3JTFGu8/OiPWubITsYn7+cnlulYi4o6MMq2nDBzA1mjjqW4KEZEUahpc3PsyOqNqs+l9B/sgxSCEki0Nw=";
+			System.out.println(q.length());
+			System.out.println(w.length);
+			
+			String sk = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAI0cjCg1heBvtTLVfw1Y4qaPsW4YEkCJES8QJD7WvRymWW5a/tOYqhMBm8q04yuj+DePgYCBjuPwRqRtwHE4EEiHGSecUHAMUI5WBaasppIGpIpob1lw1ddD1rosMbVLaDdqjW69K5Al8Z2latAzfrLLwD7UxsKDF7Ya4UeqWHqxAgMBAAECgYAMGle3FygdYNdkvcUA6w+9g3OPYscl+9uacsL5FMfxjh77hRh4I47qxGeNUkhttMmUUl2kHPiZekFE1xj7XPigbmf3xX1FJQayarS2mC+S9QkgJuyEOq5JdXybSCCxJQ5qveUQuJeQe55Eg7Bv0iDcYzDBDovPOWTENnu/J9y4MQJBAO7uiPUQJ6I+FXsBgHK+zsmuSkYeKifYNrPzCRdiQq8/EUK9aseqS/ec34ENadt1TjoaHiincnmjjf9l/gq4GtUCQQCXMR/W40ERf00GOyb1oMD6jkQjvntsw7CDObA6Yopw0sMhN7ChSDJpI5hjcd8CJ/l+bFJYvP6kNgH531FK69ZtAkEA2oA/tUTRyfhWsoecDNNbzmpaOCdLy+ZZmFTwgnb0nsjhIxSP+wpMsKPAbYdzwCNVp6LM48bF1GFy8RY3rVvSBQJAdDO7ZutvHUWcK4fXH74X0/r4AAjsz+FvjswN2DHYeXJjquokhTD6HbjP7M6eOggDR9l1SOKpTAh+aE/tKQot2QJACtyDt/DPfdGUd2+giHym4kZtiL83xHyTOWfvNFwEiUztfqMGc96xSwsWwNoVLSgbEd1Q7/in17BqVM6tBA8OlA==";
 			byte[] e = Base64.getDecoder().decode(sk);
+			
+			System.out.println(sk.length());
+			System.out.println(e.length);
 			
 			EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(e);
 	        KeyFactory generator = KeyFactory.getInstance("RSA");
@@ -31,6 +37,8 @@ public class test {
 			
 			String y = Base64.getEncoder().encodeToString(t);
 			System.out.println(y);
+			System.out.println(y.length());
+			System.out.println(t.length);
 			
 		} catch (Exception e)
 		{
