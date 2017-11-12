@@ -3,12 +3,25 @@ package Server;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 
 import org.omg.stub.java.rmi._Remote_Stub;
 
+import Crypto.Crypto;
+import Crypto.Crypto_Factory;
 import Crypto.aesKeyGenerator;
 import Function.PacketProcessor;
 
@@ -103,7 +116,7 @@ public class Server_Make_Group extends Server_Funtion
 			String salt= ukg.getSaltToString();
 			
 			
-			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"','" +aeskey+"','" + iteration +"','" + salt+"','" + _usegps + "','" + lat + "','" + lng + "','" + radius +"');");
+			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"','" +aeskey+"','" + iteration +"','" + salt+"','" + _usegps + "','" + lat + "','" + lng + "','" + radius +"','" + 1 + "');");
 			
 			for(int i = 0; i < _members.size(); i++)
 			{
@@ -122,10 +135,38 @@ public class Server_Make_Group extends Server_Funtion
 					{
 						groupList = gpCode;
 					}
+					
+					String pubkey = rs.getString(14);
+					byte[] pubKey = Base64.getDecoder().decode(pubkey);
+					
+					PublicKey pk = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(pubKey));
+					
+					byte[] groupkey = Crypto_Factory.create("RSA1024", Cipher.ENCRYPT_MODE, pk).doFinal(Base64.getDecoder().decode(aeskey));
+					
+					int num=1;
+				
+					//System.out.println("insert into groupkey values('" + gpCode + "'," + num + ",'" + Server_Code_Manager.codeCutter(_members.get(i)) + "','" + Base64.getEncoder().encodeToString(groupkey) + "');");
+					
+					_db.Update("insert into groupkey values('" + Server_Code_Manager.codeCutter(gpCode) + "'," + num + ",'" + Server_Code_Manager.codeCutter(_members.get(i)) + "','" + Base64.getEncoder().encodeToString(groupkey) + "');");
+					
+				
+					
 
 				} 
 				catch (SQLException e) 
 				{
+					e.printStackTrace();
+				} catch (InvalidKeySpecException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalBlockSizeException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (BadPaddingException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				_db.Update("update test set mygrouplist = '" + groupList + "' where uscode = " + Server_Code_Manager.codeCutter(_members.get(i)) + ";");

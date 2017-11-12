@@ -49,6 +49,7 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 	private Client_FileSelector _cfs = null;
 	private Client_Progressbar _cpb = null;
 	
+	private String _userId = null;
 	// Constructors
 	public Client_FileShare_Send()
 	{
@@ -109,11 +110,18 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 		{
 			byte[] OTP_Packet = new byte[1024];
 			OTP_Packet[0] = MAKE_OTP;
+			OTP_Packet[500] =  (byte) _userId.length();
+			Function.frontInsertByte(550, _userId.getBytes(), OTP_Packet);
 			_csc.send.setPacket(OTP_Packet).write();
 			
 			byte[] OTP_Byte = _csc.receive.setAllocate(1024).read().getByte();
 			_OTP = new String(OTP_Byte).trim();
 	
+			if (_OTP.equals("0"))
+			{
+				showMessage("ERROR", "Please Check Receiver ID.");
+				return;
+			}
 			changeFilesName();
 			
 			_cpb.UI_ON();
@@ -127,8 +135,11 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 				packet[1] = (byte)_fileNameArray.length;
 				packet[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
 				packet[3] = (byte)_fileNameArray[i].getBytes().length;
+				packet[500] = (byte) _userId.length();
+				
 				Function.frontInsertByte(4, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
 				Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, _fileNameArray[i].getBytes(), packet);
+				Function.frontInsertByte(550, _userId.getBytes(), packet);
 				_csc.send.setPacket(packet).write();	// event
 				
 				_raf = new RandomAccessFile(_filePathArray[i], "rw");
@@ -172,6 +183,11 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 		}
 	}
 	
+	public void setUserId(String userId)
+	{
+		_userId = userId;
+	}
+	
 	private void showMessage(String title, String message) 
 	{
 		Font fontbt = new Font("SansSerif", Font.BOLD,24);
@@ -179,4 +195,6 @@ public class Client_FileShare_Send extends Thread implements PacketRule
 		input.setFont(fontbt);
 		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	
 }

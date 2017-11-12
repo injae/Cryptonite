@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.14, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.13, for Win64 (x86_64)
 --
 -- Host: localhost    Database: cryptonite
 -- ------------------------------------------------------
--- Server version	5.7.14
+-- Server version	5.7.13-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,6 +16,55 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `files`
+--
+
+DROP TABLE IF EXISTS `files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `files` (
+  `uscode` varchar(255) NOT NULL,
+  `hash` varchar(255) NOT NULL,
+  `encrypted` varchar(255) NOT NULL,
+  PRIMARY KEY (`hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `files`
+--
+
+LOCK TABLES `files` WRITE;
+/*!40000 ALTER TABLE `files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `groupkey`
+--
+
+DROP TABLE IF EXISTS `groupkey`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `groupkey` (
+  `gpcode` varchar(45) NOT NULL,
+  `groupkeynum` int(11) NOT NULL,
+  `uscode` varchar(45) NOT NULL,
+  `groupkey` varchar(2048) DEFAULT NULL,
+  PRIMARY KEY (`gpcode`,`groupkeynum`,`uscode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `groupkey`
+--
+
+LOCK TABLES `groupkey` WRITE;
+/*!40000 ALTER TABLE `groupkey` DISABLE KEYS */;
+/*!40000 ALTER TABLE `groupkey` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `grouplist`
 --
 
@@ -26,13 +75,14 @@ CREATE TABLE `grouplist` (
   `gpcode` varchar(45) NOT NULL DEFAULT '',
   `gplist` varchar(45) NOT NULL DEFAULT '',
   `gpname` varchar(45) NOT NULL DEFAULT '',
-  `aeskey` varchar(45) NOT NULL DEFAULT '',
+  `aeskey` varchar(2048) NOT NULL DEFAULT '',
   `iteration` varchar(45) NOT NULL DEFAULT '0',
   `salt` varchar(45) NOT NULL DEFAULT '',
   `usegps` tinyint(1) NOT NULL DEFAULT '0',
   `lat` double NOT NULL DEFAULT '0',
   `lng` double NOT NULL DEFAULT '0',
   `radius` double NOT NULL DEFAULT '0',
+  `keynum` int(11) DEFAULT NULL,
   PRIMARY KEY (`gpcode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -67,6 +117,8 @@ CREATE TABLE `test` (
   `lat` double NOT NULL DEFAULT '0',
   `lng` double NOT NULL DEFAULT '0',
   `effectiveTime` varchar(45) NOT NULL DEFAULT '0',
+  `publickey` varchar(2048) NOT NULL DEFAULT '',
+  `secretkey` varchar(2048) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -89,4 +141,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-09-21 18:40:04
+-- Dump completed on 2017-11-12 19:38:24

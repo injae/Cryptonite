@@ -31,17 +31,19 @@ public class Client_Send_OTP extends JFrame
 	private BufferedImage img = null;
 
 	private Container container;
-	
+	private JTextField OTPField;
 	private JButton Send;
 	private JButton Cancel;
 	private JLabel OTP;
 	
+	private String UserID = "";
 	private String Otp;
 	private boolean _checkotp = false;
 	private static boolean _flag = false;
 	
 	private JLayeredPane layeredPane = new JLayeredPane();
 	private Client_FileShare_Send _cfs = null;
+	public Client_Send_OTP frame = null;
 	
 	Font font = new Font ("SansSerif", Font.BOLD,20);
 	Font _precondition_font = new Font ("Dialog", Font.BOLD,20);
@@ -53,6 +55,7 @@ public class Client_Send_OTP extends JFrame
 	
 	public Client_Send_OTP()
 	{
+		frame = this;
 		try
 		{
 			 Toolkit tk = Toolkit.getDefaultToolkit(); 
@@ -97,10 +100,16 @@ public class Client_Send_OTP extends JFrame
         Send.setBorderPainted(false);
         Send.setFocusPainted(false);
         Send.setContentAreaFilled(false);
-        Send.addActionListener(new ActionListener() 
+        Send.addActionListener(new ActionListener()
         {
 			public void actionPerformed(ActionEvent e) 
 			{
+				if (UserID.equals("") || UserID == null)
+				{
+					showMessage("에러", "받는사람 이름을 입력해 주세요.");
+					return;
+				}
+				
 				_cfs.start();
 				try 
 				{
@@ -121,6 +130,33 @@ public class Client_Send_OTP extends JFrame
 			}
 		});
         layeredPane.add(Send);
+        
+        OTPField = new JTextField();
+        OTPField.setText("Please input receiver ID");
+        OTPField.setBounds(142, 190, 254, 50);
+        OTPField.setForeground(Color.black);        
+        OTPField.setFont(font);
+        OTPField.setOpaque(false);
+        OTPField.setBorder(BorderFactory.createEmptyBorder());
+        OTPField.setHorizontalAlignment(JTextField.CENTER);
+        OTPField.addKeyListener(new KeyListener(){
+     		@Override
+     		public void keyPressed(KeyEvent e) {}
+     		@Override
+     		public void keyReleased(KeyEvent e) 
+     		{
+     			UserID = OTPField.getText();
+     			_cfs.setUserId(UserID);
+     		}
+     		@Override
+     		public void keyTyped(KeyEvent e) {}
+           });
+        	OTPField.addMouseListener(new MouseAdapter(){
+         	public void mouseClicked(MouseEvent e){
+         		OTPField.setText("");
+         	}
+         });
+        layeredPane.add(OTPField);
         
         Cancel = new JButton(new ImageIcon("img/cancel.png"));		
         Cancel.setRolloverIcon(new ImageIcon("img/cancelR.png"));
@@ -161,9 +197,22 @@ public class Client_Send_OTP extends JFrame
             {
             	g.setFont(font);
             	g.drawString(_cfs.getOTP(), 240, 280);
+            	if (_cfs.getOTP().equals("0"))
+            		{
+            			frame.dispose();
+            		}
             }
        }
    }
+	
+	private void showMessage(String title, String message) 
+	{
+		Font fontbt = new Font("SansSerif", Font.BOLD,24);
+		JLabel input = new JLabel(message);
+		input.setFont(fontbt);
+		JOptionPane.showMessageDialog(null, input, title, JOptionPane.INFORMATION_MESSAGE);
+	}
 
 }
+
 

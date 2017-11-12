@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.MalformedInputException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -109,13 +110,30 @@ public class Client_Group_Main extends JFrame implements PacketRule
 			if(isClick)  { isClick = false; }
 			else 		 { isClick = true;  }
 		}
-		public String noExtensionName() { return fileName.substring(0, fileName.length() - 5); }
+		public String noExtensionName() { 
+			if(!fileName.endsWith(".cnmc")){
+//				System.out.println("fileName : "+fileName+"/n");
+				StringTokenizer st2 = new StringTokenizer(fileName, "#");
+				String filename = "";
+				keynum = Integer.parseInt(st2.nextToken());
+				while(st2.hasMoreTokens())
+				{
+					filename = filename + st2.nextToken() + "#";
+				}
+				filename.substring(0, filename.length()-1);			//마지막 # 떼어냄
+				fileName=filename;
+			}
+//			System.out.println("filename2222222 : "+fileName+"/n");
+			
+			return fileName.substring(0, fileName.length() - 5); 
+		}
 		public String Extension() {return fileName.substring(fileName.length()-5, fileName.length());}
 		
 		public boolean isDir;
 		public JButton button;
 		public String fullPath;
-		public String fileName;
+		public String fileName ="";
+		public int keynum = 0;
 	}
 	private ArrayList<RecoveryButton> _btnList;
 	
@@ -364,8 +382,19 @@ public class Client_Group_Main extends JFrame implements PacketRule
 		if (_btnList.get(index).Extension().equals(".cnmc"))
 			btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file_cnmc.png"));
 		else
-			btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file.png"));
+		{
+			String filename= _btnList.get(index).fileName;
+			StringTokenizer st = new StringTokenizer(filename, "#");
+			st.nextToken();
+			filename="";
+			while(st.hasMoreTokens())
+			{
+				filename+=st.nextToken();
+			}
+			btn = new JButton(filename, new ImageIcon("gui/file.png"));
+		}	
 
+		
 		btn.setFont(fontbt);
 		btn.setToolTipText(_btnList.get(index).noExtensionName());
 		
@@ -500,7 +529,7 @@ public class Client_Group_Main extends JFrame implements PacketRule
 							 }
 							 else
 							 {
-								 key = new Client_Get_Group_Key().running(_gpCode);
+								 key = new Client_Get_Group_Key().running(_gpCode,_btnList.get(i).keynum);
 							 }
 							 
 							 new Client_File_Download().requestFile(_btnList.get(i).fullPath, _downloadPath + "\\" + _btnList.get(i).fileName, key);
