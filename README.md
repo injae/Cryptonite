@@ -15,6 +15,7 @@ This is personal & group information security program
     - You can set a password for each file to protect it (PBKDF2)
   - USB Protection
     - Create Encrypted Volume in USB using password
+      - Mount, Unmount
 
 # Demo
   - https://youtu.be/cCuC7mnV8eU
