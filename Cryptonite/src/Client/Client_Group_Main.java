@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.charset.MalformedInputException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -28,7 +27,6 @@ import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -50,8 +48,6 @@ import javax.swing.SwingConstants;
 
 import Client.Client_FileRecovery.RecoveryButton;
 import Client.Client_Group_Main.MyPanel;
-import Crypto.Crypto;
-import Crypto.Crypto_Factory;
 import Crypto.KeyReposit;
 import Function.Function;
 import Function.PacketRule;
@@ -505,14 +501,7 @@ public class Client_Group_Main extends JFrame implements PacketRule
 							 }
 							 else
 							 {
-								 String encaeskey = new Client_Get_Group_Key().running(_gpCode);
-								 byte[] aesKey = Base64.getDecoder().decode(encaeskey.getBytes());
-								 
-								 PrivateKey prikey = new Client_Get_Group_priKey().running(_gpCode);
-								 byte[] aeskey1 = new Crypto(Crypto_Factory.create("RSA1024", Cipher.DECRYPT_MODE, prikey)).endecription(aesKey);
-								 aeskey1 = Base64.getDecoder().decode(aeskey1);
-								 key = new SecretKeySpec(aeskey1,"AES");
-								 
+								 key = new Client_Get_Group_Key().running(_gpCode);
 							 }
 							 
 							 new Client_File_Download().requestFile(_btnList.get(i).fullPath, _downloadPath + "\\" + _btnList.get(i).fileName, key);

@@ -1,10 +1,6 @@
 package Server;
 
 import java.io.IOException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
@@ -45,11 +41,9 @@ public class Server_Get_GroupKey extends Server_Funtion
 		rs.next();
 		String groupKey = rs.getString(4);
 		
-		//byte[] groupkey = Base64.getDecoder().decode(groupKey.getBytes());
-		//System.out.println(new Crypto(Crypto_Factory.create("RSA1024", Cipher.DECRYPT_MODE, KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(prikey.getBytes()))))).endecription(groupkey).length);
+		byte[] groupkey = Base64.getDecoder().decode(groupKey);
 		
-		//System.out.println("send : " + groupkey.length);
-	 	_activity.send.setPacket(groupKey.getBytes(),172).write();
+	 	_activity.send.setPacket(groupkey, 32).write();
 	 	
 		} catch (SQLException e) {
 			// TODO �ڵ� ������ catch ���

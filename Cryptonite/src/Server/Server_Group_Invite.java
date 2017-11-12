@@ -1,9 +1,21 @@
 package Server;
 
 import java.io.IOException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 import java.util.StringTokenizer;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+
+import Crypto.Crypto_Factory;
 
 public class Server_Group_Invite extends Server_Funtion 
 {
@@ -85,6 +97,23 @@ public class Server_Group_Invite extends Server_Funtion
 						mygrouplist += ":" + _gpCode;
 					}
 					db.Update("update test set mygrouplist = '" + mygrouplist + "' where uscode = " + Server_Code_Manager.codeCutter(uscode) + ";");
+					
+					ResultSet rs4 = db.Query("select * from test where id = '" + _id + "';");
+					rs4.next();
+					String pubkey = rs4.getString(14);
+					byte[] pubKey = Base64.getDecoder().decode(pubkey);
+					
+					PublicKey pk = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(pubKey));
+					
+					ResultSet rs5 = db.Query("select * from grouplist where gpcode = " + Server_Code_Manager.codeCutter(_gpCode) + ";");
+					rs5.next();
+					
+					byte[] groupkey = Crypto_Factory.create("RSA1024", Cipher.ENCRYPT_MODE, pk).doFinal(Base64.getDecoder().decode(rs5.getString(4)));
+					
+					//System.out.println();
+					db.Update("INSERT INTO groupkey values('"+ Server_Code_Manager.codeCutter(_gpCode) +"'," + rs5.getInt(11) + ",'" + Server_Code_Manager.codeCutter(uscode) + "','" + Base64.getEncoder().encodeToString(groupkey) + "')");
+					
+					
 					_activity.send.setPacket("TRUE".getBytes(), 100).write();
 				}
 				else
@@ -94,6 +123,18 @@ public class Server_Group_Invite extends Server_Funtion
 			} 
 			catch (SQLException e) 
 			{
+				e.printStackTrace();
+			} catch (InvalidKeySpecException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalBlockSizeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BadPaddingException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -394,3 +394,4 @@ public class Client_AutoBackup implements PacketRule
 		return _protectedFolderName;
 	}
 }
+

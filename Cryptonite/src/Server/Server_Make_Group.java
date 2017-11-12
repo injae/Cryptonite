@@ -3,7 +3,12 @@ package Server;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.security.Key;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,10 +20,9 @@ import javax.crypto.IllegalBlockSizeException;
 
 import org.omg.stub.java.rmi._Remote_Stub;
 
+import Crypto.Crypto;
 import Crypto.Crypto_Factory;
-import Crypto.KeyReposit;
 import Crypto.aesKeyGenerator;
-import Crypto.rsaKeyGenerator;
 import Function.PacketProcessor;
 
 public class Server_Make_Group extends Server_Funtion
@@ -106,26 +110,13 @@ public class Server_Make_Group extends Server_Funtion
 			String gpName = new String(_activity.receive.getByte()).trim();
 			
 			aesKeyGenerator ukg = new aesKeyGenerator();
-			rsaKeyGenerator rkg = new rsaKeyGenerator();
 			ukg.init();
-			rkg.init();
 			String aeskey= ukg.getAesKeyToString();
-			byte[] encaeskey = null;
 			String iteration= ukg.getIterationCountToString();
 			String salt= ukg.getSaltToString();
-			try {
-				encaeskey = Crypto_Factory.create("RSA1024", Cipher.ENCRYPT_MODE, rkg.get_pubKey()).doFinal(aeskey.getBytes());
-			} catch (IllegalBlockSizeException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (BadPaddingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			String pk = rkg.get_PubKeyToString();
-			String sk = rkg.get_PriKeyToString();
 			
-			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"','" + Base64.getEncoder().encodeToString(encaeskey)+"','" + iteration +"','" + salt+"','" + _usegps + "','" + lat + "','" + lng + "','" + radius +"','" + pk + "','" + sk + "');");
+			
+			_db.Update("insert into grouplist values(" + code + ",'" + memberSet + "','" + gpName +"','" +aeskey+"','" + iteration +"','" + salt+"','" + _usegps + "','" + lat + "','" + lng + "','" + radius +"','" + 1 + "');");
 			
 			for(int i = 0; i < _members.size(); i++)
 			{
@@ -144,10 +135,38 @@ public class Server_Make_Group extends Server_Funtion
 					{
 						groupList = gpCode;
 					}
+					
+					String pubkey = rs.getString(14);
+					byte[] pubKey = Base64.getDecoder().decode(pubkey);
+					
+					PublicKey pk = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(pubKey));
+					
+					byte[] groupkey = Crypto_Factory.create("RSA1024", Cipher.ENCRYPT_MODE, pk).doFinal(Base64.getDecoder().decode(aeskey));
+					
+					int num=1;
+				
+					//System.out.println("insert into groupkey values('" + gpCode + "'," + num + ",'" + Server_Code_Manager.codeCutter(_members.get(i)) + "','" + Base64.getEncoder().encodeToString(groupkey) + "');");
+					
+					_db.Update("insert into groupkey values('" + Server_Code_Manager.codeCutter(gpCode) + "'," + num + ",'" + Server_Code_Manager.codeCutter(_members.get(i)) + "','" + Base64.getEncoder().encodeToString(groupkey) + "');");
+					
+				
+					
 
 				} 
 				catch (SQLException e) 
 				{
+					e.printStackTrace();
+				} catch (InvalidKeySpecException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalBlockSizeException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (BadPaddingException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				_db.Update("update test set mygrouplist = '" + groupList + "' where uscode = " + Server_Code_Manager.codeCutter(_members.get(i)) + ";");
