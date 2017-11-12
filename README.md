@@ -13,7 +13,7 @@ This is personal & group information security program
   - Create group, group members can sharing files (with gps authentication)
     - Group delete, invite, withdrawal
     - You can set a password for each file to protect it (PBKDF2)
-  - USB Protection
+  - USB Protection
     - Create Encrypted Volume in USB using password
 
 # Demo
