@@ -57,7 +57,7 @@ public class Server_Group_Withdrawal extends Server_Funtion {
 			if(save.length() == 0)
 			{
 				db.Update("delete from grouplist where gpcode = "+Server_Code_Manager.codeCutter(_gpcode)+";"); 
-				db.Update("Delete from groupkey where gpcode = "+_gpcode+";"); 
+				db.Update("Delete from groupkey where gpcode = "+Server_Code_Manager.codeCutter(_gpcode)+";"); 
 			}
 			else 
 			{
