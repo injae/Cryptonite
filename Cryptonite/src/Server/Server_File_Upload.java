@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -8,6 +9,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.StringTokenizer;
 
 import Function.PacketProcessor;
 import Function.PacketRule;
@@ -82,11 +84,48 @@ public class Server_File_Upload extends Server_Funtion implements PacketRule
 		try 
 		{
 			_address = "Server_Folder\\Backup\\" + _gpCode;
-			_raf = new RandomAccessFile(_address + "\\" + _fileName, "rw");
+			
+			Server_DataBase db= Server_DataBase.getInstance();
+			ResultSet rs=db.Query("SELECT keynum from grouplist where gpcode='"+Server_Code_Manager.codeCutter(_gpCode) +"';");
+			
+			rs.next();
+			String keynum= rs.getString(1);
+			
+			if(_fileName.substring(_fileName.length()-5,_fileName.length()).equals(".cnmc")){
+				_raf = new RandomAccessFile(_address + "\\" +_fileName, "rw");
+			}
+			else
+			{
+				File f = new File(_address);
+				File[] files = f.listFiles();
+				
+				for (int i =0; i<files.length;i++)
+				{  System.out.println("hihihihi");
+					String fname = files[i].getName();
+					
+					StringTokenizer st2 = new StringTokenizer(fname, "#");
+					String filename = "";
+					st2.nextToken();
+					while(st2.hasMoreTokens())
+					{
+						filename +=st2.nextToken();
+					}
+					System.out.println("fname : "+fname+",,,,,,"+filename+"fileName : "+_fileName);
+					if(filename.equals(_fileName)){
+						files[i].delete();
+					}
+				}
+				
+				_raf = new RandomAccessFile(_address + "\\" + keynum+"#"+_fileName, "rw");
+			}	
+			
 			_fileChannel = _raf.getChannel();
 		} 
 		catch (FileNotFoundException e)
 		{
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

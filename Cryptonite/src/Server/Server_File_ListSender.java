@@ -75,7 +75,7 @@ public class Server_File_ListSender extends Server_Funtion
 				
 				@Override
 				public void delete() throws Exception {
-					// TODO ÀÚµ¿ »ý¼ºµÈ ¸Þ¼Òµå ½ºÅÓ
+					// TODO ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼Òµï¿½ ï¿½ï¿½ï¿½ï¿½
 					
 				}
 				
