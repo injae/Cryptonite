@@ -110,13 +110,28 @@ public class Client_Group_Main extends JFrame implements PacketRule
 			if(isClick)  { isClick = false; }
 			else 		 { isClick = true;  }
 		}
-		public String noExtensionName() { return fileName.substring(0, fileName.length() - 5); }
+		public String noExtensionName() { 
+			if(!fileName.endsWith(".cnmc")){
+				System.out.println("fileName : "+fileName+"/n");
+				StringTokenizer st2 = new StringTokenizer(fileName, "#");
+				String filename = "";
+				st2.nextToken();
+				while(st2.hasMoreTokens())
+				{
+					filename +=st2.nextToken();
+				}
+				fileName=filename;
+			}
+			System.out.println("filename2222222 : "+fileName+"/n");
+			
+			return fileName.substring(0, fileName.length() - 5); 
+		}
 		public String Extension() {return fileName.substring(fileName.length()-5, fileName.length());}
 		
 		public boolean isDir;
 		public JButton button;
 		public String fullPath;
-		public String fileName;
+		public String fileName ="";
 	}
 	private ArrayList<RecoveryButton> _btnList;
 	
@@ -365,8 +380,19 @@ public class Client_Group_Main extends JFrame implements PacketRule
 		if (_btnList.get(index).Extension().equals(".cnmc"))
 			btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file_cnmc.png"));
 		else
-			btn = new JButton(_btnList.get(index).fileName, new ImageIcon("gui/file.png"));
+		{
+			String filename= _btnList.get(index).fileName;
+			StringTokenizer st = new StringTokenizer(filename, "#");
+			st.nextToken();
+			filename="";
+			while(st.hasMoreTokens())
+			{
+				filename+=st.nextToken();
+			}
+			btn = new JButton(filename, new ImageIcon("gui/file.png"));
+		}	
 
+		
 		btn.setFont(fontbt);
 		btn.setToolTipText(_btnList.get(index).noExtensionName());
 		
