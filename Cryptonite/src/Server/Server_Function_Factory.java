@@ -57,8 +57,6 @@ public class Server_Function_Factory implements PacketRule
 			return new Server_GetGPS(activity);
 		case GET_GROUP_KEY:
 			return new Server_Get_GroupKey(activity);
-		case GET_GROUP_PRIKEY:
-			return new Server_Get_GroupPriKey(activity);
 		case FOLDER_LIST:
 			return new Server_Folder_List(activity);
 		case SET_GPS:

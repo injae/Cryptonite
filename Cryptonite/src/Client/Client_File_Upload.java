@@ -14,17 +14,13 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
-import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 import java.util.StringTokenizer;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -68,9 +64,7 @@ public class Client_File_Upload extends Thread implements PacketRule
 	
 	private Crypto _crypto = null;
 	private KeyReposit _reposit = null;
-	private String encaeskey = null;
-	private SecretKey aeskey = null;
-	private PrivateKey prikey = null;
+	private SecretKey key = null;
 	
 	// Constructors
 	public Client_File_Upload()
@@ -110,21 +104,14 @@ public class Client_File_Upload extends Thread implements PacketRule
 			
 			if (_mod == 0)
 			{
-				encaeskey = new Client_Get_Group_Key().running(_gpCode);
-				byte[] aesKey = Base64.getDecoder().decode(encaeskey);
-
-				prikey = new Client_Get_Group_priKey().running(_gpCode);
-				byte[] aeskey1 = new Crypto(Crypto_Factory.create("RSA1024", Cipher.DECRYPT_MODE, prikey)).endecription(aesKey);
-				aeskey1 = Base64.getDecoder().decode(aeskey1);
-				aeskey = new SecretKeySpec(aeskey1,"AES");
-
-				_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new SecretKeySpec(aeskey1,"AES")));
+				key = new Client_Get_Group_Key().running(_gpCode);
+				_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, key));
 			}
 			else
 			{
 				pbk = getPBK(password, Integer.parseInt(_gpCode.substring(1)));
-				aeskey = new SecretKeySpec(pbk.concat("0000").getBytes(), "AES");
-				_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, aeskey));
+				key = new SecretKeySpec(pbk.concat("0000").getBytes(), "AES");
+				_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, key));
 				System.out.println(pbk.length());
 				System.out.println(_gpCode);
 			}
@@ -173,7 +160,7 @@ public class Client_File_Upload extends Thread implements PacketRule
 				
 				while(!p.isAllocatorEmpty())
 				{
-					_crypto.init(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, aeskey));
+					_crypto.init(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, key));
 					_csc.send.setPacket(_crypto.endecription(p.read().getByte())).write();
 				//	_csc.send.setPacket(p.read().getByte()).write();
 				}

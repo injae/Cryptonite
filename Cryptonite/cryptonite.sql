@@ -40,6 +40,31 @@ LOCK TABLES `files` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `groupkey`
+--
+
+DROP TABLE IF EXISTS `groupkey`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `groupkey` (
+  `gpcode` varchar(45) NOT NULL,
+  `groupkeynum` int(11) NOT NULL,
+  `uscode` varchar(45) NOT NULL,
+  `groupkey` varchar(2048) DEFAULT NULL,
+  PRIMARY KEY (`gpcode`,`groupkeynum`,`uscode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `groupkey`
+--
+
+LOCK TABLES `groupkey` WRITE;
+/*!40000 ALTER TABLE `groupkey` DISABLE KEYS */;
+/*!40000 ALTER TABLE `groupkey` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `grouplist`
 --
 
@@ -57,8 +82,7 @@ CREATE TABLE `grouplist` (
   `lat` double NOT NULL DEFAULT '0',
   `lng` double NOT NULL DEFAULT '0',
   `radius` double NOT NULL DEFAULT '0',
-  `publickey` varchar(2048) NOT NULL,
-  `secretkey` varchar(2048) NOT NULL,
+  `keynum` int(11) DEFAULT NULL,
   PRIMARY KEY (`gpcode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -117,4 +141,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-06 21:22:29
+-- Dump completed on 2017-11-12 19:38:24
