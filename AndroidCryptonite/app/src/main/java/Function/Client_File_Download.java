@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -42,14 +43,17 @@ public class Client_File_Download extends AsyncTask<ArrayList<String>,Integer,In
     protected Integer doInBackground(ArrayList<String>... arr) { //download file path, localPath
         try
         {
-            SecretKey key = new Client_Get_Group_Key().running(_gpCode);
-            _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
-            _crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
-
-            Client_Server_Connector csc = Client_Server_Connector.getInstance();
-            Charset cs = Charset.forName("UTF-8");
 
             for (int i=0; i< arr[0].size();i++) {
+
+                SecretKey key = new Client_Get_Group_Key().running(_gpCode, getKeynum(arr[0].get(i)));
+                _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
+                _crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
+
+                Client_Server_Connector csc = Client_Server_Connector.getInstance();
+                Charset cs = Charset.forName("UTF-8");
+
+
                 publishProgress(0);
                 byte[] event = new byte[1024];
                 event[0] = FILE_DOWNLOAD;
@@ -94,6 +98,8 @@ public class Client_File_Download extends AsyncTask<ArrayList<String>,Integer,In
         } catch (IOException e) {
             // TODO 자동 생성된 catch 블록
             e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
         publishProgress(2);
         return 0;
@@ -129,5 +135,25 @@ public class Client_File_Download extends AsyncTask<ArrayList<String>,Integer,In
                 new C_Toast(context).showToast("Please resend your loaction.\n (10 minutes after the last location has passed.)",Toast.LENGTH_LONG);
                 break;
         }
+    }
+
+    private int getKeynum(String filePath) {
+        String fileName = "";
+        int keynum = 0;
+        if (!filePath.endsWith(".cnmc")) {
+
+            StringTokenizer st = new StringTokenizer(filePath, "\\");
+
+            while (st.hasMoreTokens()) {
+                fileName = st.nextToken();
+
+            }
+
+            StringTokenizer st2 = new StringTokenizer(fileName, "#");
+            String filename = "";
+            keynum = Integer.parseInt(st2.nextToken());
+
+        }
+        return keynum;
     }
 }
