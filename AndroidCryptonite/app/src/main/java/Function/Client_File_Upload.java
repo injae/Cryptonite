@@ -13,6 +13,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.security.NoSuchAlgorithmException;
 import java.util.StringTokenizer;
 
 import javax.crypto.Cipher;
@@ -51,7 +52,7 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
     protected Void doInBackground(String... strings) { //gpCode
         try
         {
-            Crypto _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(strings[0])));
+            Crypto _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(strings[0],0)));
 
             ByteBuffer[] bb = new ByteBuffer[_fileNameArray.length];
             Charset cs = Charset.forName("UTF-8");
@@ -84,6 +85,8 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
         }
         catch (IOException e)
         {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
 

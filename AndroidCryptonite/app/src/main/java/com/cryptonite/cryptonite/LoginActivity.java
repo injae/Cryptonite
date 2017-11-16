@@ -35,6 +35,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.scottyab.rootbeer.RootBeer;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -109,6 +111,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        RootBeer rootBeer = new RootBeer(this);
+        if (rootBeer.isRooted())
+        {
+            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+            dlgAlert.setMessage("루팅 된 기기는 이용할 수 없습니다.");
+            dlgAlert.setTitle("Root detected!!");
+            dlgAlert.setPositiveButton("Ok",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //dismiss the dialog
+                        }
+                    });
+            dlgAlert.setCancelable(true);
+            dlgAlert.create().show();
+        }
+
     }
 
     @Override
