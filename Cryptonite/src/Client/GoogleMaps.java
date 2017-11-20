@@ -255,7 +255,7 @@ public class GoogleMaps {
 		});
         
 	    shell.open();
-	    
+	    shell.forceActive();
 	    
 	    while (!shell.isDisposed()) {
 	        if (!display.readAndDispatch())
