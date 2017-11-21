@@ -79,7 +79,7 @@ public class Client_USB_register extends JFrame{
 		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
-		setBounds(500, 300, 410, 290);
+		setBounds(500, 300, 405, 259);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -180,10 +180,14 @@ public class Client_USB_register extends JFrame{
 	    int firstSelIx = _list.getSelectedIndex();
 
 	 
-		_list.setBounds(20, 20, 170, 130);
+		_list.setBounds(20, 30, 170, 130);
 		_list.setVisible(true);
+		JLabel lab = new JLabel("보호할 USB 선택");
+		lab.setBounds(20, 10, 170, 20);
+		lab.setVisible(true);
 		
 		_layeredPane.add(_list);
+		_layeredPane.add(lab);
 		
 		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
 		DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
@@ -199,11 +203,12 @@ public class Client_USB_register extends JFrame{
 	     _size.addKeyListener(new KeyListener(){
 	     		@Override
 	     		public void keyPressed(KeyEvent e) {
-	     			if (e.getKeyCode() < '0' || e.getKeyCode() > '9')
+	     			char c = e.getKeyChar();
+	     			if (!Character.isDigit(c) && (e.getKeyChar() != e.VK_BACK_SPACE))
 	     			{
-	     				JOptionPane.showMessageDialog(null, "숫자만 입력해 주세요.");
+	     				//JOptionPane.showMessageDialog(null, "숫자만 입력해 주세요.");
 	     				e.consume();
-	     				_size.setText("");
+	     				//_size.setText("");
 	     			}
 	     			
 	     		}

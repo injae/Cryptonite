@@ -121,6 +121,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             dlgAlert.setPositiveButton("Ok",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            Runtime.getRuntime().exit(0);
                             //dismiss the dialog
                         }
                     });
