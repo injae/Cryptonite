@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.cryptonite.cryptonite.FileSendActivity;
@@ -53,22 +54,25 @@ public class Client_FileShare_Send extends AsyncTask<String,Integer,Boolean> imp
 
     private static ProgressBar progressBar;
     private static TextView step2,step3,OTP;
+    private static String receiver;
     // Constructors
-    public Client_FileShare_Send(ProgressBar progressBar, TextView step2, TextView step3, TextView OTP)
+    public Client_FileShare_Send(ProgressBar progressBar, TextView step2, TextView step3, TextView OTP, String receiver)
     {
         this.progressBar = progressBar;
         this.step2 = step2;
         this.step3 = step3;
         this.OTP = OTP;
+        this.receiver = receiver;
         _csc = Client_Server_Connector.getInstance();
     }
 
-    public static void init(ProgressBar progressBar1,TextView step22, TextView step33, TextView OTP1)
+    public static void init(ProgressBar progressBar1,TextView step22, TextView step33, TextView OTP1,String receiver1)
     {
         progressBar = progressBar1;
         step2 = step22;
         step3 = step33;
         OTP = OTP1;
+        receiver = receiver1;
     }
 
     @Override
@@ -83,10 +87,18 @@ public class Client_FileShare_Send extends AsyncTask<String,Integer,Boolean> imp
         {
             byte[] OTP_Packet = new byte[1024];
             OTP_Packet[0] = MAKE_OTP;
+            OTP_Packet[500] = (byte) receiver.length();
+            Function.frontInsertByte(550, receiver.getBytes(), OTP_Packet);
             _csc.send.setPacket(OTP_Packet).write();
 
-            byte[] OTP_Byte = _csc.receive.read().getByte();
+            byte[] OTP_Byte = _csc.receive.setAllocate(1024).read().getByte();
             _OTP = new String(OTP_Byte).trim();
+
+            if (_OTP.equals("0"))
+            {
+                //new C_Toast(null).showToast("Please Check Receiver ID.", Toast.LENGTH_LONG);
+                return false;
+            }
 
             initFiles(paths);
 
@@ -99,9 +111,12 @@ public class Client_FileShare_Send extends AsyncTask<String,Integer,Boolean> imp
                 packet[1] = (byte)_fileNameArray.length;
                 packet[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
                 packet[3] = (byte)fileNameArray[i].limit();
+                packet[500] = (byte)receiver.length();
+
                 System.out.println(fileNameArray[i].limit());
                 Function.frontInsertByte(4, String.valueOf(_fileSizeArray[i]).getBytes(), packet);
                 Function.frontInsertByte(4 + String.valueOf(_fileSizeArray[i]).getBytes().length, fileNameArray[i].array(), packet);
+                Function.frontInsertByte(550, receiver.getBytes(), packet);
                 _csc.send.setPacket(packet).write();	// 1
 
                 _raf = new RandomAccessFile(paths[i], "rw");

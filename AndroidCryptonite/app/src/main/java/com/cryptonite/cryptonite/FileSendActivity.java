@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class FileSendActivity extends AppCompatActivity {
     ImageButton choose;
     ProgressBar progressBar;
     TextView step2,step3,OTP;
+    EditText receiver;
 
 
     @Override
@@ -48,6 +50,7 @@ public class FileSendActivity extends AppCompatActivity {
         step2 = (TextView) findViewById(R.id.Step2_TextView);
         step3 = (TextView) findViewById(R.id.Step3_TextView);
         OTP = (TextView) findViewById(R.id.OTP_View);
+        receiver = (EditText) findViewById(R.id.receiver);
 
 
         choose = (ImageButton) findViewById(R.id.send);
@@ -69,7 +72,7 @@ public class FileSendActivity extends AppCompatActivity {
             choose.setClickable(false);
             step2.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
-            Client_FileShare_Send.init(progressBar,step2,step3,OTP);
+            Client_FileShare_Send.init(progressBar,step2,step3,OTP,receiver.getText().toString());
         }
 
 
@@ -77,13 +80,19 @@ public class FileSendActivity extends AppCompatActivity {
     }
 
     private void fileChoose(){
+        if (receiver.getText().toString().isEmpty())
+        {
+            new C_Toast(getApplicationContext()).showToast("Please Input Receiver ID",Toast.LENGTH_LONG);
+            return;
+        }
+
         PathPicker picker = new PathPicker(this,PathPicker.Select_Files);
         picker.setDialogSelectionListener(new DialogSelectionListener() {
             @Override
             public void onSelectedFilePaths(String[] files) {
                 if(files.length!=0) {
 
-                    new Client_FileShare_Send(progressBar,step2, step3,OTP).execute(files); // send Files
+                    new Client_FileShare_Send(progressBar,step2, step3,OTP,receiver.getText().toString()).execute(files); // send Files
 
                     choose.setClickable(false);
                     step2.setVisibility(View.VISIBLE);

@@ -24,30 +24,46 @@
             android:src="@drawable/_logo"
             android:layout_marginBottom="20dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:baselineAligned="false">
+            android:theme="@style/AppTheme">
+
+            <AutoCompleteTextView
+                android:id="@+id/receiver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="ID"
+                android:inputType="textVisiblePassword"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/Step1_TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select File &amp; Send  >>"
-                android:id="@+id/Step1_TextView"
-                android:textColor="#02aeef"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="40dp"
+                android:text="Select File &amp; Send  >>"
+                android:textColor="#02aeef"
                 android:textSize="18dp"
-                android:textStyle="bold"
-                android:layout_marginRight="40dp" />
+                android:textStyle="bold" />
 
             <ImageButton
+                android:id="@+id/send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="send"
-                android:id="@+id/send"
+                android:background="#00000000"
                 android:src="@drawable/send1_selector"
-                android:background="#00000000" />
+                android:text="send" />
 
         </LinearLayout>
 

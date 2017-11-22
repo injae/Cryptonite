@@ -62,6 +62,7 @@ public class Client_Main_UI extends JFrame {
 	private JButton Developersbt;
 	private JButton Setting;
 	private JButton USB;
+	private JButton USBUN;
 
 	private JButton Sendbt;
 	private JButton Receivebt;
@@ -155,6 +156,7 @@ public class Client_Main_UI extends JFrame {
 		layeredPane.add(ProtectedFolderOpenbt);
 		layeredPane.add(Setting);
 		layeredPane.add(USB);
+		layeredPane.add(USBUN);
 		layeredPane.add(Developersbt);
 		layeredPane.add(Sendbt);
 		layeredPane.add(Receivebt);
@@ -182,6 +184,30 @@ public class Client_Main_UI extends JFrame {
 				_usbui.UI_ON();
 			}
 		});
+		
+		USBUN = new JButton(new ImageIcon("img/USBUN.png"));
+		USBUN.setRolloverIcon(new ImageIcon("img/USBUNbt.png"));
+		USBUN.setBounds(270,30,30,30);
+		USBUN.setFocusPainted(false);
+		USBUN.setContentAreaFilled(false);
+		USBUN.setBorderPainted(false);		
+		USBUN.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+	 	       	String currentDir = System.getProperty("user.dir");
+ 	       		Runtime rt = Runtime.getRuntime();
+ 	       	try {
+				Process process = rt.exec(new String[]{currentDir+"\\CryptoniteMount.exe", "dismount"});
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+				
+			}
+		});
+		
+		
 
 		ProtectedFolderOpenbt = new JButton(new ImageIcon("img/protectedFolderOpen.png"));
 		ProtectedFolderOpenbt.setRolloverIcon(new ImageIcon("img/protectedFolderOpenR.png"));
