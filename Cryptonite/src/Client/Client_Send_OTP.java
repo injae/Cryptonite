@@ -70,7 +70,7 @@ public class Client_Send_OTP extends JFrame
 		container=getContentPane();
 		container.setBackground(Color.WHITE);
 		setTitle("Cryptonite");
-		setBounds(500,300,448,530);
+		setBounds(500,350,448,530);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -78,7 +78,7 @@ public class Client_Send_OTP extends JFrame
 		container.setLayout(null);
 		
 		getContentPane().setLayout(null);
-        layeredPane.setBounds(0, 0, 470, 550);
+        layeredPane.setBounds(0, 0, 470, 610);
         layeredPane.setLayout(null);
         
         try 
@@ -121,7 +121,7 @@ public class Client_Send_OTP extends JFrame
 				}
 				
 				OTP = new JLabel();
-		    	OTP.setBounds(236, 248, 200, 50);
+		    	OTP.setBounds(236, 308, 200, 50);
 		        OTP.setVisible(true);
 		        layeredPane.add(OTP);
 				
@@ -133,7 +133,7 @@ public class Client_Send_OTP extends JFrame
         
         OTPField = new JTextField();
         OTPField.setText("Please input receiver ID");
-        OTPField.setBounds(142, 190, 254, 50);
+        OTPField.setBounds(142, 250, 254, 50);
         OTPField.setForeground(Color.black);        
         OTPField.setFont(font);
         OTPField.setOpaque(false);
@@ -196,7 +196,7 @@ public class Client_Send_OTP extends JFrame
             if(_checkotp)
             {
             	g.setFont(font);
-            	g.drawString(_cfs.getOTP(), 240, 280);
+            	g.drawString(_cfs.getOTP(), 240, 340);
             	if (_cfs.getOTP().equals("0"))
             		{
             			frame.dispose();
