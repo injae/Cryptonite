@@ -14,6 +14,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 
 import Crypto.Crypto;
 import Crypto.Crypto_Factory;
@@ -327,8 +328,13 @@ public class Client_AutoBackup implements PacketRule
 	}
 	
 	private String getPassword(String name) {
-		// TODO 자동 생성된 메소드 스텁
-		return (String) JOptionPane.showInputDialog(null, "Input "+ name + " Password\nWarning!!\nIf you forget your password, you will not be able to decrypt the file.", "Password", JOptionPane.PLAIN_MESSAGE, null, null, null);
+		String password = "";
+		JPasswordField passwordField = new JPasswordField();
+		Object[] obj = {"Input "+ name + " Password\nWarning!!\nIf you forget your password, you will not be able to decrypt the file.",passwordField};
+		if (JOptionPane.showOptionDialog(null, obj, "Password", JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null) == JOptionPane.YES_OPTION) {
+			password = new String(passwordField.getPassword());
+		}
+		return password;
 	}
 	
 	private String getPBK (String password)

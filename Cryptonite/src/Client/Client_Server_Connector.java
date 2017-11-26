@@ -27,7 +27,7 @@ public class Client_Server_Connector extends Thread
 		{		
 			_channel = SocketChannel.open();
 			_channel.configureBlocking(true);
-			_channel.connect(new InetSocketAddress("localhost", 4444));
+			_channel.connect(new InetSocketAddress("192.168.0.10", 4444));
 
 		/*	while (!_channel.finishConnect()) 
 			{
