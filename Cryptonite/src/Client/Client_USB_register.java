@@ -3,7 +3,9 @@ package Client;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -35,6 +37,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JWindow;
@@ -79,7 +82,7 @@ public class Client_USB_register extends JFrame{
 		
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("Cryptonite");
-		setBounds(500, 300, 405, 259);
+		setBounds(500, 300, 405, 252);	//405 259
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -96,6 +99,14 @@ public class Client_USB_register extends JFrame{
             System.out.println("Image Load Failed.");
             System.exit(0);
         }
+        
+		try {
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			Image image = tk.getImage("gui/logo.png");
+			this.setIconImage(image);
+		} catch (Exception e) {
+			System.out.println("Appilcation icon not found");
+		}
 		
 		 MyPanel panel = new MyPanel();
 	     panel.setBounds(0, 0, 400, 224);
@@ -259,7 +270,7 @@ public class Client_USB_register extends JFrame{
 		bg.add(rdbtnGB);
 		rdbtnMB.setSelected(true);
 	    
-	    _pswd = new JTextField();
+	    _pswd = new JPasswordField();
 	    _pswd.setBounds(265, 100, 120, 31);
 	    _pswd.setOpaque(true);
 	    _pswd.setForeground(Color.BLACK);
