@@ -25,24 +25,24 @@
         android:layout_marginBottom="20dp">
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Type Your OTP : "
-            android:id="@+id/textView"
-            android:textSize="24dp"
-            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:text="Number : "
             android:textColor="#02aeef"
-            android:layout_marginRight="10dp" />
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <EditText
+            android:id="@+id/OTP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:ems="10"
-            android:id="@+id/OTP"
-            android:hint="OTP"
-            android:maxLines="1"
-            android:maxLength="6" />
+            android:hint="Number"
+            android:inputType="number"
+            android:maxLength="6"
+            android:maxLines="1" />
     </LinearLayout>
 
     <LinearLayout
