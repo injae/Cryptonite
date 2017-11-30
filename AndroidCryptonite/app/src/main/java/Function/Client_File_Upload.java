@@ -1,7 +1,9 @@
 package Function;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -17,6 +19,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.StringTokenizer;
 
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import Crypto.Crypto;
 import Crypto.Crypto_Factory;
@@ -35,6 +39,10 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
     private long _currentFileSize;
     private long _sendFileSize=0;
     private GroupMainActivity activity;
+    private String[] _pbepwd;
+    private boolean _usepbe;
+    private String pbk;
+    private Client_getPBK _cpbe;
 
     // Another Class
     private Client_Server_Connector _csc = null;
@@ -46,25 +54,50 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
         this.context = context;
         this.progressDialog = progressDialog;
         _csc = Client_Server_Connector.getInstance();
+        _cpbe = new Client_getPBK();
     }
 
     @Override
     protected Void doInBackground(String... strings) { //gpCode
         try
         {
-            Crypto _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(strings[0],0)));
-
             ByteBuffer[] bb = new ByteBuffer[_fileNameArray.length];
             Charset cs = Charset.forName("UTF-8");
             for(int i = 0; i < _fileNameArray.length; i++)
             {
+                Crypto _crypto;
+                if (_usepbe == false) {
+                    _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, new Client_Get_Group_Key().running(strings[0], 0)));
+                }
+                else {
+
+                    pbk = _cpbe.getPBK(_pbepwd[i], Integer.parseInt(strings[0].substring(1)));
+                    SecretKey key = new SecretKeySpec(pbk.concat("0000").getBytes(), "AES");
+                    _crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.ENCRYPT_MODE, key));
+
+                }
+
+
+
                 bb[i] = cs.encode(_fileNameArray[i]);
                 byte[] event = new byte[1024];
                 event[0] = FILE_UPLOAD;
-                event[1] = (byte)bb[i].limit();
-                event[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
-                Function.frontInsertByte(3, bb[i].array(), event);
-                Function.frontInsertByte(3 + bb[i].limit(), String.valueOf(_fileSizeArray[i]).getBytes(), event);
+                event[1] = (byte)_fileNameArray[i].getBytes().length;
+
+
+                if (_usepbe == false)
+                    event[2] = (byte)String.valueOf(_fileSizeArray[i]).getBytes().length;
+                else
+                    event[2] = (byte)String.valueOf(_fileSizeArray[i]+64).getBytes().length;
+
+
+                Function.frontInsertByte(3, _fileNameArray[i].getBytes(), event);
+
+                if (_usepbe == false)
+                    Function.frontInsertByte(3 + _fileNameArray[i].getBytes().length, String.valueOf(_fileSizeArray[i]).getBytes(), event);
+                else
+                    Function.frontInsertByte(3 + _fileNameArray[i].getBytes().length, String.valueOf(_fileSizeArray[i]+64).getBytes(), event);
+
                 Function.frontInsertByte(800, strings[0].getBytes(), event);
                 _csc.send.setPacket(event).write();
 
@@ -74,6 +107,16 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
                 p.setAllocate(_fileSizeArray[i]);
 
                 publishProgress(0L, _fileSizeArray[i]);
+
+                if (_usepbe == true)
+                {
+                    _csc.send.setAllocate(64);
+                    _csc.send.setAllocate(_fileSizeArray[i]);
+                    _csc.send.setPacket(_cpbe.SHA(pbk.concat("0000")).getBytes(),64).write();
+                }
+                else
+                    _csc.send.setAllocate(_fileSizeArray[i]);
+
                 while(!p.isAllocatorEmpty())
                 {
                     _csc.send.setPacket(_crypto.endecription(p.read().getByte())).write();
@@ -115,12 +158,13 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
         }
     }
 
-    public Client_File_Upload init(String... strings)
+    public Client_File_Upload init(String[] strings, String[] pbepwd,boolean usepbe)
     {
         progressDialog.show();
         _filePathArray = strings.clone();
         _fileNameArray = new String[strings.length];
-
+        _pbepwd = pbepwd;
+        _usepbe = usepbe;
 
         for (int i=0; i<strings.length;i++)
         {

@@ -34,6 +34,7 @@ import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import Function.C_Toast;
 import Function.Client_File_Download;
@@ -55,6 +56,8 @@ public class GroupMainActivity extends AppCompatActivity {
     FileListAdapter adapter;
     String gpCode;
     boolean captain;
+    boolean usepbe = false;
+    String[] pbepwd;
     GroupMainActivity activity;
     String[] filePath;
     ArrayList<String> selectPath;
@@ -63,6 +66,7 @@ public class GroupMainActivity extends AppCompatActivity {
     GroupInviteAdapter groupInviteAdapter;
     Client_Group_Search_Invite cgs;
     ProgressDialog progressDialog;
+    String pwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,6 +220,8 @@ public class GroupMainActivity extends AppCompatActivity {
         fileSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 final AlertDialog dialog = new AlertDialog.Builder(GroupMainActivity.this).create();
                 dialog.setCancelable(true);
                 dialog.setTitle("Choose Files To Upload");
@@ -232,12 +238,19 @@ public class GroupMainActivity extends AppCompatActivity {
                                 }
                                 else
                                 {
-                                    ProgressDialog progressDialog = new ProgressDialog(GroupMainActivity.this);
+                                    if (usepbe == true)
+                                    {
+                                        pbepwd = new String[files.length];
+                                        getpwd(files,0);
+                                    }
+
+                                    //INTO getpwd
+/*                                    ProgressDialog progressDialog = new ProgressDialog(GroupMainActivity.this);
                                     progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                                     progressDialog.setTitle("Uploading...");
                                     progressDialog.setMax(100);
                                     progressDialog.setCancelable(false);
-                                    new Client_File_Upload(GroupMainActivity.this,progressDialog,activity).init(files).execute(gpCode);
+                                    new Client_File_Upload(GroupMainActivity.this,progressDialog,activity).init(files).execute(gpCode);*/
                                 }
                             }
                         });
@@ -250,7 +263,28 @@ public class GroupMainActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                dialog.show();
+
+
+                final AlertDialog dialog1 = new AlertDialog.Builder(activity).create();
+                dialog1.setCancelable(true);
+                dialog1.setTitle("Use PBE to encrypt file?");
+                dialog1.setButton(DialogInterface.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        usepbe = true;
+                        dialog1.dismiss();
+                        dialog.show();
+                    }
+                });
+                dialog1.setButton(DialogInterface.BUTTON_NEGATIVE, "NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        usepbe = false;
+                        dialog1.dismiss();
+                        dialog.show();
+                    }
+                });
+                dialog1.show();
             }
         });
     }
@@ -277,5 +311,54 @@ public class GroupMainActivity extends AppCompatActivity {
     public void setFilePath(String[] path) {
         this.filePath = path;
         this.selectPath = new ArrayList<String>();
+    }
+
+    private void getpwd(String[] name,int num){
+        // get prompts.xml view
+        final String[] files = name.clone();
+        final int index = num;
+        String filename = name[num];
+
+        StringTokenizer st = new StringTokenizer(filename,"/");
+        while(st.hasMoreTokens()){
+            filename = st.nextToken();
+        }
+
+        LayoutInflater layoutInflater = LayoutInflater.from(GroupMainActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.test_dialog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GroupMainActivity.this);
+        alertDialogBuilder.setView(promptView);
+
+        TextView textView = (TextView) promptView.findViewById(R.id.textView);
+        textView.setText("Input " + filename + " Password");
+        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        pbepwd[index] = editText.getText().toString();
+                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                if (files.length > (index + 1))
+                {
+                    getpwd(files,index+1);
+                } else{
+                    ProgressDialog progressDialog = new ProgressDialog(GroupMainActivity.this);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    progressDialog.setTitle("Uploading...");
+                    progressDialog.setMax(100);
+                    progressDialog.setCancelable(false);
+                    new Client_File_Upload(GroupMainActivity.this,progressDialog,activity).init(files,pbepwd,usepbe).execute(gpCode);
+                }
+            }
+        });
+        alert.show();
+
     }
 }
