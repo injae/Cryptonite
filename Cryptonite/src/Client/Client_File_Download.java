@@ -25,9 +25,38 @@ public class Client_File_Download implements PacketRule
 	{
 		try 
 		{
-			System.out.println("FileName ::::: " + path);
 			String extension = path.substring(path.length()-5,path.length());
 			targetpath = targetpath.substring(0,targetpath.length() - 5);
+			
+			StringTokenizer st = new StringTokenizer(targetpath,"\\");
+			String temp = "";
+			String temp1 = "";
+			String temp2 = "";
+			while(st.hasMoreTokens())
+			{
+				temp = st.nextToken();
+				temp2 += temp1;
+				temp1 = "";
+				temp1 += temp+"\\";
+			}
+			
+			StringTokenizer st2 = new StringTokenizer(temp, "#");
+			
+			boolean temp3 = false;
+			st2.nextToken();
+			while(st2.hasMoreTokens())
+			{
+				temp = st2.nextToken() + "#";
+				temp3 = true;
+			}
+			
+			if (temp3)
+				temp = temp.substring(0, temp.length()-1);
+			
+			targetpath = temp2 + temp;
+			
+			System.out.println(targetpath);
+			
 			_reposit = KeyReposit.getInstance();
 			_crypto = new Crypto(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
 			//_crypto.init(Crypto_Factory.create("AES256", Cipher.DECRYPT_MODE, key));
@@ -53,7 +82,6 @@ public class Client_File_Download implements PacketRule
 			}
 			
 			long fileSize = Long.parseLong(tmpfileSize);
-			
 			
 			RandomAccessFile raf  = new RandomAccessFile(targetpath, "rw");
 			PacketProcessor p = new PacketProcessor(raf.getChannel(), false);

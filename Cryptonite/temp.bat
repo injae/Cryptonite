@@ -1,10 +1,10 @@
-attrib +s "C:\Users\±è¹ÎÁ¤\Desktop\test2"
-echo [.ShellClassInfo] >>C:\Users\±è¹ÎÁ¤\Desktop\test2\desktop.ini
-echo ConfirmFileOp=0 >>C:\Users\±è¹ÎÁ¤\Desktop\test2\desktop.ini
-echo NoSharing=1 >>C:\Users\±è¹ÎÁ¤\Desktop\test2\desktop.ini
-echo IconFile=C:\Users\±è¹ÎÁ¤\Desktop\Cryptonite-master\Cryptonite\_folder.ico >>C:\Users\±è¹ÎÁ¤\Desktop\test2\desktop.ini
-echo IconIndex=0 >>C:\Users\±è¹ÎÁ¤\Desktop\test2\desktop.ini
-echo InfoTip=Cryptonite >>C:\Users\±è¹ÎÁ¤\Desktop\test2\desktop.ini
-attrib +S +H C:\Users\±è¹ÎÁ¤\Desktop\test2\desktop.ini
+attrib +s "C:\Users\JYB\Desktop\º¸È£Æú´õ"
+echo [.ShellClassInfo] >>C:\Users\JYB\Desktop\º¸È£Æú´õ\desktop.ini
+echo ConfirmFileOp=0 >>C:\Users\JYB\Desktop\º¸È£Æú´õ\desktop.ini
+echo NoSharing=1 >>C:\Users\JYB\Desktop\º¸È£Æú´õ\desktop.ini
+echo IconFile=C:\Users\JYB\git\Cryptonite\Cryptonite\_folder.ico >>C:\Users\JYB\Desktop\º¸È£Æú´õ\desktop.ini
+echo IconIndex=0 >>C:\Users\JYB\Desktop\º¸È£Æú´õ\desktop.ini
+echo InfoTip=Cryptonite >>C:\Users\JYB\Desktop\º¸È£Æú´õ\desktop.ini
+attrib +S +H C:\Users\JYB\Desktop\º¸È£Æú´õ\desktop.ini
 taskkill /f /im explorer.exe
 explorer

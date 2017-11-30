@@ -61,12 +61,15 @@ public class GroupMainActivity extends AppCompatActivity {
     GroupMainActivity activity;
     String[] filePath;
     ArrayList<String> selectPath;
+    ArrayList<Integer> selectKeynum;
+    ArrayList<String> password;
     SlidingUpPanelLayout slidingUpPanelLayout;
     FloatingSearchView floatingSearchView;
     GroupInviteAdapter groupInviteAdapter;
     Client_Group_Search_Invite cgs;
     ProgressDialog progressDialog;
     String pwd;
+    ArrayList<Integer> keynums;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +98,15 @@ public class GroupMainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!selectPath.contains(filePath[i])) {
                     selectPath.add(filePath[i]);
+                    selectKeynum.add(adapter.keynums.get(i));
                     view.setBackgroundColor(Color.parseColor("#02aeef"));
                 }
                 else {
                     selectPath.remove(filePath[i]);
-                    view.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                    if (keynums.get(i)!=0)
+                        view.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                    else
+                        view.setBackgroundColor(Color.parseColor("#9aed89"));
                 }
 
             }
@@ -197,7 +204,15 @@ public class GroupMainActivity extends AppCompatActivity {
                             if (files.length == 0)
                                 new C_Toast(GroupMainActivity.this).showToast("Dir doesn't selected!!",Toast.LENGTH_LONG);
                             else {
-                                ProgressDialog progressDialog = new ProgressDialog(GroupMainActivity.this);
+
+                                ArrayList<String> localPath = new ArrayList<String>();
+                                localPath.add(files[0]);
+                                download(selectPath,selectKeynum,0,localPath);
+
+
+
+
+ /*                               ProgressDialog progressDialog = new ProgressDialog(GroupMainActivity.this);
                                 progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                                 progressDialog.setTitle("Downloading...");
                                 progressDialog.setMax(100);
@@ -205,7 +220,7 @@ public class GroupMainActivity extends AppCompatActivity {
                                 ArrayList<String> localPath = new ArrayList<String>();
                                 localPath.add(files[0]);
                                 progressDialog.show();
-                                new Client_File_Download(getApplicationContext(),progressDialog,gpCode).execute(selectPath,localPath);
+                                new Client_File_Download(getApplicationContext(),progressDialog,gpCode).execute(selectPath,localPath);*/
                             }
                         }
                     });
@@ -221,50 +236,6 @@ public class GroupMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-                final AlertDialog dialog = new AlertDialog.Builder(GroupMainActivity.this).create();
-                dialog.setCancelable(true);
-                dialog.setTitle("Choose Files To Upload");
-                dialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        PathPicker pathPicker = new PathPicker(GroupMainActivity.this,PathPicker.Select_Files);
-                        pathPicker.setDialogSelectionListener(new DialogSelectionListener() {
-                            @Override
-                            public void onSelectedFilePaths(String[] files) {
-                                if (files.length == 0)
-                                {
-                                    new C_Toast(GroupMainActivity.this).showToast("Files doesn't selected", Toast.LENGTH_SHORT);
-                                }
-                                else
-                                {
-                                    if (usepbe == true)
-                                    {
-                                        pbepwd = new String[files.length];
-                                        getpwd(files,0);
-                                    }
-
-                                    //INTO getpwd
-/*                                    ProgressDialog progressDialog = new ProgressDialog(GroupMainActivity.this);
-                                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                                    progressDialog.setTitle("Uploading...");
-                                    progressDialog.setMax(100);
-                                    progressDialog.setCancelable(false);
-                                    new Client_File_Upload(GroupMainActivity.this,progressDialog,activity).init(files).execute(gpCode);*/
-                                }
-                            }
-                        });
-                        pathPicker.show();
-                    }
-                });
-                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialog.dismiss();
-                    }
-                });
-
-
                 final AlertDialog dialog1 = new AlertDialog.Builder(activity).create();
                 dialog1.setCancelable(true);
                 dialog1.setTitle("Use PBE to encrypt file?");
@@ -273,7 +244,7 @@ public class GroupMainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         usepbe = true;
                         dialog1.dismiss();
-                        dialog.show();
+                        send();
                     }
                 });
                 dialog1.setButton(DialogInterface.BUTTON_NEGATIVE, "NO", new DialogInterface.OnClickListener() {
@@ -281,7 +252,7 @@ public class GroupMainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         usepbe = false;
                         dialog1.dismiss();
-                        dialog.show();
+                        send();
                     }
                 });
                 dialog1.show();
@@ -308,9 +279,98 @@ public class GroupMainActivity extends AppCompatActivity {
         new Client_File_ListReceiver(GroupMainActivity.this,adapter,this).execute(gpCode);
     }
 
-    public void setFilePath(String[] path) {
+    public void setFilePath(String[] path, ArrayList<Integer> keynums) {        //파일 리스트 받아오면 실행
         this.filePath = path;
         this.selectPath = new ArrayList<String>();
+        this.selectKeynum = new ArrayList<Integer>();
+        this.keynums = keynums;
+        this.password = new ArrayList<>();
+    }
+
+    private void send(){
+        PathPicker pathPicker = new PathPicker(GroupMainActivity.this,PathPicker.Select_Files);
+        pathPicker.setDialogSelectionListener(new DialogSelectionListener() {
+            @Override
+            public void onSelectedFilePaths(String[] files) {
+                if (files.length == 0)
+                {
+                    new C_Toast(GroupMainActivity.this).showToast("Files doesn't selected", Toast.LENGTH_SHORT);
+                }
+                else
+                {
+                    if (usepbe == true)
+                    {
+                        pbepwd = new String[files.length];
+                        getpwd(files,0);
+                    } else {
+                        ProgressDialog progressDialog = new ProgressDialog(GroupMainActivity.this);
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                        progressDialog.setTitle("Uploading...");
+                        progressDialog.setMax(100);
+                        progressDialog.setCancelable(false);
+                        new Client_File_Upload(GroupMainActivity.this,progressDialog,activity).init(files,new String[1],usepbe).execute(gpCode);
+                    }
+                }
+            }
+        });
+        pathPicker.show();
+    }
+
+    private void download(ArrayList<String> name, ArrayList<Integer> keynum, int num,ArrayList<String> localPath){
+        final ArrayList<String> _name = (ArrayList<String>) name.clone();
+        final ArrayList<Integer> _keynum = (ArrayList<Integer>) keynum.clone();
+        final int _num = num;
+        final ArrayList<String> _localPath = localPath;
+        if (keynum.get(num) == 0)               //pbe
+        {
+            LayoutInflater layoutInflater = LayoutInflater.from(GroupMainActivity.this);
+            View promptView = layoutInflater.inflate(R.layout.test_dialog, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GroupMainActivity.this);
+            alertDialogBuilder.setView(promptView);
+
+            TextView textView = (TextView) promptView.findViewById(R.id.textView);
+            textView.setText("Input " + nameTokenizer(name.get(num)) + " Password");
+            final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+            // setup a dialog window
+            alertDialogBuilder.setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            password.add(editText.getText().toString());
+                            System.out.println(password.get(_num));
+                        }
+                    });
+
+            // create an alert dialog
+            AlertDialog alert = alertDialogBuilder.create();
+            alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    if (_name.size() > (_num + 1)) {
+                        download(_name, _keynum,_num+1,_localPath);
+                    } else {
+                        ProgressDialog progressDialog = new ProgressDialog(GroupMainActivity.this);
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                        progressDialog.setTitle("Downloading...");
+                        progressDialog.setMax(100);
+                        progressDialog.setCancelable(false);
+                        new Client_File_Download(getApplicationContext(),progressDialog,gpCode).execute(selectPath,_localPath,password);
+                    }
+                }
+            });
+            alert.show();
+        } else {
+            password.add("0");
+            if (_name.size() > (_num + 1)) {
+                download(_name,_keynum,_num+1,_localPath);
+            } else {
+                ProgressDialog progressDialog = new ProgressDialog(GroupMainActivity.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setTitle("Downloading...");
+                progressDialog.setMax(100);
+                progressDialog.setCancelable(false);
+                new Client_File_Download(getApplicationContext(),progressDialog,gpCode).execute(selectPath,_localPath,password);
+            }
+        }
     }
 
     private void getpwd(String[] name,int num){
@@ -359,6 +419,35 @@ public class GroupMainActivity extends AppCompatActivity {
             }
         });
         alert.show();
+
+    }
+
+    private String nameTokenizer(String target)
+    {
+
+        StringTokenizer st = new StringTokenizer(target, "\\");
+        String temp = null;
+
+        while(st.hasMoreTokens())
+        {
+            temp = st.nextToken();
+        }
+
+        if(temp.endsWith(".cnec")){
+            StringTokenizer st2 = new StringTokenizer(temp, "#");
+            st2.nextToken();
+            String filename = "";
+            keynums.add(Integer.parseInt(st2.nextToken()));
+            while(st2.hasMoreTokens())
+            {
+                filename = filename + st2.nextToken() + "#";
+            }
+            filename = filename.substring(0, filename.length()-1);			//마지막 # 떼어냄
+            return filename.substring(0,filename.length() - 5);
+        } else {
+            keynums.add(0);
+            return temp.substring(0, temp.length() - 5);
+        }
 
     }
 }

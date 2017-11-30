@@ -53,7 +53,7 @@ public class Client_getPBK implements PacketRule{
             PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), iterations, 20*8);
             SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] hash = skf.generateSecret(spec).getEncoded();
-            return new String(Base64.encode(hash,Base64.DEFAULT));
+            return new String(Base64.encode(hash,Base64.NO_WRAP));
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException("error on pbkdf2", e);
         }
@@ -76,4 +76,30 @@ public class Client_getPBK implements PacketRule{
         }
         return sb.toString();
     }
+
+    public String getFileSHA(String path) {
+        Client_Server_Connector css = Client_Server_Connector.getInstance();
+
+        byte[] op = new byte[1024];
+        byte size =1;
+        String sha = null;
+        try {
+            op[0]=GET_FILE_SHA_HEADER;
+            op[1]=size;
+            op[2] = (byte)String.valueOf(path).getBytes().length;
+            Function.frontInsertByte(3, String.valueOf(path).getBytes(), op);
+
+            css.send.setPacket(op).write();
+
+
+            sha = new String(css.receive.setAllocate(64).read().getByte());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return sha;
+    }
+
+
 }

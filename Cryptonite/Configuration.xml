@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TrueCrypt>
+	<configuration>
+		<config key="StartOnLogon">0</config>
+		<config key="HiddenSectorDetectionStatus">0</config>
+		<config key="SaveVolumeHistory">0</config>
+		<config key="SecurityTokenLibrary"></config>
+		<config key="Language"></config>
+	</configuration>
+</TrueCrypt>

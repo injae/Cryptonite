@@ -11,6 +11,6 @@ public class Server_Main
 {
 	public static void main(String[] args)
 	{
-		new Server_Client_Accepter("localhost", 4444).start();
+		new Server_Client_Accepter("192.168.0.10", 4444).start();
 	}
 } 

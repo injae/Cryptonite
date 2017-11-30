@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +28,12 @@ public class FileListAdapter extends BaseAdapter {
     LayoutInflater inf;
     Context context;
     int layout;
+    public ArrayList<Integer> keynums;
 
     public FileListAdapter(Context context, int layout) {
         arr = new ArrayList<>();
         arr1 = new ArrayList<>();
+        keynums = new ArrayList<>();
         this.context = context;
         this.layout = layout;
         this.inf = (LayoutInflater)context
@@ -46,14 +49,15 @@ public class FileListAdapter extends BaseAdapter {
         this.notifyDataSetChanged();
     }
 
-    public void refresh(){
-        arr.clear();
-        arr.addAll(arr1);
-        notifyDataSetChanged();
+    public void refresh(ArrayList<String> array){
+        if (array == null)
+            array = new ArrayList<String>();
+        arr.addAll(array);
+        this.notifyDataSetChanged();
     }
 
     public void clear(){
-        arr1.clear();
+        arr = new ArrayList<>();
         notifyDataSetChanged();
     }
 
@@ -91,7 +95,15 @@ public class FileListAdapter extends BaseAdapter {
 
         view.findViewById(R.id.Search_id_Button).setVisibility(View.GONE);
 
+        if (keynums.get(i) == 0){
+            view.setBackgroundColor(Color.parseColor("#9aed89"));
+        }
+
         return view;
+    }
+
+    public void updateKeynums(ArrayList<Integer> keynums){
+        this.keynums.addAll(keynums);
     }
 
 }
