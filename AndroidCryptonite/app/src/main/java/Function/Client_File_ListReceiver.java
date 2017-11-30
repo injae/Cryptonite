@@ -3,11 +3,14 @@ package Function;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.cryptonite.cryptonite.GroupMainActivity;
+import com.cryptonite.cryptonite.MainActivity;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 
@@ -19,6 +22,8 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
     private ProgressDialog dialog;
     private Context context;
     private String[] paths;
+    private ArrayList<String> files;
+    private ArrayList<Integer> keynums;
     private GroupMainActivity groupMainActivity;
     // Another Class
     private Client_Server_Connector _csc = null;
@@ -30,6 +35,7 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
         this.adapter = adapter;
         this.groupMainActivity = groupMainActivity;
         _csc = Client_Server_Connector.getInstance();
+        this.files = new ArrayList<String>();
     }
 
     @Override
@@ -37,7 +43,7 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
         try
         {
             Charset cs = Charset.forName("UTF-8");
-            publishProgress(0);
+
             byte[] event = new byte[1024];
             event[0] = FILE_LIST_REQUEST;
             event[1] = 1; // group mode
@@ -51,10 +57,14 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
 
             _fileCount = Integer.parseInt(new String(_csc.receive.setAllocate(100).read().getByte()).trim());
             paths = new String[_fileCount];
+            keynums = new ArrayList<>();
+            publishProgress(0);
+            files.clear();
             for(int i = 0; i < _fileCount; i++)
             {
+
                 paths[i] = cs.decode(_csc.receive.setAllocate(1024).read().getByteBuf()).toString().trim();
-                adapter.add(nameTokenizer(paths[i]));
+                files.add(nameTokenizer(paths[i]));
             }
 
             publishProgress(1);
@@ -74,18 +84,29 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
             dialog = ProgressDialog.show(context,"Loading..","Receiving File List",true,false);
         } else if(values[0] == 1) {
             if (_fileCount == 0) {
-                adapter.add("No Files");
+                files.add("No Files");
+                keynums.add(-1);
                 paths = new String[1];
                 paths[0] = "No Files";
             }
-            adapter.refresh();
+
             dialog.dismiss();
-            groupMainActivity.setFilePath(paths);
+            groupMainActivity.setFilePath(paths,keynums);
         }
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+
+        adapter.updateKeynums(keynums);
+        adapter.refresh(files);
+
     }
 
     private String nameTokenizer(String target)
     {
+
         StringTokenizer st = new StringTokenizer(target, "\\");
         String temp = null;
 
@@ -94,6 +115,20 @@ public class Client_File_ListReceiver extends AsyncTask<String,Integer,Void> imp
             temp = st.nextToken();
         }
 
-        return temp;
+        if(temp.endsWith(".cnec")){
+            StringTokenizer st2 = new StringTokenizer(temp, "#");
+            String filename = "";
+            keynums.add(Integer.parseInt(st2.nextToken()));
+            while(st2.hasMoreTokens())
+            {
+                filename = filename + st2.nextToken() + "#";
+            }
+            filename = filename.substring(0, filename.length()-1);			//마지막 # 떼어냄
+            return filename.substring(0,filename.length() - 5);
+        } else {
+            keynums.add(0);
+            return temp.substring(0, temp.length() - 5);
+        }
+
     }
 }

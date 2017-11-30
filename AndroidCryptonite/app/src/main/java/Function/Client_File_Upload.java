@@ -133,7 +133,7 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
             e.printStackTrace();
         }
 
-        publishProgress(5L);
+        publishProgress(2L);
         return null;
     }
 
@@ -174,7 +174,10 @@ public class Client_File_Upload extends AsyncTask<String,Long,Void> implements P
             {
                 _fileNameArray[i] = st.nextToken();
             }
-            _fileNameArray[i] = _fileNameArray[i].concat(".cnec");
+            if (usepbe)
+                _fileNameArray[i] = _fileNameArray[i].concat(".cnmc");
+            else
+                _fileNameArray[i] = _fileNameArray[i].concat(".cnec");
         }
 
         _fileSizeArray = new long[_filePathArray.length];
