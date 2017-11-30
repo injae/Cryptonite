@@ -41,6 +41,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -509,7 +510,7 @@ public class Client_Group_Main extends JFrame implements PacketRule
 								 
 								 if (password == null)
 								 {
-									 JOptionPane.showMessageDialog(null, _btnList.get(i).fileName + " download canceled!!");
+									 JOptionPane.showMessageDialog(null, _btnList.get(i).fileName + " download canceled!!","Cancel", JOptionPane.OK_OPTION);
 									 continue;
 								 }
 								 
@@ -813,8 +814,13 @@ public class Client_Group_Main extends JFrame implements PacketRule
     }
     
 	private String getPassword(String name) {
-		// TODO 자동 생성된 메소드 스텁
-		return (String) JOptionPane.showInputDialog(null, "Input "+ name + " Password\nWarning!!\nIf you forget your password, you will not be able to decrypt the file.", "Password", JOptionPane.PLAIN_MESSAGE, null, null, null);
+		String password = null;
+		JPasswordField passwordField = new JPasswordField();
+		Object[] obj = {"Input "+ name + " Password",passwordField};
+		if (JOptionPane.showOptionDialog(null, obj, "Password", JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null) == JOptionPane.YES_OPTION) {
+			password = new String(passwordField.getPassword());
+		}
+		return password;
 	}
 	
 	private String getPBK (String password, int gpCode)

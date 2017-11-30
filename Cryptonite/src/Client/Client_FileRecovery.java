@@ -32,6 +32,7 @@ import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 
 import Client.Client_Group_Main.RecoveryButton;
@@ -617,7 +618,12 @@ public class Client_FileRecovery extends JFrame implements PacketRule
         return sb.toString();
     }
 	private String getPassword(String name) {
-		// TODO 자동 생성된 메소드 스텁
-		return (String) JOptionPane.showInputDialog(null, "Input "+name+" Password", "Password", JOptionPane.PLAIN_MESSAGE, null, null, null);
+		String password = null;
+		JPasswordField passwordField = new JPasswordField();
+		Object[] obj = {"Input "+name+" Password",passwordField};
+		if (JOptionPane.showOptionDialog(null, obj, "Password", JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE, null, null, null) == JOptionPane.YES_OPTION) {
+			password = new String(passwordField.getPassword());
+		}
+		return password;
 	}
 }
