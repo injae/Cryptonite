@@ -91,7 +91,7 @@ public class Server_File_Upload extends Server_Funtion implements PacketRule
 			rs.next();
 			String keynum= rs.getString(1);
 			
-			if(_fileName.substring(_fileName.length()-5,_fileName.length()).equals(".cnmc")){
+			if(_fileName.endsWith("cnmc")){
 				_raf = new RandomAccessFile(_address + "\\" +_fileName, "rw");
 			}
 			else

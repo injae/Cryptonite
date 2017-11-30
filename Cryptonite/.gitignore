@@ -1,4 +1,6 @@
 /bin/
+/Server_Folder/
+/Server_Folder/OTP/
 .ser
 .suo
 .ncb
