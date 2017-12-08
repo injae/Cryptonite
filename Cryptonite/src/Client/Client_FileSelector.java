@@ -35,7 +35,7 @@ public class Client_FileSelector extends Frame
 	// Methods
 	public void fileFinderON()
 	{
-		  FileDialog fd = new FileDialog( this, "���� ����", FileDialog.LOAD);
+		  FileDialog fd = new FileDialog( this, "파일 선택", FileDialog.LOAD);
 		  fd.setMultipleMode(true);
 		  fd.setVisible(true);
 		  _selectedFiles = fd.getFiles();					// ���ϰ�ü �޾ƿ��°�
