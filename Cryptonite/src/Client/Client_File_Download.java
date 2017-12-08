@@ -72,7 +72,7 @@ public class Client_File_Download implements PacketRule
 			System.out.println(tmpfileSize);
 			if (tmpfileSize.equals("distance"))	//GPS return value
 			{
-				showMessage("Fail", "Please Send your location using Android Cryptonite.");
+				showMessage("Fail", "Unable to download (location verification failed)");
 				return;
 			}
 			else if(tmpfileSize.equals("timeover"))	//GPS return value

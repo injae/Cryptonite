@@ -157,7 +157,7 @@ public class Client_File_Download extends AsyncTask<ArrayList<String>,Integer,In
                 break;
             case 3:
                 progressDialog.dismiss();
-                new C_Toast(context).showToast("Please send your loaction.", Toast.LENGTH_LONG);
+                new C_Toast(context).showToast("Unable to download (location verification failed)", Toast.LENGTH_LONG);
                 break;
             case 4:
                 progressDialog.dismiss();

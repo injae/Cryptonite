@@ -161,12 +161,60 @@ public class GoogleMaps {
         browser.setBounds(452, 10, 432, 263);
         
         Label lblat = new Label(comp, SWT.NONE);
-        lblat.setBounds(633, 279, 107, 15);
+        lblat.setBounds(633, 275, 107, 20);
         lblat.setText("37.56");
         
         Label lblng = new Label(comp, SWT.NONE);
-        lblng.setBounds(772, 279, 112, 15);
+        lblng.setBounds(772, 275, 112, 20);
         lblng.setText("126.97");
+        
+        Button btn = new Button(comp, SWT.NONE);
+        btn.setBounds(633, 0, 20, 20);
+        btn.setText("1");
+        btn.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				browser.execute("map.setCenter(SWLatLng);");
+			}
+
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseDown(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+        
+        Button btn2 = new Button(comp, SWT.NONE);
+        btn2.setBounds(653, 0, 20, 20);
+        btn2.setText("2");
+        btn2.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				browser.execute("map.setCenter(myLatLng);");
+			}
+
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseDown(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
         
 
         browser.addListener(SWT.MouseUp, new Listener() {
@@ -197,20 +245,20 @@ public class GoogleMaps {
 		});
         
         Label lblUseGpsEncrypt = new Label(comp, SWT.NONE);
-        lblUseGpsEncrypt.setBounds(229, 191, 125, 15);
+        lblUseGpsEncrypt.setBounds(200, 191, 160, 20);
         lblUseGpsEncrypt.setText("Use GPS encrypt files : ");
         
         
         Button btnCheckButton = new Button(comp, SWT.CHECK);
-        btnCheckButton.setBounds(360, 191, 13, 16);
+        btnCheckButton.setBounds(360, 193, 13, 16);
         
         Label lblSetRadius = new Label(comp, SWT.NONE);
-        lblSetRadius.setBounds(462, 279, 86, 15);
+        lblSetRadius.setBounds(450, 275, 100, 20);
         lblSetRadius.setText("Set Radius (m): ");
         
         text_radius = new Text(comp, SWT.BORDER);
-        text_radius.setText("100");
-        text_radius.setBounds(554, 279, 47, 21);
+        text_radius.setText("200");
+        text_radius.setBounds(554, 275, 47, 20);
         text_radius.addModifyListener(new ModifyListener() {
 			
 			@Override
@@ -225,11 +273,11 @@ public class GoogleMaps {
 		});
         
         Label lblLat = new Label(comp, SWT.NONE);
-        lblLat.setBounds(607, 279, 20, 15);
+        lblLat.setBounds(607, 275, 30, 20);
         lblLat.setText("lat :");
         
         Label lblLng = new Label(comp, SWT.NONE);
-        lblLng.setBounds(746, 279, 20, 15);
+        lblLng.setBounds(746, 275, 30, 20);
         lblLng.setText("lng:");
         
         btnCheckButton.addSelectionListener(new SelectionAdapter() {

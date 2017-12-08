@@ -15,13 +15,15 @@
 	var LatLng = {lat: 37.56, lng: 126.97};
 	var marker;
 	var circle;
-	var radius=100;
+	var radius=200;
+	var SWLatLng = {lat: 37.2089, lng: 126.97603};
+	var myLatLng = {lat: 37.503392, lng: 127.0432756};
 	
       function initialize() {
 	  
         var myOptions = {
           center: LatLng,
-          zoom: 17,
+          zoom: 15,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 		
@@ -125,7 +127,7 @@
     <div id="map_canvas" style="width:100%; height:100%"></div>
 	<input type="hidden" id="lat" value="37.56"/>
 	<input type="hidden" id="Lng" value="126.97"/>
-	<input type="hidden" id="radius" value="100"/>
+	<input type="hidden" id="radius" value="200"/>
 
   </body>
 </html> 
